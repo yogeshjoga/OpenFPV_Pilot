@@ -1,0 +1,1053 @@
+{
+  "analog": [
+    {
+      "ANALOG FPV CAMERAS": "Camera Brand",
+      "__EMPTY": "Model Name",
+      "__EMPTY_1": "Weight (g)",
+      "__EMPTY_2": "Input Voltage",
+      "__EMPTY_3": "Key Features"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Caddx",
+      "__EMPTY": "Ant",
+      "__EMPTY_1": 1.6,
+      "__EMPTY_2": "3.3-5.5V",
+      "__EMPTY_3": "Nano, Lightweight, Good image quality"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Caddx",
+      "__EMPTY": "EOS 2",
+      "__EMPTY_1": 2.1,
+      "__EMPTY_2": "3.3-5.5V",
+      "__EMPTY_3": "Nano, 2MP, Super responsive"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Caddx",
+      "__EMPTY": "Ratel 2",
+      "__EMPTY_1": 5,
+      "__EMPTY_2": "5-36V",
+      "__EMPTY_3": "Best value analog, Good low light"
+    },
+    {
+      "ANALOG FPV CAMERAS": "RunCam",
+      "__EMPTY": "Nano 4",
+      "__EMPTY_1": 2.9,
+      "__EMPTY_2": "3.3-5.5V",
+      "__EMPTY_3": "Nano, Compact, Affordable"
+    },
+    {
+      "ANALOG FPV CAMERAS": "RunCam",
+      "__EMPTY": "Phoenix 2 Nano",
+      "__EMPTY_1": 2.5,
+      "__EMPTY_2": "3.3-5.5V",
+      "__EMPTY_3": "Nano, Lightweight, Fast response"
+    },
+    {
+      "ANALOG FPV CAMERAS": "RunCam",
+      "__EMPTY": "Phoenix 2 Micro",
+      "__EMPTY_1": 3.8,
+      "__EMPTY_2": "3.3-5.5V",
+      "__EMPTY_3": "Micro, Better image quality"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Foxeer",
+      "__EMPTY": "Predator Nano",
+      "__EMPTY_1": 2,
+      "__EMPTY_2": "4.5-7V",
+      "__EMPTY_3": "Nano, Fast, Responsive"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Foxeer",
+      "__EMPTY": "Razor Nano",
+      "__EMPTY_1": 3.9,
+      "__EMPTY_2": "4.5-7V",
+      "__EMPTY_3": "Nano, Lightweight, Good color"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Foxeer",
+      "__EMPTY": "Cat 2 Mini",
+      "__EMPTY_1": 4,
+      "__EMPTY_2": "5-36V",
+      "__EMPTY_3": "Mini, Wide angle, Sharp image"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Foxeer",
+      "__EMPTY": "Cat 2 Micro",
+      "__EMPTY_1": 3,
+      "__EMPTY_2": "5-36V",
+      "__EMPTY_3": "Micro, Wide angle, Compact"
+    },
+    {
+      "ANALOG FPV CAMERAS": "ANALOG VTX MODULES"
+    },
+    {
+      "ANALOG FPV CAMERAS": "VTX Brand",
+      "__EMPTY": "Model Name",
+      "__EMPTY_1": "Power Output",
+      "__EMPTY_2": "Bands/Channels",
+      "__EMPTY_3": "Input Voltage",
+      "__EMPTY_4": "Key Features"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Eachine",
+      "__EMPTY": "TX805",
+      "__EMPTY_1": "800mW",
+      "__EMPTY_2": "5 bands / 40 channels",
+      "__EMPTY_3": "7-24V",
+      "__EMPTY_4": "Compact 30x30mm, Budget friendly, NTSC/PAL"
+    },
+    {
+      "ANALOG FPV CAMERAS": "TBS",
+      "__EMPTY": "Unify Pro32 HV",
+      "__EMPTY_1": "25-1000mW",
+      "__EMPTY_2": "5 bands / 40 channels",
+      "__EMPTY_3": "7.4-60V",
+      "__EMPTY_4": "Premium, Wide voltage range, SmartAudio"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Rush",
+      "__EMPTY": "Tank Ultimate Plus",
+      "__EMPTY_1": "800mW",
+      "__EMPTY_2": "5 bands / 40 channels",
+      "__EMPTY_3": "7.2-36V",
+      "__EMPTY_4": "Solid quality, 30.5x30.5mm mounting"
+    },
+    {
+      "ANALOG FPV CAMERAS": "AOM",
+      "__EMPTY": "TX16 V2",
+      "__EMPTY_1": "200-600mW",
+      "__EMPTY_2": "5 bands / 40 channels",
+      "__EMPTY_3": "5-36V",
+      "__EMPTY_4": "Open source, Customizable, SmartAudio"
+    },
+    {
+      "ANALOG FPV CAMERAS": "SpeedyBee",
+      "__EMPTY": "VTX",
+      "__EMPTY_1": "50-800mW",
+      "__EMPTY_2": "5 bands / 40 channels",
+      "__EMPTY_3": "5-36V",
+      "__EMPTY_4": "Lightweight, Affordable, OSD capable"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Caddx",
+      "__EMPTY": "VTX",
+      "__EMPTY_1": "25-1000mW",
+      "__EMPTY_2": "5 bands / 40 channels",
+      "__EMPTY_3": "6.6-36V",
+      "__EMPTY_4": "Compact, Wide range, SmartAudio support"
+    },
+    {
+      "ANALOG FPV CAMERAS": "RunCam",
+      "__EMPTY": "TX200U",
+      "__EMPTY_1": "200mW",
+      "__EMPTY_2": "5 bands / 40 channels",
+      "__EMPTY_3": "5-36V",
+      "__EMPTY_4": "Compact, Low power option, SmartAudio"
+    },
+    {
+      "ANALOG FPV CAMERAS": "ANALOG FPV GOGGLES"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Goggle Brand",
+      "__EMPTY": "Model Name",
+      "__EMPTY_1": "Type (Box/Headset)",
+      "__EMPTY_2": "Display",
+      "__EMPTY_3": "Resolution",
+      "__EMPTY_4": "Supported Frequency",
+      "__EMPTY_5": "Receiver Module",
+      "__EMPTY_6": "VRX Module Built-in",
+      "__EMPTY_7": "Key Features"
+    },
+    {
+      "ANALOG FPV CAMERAS": "FatShark",
+      "__EMPTY": "Dominator (HD)",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "OLED",
+      "__EMPTY_3": "1920x1080",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "Modular bay",
+      "__EMPTY_6": "No",
+      "__EMPTY_7": "HD OLED, DVR, USB-C Video Out, Premium build"
+    },
+    {
+      "ANALOG FPV CAMERAS": "FatShark",
+      "__EMPTY": "HDO+ (HDO Plus)",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "OLED",
+      "__EMPTY_3": "1920x1080",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "Modular bay",
+      "__EMPTY_6": "No",
+      "__EMPTY_7": "HD OLED, 50° FOV, Prescription lens support, Premium"
+    },
+    {
+      "ANALOG FPV CAMERAS": "FatShark",
+      "__EMPTY": "ECHO",
+      "__EMPTY_1": "Box",
+      "__EMPTY_2": "LCD",
+      "__EMPTY_3": "800x480",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes (40 channels)",
+      "__EMPTY_7": "Budget friendly, Analog only, 55° FOV"
+    },
+    {
+      "ANALOG FPV CAMERAS": "FatShark",
+      "__EMPTY": "Recon HD",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "OLED",
+      "__EMPTY_3": "1920x1080",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "Modular bay",
+      "__EMPTY_6": "No",
+      "__EMPTY_7": "Affordable HD option, OLED display, Good performance"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Eachine",
+      "__EMPTY": "EV800D",
+      "__EMPTY_1": "Box",
+      "__EMPTY_2": "LCD",
+      "__EMPTY_3": "800x480",
+      "__EMPTY_4": "5.8GHz (5.8G 5333-5945MHz)",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes (40 channels)",
+      "__EMPTY_7": "Budget, 82° FOV, DVR, Anti-fog fan, Diversity"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Eachine",
+      "__EMPTY": "EV100",
+      "__EMPTY_1": "Box",
+      "__EMPTY_2": "LCD",
+      "__EMPTY_3": "720x540",
+      "__EMPTY_4": "5.8GHz (5333-5945MHz)",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes (72 channels)",
+      "__EMPTY_7": "Budget, Lower resolution, Focal length adjustable"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Eachine",
+      "__EMPTY": "EV300D",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "LCOS",
+      "__EMPTY_3": "1280x960",
+      "__EMPTY_4": "5.8GHz (5.8G)",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes",
+      "__EMPTY_7": "Mid-range, LCOS display, Prescription lens support"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Skyzone",
+      "__EMPTY": "SKY04X Pro",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "OLED",
+      "__EMPTY_3": "1920x1080",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "RapidMix module",
+      "__EMPTY_6": "Yes (included)",
+      "__EMPTY_7": "Premium, OLED, Wide FOV 52°, DVR"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Skyzone",
+      "__EMPTY": "SKY04O Pro",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "OLED",
+      "__EMPTY_3": "1280x720",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "RapidMix module",
+      "__EMPTY_6": "Yes (included)",
+      "__EMPTY_7": "Premium OLED, 42° FOV, More compact"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Skyzone",
+      "__EMPTY": "Cobra X",
+      "__EMPTY_1": "Box",
+      "__EMPTY_2": "LCD",
+      "__EMPTY_3": "1280x720",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes",
+      "__EMPTY_7": "Budget box goggle, 50° FOV, Diversity"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Skyzone",
+      "__EMPTY": "Cobra SD",
+      "__EMPTY_1": "Box",
+      "__EMPTY_2": "LCD",
+      "__EMPTY_3": "800x480",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes",
+      "__EMPTY_7": "Lower res budget option, 50° FOV"
+    },
+    {
+      "ANALOG FPV CAMERAS": "BetaFPV",
+      "__EMPTY": "VR02",
+      "__EMPTY_1": "Box",
+      "__EMPTY_2": "LCD",
+      "__EMPTY_3": "800x480",
+      "__EMPTY_4": "5.8GHz",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes",
+      "__EMPTY_7": "Micro goggle, Budget friendly, 55° FOV"
+    },
+    {
+      "ANALOG FPV CAMERAS": "BetaFPV",
+      "__EMPTY": "VR03",
+      "__EMPTY_1": "Box",
+      "__EMPTY_2": "LCD",
+      "__EMPTY_3": "800x480",
+      "__EMPTY_4": "5.8GHz",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes",
+      "__EMPTY_7": "Micro goggle, 40° FOV, Compact size"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Orqa",
+      "__EMPTY": "FPV.ONE Pilot",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "OLED",
+      "__EMPTY_3": "1280x960",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "Modular bay",
+      "__EMPTY_6": "No",
+      "__EMPTY_7": "Premium, OLED, 37° FOV, Prescription support"
+    },
+    {
+      "ANALOG FPV CAMERAS": "RunCam",
+      "__EMPTY": "Robot Lite",
+      "__EMPTY_1": "Headset",
+      "__EMPTY_2": "OLED",
+      "__EMPTY_3": "1280x720",
+      "__EMPTY_4": "5.8GHz",
+      "__EMPTY_5": "Built-in receiver",
+      "__EMPTY_6": "Yes",
+      "__EMPTY_7": "Premium, Light weight, OLED display"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Immersion",
+      "__EMPTY": "SkyZone Receiver",
+      "__EMPTY_1": "External Module",
+      "__EMPTY_2": "N/A",
+      "__EMPTY_3": "N/A",
+      "__EMPTY_4": "5.8GHz (All bands)",
+      "__EMPTY_5": "N/A",
+      "__EMPTY_6": "N/A",
+      "__EMPTY_7": "Universal receiver module for FatShark compatibility"
+    },
+    {
+      "ANALOG FPV CAMERAS": "SpeedyBee",
+      "__EMPTY": "Goggle Receiver Module",
+      "__EMPTY_1": "External Module",
+      "__EMPTY_2": "N/A",
+      "__EMPTY_3": "N/A",
+      "__EMPTY_4": "5.8GHz (5.650-5.925 GHz)",
+      "__EMPTY_5": "N/A",
+      "__EMPTY_6": "N/A",
+      "__EMPTY_7": "FatShark compatible, Affordable receiver upgrade"
+    },
+    {
+      "ANALOG FPV CAMERAS": "CRITICAL COMPATIBILITY NOTES:"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Key Point",
+      "__EMPTY": "Description"
+    },
+    {
+      "ANALOG FPV CAMERAS": "1. Analog Camera to VTX Compatibility",
+      "__EMPTY": "ALL analog cameras are compatible with ALL analog VTX modules. They all use the standard composite video signal (NTSC or PAL). No frequency matching needed between camera and VTX."
+    },
+    {
+      "ANALOG FPV CAMERAS": "2. Analog Camera to Goggle Compatibility",
+      "__EMPTY": "Any analog camera + VTX combo works with ANY analog 5.8GHz goggle. The frequency band (A, B, E, F, C/Raceband) must be matched between VTX and Goggle receiver."
+    },
+    {
+      "ANALOG FPV CAMERAS": "3. Frequency Bands Explained",
+      "__EMPTY": "5.8GHz FPV uses multiple bands: Band A (CH1-8), Band B (CH1-8), Band E (CH1-8), Band F (CH1-8), Raceband (CH1-8). Most goggles support all bands with 40+ channels."
+    },
+    {
+      "ANALOG FPV CAMERAS": "4. VTX Power Considerations",
+      "__EMPTY": "Power output ranges from 25mW (limited range) to 1000mW (maximum range). Choose based on flying environment. Higher power = more heat and power consumption."
+    },
+    {
+      "ANALOG FPV CAMERAS": "5. Receiver Module Upgrade",
+      "__EMPTY": "Goggles with modular bays can use aftermarket receiver modules (RapidFire, Fusion, RapidMix) for better performance than stock receivers."
+    },
+    {
+      "ANALOG FPV CAMERAS": "6. Display Technology Trade-offs",
+      "__EMPTY": "OLED: Better contrast, faster response, better in low light. LCD: Lower cost, good brightness. LCOS: Middle ground option."
+    },
+    {
+      "ANALOG FPV CAMERAS": "7. Input Voltage Critical",
+      "__EMPTY": "Cameras need correct input voltage (check battery voltage). Low voltage = poor image quality. Use voltage regulators if needed."
+    },
+    {
+      "ANALOG FPV CAMERAS": "8. 100% Compatible Setup Example",
+      "__EMPTY": "Caddx Ant camera + Eachine TX805 VTX + FatShark Echo goggles = FULL COMPATIBILITY (all operate on 5.8GHz analog standard)"
+    },
+    {
+      "ANALOG FPV CAMERAS": "9. Digital Systems NOT Compatible",
+      "__EMPTY": "DJI, Walksnail, and HDZero are DIGITAL systems. Analog cameras/VTX cannot be used with digital goggles (and vice versa)."
+    },
+    {
+      "ANALOG FPV CAMERAS": "10. Most Popular Combo",
+      "__EMPTY": "RunCam Nano 4 camera + TBS Unify Pro32 HV VTX + FatShark Dominator goggles. Excellent quality at reasonable cost."
+    },
+    {
+      "ANALOG FPV CAMERAS": "5.8GHz FPV FREQUENCY BANDS REFERENCE"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Band",
+      "__EMPTY": "Channel 1",
+      "__EMPTY_1": "Channel 2",
+      "__EMPTY_2": "Channel 3",
+      "__EMPTY_3": "Channel 4",
+      "__EMPTY_4": "Channel 5",
+      "__EMPTY_5": "Channel 6",
+      "__EMPTY_6": "Channel 7",
+      "__EMPTY_7": "Channel 8"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Band A",
+      "__EMPTY": 5865,
+      "__EMPTY_1": 5845,
+      "__EMPTY_2": 5825,
+      "__EMPTY_3": 5805,
+      "__EMPTY_4": 5785,
+      "__EMPTY_5": 5765,
+      "__EMPTY_6": 5745,
+      "__EMPTY_7": 5725
+    },
+    {
+      "ANALOG FPV CAMERAS": "Band B",
+      "__EMPTY": 5733,
+      "__EMPTY_1": 5752,
+      "__EMPTY_2": 5771,
+      "__EMPTY_3": 5790,
+      "__EMPTY_4": 5809,
+      "__EMPTY_5": 5828,
+      "__EMPTY_6": 5847,
+      "__EMPTY_7": 5866
+    },
+    {
+      "ANALOG FPV CAMERAS": "Band E",
+      "__EMPTY": 5705,
+      "__EMPTY_1": 5685,
+      "__EMPTY_2": 5665,
+      "__EMPTY_3": 5645,
+      "__EMPTY_4": 5885,
+      "__EMPTY_5": 5905,
+      "__EMPTY_6": 5925,
+      "__EMPTY_7": 5905
+    },
+    {
+      "ANALOG FPV CAMERAS": "Band F (Fatshark)",
+      "__EMPTY": 5740,
+      "__EMPTY_1": 5760,
+      "__EMPTY_2": 5780,
+      "__EMPTY_3": 5800,
+      "__EMPTY_4": 5820,
+      "__EMPTY_5": 5840,
+      "__EMPTY_6": 5860,
+      "__EMPTY_7": 5880
+    },
+    {
+      "ANALOG FPV CAMERAS": "Raceband (C)",
+      "__EMPTY": 5658,
+      "__EMPTY_1": 5695,
+      "__EMPTY_2": 5732,
+      "__EMPTY_3": 5769,
+      "__EMPTY_4": 5806,
+      "__EMPTY_5": 5843,
+      "__EMPTY_6": 5880,
+      "__EMPTY_7": 5917
+    },
+    {
+      "ANALOG FPV CAMERAS": "IMPORTANT: Frequency must MATCH between VTX and Goggle Receiver. If VTX is on 5865 MHz, goggles must be tuned to 5865 MHz."
+    },
+    {
+      "ANALOG FPV CAMERAS": "FREQUENCY MATCHING RULE: Choose same band (A/B/E/F/C) on both VTX and Goggle receiver for successful reception."
+    },
+    {
+      "ANALOG FPV CAMERAS": "RECOMMENDED FREQUENCY SETUP FOR AVOIDING INTERFERENCE:"
+    },
+    {
+      "ANALOG FPV CAMERAS": "- Set Analog FPV on: Band A (Ch1-2) or Band E (Ch1-2)"
+    },
+    {
+      "ANALOG FPV CAMERAS": "- Keep digital systems (DJI/Avatar) on: Band F or Raceband"
+    },
+    {
+      "ANALOG FPV CAMERAS": "- This prevents interference between analog and digital systems in same location."
+    },
+    {
+      "ANALOG FPV CAMERAS": "FAQ & TROUBLESHOOTING GUIDE"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Question",
+      "__EMPTY": "Answer"
+    },
+    {
+      "ANALOG FPV CAMERAS": "Can I use any camera with any VTX?",
+      "__EMPTY": "Yes! All analog cameras (Caddx, RunCam, Foxeer) are compatible with all analog VTX (Eachine, TBS, Rush). Just connect video signal, power, and ground."
+    },
+    {
+      "ANALOG FPV CAMERAS": "Can I use any VTX with any goggles?",
+      "__EMPTY": "Yes! As long as both support 5.8GHz and are set to the same frequency/channel. Frequency matching is critical."
+    },
+    {
+      "ANALOG FPV CAMERAS": "What if my goggles don't receive video?",
+      "__EMPTY": "1) Check frequency matches between VTX and goggles. 2) Verify antenna connections. 3) Check camera power/video output. 4) Try different channel. 5) Check receiver module sensitivity."
+    },
+    {
+      "ANALOG FPV CAMERAS": "Can I upgrade my goggle receiver?",
+      "__EMPTY": "Yes! Goggles with modular bays (FatShark, Skyzone models with module bay) can use aftermarket modules like RapidFire for better range/performance."
+    },
+    {
+      "ANALOG FPV CAMERAS": "What voltage should I use for cameras?",
+      "__EMPTY": "Check camera specs. Most nano cameras: 3.3-5.5V. Most standard cameras: 5-36V. Use appropriate BEC or voltage regulator."
+    },
+    {
+      "ANALOG FPV CAMERAS": "Which goggle brand is best?",
+      "__EMPTY": "FatShark Dominator (most expensive but best). Skyzone SKY04X (best value premium). Eachine EV800D (best budget). All work with all analog VTX/cameras."
+    },
+    {
+      "ANALOG FPV CAMERAS": "Can I use analog goggles with DJI drones?",
+      "__EMPTY": "No. DJI/Walksnail/HDZero are digital systems. Analog goggles cannot receive digital signals (except DJI Goggles RE which can receive analog)."
+    },
+    {
+      "ANALOG FPV CAMERAS": "What is the best beginner setup?",
+      "__EMPTY": "Caddx Ant camera + Eachine TX805 VTX + FatShark Echo goggles = ~$150 total. All fully compatible, reliable, proven."
+    },
+    {
+      "ANALOG FPV CAMERAS": "How far can analog FPV reach?",
+      "__EMPTY": "400mW-800mW in open sky: 1-3km typical. 1000mW power: 3-5km+. Limited by antenna quality and line of sight."
+    },
+    {
+      "ANALOG FPV CAMERAS": "What's better: Box or Headset goggles?",
+      "__EMPTY": "Headset: Better ergonomics, better optics, more immersive but pricey. Box: Budget friendly, less comfortable, good for learning. Choose based on budget."
+    }
+  ],
+  "digital": [
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "System Overview",
+      "__EMPTY": "Brand",
+      "__EMPTY_1": "Generation",
+      "__EMPTY_2": "Key Product",
+      "__EMPTY_3": "Key Specs"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI FPV ECOSYSTEM",
+      "__EMPTY": "DJI",
+      "__EMPTY_1": "Generation 1",
+      "__EMPTY_2": "DJI Air Unit",
+      "__EMPTY_3": "25mW-600mW, Compatible with FPV Goggles V1, Vista compatible"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI FPV ECOSYSTEM",
+      "__EMPTY": "DJI",
+      "__EMPTY_1": "Generation 2 (O3)",
+      "__EMPTY_2": "DJI O3 Air Unit",
+      "__EMPTY_3": "25mW-1200mW, 1440p60 video, Compatible with V2 & Goggles 2 & Goggles 3"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI FPV ECOSYSTEM",
+      "__EMPTY": "DJI",
+      "__EMPTY_1": "Avata Series",
+      "__EMPTY_2": "DJI Avata 2 / Avata 3",
+      "__EMPTY_3": "Built-in camera & transmitter, Works with Goggles 3 & other compatible goggles"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "WALKSNAIL AVATAR",
+      "__EMPTY": "Walkinsnail (Caddx)",
+      "__EMPTY_1": "Avatar HD V1",
+      "__EMPTY_2": "Avatar HD VTX V1",
+      "__EMPTY_3": "1080p, Compatible with Avatar HD Goggles and VRX modules"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "WALKSNAIL AVATAR",
+      "__EMPTY": "Walkinsnail (Caddx)",
+      "__EMPTY_1": "Avatar HD V2",
+      "__EMPTY_2": "Avatar HD VTX V2",
+      "__EMPTY_3": "1080p 120fps, 6V-25.2V input, All Avatar goggles compatible, 8GB/32GB DVR"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "WALKSNAIL AVATAR",
+      "__EMPTY": "Walkinsnail (Caddx)",
+      "__EMPTY_1": "Avatar System",
+      "__EMPTY_2": "Avatar HD Goggles / X",
+      "__EMPTY_3": "Works with all Avatar VTX models, Universal compatibility with Analog & HDZero receivers"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZERO SYSTEM",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "V1",
+      "__EMPTY_2": "HDZero VTX V1",
+      "__EMPTY_3": "25-200mW, Low latency, Interlaced video, Compatible with HDZero goggles"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZERO SYSTEM",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "V2",
+      "__EMPTY_2": "HDZero Freestyle V2",
+      "__EMPTY_3": "25-1000mW, Enhanced features, Works with HDZero goggles"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZERO SYSTEM",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "Goggles",
+      "__EMPTY_2": "HDZero Goggle",
+      "__EMPTY_3": "Supports HDZero VTX, Walksnail Avatar, Analog receivers (module bay)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI GOGGLES COMPATIBILITY MATRIX"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI Goggle Model",
+      "__EMPTY": "DJI Air Unit",
+      "__EMPTY_1": "DJI O3 Air Unit",
+      "__EMPTY_2": "Caddx Vista",
+      "__EMPTY_3": "Caddx Vista Polar",
+      "__EMPTY_4": "Avata 2/3",
+      "__EMPTY_5": "Walksnail VTX",
+      "__EMPTY_6": "HDZero VTX",
+      "__EMPTY_7": "Analog VTX"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI FPV Goggles V1",
+      "__EMPTY": "✓ Full",
+      "__EMPTY_1": "✗ No",
+      "__EMPTY_2": "✓ Full (firmware)",
+      "__EMPTY_3": "✗ Limited",
+      "__EMPTY_4": "✗ No",
+      "__EMPTY_5": "✗ No",
+      "__EMPTY_6": "✗ No",
+      "__EMPTY_7": "✓ AV Input"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI FPV Goggles V2",
+      "__EMPTY": "✓ Full",
+      "__EMPTY_1": "✓ Full (reduced)",
+      "__EMPTY_2": "✓ Full",
+      "__EMPTY_3": "✓ Full",
+      "__EMPTY_4": "✗ No",
+      "__EMPTY_5": "✗ No",
+      "__EMPTY_6": "✗ No",
+      "__EMPTY_7": "✓ AV Input"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI Goggles 2",
+      "__EMPTY": "✗ No",
+      "__EMPTY_1": "✓ Full",
+      "__EMPTY_2": "✗ No",
+      "__EMPTY_3": "✗ No",
+      "__EMPTY_4": "✓ Full",
+      "__EMPTY_5": "✗ No",
+      "__EMPTY_6": "✗ No",
+      "__EMPTY_7": "✗ No"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI Goggles 3",
+      "__EMPTY": "✗ No",
+      "__EMPTY_1": "✓ Full",
+      "__EMPTY_2": "✗ No",
+      "__EMPTY_3": "✗ No",
+      "__EMPTY_4": "✓ Full",
+      "__EMPTY_5": "✗ No",
+      "__EMPTY_6": "✗ No",
+      "__EMPTY_7": "✗ No"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI Goggles Integra",
+      "__EMPTY": "✗ No",
+      "__EMPTY_1": "✗ No",
+      "__EMPTY_2": "✗ No",
+      "__EMPTY_3": "✗ No",
+      "__EMPTY_4": "✗ No",
+      "__EMPTY_5": "✗ No",
+      "__EMPTY_6": "✗ No",
+      "__EMPTY_7": "✗ No"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "WALKSNAIL AVATAR GOGGLES COMPATIBILITY MATRIX"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail Goggle Model",
+      "__EMPTY": "Avatar VTX (all versions)",
+      "__EMPTY_1": "HDZero VTX",
+      "__EMPTY_2": "Analog Receivers",
+      "__EMPTY_3": "DJI Systems",
+      "__EMPTY_4": "25-6S Power Input"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Avatar HD Goggles (standard)",
+      "__EMPTY": "✓ Full Compatible",
+      "__EMPTY_1": "✗ No",
+      "__EMPTY_2": "✗ No",
+      "__EMPTY_3": "✗ No",
+      "__EMPTY_4": "2-6S (flexible)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Avatar HD Goggles X",
+      "__EMPTY": "✓ Full Compatible",
+      "__EMPTY_1": "✓ Yes (module bay)",
+      "__EMPTY_2": "✓ Yes (module bay)",
+      "__EMPTY_3": "✗ No",
+      "__EMPTY_4": "2-6S (flexible)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Avatar HD Goggles L",
+      "__EMPTY": "✓ Full Compatible",
+      "__EMPTY_1": "✗ No",
+      "__EMPTY_2": "✗ No",
+      "__EMPTY_3": "✗ No",
+      "__EMPTY_4": "2-6S (flexible)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZERO GOGGLES COMPATIBILITY MATRIX"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZero Goggle",
+      "__EMPTY": "HDZero VTX",
+      "__EMPTY_1": "Walksnail Avatar VTX",
+      "__EMPTY_2": "Analog 5.8GHz Receivers",
+      "__EMPTY_3": "DJI Systems",
+      "__EMPTY_4": "Latency"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZero Goggle V2",
+      "__EMPTY": "✓ Native",
+      "__EMPTY_1": "✓ Module Bay",
+      "__EMPTY_2": "✓ Module Bay (RapidFire/Fusion)",
+      "__EMPTY_3": "✗ No",
+      "__EMPTY_4": "32-40ms (lowest)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "CROSS-SYSTEM COMPATIBILITY SUMMARY"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "System 1",
+      "__EMPTY": "System 2",
+      "__EMPTY_1": "Cross-Compatible?",
+      "__EMPTY_2": "Notes"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI (V1/V2)",
+      "__EMPTY": "DJI (O3/Goggles 2/3)",
+      "__EMPTY_1": "Partial",
+      "__EMPTY_2": "O3 works with V2. V1 does NOT work with O3. Goggles 2 only works with O3/Avata. Different firmware modes required."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI",
+      "__EMPTY": "Walksnail Avatar",
+      "__EMPTY_1": "No",
+      "__EMPTY_2": "Completely separate systems. DJI and Walksnail VTX/goggles are NOT compatible."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "No",
+      "__EMPTY_2": "Completely separate systems. NO cross compatibility between DJI and HDZero."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail Avatar",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "Partial",
+      "__EMPTY_2": "Avatar Goggles X has module bay for HDZero receiver. HDZero goggle can accept Walksnail VRX. NOT all combinations work."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail Avatar",
+      "__EMPTY": "Analog 5.8GHz",
+      "__EMPTY_1": "Partial",
+      "__EMPTY_2": "Avatar Goggles X and HDZero Goggle support analog receivers via module bay. Standard Avatar goggles do NOT support analog."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZero",
+      "__EMPTY": "Analog 5.8GHz",
+      "__EMPTY_1": "Yes (if module)",
+      "__EMPTY_2": "HDZero Goggle expansion module V2 includes WiFi and analog receiver compatibility via module bay."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "All Digital",
+      "__EMPTY": "Analog",
+      "__EMPTY_1": "No (unless AV input)",
+      "__EMPTY_2": "DJI Goggles V1/V2 have AV input for analog. Goggles 2 & 3 do NOT. Walksnail/HDZero have module bays for analog."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DETAILED VTX & GOGGLE SPECS"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Product Name",
+      "__EMPTY": "Brand",
+      "__EMPTY_1": "Power Output",
+      "__EMPTY_2": "Resolution",
+      "__EMPTY_3": "Latency (ms)",
+      "__EMPTY_4": "Frequency",
+      "__EMPTY_5": "Key Features",
+      "__EMPTY_6": "Price Range"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI Air Unit",
+      "__EMPTY": "DJI (Gen1)",
+      "__EMPTY_1": "25-600mW",
+      "__EMPTY_2": "720p60",
+      "__EMPTY_3": "40-50ms",
+      "__EMPTY_4": "5.8GHz proprietary",
+      "__EMPTY_5": "Classic OSD, Works with V1/V2, Caddx Vista compatible"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$200-300"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI O3 Air Unit",
+      "__EMPTY": "DJI (Gen2)",
+      "__EMPTY_1": "25-1200mW",
+      "__EMPTY_2": "1440p60",
+      "__EMPTY_3": "30-40ms",
+      "__EMPTY_4": "5.8GHz proprietary",
+      "__EMPTY_5": "Super HD, Works V2/Goggles2/3, Best range"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$400-500"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI Avata 2",
+      "__EMPTY": "DJI",
+      "__EMPTY_1": "Integrated",
+      "__EMPTY_2": "1440p60",
+      "__EMPTY_3": "30-40ms",
+      "__EMPTY_4": "5.8GHz proprietary",
+      "__EMPTY_5": "All-in-one, works with Goggles 3, Sport mode"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$900-1100"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Caddx Vista",
+      "__EMPTY": "Caddx (OG)",
+      "__EMPTY_1": "25-600mW",
+      "__EMPTY_2": "720p60",
+      "__EMPTY_3": "50-60ms",
+      "__EMPTY_4": "5.8GHz proprietary",
+      "__EMPTY_5": "Works DJI V1/V2, Firmware dependent, Affordable"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$100-150"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Caddx Vista Polar",
+      "__EMPTY": "Caddx",
+      "__EMPTY_1": "25-600mW",
+      "__EMPTY_2": "720p60",
+      "__EMPTY_3": "40-50ms",
+      "__EMPTY_4": "5.8GHz proprietary",
+      "__EMPTY_5": "Improved cooling, DJI V2 compatible, Canvas Mode"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$120-180"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail Avatar HD VTX V1",
+      "__EMPTY": "Walksnail (Caddx)",
+      "__EMPTY_1": "25-600mW",
+      "__EMPTY_2": "1080p60",
+      "__EMPTY_3": "50-60ms",
+      "__EMPTY_4": "2.4GHz proprietary",
+      "__EMPTY_5": "First gen Avatar system, DVR capable, 8GB/32GB options"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$200-300"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail Avatar HD VTX V2",
+      "__EMPTY": "Walksnail (Caddx)",
+      "__EMPTY_1": "25-1000mW",
+      "__EMPTY_2": "1080p120",
+      "__EMPTY_3": "40-50ms",
+      "__EMPTY_4": "2.4GHz proprietary",
+      "__EMPTY_5": "Green light LED, Enhanced DVR, All Avatar goggles compatible"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$250-350"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail Avatar HD Goggles",
+      "__EMPTY": "Walksnail (Caddx)",
+      "__EMPTY_1": "Receiver",
+      "__EMPTY_2": "1080p",
+      "__EMPTY_3": "N/A",
+      "__EMPTY_4": "2.4GHz proprietary",
+      "__EMPTY_5": "Standard Avatar reception, 2-6S power, DVR playback"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$300-400"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail Avatar HD Goggles X",
+      "__EMPTY": "Walksnail (Caddx)",
+      "__EMPTY_1": "Receiver",
+      "__EMPTY_2": "1080p",
+      "__EMPTY_3": "N/A",
+      "__EMPTY_4": "2.4GHz proprietary",
+      "__EMPTY_5": "Module bay for analog/HDZero, 2-6S power, Premium optics"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$400-500"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZero VTX V1",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "25-200mW",
+      "__EMPTY_2": "720p60",
+      "__EMPTY_3": "30-35ms",
+      "__EMPTY_4": "HDZero proprietary",
+      "__EMPTY_5": "Lowest latency, Interlaced video, Limited power"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$150-200"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZero Freestyle V2",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "25-1000mW",
+      "__EMPTY_2": "720p60",
+      "__EMPTY_3": "30-35ms",
+      "__EMPTY_4": "HDZero proprietary",
+      "__EMPTY_5": "Variable power, Better connectivity, Race-focused"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$200-300"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "HDZero Goggle",
+      "__EMPTY": "HDZero",
+      "__EMPTY_1": "Receiver",
+      "__EMPTY_2": "720p"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "32-40ms",
+      "__EMPTY": "HDZero proprietary",
+      "__EMPTY_1": "Module bay support, Walksnail & analog compatible, Best latency"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "$400-500"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "#ERROR!"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Issue",
+      "__EMPTY": "Details",
+      "__EMPTY_1": "Solution"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Firmware Mode Trap DJI V1/V2 Binding Loss",
+      "__EMPTY": "When switching between DJI generations (Air Unit vs O3) on V2 goggles, all previous binds are lost! You must rebind manually.",
+      "__EMPTY_1": "Decide which system you'll primarily use before binding. Test before flights."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "DJI Generational Incompatibility",
+      "__EMPTY": "DJI V1 does NOT work with O3. DJI Goggles 2 & 3 only work with O3/Avata, NOT with V1/Vista.",
+      "__EMPTY_1": "Choose your DJI generation carefully. Consider FPV Goggles V2 for maximum compatibility."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Walksnail vs Caddx Branding",
+      "__EMPTY": "Walksnail was acquired by Caddx. Now sold as \"Caddx Walksnail\". Older models = Walksnail, newer = Caddx.",
+      "__EMPTY_1": "Both are same tech. Updates available for older models."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Module Bay Compatibility Issues",
+      "__EMPTY": "Not all modules work with all goggle bays. RapidFire/Fusion designed for specific models.",
+      "__EMPTY_1": "Always verify module compatibility before purchasing."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Digital Systems are ISOLATED",
+      "__EMPTY": "DJI, Walksnail, and HDZero are 100% separate. NO cross-compatibility except through module bays or AV inputs.",
+      "__EMPTY_1": "You CANNOT use DJI camera with Walksnail goggles. Must match systems."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "2.4GHz vs 5.8GHz Frequencies",
+      "__EMPTY": "Walksnail uses 2.4GHz (proprietary). DJI & HDZero use 5.8GHz proprietary. Analog uses 5.8GHz open.",
+      "__EMPTY_1": "Walksnail will NOT interfere with 5.8GHz systems."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Latency Matters for Racing",
+      "__EMPTY": "DJI O3 = 30-40ms, Walksnail = 40-50ms, HDZero = 32-40ms, Analog = 50-80ms.",
+      "__EMPTY_1": "Racers prefer HDZero/DJI. Freestyle can use any."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Power Output Limitations",
+      "__EMPTY": "Higher power = more heat, more interference. HDZero limited to 200mW initially but V2 goes 1000mW.",
+      "__EMPTY_1": "Balance power with flight duration and heat management."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Analog Compatibility (Limited)",
+      "__EMPTY": "DJI V1/V2 can receive analog via AV input. Goggles 2/3 CANNOT. Walksnail X & HDZero have module bays.",
+      "__EMPTY_1": "If you want to fly analog with digital goggles, check for module bay or AV input."
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "#ERROR!"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Aspect",
+      "__EMPTY": "DJI O3",
+      "__EMPTY_1": "Walksnail Avatar",
+      "__EMPTY_2": "HDZero Freestyle"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Range",
+      "__EMPTY": "Best (up to 8km+)",
+      "__EMPTY_1": "Good (3-5km)",
+      "__EMPTY_2": "Good (3-5km)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Latency",
+      "__EMPTY": "Low (30-40ms)",
+      "__EMPTY_1": "Low-Medium (40-50ms)",
+      "__EMPTY_2": "Lowest (32-40ms)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Image Quality",
+      "__EMPTY": "1440p60 (excellent)",
+      "__EMPTY_1": "1080p120 (excellent)",
+      "__EMPTY_2": "720p60 (good)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Price",
+      "__EMPTY": "$400-500 VTX",
+      "__EMPTY_1": "$250-350 VTX",
+      "__EMPTY_2": "$200-300 VTX"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Cross-Compatibility",
+      "__EMPTY": "Zero",
+      "__EMPTY_1": "Partial (via module bay)",
+      "__EMPTY_2": "Partial (via module bay)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Best For",
+      "__EMPTY": "Cinematic, long range",
+      "__EMPTY_1": "Freestyle, HD quality",
+      "__EMPTY_2": "Racing, fast reflexes"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Risk Factor",
+      "__EMPTY": "Low (proprietary, stable)",
+      "__EMPTY_1": "Medium (newer tech)",
+      "__EMPTY_2": "Medium (niche ecosystem)"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "FW Updates",
+      "__EMPTY": "Frequent, reliable",
+      "__EMPTY_1": "Regular updates"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Regular updates"
+    },
+    {
+      "DIGITAL FPV SYSTEMS - COMPATIBILITY REFERENCE": "Future-Proof",
+      "__EMPTY": "Very (DJI dominates)",
+      "__EMPTY_1": "Good (Caddx backing)",
+      "__EMPTY_2": "Good (dedicated community)"
+    }
+  ]
+}
