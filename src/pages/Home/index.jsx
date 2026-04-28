@@ -246,46 +246,42 @@ function PrerequisitesSlider() {
   // Dynamic image matching based on item name
   const getPrereqImage = (name) => {
     const assetMap = {
-      'Soldering iron (temperature controlled)': '/src/assets/images/soldering_iron.png',
-      'Solder wire (lead / lead-free)': '/src/assets/images/solder_wire.png',
-      'Flux': '/src/assets/images/flux.png',
-      'Multimeter': '/src/assets/images/multimeter.png',
-      'Battery': '/src/assets/images/Battery_4S_1.png',
-      'Motor': '/src/assets/images/Motor.png',
-      'Frame': '/src/assets/images/Frame_x5_1.png',
-      'ESC': '/src/assets/images/ESC_STACK_1.png',
-      'Props': '/src/assets/images/propellers.png',
-      'Goggles': '/src/assets/images/goggles.png',
-      'Radio': '/src/assets/images/controller.png',
-      'VTX': '/src/assets/images/vtx.png',
-      'FC': '/src/assets/images/FC.png',
-      'Helping hands / PCB holder': '/src/assets/images/Helping_hands.png',
-      'Heat gun / lighter': '/src/assets/images/Heat_gun.png',
-      'Wire stripper': '/src/assets/images/Wire_stripper.png',
-      'Wire cutter (flush cutter)': '/src/assets/images/Wire_cutter.png',
-      'Needle nose pliers': '/src/assets/images/Neddle_nose_plier.png',
-      'Hex driver set (1.5mm / 2mm / 2.5mm)': '/src/assets/images/Hex_drivers.png',
-      'Screwdriver set': '/src/assets/images/Screw_driver_kit.png',
-      'Solder wick (desoldering braid)': '/src/assets/images/Solder_sucker.png',
-      'Solder sucker': '/src/assets/images/Solder_sucker.png',
-      'Smoke Stopper': '/src/assets/images/Smoke_Stopper.png',
-      'LiPo Battery Charger': '/src/assets/images/LiPo_Battery_Charger.png',
-      'Tweezers': '/src/assets/images/Tweezers.png',
-      'Zip ties': '/src/assets/images/Zip_ties.png',
-      'Digital Caliper': '/src/assets/images/Digital_caliper.png',
-      'Hot glue gun / Conformal Coating': '/src/assets/images/Hot_glue_gun.png',
-      'Double-sided tape': '/src/assets/images/Double_sided_tape.png',
-      'Electrical tape': '/src/assets/images/Electrical_tape.png',
-      'Heat shrink tubing': '/src/assets/images/Heat_shrink_tubing.png',
-
-
-
-
+      'Soldering iron (temperature controlled)': '/images/soldering_iron.png',
+      'Solder wire (lead / lead-free)': '/images/solder_wire.png',
+      'Flux': '/images/flux.png',
+      'Multimeter': '/images/multimeter.png',
+      'Battery': '/images/Battery_4S_1.png',
+      'Motor': '/images/Motor.png',
+      'Frame': '/images/Frame_x5_1.png',
+      'ESC': '/images/ESC_STACK_1.png',
+      'Props': '/images/propellers.png',
+      'Goggles': '/images/goggles.png',
+      'Radio': '/images/controller.png',
+      'VTX': '/images/vtx.png',
+      'FC': '/images/FC.png',
+      'Helping hands / PCB holder': '/images/Helping_hands.png',
+      'Heat gun / lighter': '/images/Heat_gun.png',
+      'Wire stripper': '/images/Wire_stripper.png',
+      'Wire cutter (flush cutter)': '/images/Wire_cutter.png',
+      'Needle nose pliers': '/images/Neddle_nose_plier.png',
+      'Hex driver set (1.5mm / 2mm / 2.5mm)': '/images/Hex_drivers.png',
+      'Screwdriver set': '/images/Screw_driver_kit.png',
+      'Solder wick (desoldering braid)': '/images/Solder_sucker.png',
+      'Solder sucker': '/images/Solder_sucker.png',
+      'Smoke Stopper': '/images/Smoke_stopper.png',
+      'LiPo Battery Charger': '/images/LiPo_Battery_Charger.png',
+      'Tweezers': '/images/Tweezers.png',
+      'Zip ties': '/images/Zip_ties.png',
+      'Digital Caliper': '/images/Digital_caliper.png',
+      'Hot glue gun / Conformal Coating': '/images/Hot_glue_gun.png',
+      'Double-sided tape': '/images/Double_sided_tape.png',
+      'Electrical tape': '/images/Electrical_tape.png',
+      'Heat shrink tubing': '/images/Heat_shrink_tubing.png',
     };
 
     // Try to find a match in the keys
     const match = Object.keys(assetMap).find(key => name.toLowerCase().includes(key.toLowerCase()));
-    return assetMap[match] || '/src/assets/images/Motor.png'; // Fallback to Motor
+    return assetMap[match] || '/images/Motor.png'; // Fallback to Motor
   };
 
   const currentImage = getPrereqImage(currentItem.name);
