@@ -1,0 +1,195 @@
+/* ================================
+   Page — Login Styles
+   ================================ */
+
+.loginPage {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(var(--color-accent-primary-rgb), 0.05) 0%, transparent 70%);
+  padding: 4rem 0;
+}
+
+.loginCard {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.header {
+  margin-bottom: 3rem;
+}
+
+.logoIcon {
+  font-size: 3rem;
+  color: var(--color-accent-primary);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.header p {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.mockAlert {
+  background: rgba(var(--color-accent-primary-rgb), 0.1);
+  border: 1px solid var(--color-accent-primary);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.mockAlert h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.mockAlert ul {
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.localForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.formGroup input {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  padding: 0.8rem 1rem;
+  border-radius: 0.75rem;
+  color: var(--color-text-primary);
+}
+
+.submitBtn {
+  background: var(--gradient-accent);
+  color: #000;
+  border: none;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.divider span {
+  position: relative;
+  background: var(--color-bg-tertiary);
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.authButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.authButtons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 56px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  border: 1px solid var(--color-border-primary);
+}
+
+.authButtons button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.authButtons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.googleBtn {
+  background: #fff;
+  color: #000;
+}
+
+.googleBtn img, .githubBtn img {
+  width: 20px;
+  height: 20px;
+}
+
+.githubBtn {
+  background: #24292e;
+  color: #fff;
+}
+
+.instagramBtn {
+  background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+  color: #fff;
+  border: none !important;
+}
+
+.footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border-primary);
+}
+
+.footer p {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}

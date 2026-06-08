@@ -3,7 +3,7 @@
 // ================================
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 
 const Home = lazy(() => import('@pages/Home'))
 const Catalog = lazy(() => import('@pages/Catalog'))
@@ -15,6 +15,14 @@ const Physics = lazy(() => import('@pages/Physics'))
 const PhysicsDetail = lazy(() => import('@pages/PhysicsDetail'))
 const Shop = lazy(() => import('@pages/Shop'))
 const Cart = lazy(() => import('@pages/Cart'))
+const Login = lazy(() => import('@pages/Auth/Login'))
+const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
+const AdminDashboard = lazy(() => import('@pages/Admin/AdminDashboard'))
+const Workshops = lazy(() => import('@pages/Workshops'))
+
+import ProtectedRoute from '@components/auth/ProtectedRoute'
+import { useAuthStore } from '@store/useAuthStore'
+import { useCartStore } from '@store/useCartStore'
 
 function PageLoader() {
   return (
@@ -37,6 +45,20 @@ function PageLoader() {
 }
 
 export default function AppRouter() {
+  const fetchUser = useAuthStore(state => state.fetchUser)
+  const { user } = useAuthStore()
+  const { fetchRemoteCart, syncWithBackend } = useCartStore()
+
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
+
+  useEffect(() => {
+    if (user) {
+      fetchRemoteCart(true)
+    }
+  }, [user, fetchRemoteCart])
+
   return (
     <BrowserRouter>
       <Suspense fallback={<PageLoader />}>
@@ -50,33 +72,22 @@ export default function AppRouter() {
           <Route path="/physics/:sectionId/:topicId" element={<PhysicsDetail />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/admin" element={
+            <ProtectedRoute requiredLevel={4}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/login" element={<Login />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/about" element={<About />} />
+          <Route path="/workshops" element={<Workshops />} />
           <Route
             path="*"
             element={
-              <div
-                style={{
-                  minHeight: '100dvh',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  gap: '1rem',
-                }}
-              >
-                <h1
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '4rem',
-                    color: 'var(--color-accent-primary)',
-                  }}
-                >
-                  404
-                </h1>
+              <div style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '4rem', color: 'var(--color-accent-primary)' }}>404</h1>
                 <p style={{ color: 'var(--color-text-secondary)' }}>Page not found</p>
-                <a href="/" style={{ color: 'var(--color-accent-primary)' }}>
-                  ← Go Home
-                </a>
+                <a href="/" style={{ color: 'var(--color-accent-primary)' }}>← Go Home</a>
               </div>
             }
           />
