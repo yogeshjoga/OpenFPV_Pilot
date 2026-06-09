@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Suspense, lazy, useEffect } from 'react'
 
 const Home = lazy(() => import('@pages/Home'))
@@ -12,6 +12,7 @@ const Physics = lazy(() => import('@pages/Physics'))
 const PhysicsDetail = lazy(() => import('@pages/PhysicsDetail'))
 const Shop = lazy(() => import('@pages/Shop'))
 const Gallery = lazy(() => import('@pages/Gallery'))
+const Simulator = lazy(() => import('@pages/Simulator'))
 
 const Login = lazy(() => import('@pages/Auth/Login'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
@@ -21,6 +22,14 @@ const Workshops = lazy(() => import('@pages/Workshops'))
 import ProtectedRoute from '@components/auth/ProtectedRoute'
 import { useAuthStore } from '@store/useAuthStore'
 
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 
 function PageLoader() {
   return (
@@ -53,6 +62,7 @@ export default function AppRouter() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -63,6 +73,7 @@ export default function AppRouter() {
           <Route path="/physics" element={<Physics />} />
           <Route path="/physics/:sectionId/:topicId" element={<PhysicsDetail />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/simulator" element={<Simulator />} />
           <Route path="/shop" element={<Shop />} />
 
           <Route path="/admin" element={

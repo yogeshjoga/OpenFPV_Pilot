@@ -12,7 +12,8 @@ export const NAV_LINKS = [
     label: 'Academy', 
     subLinks: [
       { label: 'Programs', path: '/training' },
-      { label: 'Physics', path: '/physics', minLevel: 3 }
+      { label: 'Physics', path: '/physics', minLevel: 3 },
+      { label: 'Simulator', path: '/simulator' }
     ],
     minLevel: 2 
   },

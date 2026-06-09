@@ -1,0 +1,486 @@
+/* Simulator Layout */
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--nav-height));
+  padding-top: 1rem;
+}
+
+.workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border);
+}
+
+.sidebar {
+  width: 250px;
+  background: var(--color-bg-primary);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebarHeader {
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-2);
+}
+
+.sidebarDesc {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.nodeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dndNode {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+  cursor: grab;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  transition: all var(--transition-fast);
+}
+
+.dndNode:active {
+  cursor: grabbing;
+}
+
+.dndNode:hover {
+  border-color: var(--color-accent-primary);
+  background: var(--color-accent-glow);
+}
+
+.header {
+  padding: 0 var(--space-6) var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.controls {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.scenarioSelect {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  outline: none;
+  cursor: pointer;
+}
+
+.btn {
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  transition: transform 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.canvasWrap {
+  flex: 1;
+  background: var(--color-bg-secondary);
+  position: relative;
+}
+
+/* Custom Nodes */
+.escNode {
+  width: 200px;
+  height: 200px;
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-mono);
+  box-shadow: var(--shadow-md);
+}
+
+.nodeLabel {
+  font-size: 0.8rem;
+  font-weight: bold;
+  opacity: 0.8;
+  text-align: center;
+  padding: 4px;
+}
+
+/* Pads */
+.pad {
+  width: 12px;
+  height: 12px;
+  background: #d4af37; /* gold */
+  border: 1px solid #000;
+  border-radius: 50%;
+}
+.padOut {
+  width: 12px;
+  height: 12px;
+  background: #aaa; /* silver wire end */
+  border: 1px solid #000;
+  border-radius: 50%;
+}
+.padRed { background: #ef4444; }
+.padBlack { background: #111; }
+
+.padGroupBattery, .padGroupCap {
+  position: absolute;
+  bottom: -20px;
+  display: flex;
+  gap: 10px;
+}
+.padGroupCap {
+  bottom: -45px;
+}
+
+.padWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.padLabel {
+  font-size: 0.5rem;
+  margin-bottom: 2px;
+}
+
+.padGroupMotor {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+  justify-content: space-between;
+}
+.m1Pads { top: 10px; right: -10px; }
+.m2Pads { bottom: 10px; right: -10px; }
+.m3Pads { bottom: 10px; left: -10px; }
+.m4Pads { top: 10px; left: -10px; }
+
+.motorLabel {
+  position: absolute;
+  top: 25px;
+  font-size: 0.6rem;
+  color: #666;
+}
+.m1Pads .motorLabel, .m2Pads .motorLabel { right: 20px; }
+.m3Pads .motorLabel, .m4Pads .motorLabel { left: 20px; }
+
+.motorNode {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #222;
+  border: 3px solid #444;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-mono);
+  position: relative;
+}
+
+.flipBtn {
+  position: absolute;
+  top: -20px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  font-size: 10px;
+  padding: 2px 6px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.flipBtn:hover {
+  opacity: 1;
+}
+
+.batteryNode {
+  width: 100px;
+  height: 60px;
+  background: #facc15; /* Yellow XT60 */
+  border-radius: 4px;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  font-weight: bold;
+}
+.batteryNode .padWrap {
+  position: absolute;
+  top: -15px;
+}
+
+.capacitorNode {
+  width: 40px;
+  height: 80px;
+  background: #0f172a;
+  border: 1px solid #333;
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.capStripe {
+  position: absolute;
+  right: 4px;
+  top: 10px;
+  bottom: 10px;
+  width: 8px;
+  background: #fff;
+  color: #000;
+  font-size: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+/* Diagnostics Panel */
+.diagnostics {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
+}
+
+.diagTitle {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-2);
+}
+
+.diagList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.diagItem {
+  font-size: var(--text-sm);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.diagError { color: var(--color-error); }
+.diagSuccess { color: var(--color-success); }
+.diagWarning { color: var(--color-warning); }
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+}
+
+/* FC Node */
+.fcNode {
+  width: 180px;
+  height: 180px;
+  background: #3a0d59; /* purple FC */
+  border: 2px solid #5a1c85;
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-mono);
+  box-shadow: var(--shadow-md);
+}
+
+.padGroupRight, .padGroupLeft, .padGroupTop, .padGroupBottom {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+}
+.padGroupRight { flex-direction: column; right: -10px; top: 10px; bottom: 10px; }
+.padGroupLeft { flex-direction: column; left: -10px; top: 10px; bottom: 10px; }
+.padGroupBottom { flex-direction: row; bottom: -10px; left: 10px; right: 10px; }
+.padGroupTop { flex-direction: row; top: -10px; left: 10px; right: 10px; }
+
+/* VTX Node */
+.vtxNode {
+  width: 100px;
+  height: 140px;
+  background: #6b0c0c;
+  border: 2px solid #a81c1c;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-mono);
+}
+
+/* Camera Node */
+.cameraNode {
+  width: 80px;
+  height: 80px;
+  background: #000;
+  border: 2px solid #333;
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.lens {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #333 0%, #111 100%);
+  border: 2px solid #444;
+}
+
+/* GPS Node */
+.gpsNode {
+  width: 90px;
+  height: 90px;
+  background: #0d1b2a;
+  border: 2px solid #1b263b;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-mono);
+}
+
+/* Propeller Animation */
+.propeller {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.1);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.propeller::before, .propeller::after {
+  content: '';
+  position: absolute;
+  background: rgba(0, 212, 255, 0.4);
+  backdrop-filter: blur(2px);
+}
+.propeller::before {
+  top: 10px; bottom: 10px; left: 50%; width: 20px; transform: translateX(-50%);
+  border-radius: 50% 50% 10px 10px;
+}
+.propeller::after {
+  left: 10px; right: 10px; top: 50%; height: 20px; transform: translateY(-50%);
+  border-radius: 10px 10px 50% 50%;
+}
+
+.spinCW {
+  animation: spinCW 0.2s linear infinite;
+}
+.spinCCW {
+  animation: spinCCW 0.2s linear infinite;
+}
+
+@keyframes spinCW {
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes spinCCW {
+  100% { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+/* Frame Node */
+.frameNode {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.frameArm {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  background: #111;
+  border-radius: 4px;
+  box-shadow: inset 0 0 10px #000;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px);
+}
+
+.frameCenter {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  background: #151515;
+  border-radius: 12px;
+  border: 2px solid #222;
+  box-shadow: inset 0 0 20px #000;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px);
+}
+
