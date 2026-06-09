@@ -1,10 +1,7 @@
-// ================================
-// Component — ProductCard (E-commerce)
-// ================================
 
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { useCartStore } from '@store/useCartStore'
+
 import styles from './Shop.module.css'
 
 export default function ProductCard({ product, index }) {
@@ -44,15 +41,7 @@ export default function ProductCard({ product, index }) {
               )}
             </div>
             
-            <button 
-              className={styles.addToCart}
-              onClick={(e) => {
-                e.preventDefault();
-                useCartStore.getState().addItem(product);
-              }}
-            >
-              Add +
-            </button>
+
           </div>
         </div>
       </Link>

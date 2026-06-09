@@ -1,6 +1,3 @@
-// ================================
-// Page — Unauthorized
-// ================================
 
 import { Link } from 'react-router-dom'
 import PageWrapper from '@components/layout/PageWrapper'

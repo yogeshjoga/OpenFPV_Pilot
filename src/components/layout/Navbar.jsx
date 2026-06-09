@@ -1,6 +1,3 @@
-// ================================
-// Layout — Navbar
-// ================================
 
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
@@ -16,7 +13,7 @@ export default function Navbar() {
   const { theme, toggleTheme } = useUIStore()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 0)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -37,18 +34,42 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className={styles.navLinks} aria-label="Main navigation">
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              className={({ isActive }) =>
-                `${styles.navLink} ${isActive ? styles.active : ''}`
-              }
-              end={link.path === '/'}
-            >
-              {link.label}
-            </NavLink>
-          ))}
+          {NAV_LINKS.map((link) => {
+            if (link.subLinks) {
+              return (
+                <div key={link.label} className={styles.navDropdownGroup}>
+                  <button className={styles.navLink}>
+                    {link.label} <span className={styles.dropdownIcon}>▾</span>
+                  </button>
+                  <div className={styles.navDropdown}>
+                    {link.subLinks.map((sub) => (
+                      <NavLink
+                        key={sub.path}
+                        to={sub.path}
+                        className={({ isActive }) =>
+                          `${styles.navDropdownItem} ${isActive ? styles.active : ''}`
+                        }
+                      >
+                        {sub.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+            return (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) =>
+                  `${styles.navLink} ${isActive ? styles.active : ''}`
+                }
+                end={link.path === '/'}
+              >
+                {link.label}
+              </NavLink>
+            )
+          })}
         </nav>
 
         {/* Theme Toggle + Hamburger */}
@@ -97,18 +118,41 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             aria-label="Mobile navigation"
           >
-            {NAV_LINKS.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) =>
-                  `${styles.mobileLink} ${isActive ? styles.active : ''}`
-                }
-                end={link.path === '/'}
-              >
-                {link.label}
-              </NavLink>
-            ))}
+            {NAV_LINKS.map((link) => {
+              if (link.subLinks) {
+                return (
+                  <div key={link.label} className={styles.mobileDropdownGroup}>
+                    <div className={styles.mobileDropdownHeader}>{link.label}</div>
+                    <div className={styles.mobileDropdownItems}>
+                      {link.subLinks.map((sub) => (
+                        <NavLink
+                          key={sub.path}
+                          to={sub.path}
+                          className={({ isActive }) =>
+                            `${styles.mobileLink} ${styles.mobileSubLink} ${isActive ? styles.active : ''}`
+                          }
+                          end={sub.path === '/'}
+                        >
+                          {sub.label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  </div>
+                )
+              }
+              return (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `${styles.mobileLink} ${isActive ? styles.active : ''}`
+                  }
+                  end={link.path === '/'}
+                >
+                  {link.label}
+                </NavLink>
+              )
+            })}
             <Link to="/catalog" className={styles.mobileCta}>
               Learn Today →
             </Link>

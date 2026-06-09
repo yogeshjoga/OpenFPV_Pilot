@@ -2,14 +2,14 @@
 
 /* ── HERO ── */
 .hero {
-  padding: var(--space-24) 0 var(--space-16);
+  padding: var(--space-8) 0 var(--space-6);
   background:
     radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,255,0.07) 0%, transparent 70%),
     linear-gradient(135deg, rgba(124,58,237,0.04) 0%, rgba(0,212,255,0.03) 100%);
   border-bottom: 1px solid var(--color-border);
 }
 
-.heroContent { max-width: 760px; }
+.heroContent { max-width: 900px; }
 
 .eyebrow {
   font-family: var(--font-mono);
@@ -21,19 +21,19 @@
 
 .heroTitle {
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
   font-weight: var(--font-extrabold);
   text-transform: uppercase;
-  line-height: 1.08;
-  margin-bottom: var(--space-6);
+  line-height: 1.05;
+  margin-bottom: var(--space-3);
 }
 
 .heroSub {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   color: var(--color-text-secondary);
-  line-height: 1.75;
-  max-width: 640px;
-  margin-bottom: var(--space-8);
+  line-height: 1.6;
+  max-width: 800px;
+  margin-bottom: var(--space-4);
 }
 
 .audienceRow {
@@ -72,53 +72,20 @@
 /* ── LEVELS ── */
 .levelsSection {}
 
-.levelTabs {
+.levelsSplitLayout {
   display: flex;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-8);
-}
-
-.levelTab {
-  display: flex;
-  flex-direction: column;
+  gap: var(--space-8);
   align-items: flex-start;
-  gap: 4px;
-  padding: var(--space-4) var(--space-5);
-  background: var(--gradient-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
-  min-width: 180px;
-}
-.levelTab:hover {
-  border-color: var(--tab-color, var(--color-border-hover));
-}
-.activeTab {
-  border-color: var(--tab-color) !important;
-  background: color-mix(in srgb, var(--tab-color) 10%, transparent) !important;
-  box-shadow: 0 0 20px color-mix(in srgb, var(--tab-color) 20%, transparent);
 }
 
-.tabEmoji { font-size: 1.4rem; }
-.tabBadge {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  color: var(--tab-color);
-  letter-spacing: 0.08em;
-}
-.tabTitle {
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  color: var(--color-text-primary);
-  line-height: 1.3;
+.sidebarWrap {
+  flex: 0 0 320px;
 }
 
 /* Level card */
 .levelCard {
+  flex: 1;
+  min-width: 0;
   padding: var(--space-10);
   background: var(--gradient-card);
   border: 1px solid var(--level-color, var(--color-border));
@@ -501,8 +468,8 @@
 }
 
 @media (max-width: 900px) {
-  .levelTabs { flex-direction: column; }
-  .levelTab { min-width: unset; }
+  .levelsSplitLayout { flex-direction: column; }
+  .sidebarWrap { flex: none; width: 100%; }
   .levelCardHeader { flex-direction: column; }
   .levelMeta { align-items: flex-start; }
   .domainCard {

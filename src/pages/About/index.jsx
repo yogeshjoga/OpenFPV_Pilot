@@ -1,6 +1,3 @@
-// ================================
-// Page — About
-// ================================
 
 import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -10,7 +7,7 @@ import styles from './About.module.css'
 const VALUES = [
   { icon: '📖', title: 'Learn by Building', desc: 'Every lesson is hands-on — you build a real drone, not a simulation.' },
   { icon: '🔩', title: 'Zero to First Flight', desc: 'From soldering iron to freestyle — structured day-by-day programs for all levels.' },
-  { icon: '🌍', title: 'Fully Open Source', desc: 'No paywalls, no subscriptions. Every guide, schematic, and resource is free forever.' },
+  { icon: '🌍', title: 'Premium Platform', desc: 'No paywalls, no subscriptions. Every guide, schematic, and resource is available to everyone.' },
 ]
 
 const TAGS = [
@@ -39,7 +36,7 @@ export default function About() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <p className={styles.eyebrow}>// About Us</p>
+              <p className={styles.eyebrow}>About Us</p>
               <h1 className={styles.title}>Built for Pilots,<br />by <span className="gradient-text">Pilots</span></h1>
               <p className={styles.sub}>{APP_DESCRIPTION}</p>
             </motion.div>
@@ -96,11 +93,11 @@ export default function About() {
 
               {/* Info */}
               <div className={styles.founderInfo}>
-                <p className={styles.eyebrow}>// Founder &amp; Creator</p>
+                <p className={styles.eyebrow}>Founder &amp; Creator</p>
                 <h3 className={styles.founderName}>Yogesh Joga</h3>
 
                 <p className={styles.founderBio}>
-                  Founder of <a href="https://urussys.com" target="_blank" rel="noreferrer" className={styles.link}>urussys.com</a> — an Agentic AI Developer &amp; Architect, Corporate Trainer specialising in Java Full Stack, Generative AI, Agentic AI, LLMs, Machine Learning, Data Science, and Computer Vision. Also a <strong>DGCA Certified Drone Pilot</strong> and passionate FPV researcher building the open-source future of drone education.
+                  Founder of <a href="https://urussys.com" target="_blank" rel="noreferrer" className={styles.link}>urussys.com</a> — an Agentic AI Developer &amp; Architect, Corporate Trainer specialising in Java Full Stack, Generative AI, Agentic AI, LLMs, Machine Learning, Data Science, and Computer Vision. Also a <strong>DGCA Certified Drone Pilot</strong> and passionate FPV researcher building the future of drone education.
                 </p>
 
                 {/* Tag pills */}

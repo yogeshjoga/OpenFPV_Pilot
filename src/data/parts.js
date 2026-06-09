@@ -1,8 +1,5 @@
-// ================================
 // FPV Parts Encyclopedia Data
-// Educational reference for students
-// ================================
-
+// Educational reference for students
 export const PART_CATEGORIES = [
   {
     id: 'motors',
@@ -580,11 +577,11 @@ export const PART_CATEGORIES = [
         type: 'explainer',
         image: '/images/controller.png',
         content:
-          'Modern FPV uses digital radio links with much better range and reliability than older analog systems. ExpressLRS has become the dominant open-source protocol.',
+          'Modern FPV uses digital radio links with much better range and reliability than older analog systems. ExpressLRS has become the dominant protocol.',
         table: {
           headers: ['Protocol', 'Type', 'Range', 'Latency', 'Notes'],
           rows: [
-            ['ExpressLRS (ELRS)', 'Open-source', '10km+ (1W)', '< 1ms', 'Most popular. Best performance. Free.'],
+            ['ExpressLRS (ELRS)', 'Advanced', '10km+ (1W)', '< 1ms', 'Most popular. Best performance.'],
             ['TBS Crossfire', 'Proprietary', '100km+ (legal limit)', '< 2ms', 'Long range specialist. Reliable.'],
             ['TBS Tracer', 'Proprietary', '1–2km', '< 2ms', 'Compact crossfire for 5" builds'],
             ['FrSky ACCST/ACCESS', 'Proprietary', '~1–3km', '< 5ms', 'Older but large ecosystem'],
@@ -596,7 +593,7 @@ export const PART_CATEGORIES = [
         title: 'How to Choose Your Radio System',
         type: 'tips',
         items: [
-          { icon: '🥇', tip: 'Best overall: ExpressLRS — free protocol, huge community, excellent performance, $15–25 receivers.' },
+          { icon: '🥇', tip: 'Best overall: ExpressLRS — open protocol, huge community, excellent performance, $15–25 receivers.' },
           { icon: '📡', tip: 'Long range specialist: TBS Crossfire. For flying 5km+ or penetrating thick obstacles.' },
           { icon: '🎮', tip: 'Beginner radios: RadioMaster Boxer (ELRS), RadioMaster TX16S, Jumper T-Pro.' },
           { icon: '🔗', tip: 'Always match protocol: your radio TX module must match your drone receiver protocol.' },

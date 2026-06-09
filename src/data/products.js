@@ -1,6 +1,3 @@
-// ================================
-// OpenFPV Pilot — Product Catalog Data
-// ================================
 
 export const PRODUCTS = [
   {

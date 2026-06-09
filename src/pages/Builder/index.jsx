@@ -1,6 +1,3 @@
-// ================================
-// Component — Builder
-// ================================
 
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -243,7 +240,7 @@ export default function Builder() {
         {/* LEFT: Configurator Controls */}
         <div className={styles.configurator}>
           <header className={styles.header}>
-            <p className={styles.eyebrow}>// Setup Wizard</p>
+            <p className={styles.eyebrow}>Setup Wizard</p>
             <h1 className={styles.title}>FPV Quote <span className="gradient-text">Builder</span></h1>
             <p className={styles.sub}>Design your custom drone from scratch and export a complete parts list.</p>
           </header>

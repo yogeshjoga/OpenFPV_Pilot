@@ -1,6 +1,3 @@
-// ================================
-// Three.js — Scene Lights
-// ================================
 
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'

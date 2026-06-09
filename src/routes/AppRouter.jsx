@@ -1,6 +1,3 @@
-// ================================
-// Routes — AppRouter
-// ================================
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Suspense, lazy, useEffect } from 'react'
@@ -14,7 +11,8 @@ const Builder = lazy(() => import('@pages/Builder'))
 const Physics = lazy(() => import('@pages/Physics'))
 const PhysicsDetail = lazy(() => import('@pages/PhysicsDetail'))
 const Shop = lazy(() => import('@pages/Shop'))
-const Cart = lazy(() => import('@pages/Cart'))
+const Gallery = lazy(() => import('@pages/Gallery'))
+
 const Login = lazy(() => import('@pages/Auth/Login'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
 const AdminDashboard = lazy(() => import('@pages/Admin/AdminDashboard'))
@@ -22,7 +20,7 @@ const Workshops = lazy(() => import('@pages/Workshops'))
 
 import ProtectedRoute from '@components/auth/ProtectedRoute'
 import { useAuthStore } from '@store/useAuthStore'
-import { useCartStore } from '@store/useCartStore'
+
 
 function PageLoader() {
   return (
@@ -47,17 +45,11 @@ function PageLoader() {
 export default function AppRouter() {
   const fetchUser = useAuthStore(state => state.fetchUser)
   const { user } = useAuthStore()
-  const { fetchRemoteCart, syncWithBackend } = useCartStore()
 
   useEffect(() => {
     fetchUser()
   }, [fetchUser])
 
-  useEffect(() => {
-    if (user) {
-      fetchRemoteCart(true)
-    }
-  }, [user, fetchRemoteCart])
 
   return (
     <BrowserRouter>
@@ -70,8 +62,9 @@ export default function AppRouter() {
           <Route path="/builder" element={<Builder />} />
           <Route path="/physics" element={<Physics />} />
           <Route path="/physics/:sectionId/:topicId" element={<PhysicsDetail />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/cart" element={<Cart />} />
+
           <Route path="/admin" element={
             <ProtectedRoute requiredLevel={4}>
               <AdminDashboard />

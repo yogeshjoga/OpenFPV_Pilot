@@ -1,6 +1,3 @@
-// ================================
-// Hook — useProducts
-// ================================
 
 import useProductStore from '@store/useProductStore'
 import { useMemo } from 'react'

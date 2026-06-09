@@ -1,6 +1,3 @@
-// ================================
-// Three.js — Scene Canvas
-// ================================
 
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, Stars, AdaptiveDpr } from '@react-three/drei'

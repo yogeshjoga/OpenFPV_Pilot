@@ -1,10 +1,7 @@
-// ================================
-// Page — University Workshops
-// ================================
-
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
+import SidebarMenu from '@components/common/SidebarMenu'
 import styles from './Workshops.module.css'
 
 // ── Data ──────────────────────────────────────────────────────
@@ -137,10 +134,9 @@ export default function Workshops() {
               transition={{ duration: 0.7 }}
               className={styles.heroContent}
             >
-              <p className={styles.eyebrow}>// University &amp; College Workshops</p>
+              <p className={styles.eyebrow}>University &amp; College Workshops</p>
               <h1 className={styles.heroTitle}>
-                Learn to <span className="gradient-text">Build</span>,<br />
-                Fly &amp; <span className="gradient-text">Innovate</span>
+                Learn to <span className="gradient-text">Build</span>, Fly &amp; <span className="gradient-text">Innovate</span>
               </h1>
               <p className={styles.heroSub}>
                 Week-based structured drone workshops for universities, engineering colleges,
@@ -166,22 +162,17 @@ export default function Workshops() {
             <h2 className={styles.sectionTitle}>🏆 Certification Levels</h2>
             <p className={styles.sectionSub}>Choose the right level for your institution. All programs are 1-week intensive workshops.</p>
 
-            {/* Level selector tabs */}
-            <div className={styles.levelTabs}>
-              {LEVELS.map(l => (
-                <button
-                  key={l.id}
-                  className={`${styles.levelTab} ${activeLevel === l.id ? styles.activeTab : ''}`}
-                  onClick={() => setActiveLevel(l.id)}
-                  style={{ '--tab-color': l.color }}
-                  id={`tab-${l.id}`}
-                >
-                  <span className={styles.tabEmoji}>{l.emoji}</span>
-                  <span className={styles.tabBadge}>{l.badge}</span>
-                  <span className={styles.tabTitle}>{l.title}</span>
-                </button>
-              ))}
-            </div>
+            {/* Layout Wrapper */}
+            <div className={styles.levelsSplitLayout}>
+              <div className={styles.sidebarWrap}>
+                <SidebarMenu
+                  items={LEVELS.map(l => ({ id: l.id, icon: l.emoji, label: l.title, badge: l.badge, color: l.color }))}
+                  activeId={activeLevel}
+                  onSelect={setActiveLevel}
+                  layoutIdPrefix="workshops"
+                  label="Levels"
+                />
+              </div>
 
             {/* Level detail card */}
             <AnimatePresence mode="wait">
@@ -230,7 +221,8 @@ export default function Workshops() {
                   <span className={styles.certText}>Certificate: <strong>{level.cert}</strong></span>
                 </div>
               </motion.div>
-            </AnimatePresence>
+                </AnimatePresence>
+            </div>
           </div>
         </section>
 
@@ -301,7 +293,7 @@ export default function Workshops() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <p className={styles.eyebrow}>// Bring Workshops to Your Institution</p>
+              <p className={styles.eyebrow}>Bring Workshops to Your Institution</p>
               <h2 className={styles.contactTitle}>
                 Want to conduct a workshop at your<br />
                 <span className="gradient-text">College or University?</span>
@@ -341,7 +333,7 @@ export default function Workshops() {
                 />
                 <div>
                   <p className={styles.founderName}>Yogesh Joga</p>
-                  <p className={styles.founderTitle}>Founder — OpenFPV Pilot &amp; urussys.com · DGCA Certified Drone Pilot</p>
+                  <p className={styles.founderTitle}>Founder — EgireRobatics &amp; urussys.com · DGCA Certified Drone Pilot</p>
                 </div>
               </div>
             </motion.div>

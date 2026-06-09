@@ -1,7 +1,7 @@
 # React + Vite
 
 ## run project
-cd "e:\FPV DRONES\OpenFPV_Pilot"
+cd "e:\FPV DRONES\EgireRobatics"
 npm install
 npm run dev
 

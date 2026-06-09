@@ -3,13 +3,12 @@ import { useParams, Link } from 'react-router-dom'
 import PageWrapper from '@components/layout/PageWrapper'
 import { getProductById } from '@data/products'
 import { formatPrice } from '@lib/utils'
-import { useCartStore } from '@store/useCartStore'
+
 import styles from './ProductDetail.module.css'
 
 export default function ProductDetail() {
   const { id } = useParams()
   const product = getProductById(id)
-  const addItem = useCartStore((state) => state.addItem)
 
   const [activeImage, setActiveImage] = useState(0)
 
@@ -95,7 +94,7 @@ export default function ProductDetail() {
             {/* Right: Buy Box */}
             <div className={styles.buyBox}>
               <p className={styles.buyPrice}>{formatPrice(price)}</p>
-              <p className={styles.deliveryInfo}><strong>FREE Delivery</strong> Thursday, Nov 14</p>
+              <p className={styles.deliveryInfo}><strong>Delivery</strong> Thursday, Nov 14</p>
               
               {inStock ? (
                 <h4 className={styles.inStock}>In Stock</h4>
@@ -110,21 +109,15 @@ export default function ProductDetail() {
                 </select>
               </div>
 
-              <button 
-                className={styles.addCartBtn} 
-                onClick={() => addItem(product)}
-                disabled={!inStock}
-              >
-                Add to Cart
-              </button>
+
               <button className={styles.buyNowBtn} disabled={!inStock}>
                 Buy Now
               </button>
 
               <div className={styles.secureBox}>
                 <span>🔒 Secure transaction</span>
-                <div className={styles.shipsFrom}>Ships from: <span>OpenFPV Pilot</span></div>
-                <div className={styles.soldBy}>Sold by: <span>OpenFPV Pilot</span></div>
+                <div className={styles.shipsFrom}>Ships from: <span>EgireRobatics</span></div>
+                <div className={styles.soldBy}>Sold by: <span>EgireRobatics</span></div>
               </div>
             </div>
           </div>

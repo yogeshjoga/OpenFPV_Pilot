@@ -1,6 +1,3 @@
-// ================================
-// Page — Login
-// ================================
 
 import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -41,7 +38,7 @@ export default function Login() {
           >
             <div className={styles.header}>
               <span className={styles.logoIcon}>✦</span>
-              <h1>Welcome to <span className="gradient-text">OpenFPV</span></h1>
+              <h1>Welcome to <span className="gradient-text">EgireRobatics</span></h1>
               <p>Sign in to access your academy courses and saved cart.</p>
             </div>
 
@@ -59,7 +56,7 @@ export default function Login() {
             <form className={styles.localForm} onSubmit={handleLocalLogin}>
               <div className={styles.formGroup}>
                 <label>Email Address</label>
-                <input type="email" name="email" required placeholder="pilot@openfpv.com" />
+                <input type="email" name="email" required placeholder="pilot@egirerobatics.com" />
               </div>
               <div className={styles.formGroup}>
                 <label>Password</label>

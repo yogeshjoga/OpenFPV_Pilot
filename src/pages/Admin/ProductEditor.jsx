@@ -110,7 +110,7 @@ export default function ProductEditor({ product, onClose }) {
         <section className={styles.formSection}>
           <div className={styles.formHeader}>
             <h2>{product ? 'Edit Product' : 'New Product'}</h2>
-            <p>Fill in the explicit technical details and media for the OpenFPV platform.</p>
+            <p>Fill in the explicit technical details and media for the EgireRobatics platform.</p>
           </div>
           
           <form onSubmit={handleSubmit} className={styles.scrollableForm}>

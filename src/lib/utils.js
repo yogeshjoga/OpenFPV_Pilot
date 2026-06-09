@@ -1,6 +1,3 @@
-// ================================
-// Utility — formatters & helpers
-// ================================
 
 /**
  * Format price as currency string

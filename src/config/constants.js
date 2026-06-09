@@ -1,21 +1,23 @@
-// ================================
-// OpenFPV Pilot — App Constants
-// ================================
 
-export const APP_NAME = 'OpenFPV Pilot'
+export const APP_NAME = 'EgireRobatics'
 export const APP_TAGLINE = 'Fly Beyond Limits'
 export const APP_DESCRIPTION =
-  'A free, open-source learning platform to build, tune, and fly FPV drones — from zero to first freestyle flight.'
+  'A premium learning platform to build, tune, and fly FPV drones — from zero to first freestyle flight.'
 
 export const NAV_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'Catalog', path: '/catalog' },
   { label: 'Workshops', path: '/workshops' },
-  { label: 'Academy', path: '/training', minLevel: 2 },
-  { label: 'Physics', path: '/physics', minLevel: 3 },
+  { 
+    label: 'Academy', 
+    subLinks: [
+      { label: 'Programs', path: '/training' },
+      { label: 'Physics', path: '/physics', minLevel: 3 }
+    ],
+    minLevel: 2 
+  },
+  { label: 'Gallery', path: '/gallery' },
   { label: 'FPV Quote', path: '/builder' },
-  { label: 'Shop', path: '/shop' },
-  { label: 'Cart', path: '/cart' },
   { label: 'About', path: '/about' },
 ]
 
@@ -36,7 +38,7 @@ export const SOCIAL_LINKS = {
   discord: 'https://discord.gg',
 }
 
-export const CONTACT_EMAIL = 'hello@openfpvpilot.com'
+export const CONTACT_EMAIL = 'hello@egirerobaticspilot.com'
 
 // Three.js / R3F scene defaults
 export const SCENE_DEFAULTS = {

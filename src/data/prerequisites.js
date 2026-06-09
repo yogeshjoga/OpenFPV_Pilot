@@ -1,6 +1,3 @@
-// ================================
-// Drone Build Prerequisites Data
-// ================================
 
 export const PREREQUISITES_DATA = [
   {

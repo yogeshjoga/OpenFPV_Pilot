@@ -1,10 +1,8 @@
-// ================================
-// Page — FPV Parts Encyclopedia
-// ================================
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
+import SidebarMenu from '@components/common/SidebarMenu'
 import { PART_CATEGORIES } from '@data/parts'
 import styles from './Catalog.module.css'
 
@@ -17,30 +15,13 @@ export default function Catalog() {
       <div className={styles.layout}>
 
         {/* ===== SIDEBAR ===== */}
-        <aside className={styles.sidebar}>
-          <p className={styles.sidebarLabel}>// Components</p>
-          <nav className={styles.sidebarNav} aria-label="Part categories">
-            {PART_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                className={`${styles.sidebarItem} ${activeId === cat.id ? styles.sidebarActive : ''}`}
-                onClick={() => setActiveId(cat.id)}
-                style={{ '--cat-color': cat.color }}
-              >
-                <span className={styles.sidebarIcon}>{cat.icon}</span>
-                <span className={styles.sidebarName}>{cat.label}</span>
-                {activeId === cat.id && (
-                  <motion.span
-                    className={styles.activeIndicator}
-                    layoutId="sidebar-active"
-                    style={{ background: cat.color }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
-              </button>
-            ))}
-          </nav>
-
+        <SidebarMenu
+          items={PART_CATEGORIES}
+          activeId={activeId}
+          onSelect={setActiveId}
+          layoutIdPrefix="catalog"
+          label="Components"
+        >
           {/* Quick-jump within page */}
           <div className={styles.tocBox}>
             <p className={styles.tocLabel}>On this page</p>
@@ -55,7 +36,7 @@ export default function Catalog() {
               </a>
             ))}
           </div>
-        </aside>
+        </SidebarMenu>
 
         {/* ===== MAIN CONTENT ===== */}
         <main className={styles.main}>
@@ -73,8 +54,7 @@ export default function Catalog() {
                   <span className={styles.catIcon}>{category.icon}</span>
                 </div>
                 <div>
-                  <p className={styles.catEyebrow} style={{ color: category.color }}>
-                    // FPV Parts
+                  <p className={styles.catEyebrow} style={{ color: category.color }}>FPV Parts
                   </p>
                   <h1 className={styles.catTitle}>{category.label}</h1>
                   <p className={styles.catTagline}>{category.tagline}</p>

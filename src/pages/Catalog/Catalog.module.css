@@ -5,89 +5,14 @@
 /* ===== LAYOUT ===== */
 .layout {
   display: grid;
-  grid-template-columns: 240px 1fr 240px;
+  grid-template-columns: 320px 1fr 240px;
   gap: 0;
   min-height: calc(100vh - var(--nav-height));
   align-items: start;
+  padding-left: var(--space-6);
 }
 
-/* ===== SIDEBAR ===== */
-.sidebar {
-  position: sticky;
-  top: calc(var(--nav-height) + var(--space-4));
-  height: fit-content;
-  padding: var(--space-8) var(--space-4) var(--space-8) var(--space-6);
-  border-right: 1px solid var(--color-border);
-  min-height: calc(100vh - var(--nav-height));
-}
 
-.sidebarLabel {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-accent-primary);
-  letter-spacing: 0.12em;
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.sidebarNav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  margin-bottom: var(--space-8);
-}
-
-.sidebarItem {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-3);
-  border-radius: var(--radius-lg);
-  border: none;
-  background: none;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  transition: background var(--transition-fast);
-  overflow: hidden;
-}
-
-.sidebarItem:hover {
-  background: var(--color-bg-card);
-}
-
-.sidebarActive {
-  background: color-mix(in srgb, var(--cat-color, #00d4ff) 8%, transparent) !important;
-}
-
-.activeIndicator {
-  position: absolute;
-  left: 0;
-  top: 6px;
-  bottom: 6px;
-  width: 3px;
-  border-radius: var(--radius-full);
-}
-
-.sidebarIcon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-.sidebarName {
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  letter-spacing: 0.04em;
-  color: var(--color-text-secondary);
-  transition: color var(--transition-fast);
-}
-
-.sidebarActive .sidebarName {
-  color: var(--color-text-primary);
-}
 
 /* Table of Contents */
 .tocBox {
@@ -541,13 +466,13 @@
     display: none;
   }
   .layout {
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 320px 1fr;
   }
 }
 
 @media (max-width: 1024px) {
   .layout {
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 260px 1fr;
   }
 
   .main {
@@ -559,26 +484,6 @@
   .layout {
     grid-template-columns: 1fr;
   }
-
-  .sidebar {
-    position: static;
-    min-height: 0;
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-    padding: var(--space-4) var(--space-4);
-  }
-
-  .sidebarNav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .sidebarItem {
-    width: auto;
-    flex: 0 0 auto;
-  }
-
   .tocBox {
     display: none;
   }

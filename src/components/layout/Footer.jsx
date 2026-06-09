@@ -1,6 +1,3 @@
-// ================================
-// Layout — Footer
-// ================================
 
 import { Link } from 'react-router-dom'
 import { APP_NAME, APP_TAGLINE, NAV_LINKS, SOCIAL_LINKS, CONTACT_EMAIL } from '@config/constants'

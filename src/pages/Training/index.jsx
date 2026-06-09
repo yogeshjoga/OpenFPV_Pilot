@@ -1,10 +1,8 @@
-// ================================
-// Page — Training Academy
-// ================================
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
+import SidebarMenu from '@components/common/SidebarMenu'
 import { COURSES } from '@data/training'
 import styles from './Training.module.css'
 
@@ -26,7 +24,7 @@ export default function Training() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <p className={styles.eyebrow}>// Academy</p>
+              <p className={styles.eyebrow}>Academy</p>
               <h1 className={styles.title}>
                 FPV Training <span className="gradient-text">Academy</span>
               </h1>
@@ -40,21 +38,18 @@ export default function Training() {
 
         {/* ========= COURSE TABS ========= */}
         <div className="container">
-          <div className={styles.courseTabs}>
-            {COURSES.map((c) => (
-              <button
-                key={c.id}
-                className={`${styles.courseTab} ${activeCourse === c.id ? styles.activeTab : ''}`}
-                onClick={() => { setActiveCourse(c.id); setOpenDay(null) }}
-                style={{ '--tab-color': c.color }}
-              >
-                <span className={styles.tabIcon}>{c.icon}</span>
-                <span className={styles.tabLabel}>{c.title}</span>
-                {c.badge && <span className={styles.tabBadge}>{c.badge}</span>}
-              </button>
-            ))}
-          </div>
+          <div className={styles.splitLayout}>
+            <div className={styles.sidebarWrap}>
+              <SidebarMenu
+                items={COURSES.map(c => ({ id: c.id, icon: c.icon, label: c.title, badge: c.badge, color: c.color }))}
+                activeId={activeCourse}
+                onSelect={(id) => { setActiveCourse(id); setOpenDay(null) }}
+                layoutIdPrefix="academy"
+                label="Programs"
+              />
+            </div>
 
+          <div className={styles.courseContent}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCourse}
@@ -114,6 +109,8 @@ export default function Training() {
               )}
             </motion.div>
           </AnimatePresence>
+          </div>
+          </div>
         </div>
 
 

@@ -1,6 +1,3 @@
-// ================================
-// Zustand — Product Store (static data)
-// ================================
 
 import { create } from 'zustand'
 import { PRODUCTS } from '@data/products'

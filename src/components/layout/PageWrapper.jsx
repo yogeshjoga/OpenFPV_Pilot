@@ -1,6 +1,3 @@
-// ================================
-// Layout — Page Wrapper
-// ================================
 
 import Navbar from './Navbar'
 import Footer from './Footer'

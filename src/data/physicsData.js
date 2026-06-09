@@ -1,8 +1,5 @@
-// ================================
 // FPV Drone Physics Data
-// Pin-to-pin explanations for students
-// ================================
-
+// Pin-to-pin explanations for students
 export const PHYSICS_SECTIONS = [
   {
     id: 'aerodynamics',

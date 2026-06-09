@@ -1,6 +1,3 @@
-// ================================
-// Page — Home
-// ================================
 
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -14,38 +11,38 @@ const ALL_PREREQS = PREREQUISITES_DATA.flatMap(cat => cat.items.map(item => ({ .
 const STATS = [
   { value: '8', label: 'Part Categories' },
   { value: '7-Day', label: 'Build Bootcamp' },
-  { value: '100%', label: 'Free & Open Source' },
+  { value: '100%', label: 'Premium Quality' },
   { value: '14-Day', label: 'Pilot Program' },
 ]
 
 const ROADMAP_STEPS = [
   {
     icon: '🛠️',
-    tagline: 'Step 01 // Component Selection',
+    tagline: 'Step 01 - Component Selection',
     title: 'Digital Blueprint',
-    description: 'Select components from our extensive open-source database to create your perfect digital FPV build. Our builder ensures all parts are compatible.'
+    description: 'Select components from our extensive database to create your perfect digital FPV build. Our builder ensures all parts are compatible.'
   },
   {
     icon: '💻',
-    tagline: 'Step 02 // Virtual Configuration',
+    tagline: 'Step 02 - Virtual Configuration',
     title: 'Virtual Tuning',
     description: 'Learn to master the Betaflight Configurator. Sync your digital build and tune PIDs for maximum performance before touching a single wire.'
   },
   {
     icon: '🎮',
-    tagline: 'Step 03 // Flight Proficiency',
+    tagline: 'Step 03 - Flight Proficiency',
     title: 'Simulation Mastery',
     description: 'Connect your radio and log hours in the sim. Master freestyle and racing in a risk-free digital environment until it feels like second nature.'
   },
   {
     icon: '📦',
-    tagline: 'Step 04 // Precise Procurement',
+    tagline: 'Step 04 - Precise Procurement',
     title: 'Procurement',
     description: 'Download your precision BOM file for local ordering or visit our partner e-com site to get everything you need in one organized shipment.'
   },
   {
     icon: '🚀',
-    tagline: 'Step 05 // Manifest Reality',
+    tagline: 'Step 05 - Manifest Reality',
     title: 'The Real Deal',
     description: 'Follow our step-by-step soldering and assembly guides to bring your digital build into the physical world and take your first real flight.'
   }
@@ -86,14 +83,14 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            <p className={styles.eyebrow}>// Open Source FPV Learning</p>
+            <p className={styles.eyebrow}>Professional FPV Learning</p>
             <h1 className={styles.headline}>
               Fly Beyond<br />
               <span className="gradient-text">Limits</span>
             </h1>
             <p className={styles.sub}>
               Build your own FPV drone from scratch. Learn to fly freestyle,
-              cinematic &amp; racing — all in one free, open-source platform.
+              cinematic &amp; racing — all in one platform.
             </p>
             <div className={styles.heroActions} style={{ pointerEvents: 'auto' }}>
               <Link to="/catalog" className={styles.primaryBtn}>
@@ -126,7 +123,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className={styles.sectionEyebrow}>// Your Journey</p>
+            <p className={styles.sectionEyebrow}>Your Journey</p>
             <h2 className={styles.sectionTitle}>FPV Pilot Roadmap</h2>
             <p className={styles.sectionSub}>From the first click to the first real flight. Follow the path to becoming a pro pilot.</p>
           </motion.div>
@@ -196,7 +193,7 @@ export default function Home() {
                 Ready to <span className="gradient-text">Take Flight?</span>
               </h2>
               <p className={styles.bannerSub}>
-                Start your FPV journey today — build, tune, and fly your first freestyle drone for free. Master the basics before taking to the real skies.
+                Start your FPV journey today — build, tune, and fly your first freestyle drone. Master the basics before taking to the real skies.
               </p>
               <Link to="/builder" className={styles.primaryBtn}>
                 Quote Your First Build →
@@ -296,7 +293,7 @@ function PrerequisitesSlider() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className={styles.sectionEyebrow}>// Learn & Build</p>
+          <p className={styles.sectionEyebrow}>Learn & Build</p>
           <h2 className={styles.sectionTitle}>Drone Build Prerequisites</h2>
           <p className={styles.sectionSub}>Get familiar with every tool and component before touching a soldering iron.</p>
         </motion.div>

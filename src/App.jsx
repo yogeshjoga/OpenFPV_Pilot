@@ -1,6 +1,3 @@
-// ================================
-// App Root — with theme sync
-// ================================
 
 import { useEffect } from 'react'
 import AppRouter from '@routes/AppRouter'
