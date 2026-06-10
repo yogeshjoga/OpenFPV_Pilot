@@ -116,8 +116,8 @@ export default function ProductDetail() {
 
               <div className={styles.secureBox}>
                 <span>🔒 Secure transaction</span>
-                <div className={styles.shipsFrom}>Ships from: <span>EgireRobatics</span></div>
-                <div className={styles.soldBy}>Sold by: <span>EgireRobatics</span></div>
+                <div className={styles.shipsFrom}>Ships from: <span>EGIREROBOTICS</span></div>
+                <div className={styles.soldBy}>Sold by: <span>EGIREROBOTICS</span></div>
               </div>
             </div>
           </div>

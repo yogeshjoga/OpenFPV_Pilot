@@ -99,13 +99,15 @@ export function BatteryNode() {
   return (
     <div className={styles.batteryNode}>
       <div className={styles.nodeLabel}>XT60 (Battery)</div>
-      <div className={styles.padWrap}>
-        <div className={styles.padLabel}>+</div>
-        <Handle type="source" position={Position.Top} id="bat_pos" className={`${styles.padOut} ${styles.padRed}`} style={{ left: '30%' }} />
-      </div>
-      <div className={styles.padWrap}>
-        <div className={styles.padLabel}>-</div>
-        <Handle type="source" position={Position.Top} id="bat_neg" className={`${styles.padOut} ${styles.padBlack}`} style={{ left: '70%' }} />
+      <div style={{ position: 'absolute', top: -15, display: 'flex', gap: '20px' }}>
+        <div className={styles.padWrap}>
+          <div className={styles.padLabel}>+</div>
+          <Handle type="source" position={Position.Top} id="bat_pos" className={`${styles.padOut} ${styles.padRed}`} />
+        </div>
+        <div className={styles.padWrap}>
+          <div className={styles.padLabel}>-</div>
+          <Handle type="source" position={Position.Top} id="bat_neg" className={`${styles.padOut} ${styles.padBlack}`} />
+        </div>
       </div>
     </div>
   )

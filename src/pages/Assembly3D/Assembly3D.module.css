@@ -1,0 +1,124 @@
+/* Assembly3D Layout */
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--nav-height));
+  padding-top: 1rem;
+}
+
+.header {
+  padding: 0 var(--space-6) var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-black);
+  margin-bottom: var(--space-1);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+}
+
+.controls {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.btn {
+  background: var(--color-accent-primary);
+  color: #fff;
+  border: none;
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+.btn:hover {
+  opacity: 0.9;
+}
+
+.workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border);
+}
+
+.sidebar {
+  width: 250px;
+  background: var(--color-bg-primary);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebarHeader {
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-2);
+}
+
+.sidebarDesc {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.partList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.partBtn {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  transition: all var(--transition-fast);
+  text-align: left;
+  color: var(--color-text-primary);
+}
+
+.partBtn:hover:not(:disabled) {
+  border-color: var(--color-accent-primary);
+  background: var(--color-accent-glow);
+}
+
+.partBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--color-bg-secondary);
+}
+
+.canvasWrap {
+  flex: 1;
+  background: #1a1a1a;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  border-radius: 4px;
+}

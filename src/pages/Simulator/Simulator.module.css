@@ -167,8 +167,10 @@
 .padGroupBattery, .padGroupCap {
   position: absolute;
   bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 .padGroupCap {
   bottom: -45px;
@@ -178,6 +180,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 .padLabel {
   font-size: 0.5rem;
@@ -247,12 +250,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
   font-weight: bold;
-}
-.batteryNode .padWrap {
-  position: absolute;
-  top: -15px;
 }
 
 .capacitorNode {

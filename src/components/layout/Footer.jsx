@@ -24,11 +24,13 @@ export default function Footer() {
         {/* Navigation */}
         <nav className={styles.nav} aria-label="Footer navigation">
           <h3 className={styles.heading}>Quick Links</h3>
-          {NAV_LINKS.map((link) => (
-            <Link key={link.path} to={link.path} className={styles.link}>
-              {link.label}
-            </Link>
-          ))}
+          <div className={styles.linkGrid}>
+            {NAV_LINKS.map((link, idx) => link.path ? (
+              <Link key={link.path || idx} to={link.path} className={styles.link}>
+                {link.label || link.title}
+              </Link>
+            ) : null)}
+          </div>
         </nav>
 
         {/* Socials */}

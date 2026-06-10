@@ -7,8 +7,8 @@
 .inner {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr;
-  gap: var(--space-12);
-  padding: var(--space-16) var(--container-padding);
+  gap: var(--space-8);
+  padding: var(--space-6) var(--container-padding);
 }
 
 .logo {
@@ -57,6 +57,13 @@
   gap: var(--space-2);
 }
 
+.linkGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--space-8);
+  row-gap: var(--space-2);
+}
+
 .heading {
   font-family: var(--font-display);
   font-size: var(--text-xs);
@@ -79,7 +86,7 @@
 
 .bottom {
   border-top: 1px solid var(--color-border);
-  padding: var(--space-6) var(--container-padding);
+  padding: var(--space-4) var(--container-padding);
 }
 .bottom .container {
   display: flex;

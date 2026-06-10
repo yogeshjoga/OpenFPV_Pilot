@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Suspense, lazy, useEffect } from 'react'
 
@@ -13,6 +12,7 @@ const PhysicsDetail = lazy(() => import('@pages/PhysicsDetail'))
 const Shop = lazy(() => import('@pages/Shop'))
 const Gallery = lazy(() => import('@pages/Gallery'))
 const Simulator = lazy(() => import('@pages/Simulator'))
+const Assembly3D = lazy(() => import('@pages/Assembly3D'))
 
 const Login = lazy(() => import('@pages/Auth/Login'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
@@ -74,6 +74,7 @@ export default function AppRouter() {
           <Route path="/physics/:sectionId/:topicId" element={<PhysicsDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/simulator" element={<Simulator />} />
+          <Route path="/assembly-3d" element={<Assembly3D />} />
           <Route path="/shop" element={<Shop />} />
 
           <Route path="/admin" element={

@@ -1,5 +1,5 @@
 
-export const APP_NAME = 'EgireRobatics'
+export const APP_NAME = 'EGIREROBOTICS'
 export const APP_TAGLINE = 'Fly Beyond Limits'
 export const APP_DESCRIPTION =
   'A premium learning platform to build, tune, and fly FPV drones — from zero to first freestyle flight.'
@@ -13,7 +13,8 @@ export const NAV_LINKS = [
     subLinks: [
       { label: 'Programs', path: '/training' },
       { label: 'Physics', path: '/physics', minLevel: 3 },
-      { label: 'Simulator', path: '/simulator' }
+      { label: 'Simulator', path: '/simulator' },
+      { label: '3D Assembly', path: '/assembly-3d' },
     ],
     minLevel: 2 
   },
@@ -39,7 +40,7 @@ export const SOCIAL_LINKS = {
   discord: 'https://discord.gg',
 }
 
-export const CONTACT_EMAIL = 'hello@egirerobaticspilot.com'
+export const CONTACT_EMAIL = 'hello@EGIREROBOTICSpilot.com'
 
 // Three.js / R3F scene defaults
 export const SCENE_DEFAULTS = {

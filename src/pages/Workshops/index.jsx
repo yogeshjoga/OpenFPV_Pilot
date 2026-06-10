@@ -333,7 +333,7 @@ export default function Workshops() {
                 />
                 <div>
                   <p className={styles.founderName}>Yogesh Joga</p>
-                  <p className={styles.founderTitle}>Founder — EgireRobatics &amp; urussys.com · DGCA Certified Drone Pilot</p>
+                  <p className={styles.founderTitle}>Founder — EGIREROBOTICS &amp; urussys.com · DGCA Certified Drone Pilot</p>
                 </div>
               </div>
             </motion.div>
