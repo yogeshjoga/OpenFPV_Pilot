@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Text } from '@react-three/drei'
+import { OrbitControls, Text, Environment, Html } from '@react-three/drei'
 import { useRef, Suspense } from 'react'
 import * as THREE from 'three'
 
@@ -50,7 +50,7 @@ function Motor({ position, visible, onClick, ghost, scale = [1, 1, 1] }) {
         {ghost ? (
           <meshStandardMaterial color="#00ffcc" transparent opacity={0.3} />
         ) : (
-          <meshStandardMaterial color="#e0e0e0" metalness={0.9} roughness={0.1} />
+          <meshPhysicalMaterial color="#ffffff" metalness={0.5} roughness={0.2} clearcoat={1} />
         )}
       </mesh>
     </group>
@@ -72,7 +72,7 @@ function ESC({ visible, onClick, ghost, scale = [1, 1, 1] }) {
         {ghost ? (
           <meshStandardMaterial color="#00ffcc" transparent opacity={0.3} />
         ) : (
-          <meshStandardMaterial color="#1a1a1a" metalness={0.8} roughness={0.3} />
+          <meshPhysicalMaterial color="#555555" metalness={0.3} roughness={0.5} clearcoat={0.5} />
         )}
       </mesh>
     </group>
@@ -94,7 +94,7 @@ function FC({ visible, onClick, ghost, scale = [1, 1, 1] }) {
         {ghost ? (
           <meshStandardMaterial color="#00ffcc" transparent opacity={0.3} />
         ) : (
-          <meshStandardMaterial color="#cc0000" metalness={0.1} roughness={0.9} />
+          <meshPhysicalMaterial color="#ff0000" metalness={0.2} roughness={0.2} emissive="#ff0000" emissiveIntensity={0.5} clearcoat={1} />
         )}
       </mesh>
     </group>
@@ -116,16 +116,7 @@ function VTX({ visible, onClick, ghost, scale = [1, 1, 1] }) {
         {ghost ? (
           <meshStandardMaterial color="#00ffcc" transparent opacity={0.3} />
         ) : (
-          <meshStandardMaterial color="#b8860b" metalness={0.8} roughness={0.4} />
-        )}
-      </mesh>
-      {/* Antenna */}
-      <mesh position={[0, 0.3, 0]}>
-         <cylinderGeometry args={[0.02, 0.02, 0.4]} />
-         {ghost ? (
-          <meshStandardMaterial color="#00ffcc" transparent opacity={0.3} />
-        ) : (
-          <meshStandardMaterial color="#111" />
+          <meshPhysicalMaterial color="#ffaa00" metalness={0.6} roughness={0.2} emissive="#ffaa00" emissiveIntensity={0.4} clearcoat={1} />
         )}
       </mesh>
     </group>
@@ -147,7 +138,7 @@ function Prop({ position, visible, onClick, ghost, direction, scale = [1, 1, 1] 
         {ghost ? (
           <meshStandardMaterial color="#00ffcc" transparent opacity={0.3} />
         ) : (
-          <meshPhysicalMaterial color="#00e5ff" transmission={0.6} opacity={1} transparent metalness={0.1} roughness={0.2} clearcoat={1} clearcoatRoughness={0.1} />
+          <meshPhysicalMaterial color="#00e5ff" transparent opacity={0.2} metalness={0.1} roughness={0.2} clearcoat={1} clearcoatRoughness={0.1} />
         )}
       </mesh>
       {(visible || ghost) && (
@@ -166,17 +157,25 @@ function Prop({ position, visible, onClick, ghost, direction, scale = [1, 1, 1] 
   )
 }
 
-export default function DroneScene({ parts, onAttach, activePart }) {
+export default function DroneScene({ parts, onAttach, activePart, isComplete }) {
   return (
     <Canvas camera={{ position: [4, 4, 4], fov: 40 }}>
+      <OrbitControls 
+        makeDefault 
+        autoRotate={isComplete} 
+        autoRotateSpeed={2.5} 
+        minPolarAngle={0} 
+        maxPolarAngle={Math.PI / 2 + 0.1} 
+      />
+      <color attach="background" args={['#1a1a24']} />
       <ambientLight intensity={0.7} />
       <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-      
       {/* 3D Environment Helpers */}
       <gridHelper args={[20, 20, 0x444444, 0x222222]} position={[0, -0.6, 0]} />
       <axesHelper args={[5]} position={[0, -0.59, 0]} />
 
       <Suspense fallback={null}>
+        <Environment preset="city" />
         <group position={[0, -0.5, 0]}>
         {/* Frame */}
         <Frame visible={parts.frame} />
@@ -261,10 +260,43 @@ export default function DroneScene({ parts, onAttach, activePart }) {
           direction="↺ CCW"
           onClick={() => onAttach('p4')} 
         />
+        {/* Annotations */}
+        {isComplete && (
+          <>
+            <Html position={[0, 0, 2]} center>
+              <div style={{ background: 'rgba(10, 10, 15, 0.8)', border: '1px solid #444', padding: '6px 10px', borderRadius: '6px', color: 'white', fontFamily: 'monospace', fontSize: '0.7rem', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+                <strong style={{ color: '#00ffcc' }}>Carbon Frame</strong><br/>Base structure
+              </div>
+            </Html>
+            <Html position={[2, 0.5, 2]} center>
+              <div style={{ background: 'rgba(10, 10, 15, 0.8)', border: '1px solid #444', padding: '6px 10px', borderRadius: '6px', color: 'white', fontFamily: 'monospace', fontSize: '0.7rem', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+                <strong style={{ color: '#00ffcc' }}>Brushless Motors</strong><br/>Provides thrust
+              </div>
+            </Html>
+            <Html position={[-1.2, 0.3, 0]} center>
+              <div style={{ background: 'rgba(10, 10, 15, 0.8)', border: '1px solid #444', padding: '6px 10px', borderRadius: '6px', color: 'white', fontFamily: 'monospace', fontSize: '0.7rem', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+                <strong style={{ color: '#00ffcc' }}>4-in-1 ESC</strong><br/>Controls motor speed
+              </div>
+            </Html>
+            <Html position={[1.2, 0.6, 0]} center>
+              <div style={{ background: 'rgba(10, 10, 15, 0.8)', border: '1px solid #444', padding: '6px 10px', borderRadius: '6px', color: 'white', fontFamily: 'monospace', fontSize: '0.7rem', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+                <strong style={{ color: '#00ffcc' }}>Flight Controller</strong><br/>The brain of the drone
+              </div>
+            </Html>
+            <Html position={[0, 1.0, -1]} center>
+              <div style={{ background: 'rgba(10, 10, 15, 0.8)', border: '1px solid #444', padding: '6px 10px', borderRadius: '6px', color: 'white', fontFamily: 'monospace', fontSize: '0.7rem', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+                <strong style={{ color: '#00ffcc' }}>VTX</strong><br/>Transmits video to goggles
+              </div>
+            </Html>
+            <Html position={[-2, 1, -2]} center>
+              <div style={{ background: 'rgba(10, 10, 15, 0.8)', border: '1px solid #444', padding: '6px 10px', borderRadius: '6px', color: 'white', fontFamily: 'monospace', fontSize: '0.7rem', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+                <strong style={{ color: '#00ffcc' }}>Propellers</strong><br/>Generates lift
+              </div>
+            </Html>
+          </>
+        )}
         </group>
       </Suspense>
-
-      <OrbitControls makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 2 + 0.1} />
     </Canvas>
   )
 }

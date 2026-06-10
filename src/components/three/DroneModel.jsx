@@ -49,31 +49,53 @@ export default function DroneModel({
 function PlaceholderDrone() {
   return (
     <group>
-      {/* Main body */}
-      <mesh castShadow>
-        <boxGeometry args={[1.2, 0.18, 0.8]} />
-        <meshStandardMaterial
-          color="#0d1117"
-          metalness={0.9}
-          roughness={0.15}
-          envMapIntensity={1.5}
-        />
+      {/* Bottom Plate (Carbon Fiber) */}
+      <mesh position={[0, -0.05, 0]} castShadow>
+        <boxGeometry args={[1.0, 0.04, 0.6]} />
+        <meshStandardMaterial color="#181818" roughness={0.8} metalness={0.2} />
       </mesh>
 
+      {/* Top Plate (Carbon Fiber) */}
+      <mesh position={[0, 0.15, 0]} castShadow>
+        <boxGeometry args={[0.8, 0.04, 0.4]} />
+        <meshStandardMaterial color="#181818" roughness={0.8} metalness={0.2} />
+      </mesh>
+
+      {/* The Stack (ESC, FC, VTX) */}
+      <group position={[0, 0.05, 0]}>
+        {/* ESC (Bottom) */}
+        <mesh position={[0, -0.04, 0]} castShadow>
+          <boxGeometry args={[0.25, 0.03, 0.25]} />
+          <meshStandardMaterial color="#222" metalness={0.8} roughness={0.4} />
+        </mesh>
+        
+        {/* FC (Middle) */}
+        <mesh position={[0, 0.01, 0]} castShadow>
+          <boxGeometry args={[0.22, 0.02, 0.22]} />
+          <meshStandardMaterial color="#00d4ff" emissive="#00d4ff" emissiveIntensity={0.2} />
+        </mesh>
+
+        {/* VTX (Back) */}
+        <mesh position={[-0.2, 0.05, 0]} castShadow>
+          <boxGeometry args={[0.15, 0.04, 0.15]} />
+          <meshStandardMaterial color="#7c3aed" emissive="#7c3aed" emissiveIntensity={0.3} />
+        </mesh>
+      </group>
+
       {/* Center camera pod */}
-      <mesh position={[0.35, -0.06, 0]} castShadow>
-        <cylinderGeometry args={[0.1, 0.1, 0.18, 16]} />
-        <meshStandardMaterial color="#00d4ff" metalness={0.8} roughness={0.1} emissive="#00d4ff" emissiveIntensity={0.3} />
+      <mesh position={[0.4, 0.05, 0]} castShadow>
+        <cylinderGeometry args={[0.08, 0.08, 0.15, 16]} />
+        <meshStandardMaterial color="#00d4ff" metalness={0.8} roughness={0.1} />
       </mesh>
 
       {/* Arm + Motor: Front-Right */}
-      <DroneArm position={[0.55, 0, 0.4]} rotation={[0, Math.PI * 0.25, 0]} />
+      <DroneArm position={[0.55, -0.02, 0.4]} rotation={[0, Math.PI * 0.25, 0]} />
       {/* Arm + Motor: Front-Left */}
-      <DroneArm position={[0.55, 0, -0.4]} rotation={[0, -Math.PI * 0.25, 0]} />
+      <DroneArm position={[0.55, -0.02, -0.4]} rotation={[0, -Math.PI * 0.25, 0]} />
       {/* Arm + Motor: Rear-Right */}
-      <DroneArm position={[-0.55, 0, 0.4]} rotation={[0, -Math.PI * 0.25 + Math.PI, 0]} />
+      <DroneArm position={[-0.55, -0.02, 0.4]} rotation={[0, -Math.PI * 0.25 + Math.PI, 0]} />
       {/* Arm + Motor: Rear-Left */}
-      <DroneArm position={[-0.55, 0, -0.4]} rotation={[0, Math.PI * 0.25 + Math.PI, 0]} />
+      <DroneArm position={[-0.55, -0.02, -0.4]} rotation={[0, Math.PI * 0.25 + Math.PI, 0]} />
     </group>
   )
 }
@@ -81,20 +103,25 @@ function PlaceholderDrone() {
 function DroneArm({ position, rotation }) {
   return (
     <group position={position} rotation={rotation}>
-      {/* Arm */}
+      {/* Arm (Carbon Fiber) */}
       <mesh castShadow>
-        <boxGeometry args={[0.4, 0.05, 0.06]} />
-        <meshStandardMaterial color="#1a2035" metalness={0.9} roughness={0.2} />
+        <boxGeometry args={[0.6, 0.04, 0.06]} />
+        <meshStandardMaterial color="#181818" metalness={0.3} roughness={0.8} />
       </mesh>
       {/* Motor */}
-      <mesh position={[0.22, 0.04, 0]} castShadow>
-        <cylinderGeometry args={[0.09, 0.09, 0.1, 16]} />
-        <meshStandardMaterial color="#7c3aed" metalness={0.85} roughness={0.1} emissive="#7c3aed" emissiveIntensity={0.15} />
+      <mesh position={[0.25, 0.06, 0]} castShadow>
+        <cylinderGeometry args={[0.12, 0.12, 0.12, 16]} />
+        <meshStandardMaterial color="#2d2d2d" metalness={0.9} roughness={0.2} />
+      </mesh>
+      {/* Motor Bell/Top */}
+      <mesh position={[0.25, 0.12, 0]} castShadow>
+        <cylinderGeometry args={[0.12, 0.12, 0.04, 16]} />
+        <meshStandardMaterial color="#7c3aed" metalness={0.85} roughness={0.1} emissive="#7c3aed" emissiveIntensity={0.2} />
       </mesh>
       {/* Propeller */}
-      <mesh position={[0.22, 0.1, 0]}>
-        <cylinderGeometry args={[0.28, 0.28, 0.01, 3]} />
-        <meshStandardMaterial color="#00d4ff" metalness={0.5} roughness={0.3} transparent opacity={0.7} />
+      <mesh position={[0.25, 0.16, 0]}>
+        <cylinderGeometry args={[0.35, 0.35, 0.01, 3]} />
+        <meshStandardMaterial color="#00d4ff" metalness={0.5} roughness={0.3} transparent opacity={0.6} />
       </mesh>
     </group>
   )

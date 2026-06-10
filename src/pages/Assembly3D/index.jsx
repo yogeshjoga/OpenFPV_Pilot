@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import DroneScene from './components/DroneScene'
 import styles from './Assembly3D.module.css'
@@ -20,6 +21,8 @@ export default function Assembly3D() {
   })
 
   const [activePart, setActivePart] = useState(null)
+  
+  const isComplete = Object.values(parts).every(Boolean)
 
   const handleAttach = (partId) => {
     setParts(prev => {
@@ -148,12 +151,22 @@ export default function Assembly3D() {
           </aside>
 
           <div className={styles.canvasWrap}>
-            {activePart && (
+            {activePart && !isComplete && (
               <div className={styles.overlay}>
                 Select a ghost socket to attach the {activePart}.
               </div>
             )}
-            <DroneScene parts={parts} onAttach={handleAttach} activePart={activePart} />
+            {isComplete && (
+              <motion.div 
+                className={styles.overlaySuccess}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+              >
+                <h2 className="gradient-text" style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Drone Fully Assembled!</h2>
+                <p>Ready for Betaflight tuning and first flight.</p>
+              </motion.div>
+            )}
+            <DroneScene parts={parts} onAttach={handleAttach} activePart={activePart} isComplete={isComplete} />
           </div>
         </div>
       </div>
