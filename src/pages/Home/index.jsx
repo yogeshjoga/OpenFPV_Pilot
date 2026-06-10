@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
 import styles from './Home.module.css'
@@ -9,39 +10,39 @@ import styles from './Home.module.css'
 const ALL_PREREQS = PREREQUISITES_DATA.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.category })));
 
 const STATS = [
-  { value: '8', label: 'Part Categories' },
-  { value: '7-Day', label: 'Build Bootcamp' },
-  { value: '100%', label: 'Premium Quality' },
-  { value: '14-Day', label: 'Pilot Program' },
+  { value: '8', label: 'Drone Part Categories' },
+  { value: '7-Day', label: 'Drone Build Bootcamp' },
+  { value: '100%', label: 'Premium Components' },
+  { value: '14-Day', label: 'FPV Pilot Training' },
 ]
 
 const ROADMAP_STEPS = [
   {
-    icon: '🛠️',
+    icon: <Wrench size={32} />,
     tagline: 'Step 01 - Component Selection',
     title: 'Digital Blueprint',
     description: 'Select components from our extensive database to create your perfect digital FPV build. Our builder ensures all parts are compatible.'
   },
   {
-    icon: '💻',
+    icon: <MonitorPlay size={32} />,
     tagline: 'Step 02 - Virtual Configuration',
     title: 'Virtual Tuning',
     description: 'Learn to master the Betaflight Configurator. Sync your digital build and tune PIDs for maximum performance before touching a single wire.'
   },
   {
-    icon: '🎮',
+    icon: <Gamepad2 size={32} />,
     tagline: 'Step 03 - Flight Proficiency',
     title: 'Simulation Mastery',
     description: 'Connect your radio and log hours in the sim. Master freestyle and racing in a risk-free digital environment until it feels like second nature.'
   },
   {
-    icon: '📦',
+    icon: <PackageCheck size={32} />,
     tagline: 'Step 04 - Precise Procurement',
     title: 'Procurement',
     description: 'Download your precision BOM file for local ordering or visit our partner e-com site to get everything you need in one organized shipment.'
   },
   {
-    icon: '🚀',
+    icon: <Rocket size={32} />,
     tagline: 'Step 05 - Manifest Reality',
     title: 'The Real Deal',
     description: 'Follow our step-by-step soldering and assembly guides to bring your digital build into the physical world and take your first real flight.'
@@ -59,9 +60,6 @@ export default function Home() {
             <iframe
               title="Game Ready iFlight Nazgul Evoque F6X FPV Drone"
               frameBorder="0"
-              allowFullScreen
-              mozallowfullscreen="true"
-              webkitallowfullscreen="true"
               allow="autoplay; fullscreen; xr-spatial-tracking"
               xr-spatial-tracking="true"
               execution-while-out-of-viewport="true"
@@ -97,7 +95,7 @@ export default function Home() {
                 Explore Parts
               </Link>
               <Link to="/about" className={styles.ghostBtn}>
-                Learn More →
+                Learn More <ArrowRight size={16} style={{ marginLeft: 8 }} />
               </Link>
             </div>
           </motion.div>
@@ -109,7 +107,9 @@ export default function Home() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          ↓
+          <div style={{ transform: 'rotate(90deg)' }}>
+            <ArrowRight size={24} />
+          </div>
         </motion.div>
       </section>
 
@@ -196,7 +196,7 @@ export default function Home() {
                 Start your FPV journey today — build, tune, and fly your first freestyle drone. Master the basics before taking to the real skies.
               </p>
               <Link to="/builder" className={styles.primaryBtn}>
-                Quote Your First Build →
+                Quote Your First Build <ArrowRight size={16} style={{ marginLeft: 8 }} />
               </Link>
             </div>
 
@@ -205,9 +205,6 @@ export default function Home() {
                 <iframe
                   title="Tiny Whoop FPV drone"
                   frameBorder="0"
-                  allowFullScreen
-                  mozallowfullscreen="true"
-                  webkitallowfullscreen="true"
                   allow="autoplay; fullscreen; xr-spatial-tracking"
                   xr-spatial-tracking="true"
                   execution-while-out-of-viewport="true"
@@ -299,7 +296,7 @@ function PrerequisitesSlider() {
         </motion.div>
 
         <div className={styles.sliderContainer}>
-          <button className={styles.sliderNavBtn} onClick={handlePrev} aria-label="Previous">←</button>
+          <button className={styles.sliderNavBtn} onClick={handlePrev} aria-label="Previous"><ArrowLeft size={24} /></button>
 
           <motion.div
             key={currentIndex}
@@ -337,12 +334,12 @@ function PrerequisitesSlider() {
             </div>
           </motion.div>
 
-          <button className={styles.sliderNavBtn} onClick={handleNext} aria-label="Next">→</button>
+          <button className={styles.sliderNavBtn} onClick={handleNext} aria-label="Next"><ArrowRight size={24} /></button>
         </div>
 
         <div className={styles.randomBtnContainer}>
           <button className={styles.primaryBtn} onClick={handleRandom}>
-            🎲 Random Learning
+            <Dices size={20} style={{ marginRight: 8 }} /> Random Learning
           </button>
           <p className={styles.sliderCount}>{currentIndex + 1} / {ALL_PREREQS.length}</p>
         </div>

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
-import { COURSES } from '@data/training'
+import { COURSES } from '@data/training.jsx'
 import styles from './Training.module.css'
 
 export default function Training() {

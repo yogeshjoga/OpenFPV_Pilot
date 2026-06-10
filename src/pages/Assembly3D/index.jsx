@@ -12,15 +12,44 @@ export default function Assembly3D() {
     m4: false,
     esc: false,
     fc: false,
+    vtx: false,
+    p1: false,
+    p2: false,
+    p3: false,
+    p4: false,
   })
 
   const [activePart, setActivePart] = useState(null)
 
   const handleAttach = (partId) => {
-    // If the user selected the part in the sidebar OR if they just click the ghost, let's attach it.
-    // For simplicity, clicking the ghost attaches it immediately.
-    setParts(prev => ({ ...prev, [partId]: true }))
-    setActivePart(null)
+    setParts(prev => {
+      const nextParts = { ...prev, [partId]: true }
+      
+      if (partId === 'frame') {
+        setActivePart('motor')
+      }
+      else if (partId.startsWith('m')) {
+        if (nextParts.m1 && nextParts.m2 && nextParts.m3 && nextParts.m4) {
+          setActivePart('esc')
+        }
+      }
+      else if (partId === 'esc') {
+        setActivePart('fc')
+      }
+      else if (partId === 'fc') {
+        setActivePart('vtx')
+      }
+      else if (partId === 'vtx') {
+        setActivePart('prop')
+      }
+      else if (partId.startsWith('p')) {
+        if (nextParts.p1 && nextParts.p2 && nextParts.p3 && nextParts.p4) {
+          setActivePart(null) // Done!
+        }
+      }
+      
+      return nextParts
+    })
   }
 
   const handleAddPart = (partId) => {
@@ -40,6 +69,11 @@ export default function Assembly3D() {
       m4: false,
       esc: false,
       fc: false,
+      vtx: false,
+      p1: false,
+      p2: false,
+      p3: false,
+      p4: false,
     })
     setActivePart(null)
   }
@@ -81,7 +115,7 @@ export default function Assembly3D() {
               <button 
                 className={styles.partBtn} 
                 onClick={() => setActivePart('esc')}
-                disabled={!parts.frame || parts.esc}
+                disabled={!parts.m1 || !parts.m2 || !parts.m3 || !parts.m4 || parts.esc}
                 style={{ borderColor: activePart === 'esc' ? '#00ffcc' : '' }}
               >
                 3. 4-in-1 ESC
@@ -94,6 +128,22 @@ export default function Assembly3D() {
               >
                 4. Flight Controller
               </button>
+              <button 
+                className={styles.partBtn} 
+                onClick={() => setActivePart('vtx')}
+                disabled={!parts.fc || parts.vtx}
+                style={{ borderColor: activePart === 'vtx' ? '#00ffcc' : '' }}
+              >
+                5. VTX / Camera
+              </button>
+              <button 
+                className={styles.partBtn} 
+                onClick={() => setActivePart('prop')}
+                disabled={!parts.vtx || (parts.p1 && parts.p2 && parts.p3 && parts.p4)}
+                style={{ borderColor: activePart === 'prop' ? '#00ffcc' : '' }}
+              >
+                6. Propellers
+              </button>
             </div>
           </aside>
 
@@ -103,7 +153,7 @@ export default function Assembly3D() {
                 Select a ghost socket to attach the {activePart}.
               </div>
             )}
-            <DroneScene parts={parts} onAttach={handleAttach} />
+            <DroneScene parts={parts} onAttach={handleAttach} activePart={activePart} />
           </div>
         </div>
       </div>

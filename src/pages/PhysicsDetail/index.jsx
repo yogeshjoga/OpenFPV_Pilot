@@ -2,7 +2,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
-import { PHYSICS_SECTIONS } from '@data/physicsData'
+import { PHYSICS_SECTIONS } from '@data/physicsData.jsx'
 import styles from './PhysicsDetail.module.css'
 import { useEffect } from 'react'
 

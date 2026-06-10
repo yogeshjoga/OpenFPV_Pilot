@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
-import { PART_CATEGORIES } from '@data/parts'
+import { PART_CATEGORIES } from '@data/parts.jsx'
 import styles from './Catalog.module.css'
 
 export default function Catalog() {

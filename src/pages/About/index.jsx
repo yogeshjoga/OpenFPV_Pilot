@@ -1,26 +1,27 @@
 
 import { motion } from 'framer-motion'
+import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Sparkles, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { APP_NAME, APP_DESCRIPTION } from '@config/constants'
 import styles from './About.module.css'
 
 const VALUES = [
-  { icon: '📖', title: 'Learn by Building', desc: 'Every lesson is hands-on — you build a real drone, not a simulation.' },
-  { icon: '🔩', title: 'Zero to First Flight', desc: 'From soldering iron to freestyle — structured day-by-day programs for all levels.' },
-  { icon: '🌍', title: 'Premium Platform', desc: 'No paywalls, no subscriptions. Every guide, schematic, and resource is available to everyone.' },
+  { icon: <BookOpen size={24} />, title: 'Learn by Building', desc: 'Every lesson is hands-on — you build a real drone, not a simulation.' },
+  { icon: <PenTool size={24} />, title: 'Zero to First Flight', desc: 'From soldering iron to freestyle — structured day-by-day programs for all levels.' },
+  { icon: <Globe size={24} />, title: 'Premium Platform', desc: 'No paywalls, no subscriptions. Every guide, schematic, and resource is available to everyone.' },
 ]
 
 const TAGS = [
-  { icon: '🏢', label: 'Founder — urussys.com' },
-  { icon: '🤖', label: 'Agentic AI Developer & Architect' },
-  { icon: '🎓', label: 'Corporate Trainer' },
-  { icon: '☕', label: 'Java Full Stack' },
-  { icon: '✨', label: 'Generative AI' },
-  { icon: '🧠', label: 'Agentic AI & LLMs' },
-  { icon: '📊', label: 'Machine Learning & Data Science' },
-  { icon: '👁️', label: 'Computer Vision' },
-  { icon: '🚁', label: 'DGCA Certified Drone Pilot' },
-  { icon: '🔭', label: 'FPV & Drone Researcher' },
+  { icon: <Building size={16} />, label: 'Founder — urussys.com' },
+  { icon: <Bot size={16} />, label: 'Agentic AI Developer & Architect' },
+  { icon: <GraduationCap size={16} />, label: 'Corporate Trainer' },
+  { icon: <Coffee size={16} />, label: 'Java Full Stack' },
+  { icon: <Sparkles size={16} />, label: 'Generative AI' },
+  { icon: <Brain size={16} />, label: 'Agentic AI & LLMs' },
+  { icon: <BarChart size={16} />, label: 'Machine Learning & Data Science' },
+  { icon: <Eye size={16} />, label: 'Computer Vision' },
+  { icon: <Plane size={16} />, label: 'DGCA Certified Drone Pilot' },
+  { icon: <Telescope size={16} />, label: 'FPV & Drone Researcher' },
 ]
 
 export default function About() {
@@ -87,7 +88,7 @@ export default function About() {
                   className={styles.photo}
                 />
                 <div className={styles.dgcaBadge}>
-                  <span>🚁</span> DGCA Certified
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Plane size={18} /> DGCA Certified</span>
                 </div>
               </div>
 
@@ -130,7 +131,7 @@ export default function About() {
                     className={styles.websiteBtn}
                     id="founder-website-link"
                   >
-                    🌐 urussys.com
+                    <GlobeIcon size={18} style={{ marginRight: 8 }} /> urussys.com
                   </a>
                 </div>
               </div>

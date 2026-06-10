@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Target, Video, Bird, Flag, Mountain } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import styles from './Intro.module.css'
 
@@ -6,35 +7,35 @@ const DRONE_TYPES = [
   {
     id: 'tinywhoop',
     name: 'Tiny Whoops',
-    icon: '🛸',
+    icon: <Target size={32} />,
     desc: 'Small, lightweight (under 50g), and equipped with propeller guards (ducts). Perfect for flying indoors, safely around people, and learning the basics without risk of damage.',
     specs: ['Size: 65mm - 85mm', 'Battery: 1S - 2S LiPo', 'Use Case: Indoor, Safe'],
   },
   {
     id: 'cinewhoop',
     name: 'Cinewhoops',
-    icon: '🎥',
+    icon: <Video size={32} />,
     desc: 'Larger than Tiny Whoops and designed specifically to carry action cameras like GoPros. Their ducted design makes them safe to fly near subjects for cinematic video production.',
     specs: ['Size: 2.5" - 3.5"', 'Battery: 4S - 6S LiPo', 'Use Case: Cinematic, Real Estate'],
   },
   {
     id: 'freestyle',
     name: 'Freestyle (5-inch)',
-    icon: '🦅',
+    icon: <Bird size={32} />,
     desc: 'The gold standard of FPV. Open-propeller design for maximum thrust and agility. Built for acrobatic maneuvers, diving buildings, and raw power.',
     specs: ['Size: 5"', 'Battery: 4S - 6S LiPo', 'Use Case: Acrobatics, Bando flying'],
   },
   {
     id: 'racer',
     name: 'Racers',
-    icon: '🏎️',
+    icon: <Flag size={32} />,
     desc: 'Stripped down to the bare minimum weight for pure speed. Highly aerodynamic frames designed for navigating tight tracks at 100+ mph.',
     specs: ['Size: 5"', 'Battery: 6S LiPo', 'Use Case: Professional Racing'],
   },
   {
     id: 'macro',
     name: 'Long Range / Macro',
-    icon: '🏔️',
+    icon: <Mountain size={32} />,
     desc: 'Large drones built for efficiency and stability. Equipped with GPS and high-capacity batteries to fly miles away for mountain surfing.',
     specs: ['Size: 7" - 10"', 'Battery: 6S Li-Ion', 'Use Case: Mountain surfing, Exploration'],
   }

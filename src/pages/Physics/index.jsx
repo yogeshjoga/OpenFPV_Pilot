@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
-import { PHYSICS_SECTIONS } from '@data/physicsData'
+import { PHYSICS_SECTIONS } from '@data/physicsData.jsx'
 import styles from './Physics.module.css'
 
 export default function Physics() {
