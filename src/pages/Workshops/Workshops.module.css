@@ -391,7 +391,7 @@
 }
 
 .phoneBtn,
-.githubBtn {
+.websiteBtn {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -413,15 +413,15 @@
   box-shadow: 0 8px 32px rgba(0,212,255,0.4);
 }
 
-.githubBtn {
-  background: #24292e;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.15);
+.websiteBtn {
+  background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(124,58,237,0.15));
+  color: var(--color-accent-primary);
+  border: 1px solid rgba(0,212,255,0.3);
 }
-.githubBtn:hover {
-  background: #2f363d;
+.websiteBtn:hover {
+  background: linear-gradient(135deg, rgba(0,212,255,0.25), rgba(124,58,237,0.25));
+  box-shadow: 0 4px 20px rgba(0,212,255,0.2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 /* Founder credit */

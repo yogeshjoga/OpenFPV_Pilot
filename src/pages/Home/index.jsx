@@ -88,7 +88,7 @@ export default function Home() {
             </h1>
             <p className={styles.sub}>
               Build your own FPV drone from scratch. Learn to fly freestyle,
-              cinematic &amp; racing — all in one platform.
+              cinematic &amp; racing, all in one platform.
             </p>
             <div className={styles.heroActions} style={{ pointerEvents: 'auto' }}>
               <Link to="/catalog" className={styles.primaryBtn}>
@@ -193,7 +193,7 @@ export default function Home() {
                 Ready to <span className="gradient-text">Take Flight?</span>
               </h2>
               <p className={styles.bannerSub}>
-                Start your FPV journey today — build, tune, and fly your first freestyle drone. Master the basics before taking to the real skies.
+                Start your FPV journey today, build, tune, and fly your first freestyle drone. Master the basics before taking to the real skies.
               </p>
               <Link to="/builder" className={styles.primaryBtn}>
                 Quote Your First Build <ArrowRight size={16} style={{ marginLeft: 8 }} />

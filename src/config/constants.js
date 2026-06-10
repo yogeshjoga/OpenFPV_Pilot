@@ -1,8 +1,7 @@
-
 export const APP_NAME = 'EGIREROBOTICS'
 export const APP_TAGLINE = 'Fly Beyond Limits'
 export const APP_DESCRIPTION =
-  'A premium learning platform to build, tune, and fly FPV drones — from zero to first freestyle flight.'
+  'A premium learning platform to build, tune, and fly FPV drones, from zero to first freestyle flight.'
 
 export const NAV_LINKS = [
   { label: 'Home', path: '/' },
@@ -21,6 +20,7 @@ export const NAV_LINKS = [
   },
   { label: 'Gallery', path: '/gallery' },
   { label: 'FPV Quote', path: '/builder' },
+  { label: 'Blog', path: '/blog' },
   { label: 'About', path: '/about' },
 ]
 
