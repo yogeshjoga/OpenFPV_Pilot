@@ -15,20 +15,7 @@ export const NAV_LINKS = [
       { label: 'Physics', path: '/physics', minLevel: 3 },
       { label: 'Simulator', path: '/simulator' },
       { label: '3D Assembly', path: '/assembly-3d' },
-    ],
-    minLevel: 2 
-  },
-  { 
-    label: 'Exams', 
-    subLinks: [
-      { label: 'Certificated Exam', path: '/exams/all' },
-      { label: 'ESC', path: '/exams/esc' },
-      { label: 'Motors', path: '/exams/motor' },
-      { label: 'Flight Controller', path: '/exams/fc' },
-      { label: 'Propellers', path: '/exams/propeller' },
-      { label: 'VTX / Camera', path: '/exams/vtx' },
-      { label: 'Piloting', path: '/exams/piloting' },
-      { label: 'Building', path: '/exams/build' },
+      { label: 'Exams', path: '/exams' },
     ],
     minLevel: 1 
   },

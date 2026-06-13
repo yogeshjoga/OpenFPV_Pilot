@@ -81,6 +81,7 @@ export default function AppRouter() {
           <Route path="/intro" element={<IntroToDrones />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/exams" element={<Exams />} />
           <Route path="/exams/:categoryId" element={<Exams />} />
 
           <Route path="/admin" element={

@@ -100,6 +100,65 @@ export default function ExamPage() {
     setExamState('results')
   }
 
+  if (!categoryId) {
+    return (
+      <PageWrapper>
+        <div style={{ padding: '4rem 1rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <h1 style={{ fontSize: '3rem', marginBottom: '1rem', textAlign: 'center', color: 'var(--color-text-primary)' }}>
+            FPV Certification Exams
+          </h1>
+          <p style={{ color: 'var(--color-text-secondary)', marginBottom: '4rem', textAlign: 'center', fontSize: '1.2rem' }}>
+            Test your knowledge and earn certifications across various FPV drone disciplines.
+          </p>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+            gap: '2rem' 
+          }}>
+            {Object.values(EXAM_BANKS).map((exam) => (
+              <div 
+                key={exam.id}
+                onClick={() => navigate(`/exams/${exam.id}`)}
+                style={{
+                  background: 'var(--color-bg-card)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: '12px',
+                  padding: '2rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  minHeight: '200px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--color-accent-primary)'
+                  e.currentTarget.style.transform = 'translateY(-4px)'
+                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--color-border)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+              >
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-accent-primary)' }}>
+                  {exam.title.replace(' Certification Exam', '')}
+                </h3>
+                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                  {exam.id === 'all' 
+                    ? 'The final 50-question master certification test.' 
+                    : `Test your knowledge of FPV ${exam.id.toUpperCase()} systems.`}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </PageWrapper>
+    )
+  }
+
   if (!examData) {
     return (
       <PageWrapper>
