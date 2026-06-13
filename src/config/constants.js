@@ -21,7 +21,7 @@ export const NAV_LINKS = [
   { 
     label: 'Exams', 
     subLinks: [
-      { label: 'All Parts', path: '/exams/all' },
+      { label: 'Certificated Exam', path: '/exams/all' },
       { label: 'ESC', path: '/exams/esc' },
       { label: 'Motors', path: '/exams/motor' },
       { label: 'Flight Controller', path: '/exams/fc' },

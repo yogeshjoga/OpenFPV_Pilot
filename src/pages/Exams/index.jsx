@@ -106,10 +106,20 @@ export default function ExamPage() {
           <p style={{ color: 'var(--color-text-secondary)', marginBottom: '3rem' }}>FPV Drone Certification Exam</p>
           
           <div style={{ background: 'var(--color-bg-card)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
-            <p style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
-              This exam consists of 20 randomly selected multiple-choice questions.<br/>
-              Total possible score is 50 points.
-            </p>
+            {categoryId === 'all' ? (
+              <p style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+                This section is the final exam for the FPV Drone Certification.<br/>
+                It contains all component-related questions.<br/>
+                <strong>Total:</strong> 50 questions | <strong>Time:</strong> 2 hours<br/><br/>
+                <em>Topics covered: piloting, building, ESC, FC, motor, wiring, soldering, safety, battery maintenance, VTX, goggles, controller, and all related systems.</em><br/><br/>
+                Once you clear this exam, you will receive an official certification from <strong>Egirerobatics</strong>!
+              </p>
+            ) : (
+              <p style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
+                This exam consists of 20 randomly selected multiple-choice questions.<br/>
+                Total possible score is 50 points.
+              </p>
+            )}
             <button 
               onClick={startExam}
               style={{ background: '#4a90e2', color: 'white', border: 'none', padding: '1rem 3rem', fontSize: '1.2rem', borderRadius: '6px', cursor: 'pointer' }}
