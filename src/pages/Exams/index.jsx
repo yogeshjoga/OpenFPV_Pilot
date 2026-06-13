@@ -22,6 +22,16 @@ export default function ExamPage() {
 
   const examData = EXAM_BANKS[categoryId] || EXAM_BANKS['esc']
 
+  // Reset exam state when switching between categories in the navbar
+  useEffect(() => {
+    setExamState('intro')
+    setQuestions([])
+    setCurrentView('all')
+    setAnswers({})
+    setScore(0)
+    setGrade({ letter: '', feedback: '' })
+  }, [categoryId])
+
   // Initialize and select random questions
   const startExam = () => {
     const allQs = examData.questions
@@ -174,15 +184,38 @@ export default function ExamPage() {
 
       {examState === 'results' && (
         <div className={styles.layout}>
-          <div className={styles.resultsView}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: '#1e293b' }}>Exam Complete!</h2>
-            <div className={styles.scoreCircle}>
+          <div className={styles.resultsView} style={{ overflowY: 'auto' }}>
+            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: grade.letter === 'F' ? '#ef4444' : '#1e293b' }}>
+              {grade.letter === 'F' ? 'Exam Failed' : 'Exam Complete!'}
+            </h2>
+            <div className={styles.scoreCircle} style={grade.letter === 'F' ? { borderColor: '#ef4444', color: '#ef4444' } : {}}>
               {score}/50
             </div>
-            <div style={{ fontSize: '3rem', fontWeight: 800, color: '#1e293b', marginBottom: '1rem' }}>
+            <div style={{ fontSize: '3rem', fontWeight: 800, color: grade.letter === 'F' ? '#ef4444' : '#1e293b', marginBottom: '1rem' }}>
               {grade.letter}
             </div>
             <p style={{ fontSize: '1.2rem', color: '#64748b', marginBottom: '2rem' }}>{grade.feedback}</p>
+            
+            {grade.letter === 'F' && (
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '1.5rem', borderRadius: '8px', maxWidth: '600px', textAlign: 'left', marginBottom: '2rem' }}>
+                <h3 style={{ color: '#b91c1c', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span>📚</span> Study Roadmap
+                </h3>
+                <p style={{ color: '#7f1d1d', marginBottom: '1rem' }}>It looks like you need to review the core concepts. We highly recommend visiting the <strong>Catalog</strong> to study before retaking the exam.</p>
+                <ul style={{ color: '#991b1b', marginLeft: '1.5rem', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+                  <li>Read up on <strong>{examData.title.replace(' Certification Exam', '')}</strong> in the component catalog.</li>
+                  <li>Understand the basic terminology (e.g. KV, Back EMF, DShot, Firmware).</li>
+                  <li>Review the wiring, specifications, and safety guidelines for this component.</li>
+                </ul>
+                <button 
+                  onClick={() => navigate('/catalog')} 
+                  style={{ background: '#ef4444', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' }}
+                >
+                  Go to Catalog →
+                </button>
+              </div>
+            )}
+
             <button 
               className={styles.finishBtn} 
               onClick={() => { setExamState('intro'); setCurrentView('all'); }}
