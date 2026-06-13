@@ -18,6 +18,20 @@ export const NAV_LINKS = [
     ],
     minLevel: 2 
   },
+  { 
+    label: 'Exams', 
+    subLinks: [
+      { label: 'All Parts', path: '/exams/all' },
+      { label: 'ESC', path: '/exams/esc' },
+      { label: 'Motors', path: '/exams/motor' },
+      { label: 'Flight Controller', path: '/exams/fc' },
+      { label: 'Propellers', path: '/exams/propeller' },
+      { label: 'VTX / Camera', path: '/exams/vtx' },
+      { label: 'Piloting', path: '/exams/piloting' },
+      { label: 'Building', path: '/exams/build' },
+    ],
+    minLevel: 1 
+  },
   { label: 'Gallery', path: '/gallery' },
   { label: 'FPV Quote', path: '/builder' },
   { label: 'Blog', path: '/blog' },

@@ -15,6 +15,7 @@ const Simulator = lazy(() => import('@pages/Simulator'))
 const Assembly3D = lazy(() => import('@pages/Assembly3D'))
 const IntroToDrones = lazy(() => import('@pages/IntroToDrones'))
 const Blog = lazy(() => import('@pages/Blog'))
+const Exams = lazy(() => import('@pages/Exams'))
 
 const Login = lazy(() => import('@pages/Auth/Login'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
@@ -80,6 +81,7 @@ export default function AppRouter() {
           <Route path="/intro" element={<IntroToDrones />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/exams/:categoryId" element={<Exams />} />
 
           <Route path="/admin" element={
             <ProtectedRoute requiredLevel={4}>
