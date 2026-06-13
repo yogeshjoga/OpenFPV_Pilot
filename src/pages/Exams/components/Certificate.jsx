@@ -247,11 +247,14 @@ const CornerOrnament = ({ position }) => {
 /* ─────────────────────────────────────────────
    Certificate Component
 ───────────────────────────────────────────── */
-const Certificate = React.forwardRef(({ studentName, timestamp = Date.now() }, ref) => {
+export default function Certificate({ studentName, timestamp, isPreview = false }) {
   const displayName = studentName?.trim() || "STUDENT FULL NAME";
 
+  // Use state to ensure purity during re-renders
+  const [currentTimestamp] = React.useState(() => timestamp || Date.now());
+
   // Generate a unique Roll No based on date and time
-  const dateObj = new Date(timestamp);
+  const dateObj = new Date(currentTimestamp);
   const year = dateObj.getFullYear();
   const month = String(dateObj.getMonth() + 1).padStart(2, '0');
   const day = String(dateObj.getDate()).padStart(2, '0');
@@ -269,7 +272,7 @@ const Certificate = React.forwardRef(({ studentName, timestamp = Date.now() }, r
   return (
     <>
       <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
-      <div ref={ref} style={styles.certOuter} id="certificate-area">
+      <div style={{...styles.certOuter, position: "relative", overflow: "hidden", opacity: isPreview ? 0.95 : 1}} id="certificate-area">
         <div style={styles.certBorder}>
           {/* Purple accent lines */}
           <div style={styles.purpleLineTop} />
@@ -326,9 +329,36 @@ const Certificate = React.forwardRef(({ studentName, timestamp = Date.now() }, r
           {/* Gold bottom band */}
           <div style={styles.bottomBand} />
         </div>
+
+        {/* ── WATERMARK OVERLAY ── */}
+        {isPreview && (
+          <div style={{
+            position: "absolute", inset: 0, zIndex: 100,
+            display: "flex", justifyContent: "center", alignItems: "center",
+            pointerEvents: "none", overflow: "hidden"
+          }}>
+            <div style={{
+              color: "rgba(239, 68, 68, 0.12)", // Red with low opacity
+              fontSize: "140px",
+              fontWeight: 900,
+              transform: "rotate(-35deg)",
+              whiteSpace: "nowrap",
+              userSelect: "none",
+              textTransform: "uppercase",
+              letterSpacing: "10px",
+              textShadow: "0 0 20px rgba(239,68,68,0.2)"
+            }}>
+              Preview Only
+            </div>
+            {/* Tiled Watermark */}
+            <div style={{
+              position: "absolute", inset: 0,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='rgba(239,68,68,0.05)' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45 200 200)'%3EUNOFFICIAL PREVIEW%3C/text%3E%3C/svg%3E")`,
+              pointerEvents: "none",
+            }} />
+          </div>
+        )}
       </div>
     </>
   );
-});
-
-export default Certificate;
+}

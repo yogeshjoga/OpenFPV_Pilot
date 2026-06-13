@@ -9,6 +9,7 @@ import ExamSidebar from './components/ExamSidebar'
 import ExamTable from './components/ExamTable'
 import ExamQuestion from './components/ExamQuestion'
 import Certificate from './components/Certificate'
+import CertificateV2 from './components/CertificateV2'
 
 export default function ExamPage() {
   const { categoryId } = useParams()
@@ -25,6 +26,7 @@ export default function ExamPage() {
   const [studentName, setStudentName] = useState('')
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [showPreview, setShowPreview] = useState(false)
+  const [certVersion, setCertVersion] = useState('v1')
 
   const examData = EXAM_BANKS[categoryId] || EXAM_BANKS['esc']
 
@@ -289,8 +291,14 @@ export default function ExamPage() {
                 
                 {showPreview && studentName.trim() && (
                   <div style={{ marginBottom: '3rem', padding: '1.5rem', background: 'var(--color-bg-primary)', borderRadius: '12px', border: '1px dashed var(--color-border)' }}>
-                    <h3 style={{ marginBottom: '1rem', color: 'var(--color-text-secondary)', fontSize: '1rem' }}>Certificate Preview</h3>
-                    <Certificate studentName={studentName} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <h3 style={{ color: 'var(--color-text-secondary)', fontSize: '1rem', margin: 0 }}>Certificate Preview</h3>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button onClick={() => setCertVersion('v1')} style={{ padding: '0.4rem 0.8rem', background: certVersion === 'v1' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: `1px solid var(--color-border)`, color: 'white', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}>Classic V1</button>
+                        <button onClick={() => setCertVersion('v2')} style={{ padding: '0.4rem 0.8rem', background: certVersion === 'v2' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: `1px solid var(--color-border)`, color: 'white', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}>Modern V2</button>
+                      </div>
+                    </div>
+                    {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={true} /> : <CertificateV2 studentName={studentName} isPreview={true} />}
                   </div>
                 )}
               </>
@@ -468,7 +476,12 @@ export default function ExamPage() {
                 <h2 style={{ fontSize: '2rem', color: 'var(--color-accent-primary)', marginBottom: '1rem' }}>🏆 Official Certification</h2>
                 <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>Congratulations, <strong>{studentName}</strong>! Here is your official FPV Master Pilot Certification.</p>
                 
-                <Certificate studentName={studentName} />
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
+                  <button onClick={() => setCertVersion('v1')} style={{ padding: '0.6rem 1.5rem', background: certVersion === 'v1' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>Classic V1 Certificate</button>
+                  <button onClick={() => setCertVersion('v2')} style={{ padding: '0.6rem 1.5rem', background: certVersion === 'v2' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>Modern V2 Certificate</button>
+                </div>
+
+                {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={false} /> : <CertificateV2 studentName={studentName} isPreview={false} />}
               </div>
             )}
           </div>
