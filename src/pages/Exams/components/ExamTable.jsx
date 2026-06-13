@@ -9,7 +9,7 @@ export default function ExamTable({ questions, answers, onSolve }) {
           <tr>
             <th>Name of the Problem</th>
             <th>Difficulty</th>
-            <th>Score</th>
+            <th>Points</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -25,12 +25,12 @@ export default function ExamTable({ questions, answers, onSolve }) {
                 <td style={{ color: q.difficulty === 'hard' ? '#ef4444' : q.difficulty === 'medium' ? '#f59e0b' : '#10b981' }}>
                   {q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)}
                 </td>
-                <td>{isAnswered ? pts : 0}.0/{pts}</td>
+                <td>{pts} {pts === 1 ? 'Point' : 'Points'}</td>
                 <td>
                   {isAnswered ? (
-                    <span className={styles.statusSolved}>✓ Solved</span>
+                    <span className={styles.statusSolved}>✓ Attempted</span>
                   ) : (
-                    <span className={styles.statusUnsolved}>Unsolved</span>
+                    <span className={styles.statusUnsolved}>Unattempted</span>
                   )}
                 </td>
                 <td>

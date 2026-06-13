@@ -19,6 +19,7 @@ export default function ExamPage() {
   const [answers, setAnswers] = useState({}) // { questionId: selectedOptionIndex }
   const [score, setScore] = useState(0)
   const [grade, setGrade] = useState({ letter: '', feedback: '' })
+  const [reportCard, setReportCard] = useState(null)
 
   const examData = EXAM_BANKS[categoryId] || EXAM_BANKS['esc']
 
@@ -30,6 +31,7 @@ export default function ExamPage() {
     setAnswers({})
     setScore(0)
     setGrade({ letter: '', feedback: '' })
+    setReportCard(null)
   }, [categoryId])
 
   // Initialize and select random questions
@@ -78,17 +80,36 @@ export default function ExamPage() {
 
   const finishExam = () => {
     let totalScore = 0
+    let correct = 0
+    let incorrect = 0
+    let attempted = 0
+    let unattempted = 0
     
     questions.forEach(q => {
       const selected = answers[q.id]
-      if (selected === q.answer) {
-        if (q.difficulty === 'hard') totalScore += 3
-        else if (q.difficulty === 'medium') totalScore += 2
-        else totalScore += 1
+      if (selected !== undefined) {
+        attempted++
+        if (selected === q.answer) {
+          correct++
+          if (q.difficulty === 'hard') totalScore += 3
+          else if (q.difficulty === 'medium') totalScore += 2
+          else totalScore += 1
+        } else {
+          incorrect++
+        }
+      } else {
+        unattempted++
       }
     })
 
     setScore(totalScore)
+    setReportCard({ 
+      total: questions.length, 
+      attempted, 
+      unattempted, 
+      correct, 
+      incorrect 
+    })
     
     if (totalScore >= 85) setGrade({ letter: 'A+', feedback: 'ESC Expert' })
     else if (totalScore >= 75) setGrade({ letter: 'A', feedback: 'Advanced FPV Builder' })
@@ -191,7 +212,7 @@ export default function ExamPage() {
             )}
             <button 
               onClick={startExam}
-              style={{ background: '#4a90e2', color: 'white', border: 'none', padding: '1rem 3rem', fontSize: '1.2rem', borderRadius: '6px', cursor: 'pointer' }}
+              className={styles.startBtn}
             >
               Start Exam
             </button>
@@ -243,44 +264,82 @@ export default function ExamPage() {
 
       {examState === 'results' && (
         <div className={styles.layout}>
-          <div className={styles.resultsView} style={{ overflowY: 'auto' }}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: grade.letter === 'F' ? '#ef4444' : '#1e293b' }}>
+          <div className={styles.resultsView} style={{ overflowY: 'auto', padding: '2rem' }}>
+            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: grade.letter === 'F' ? '#ef4444' : 'var(--color-text-primary)' }}>
               {grade.letter === 'F' ? 'Exam Failed' : 'Exam Complete!'}
             </h2>
-            <div className={styles.scoreCircle} style={grade.letter === 'F' ? { borderColor: '#ef4444', color: '#ef4444' } : {}}>
-              {score}/50
-            </div>
-            <div style={{ fontSize: '3rem', fontWeight: 800, color: grade.letter === 'F' ? '#ef4444' : '#1e293b', marginBottom: '1rem' }}>
-              {grade.letter}
-            </div>
-            <p style={{ fontSize: '1.2rem', color: '#64748b', marginBottom: '2rem' }}>{grade.feedback}</p>
             
-            {grade.letter === 'F' && (
-              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '1.5rem', borderRadius: '8px', maxWidth: '600px', textAlign: 'left', marginBottom: '2rem' }}>
-                <h3 style={{ color: '#b91c1c', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span>📚</span> Study Roadmap
-                </h3>
-                <p style={{ color: '#7f1d1d', marginBottom: '1rem' }}>It looks like you need to review the core concepts. We highly recommend visiting the <strong>Catalog</strong> to study before retaking the exam.</p>
-                <ul style={{ color: '#991b1b', marginLeft: '1.5rem', marginBottom: '1.5rem', lineHeight: '1.6' }}>
-                  <li>Read up on <strong>{examData.title.replace(' Certification Exam', '')}</strong> in the component catalog.</li>
-                  <li>Understand the basic terminology (e.g. KV, Back EMF, DShot, Firmware).</li>
-                  <li>Review the wiring, specifications, and safety guidelines for this component.</li>
-                </ul>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', width: '100%', maxWidth: '1000px', alignItems: 'stretch' }}>
+              
+              {/* Left Side: Score & Grade */}
+              <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg-card)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
+                <div className={styles.scoreCircle} style={grade.letter === 'F' ? { borderColor: '#ef4444', color: '#ef4444' } : {}}>
+                  {score}/50
+                </div>
+                <div style={{ fontSize: '3rem', fontWeight: 800, color: grade.letter === 'F' ? '#ef4444' : 'var(--color-text-primary)', marginBottom: '1rem' }}>
+                  {grade.letter}
+                </div>
+                <p style={{ fontSize: '1.2rem', color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>{grade.feedback}</p>
+                
                 <button 
-                  onClick={() => navigate('/catalog')} 
-                  style={{ background: '#ef4444', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' }}
+                  className={styles.finishBtn} 
+                  style={{ margin: 'auto 0 0 0' }}
+                  onClick={() => { setExamState('intro'); setCurrentView('all'); }}
                 >
-                  Go to Catalog →
+                  Retake Exam
                 </button>
               </div>
-            )}
 
-            <button 
-              className={styles.finishBtn} 
-              onClick={() => { setExamState('intro'); setCurrentView('all'); }}
-            >
-              Retake Exam
-            </button>
+              {/* Right Side: Report Card & Roadmap */}
+              <div style={{ flex: '1.5', minWidth: '350px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                {reportCard && (
+                  <div style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '2rem', width: '100%', textAlign: 'left' }}>
+                    <h3 style={{ color: 'var(--color-text-primary)', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem', marginBottom: '1rem' }}>Exam Report Card</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                      <span>Total Questions:</span>
+                      <span style={{ fontWeight: 'bold', color: 'var(--color-text-primary)' }}>{reportCard.total}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                      <span>Attempted:</span>
+                      <span style={{ fontWeight: 'bold', color: 'var(--color-text-primary)' }}>{reportCard.attempted}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                      <span>Unattempted:</span>
+                      <span style={{ fontWeight: 'bold', color: 'var(--color-text-primary)' }}>{reportCard.unattempted}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                      <span>Correct Answers:</span>
+                      <span style={{ fontWeight: 'bold', color: '#10b981' }}>{reportCard.correct}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)' }}>
+                      <span>Incorrect Answers:</span>
+                      <span style={{ fontWeight: 'bold', color: '#ef4444' }}>{reportCard.incorrect}</span>
+                    </div>
+                  </div>
+                )}
+                
+                {grade.letter === 'F' && (
+                  <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '1.5rem', borderRadius: '12px', textAlign: 'left' }}>
+                    <h3 style={{ color: '#b91c1c', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span>📚</span> Study Roadmap
+                    </h3>
+                    <p style={{ color: '#7f1d1d', marginBottom: '1rem', fontSize: '0.9rem' }}>Review the core concepts in the <strong>Catalog</strong> before retaking the exam.</p>
+                    <ul style={{ color: '#991b1b', marginLeft: '1.5rem', marginBottom: '1.5rem', lineHeight: '1.4', fontSize: '0.9rem' }}>
+                      <li>Read up on <strong>{examData.title.replace(' Certification Exam', '')}</strong>.</li>
+                      <li>Understand basic terminology (e.g. KV, Back EMF).</li>
+                      <li>Review the wiring, specifications, and safety guidelines.</li>
+                    </ul>
+                    <button 
+                      onClick={() => navigate('/catalog')} 
+                      style={{ background: '#ef4444', color: 'white', padding: '0.5rem 1rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem' }}
+                    >
+                      Go to Catalog →
+                    </button>
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
         </div>
       )}
