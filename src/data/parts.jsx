@@ -384,6 +384,60 @@ export const PART_CATEGORIES = [
           { icon: <Lightbulb size={20} />, tip: 'Trusted ESC brands: BLHeli_32, AM32, Aikon, Hobbywing, Spedix.' },
         ],
       },
+      {
+        title: 'How an ESC Works (The Basics)',
+        type: 'explainer',
+        content: 'Think of a drone ESC as a high-speed electronic switch that converts DC battery power into 3-phase AC power for the motor. A 4-in-1 ESC simply means 1 board with 4 separate ESC circuits, where each controls 1 motor.',
+      },
+      {
+        title: 'Overall Power Flow',
+        type: 'tips',
+        items: [
+          { icon: <Battery size={20} />, tip: 'LiPo Battery provides raw DC power' },
+          { icon: <Zap size={20} />, tip: '4-in-1 ESC receives the power and data commands' },
+          { icon: <RadioReceiver size={20} />, tip: 'ESC converts DC into 3 Phase Power' },
+          { icon: <Fan size={20} />, tip: 'Brushless Motor receives the phases and spins the propeller' },
+        ],
+      },
+      {
+        title: 'Main Internal Components',
+        type: 'cards',
+        items: [
+          { name: 'Capacitors', badge: 'Smoothing', badgeColor: '#0095b8', icon: <Square size={20} />, desc: 'Large cylindrical components that act like a water tank smoothing water pressure. They remove voltage spikes, smooth battery power, and protect MOSFETs.', specs: ['Absorbs voltage jumps (e.g. 22V to 30V)'], use: 'Essential for protecting the ESC from sudden battery spikes.' },
+          { name: 'TVS Diode', badge: 'Protection', badgeColor: '#ef4444', icon: <Shield size={20} />, desc: 'An electrical pressure relief valve. Protects the ESC from sudden extreme voltage spikes, like when a battery disconnects suddenly.', specs: ['Clamps voltage spikes (e.g. 40V)'], use: 'Extreme voltage protection.' },
+          { name: 'Voltage Regulators', badge: 'Power', badgeColor: '#f59e0b', icon: <Zap size={20} />, desc: 'Converts high battery voltage (e.g. 22V) down to safe levels for the MCU (usually 5V and 3.3V). Common chips include AMS1117 or MP1584.', specs: ['Steps down 22V to 3.3V'], use: 'Powering the ESC\'s internal brain.' },
+          { name: 'Microcontroller (MCU)', badge: 'Brain', badgeColor: '#10b981', icon: <Brain size={20} />, desc: 'A tiny computer (BB21, STM32) running firmware like BLHeli_32 or Bluejay. Receives throttle commands and calculates switching timing.', specs: ['Runs at up to 48 MHz', 'Calculates timing'], use: 'Controlling the MOSFET switches.' },
+          { name: 'Gate Driver IC', badge: 'Amplifier', badgeColor: '#7c3aed', icon: <Radio size={20} />, desc: 'The power amplifier between the brain and muscle. The MCU cannot directly drive MOSFETs, so the driver boosts the 3.3V signal to the ~10V needed.', specs: ['Chips like FD6288', 'Provides high current pulse'], use: 'Bridging the MCU and MOSFETs.' },
+          { name: 'MOSFETs', badge: 'Switches', badgeColor: '#ec4899', icon: <Check size={20} />, desc: 'Electronic switches that turn ON/OFF millions of times to create fake AC power. A typical 4-in-1 ESC needs 24 MOSFETs (6 per motor).', specs: ['High Side & Low Side', 'Converts DC to 3-Phase AC'], use: 'Delivering switched power to the motors.' },
+        ],
+      },
+      {
+        title: 'DC to 3-Phase AC Conversion',
+        type: 'explainer',
+        content: 'The battery provides constant DC voltage. The ESC\'s MOSFETs rapidly switch this power to phase A, B, and C in a specific order (e.g., A=ON, B=OFF, C=OFF, then A=OFF, B=ON, C=OFF). This happens thousands of times a second, creating a rotating magnetic field that the motor magnets follow. This is why brushless motors have 3 wires!',
+      },
+      {
+        title: 'How ESC Knows Rotor Position',
+        type: 'cards',
+        items: [
+          { name: 'Sensorless (Back EMF)', badge: 'Most Common', badgeColor: '#10b981', icon: <RadioReceiver size={20} />, desc: 'When the motor spins, it acts as a tiny generator and creates voltage (Back EMF). The ESC measures this voltage to calculate rotor position and speed. Used in nearly all FPV drones.', specs: ['No sensors needed', 'Motor talks back to ESC'], use: 'All standard FPV builds.' },
+          { name: 'Hall Sensors', badge: 'Rare in FPV', badgeColor: '#f59e0b', icon: <Target size={20} />, desc: 'Physical sensors inside the motor detect magnet position. More expensive and heavier.', specs: ['Physical magnet sensors'], use: 'Common in E-bikes and Electric cars, rare in FPV.' },
+        ],
+      },
+      {
+        title: 'Sensors and Resistors',
+        type: 'tips',
+        items: [
+          { icon: <Zap size={20} />, tip: 'Gate Resistors: Control switching speed between MCU and MOSFET.' },
+          { icon: <BarChart2 size={20} />, tip: 'Current Sensor: Uses a shunt resistor to measure total amps (10A, 50A, 100A) and sends data to the FC for OSD display.' },
+          { icon: <Thermometer size={20} />, tip: 'Temperature Sensor: Monitors MOSFET heat. If it hits 100°C+, the ESC can automatically reduce power to prevent burning.' },
+        ],
+      },
+      {
+        title: 'The Simple Analogy',
+        type: 'explainer',
+        content: 'Imagine 3 people pulling a merry-go-round. Person A pulls while B and C wait. Then B pulls while A and C wait. Then C pulls. The pull direction keeps rotating. That rotating pull is exactly what the ESC creates electronically. The amazing part is this switching happens tens of thousands of times per second (e.g. 48 kHz), allowing a drone motor to go from idle to full power in milliseconds!',
+      },
     ],
   },
   {
