@@ -1,0 +1,993 @@
+FPV Professional Pilot Certification Exam
+Level 0 → Professional FPV Pilot (Freestyle, Racing, Cinematic, Inspection, Interceptor)
+Skills Covered
+
+Hovering
+Altitude Control
+Throttle Management
+Smooth Turns
+Banking
+Coordinated Turns
+Figure-8 Patterns
+Cinematic Flying
+Racing Techniques
+Freestyle Techniques
+Target Tracking
+Gap Flying
+Emergency Recovery
+Precision Landing
+Speed Control
+Drift Control
+Prop Wash Handling
+Wind Compensation
+Long Range Flying
+Interceptor Drone Skills
+Professional Camera Movement
+
+EASY LEVEL (Beginner)
+1 Point Each
+Q1
+What stick primarily controls altitude?
+A. Roll
+B. Pitch
+C. Throttle
+D. Yaw
+Answer: C
+
+Q2
+What stick controls left-right tilt?
+A. Pitch
+B. Roll
+C. Throttle
+D. GPS
+Answer: B
+
+Q3
+What stick rotates the drone left or right?
+A. Roll
+B. Pitch
+C. Yaw
+D. Throttle
+Answer: C
+
+Q4
+To hover at the same height, the pilot should:
+A. Hold constant throttle
+B. Hold maximum throttle
+C. Hold minimum throttle
+D. Disable motors
+Answer: A
+
+Q5
+The best practice for learning FPV is:
+A. Acro mode immediately
+B. Simulator first
+C. Full speed flights
+D. Racing first day
+Answer: B
+
+Q6
+What causes sudden altitude jumps?
+A. Aggressive throttle inputs
+B. GPS
+C. Camera angle
+D. VTX power
+Answer: A
+
+Q7
+Which movement causes forward flight?
+A. Roll
+B. Pitch Forward
+C. Yaw
+D. Throttle Only
+Answer: B
+
+Q8
+Which movement causes sideways flight?
+A. Roll
+B. Pitch
+C. Throttle
+D. GPS
+Answer: A
+
+Q9
+What is the safest first maneuver?
+A. Power Loop
+B. Hover
+C. Dive
+D. Split-S
+Answer: B
+
+Q10
+Why should stick movements be small?
+A. Better control
+B. More crashes
+C. More speed
+D. More battery
+Answer: A
+
+Q11
+What is the purpose of a hover exercise?
+A. Learn throttle control
+B. Learn GPS
+C. Learn batteries
+D. Learn ESC
+Answer: A
+
+Q12
+What is the easiest landing technique?
+A. Full throttle drop
+B. Slow descent
+C. Disarm mid-air
+D. Dive landing
+Answer: B
+
+Q13
+During takeoff, throttle should be:
+A. Smoothly increased
+B. Instantly maxed
+C. Constantly pulsed
+D. Disabled
+Answer: A
+
+Q14
+When learning, altitude should be:
+A. High enough to recover
+B. 1 cm above ground
+C. Maximum possible
+D. Touching trees
+Answer: A
+
+Q15
+What skill prevents crashes most?
+A. Orientation Awareness
+B. Fast Motors
+C. High VTX
+D. GPS
+Answer: A
+
+MEDIUM LEVEL
+2 Points Each
+Q16
+When making a smooth turn, which controls are combined?
+A. Roll + Pitch
+B. Throttle Only
+C. Yaw Only
+D. Roll Only
+Answer: A
+
+Q17
+What is a coordinated turn?
+A. Roll + Pitch + Small Yaw
+B. Throttle Only
+C. Pitch Only
+D. Roll Only
+Answer: A
+
+Q18
+Why do beginners wobble during turns?
+A. Overcorrection
+B. Strong Motors
+C. GPS
+D. Antennas
+Answer: A
+
+Q19
+The best method to eliminate wobbling is:
+A. Smaller stick corrections
+B. Bigger corrections
+C. Full throttle
+D. More yaw
+Answer: A
+
+Q20
+For cinematic flying, stick movement should be:
+A. Smooth
+B. Aggressive
+C. Random
+D. Maximum
+Answer: A
+
+Q21
+Which maneuver teaches smooth transitions?
+A. Figure-8
+B. Crash Recovery
+C. Dive
+D. Split-S
+Answer: A
+
+Q22
+The purpose of a Figure-8 drill is:
+A. Learn coordinated turns
+B. Learn GPS
+C. Learn batteries
+D. Learn charging
+Answer: A
+
+Q23
+When following a moving car, pilots should:
+A. Predict movement
+B. Chase aggressively
+C. Ignore speed
+D. Fly randomly
+Answer: A
+
+Q24
+What creates jerky video?
+A. Abrupt stick inputs
+B. GPS
+C. OSD
+D. Battery
+Answer: A
+
+Q25
+What causes prop wash oscillations?
+A. Turbulent air
+B. GPS
+C. VTX
+D. Receiver
+Answer: A
+
+Q26
+The best way to fly through a gap is:
+A. Focus beyond the gap
+B. Look at obstacle
+C. Close eyes
+D. Full throttle
+Answer: A
+
+Q27
+Which skill improves race line efficiency?
+A. Corner Entry Planning
+B. More Power
+C. Bigger Props
+D. Louder Beeper
+Answer: A
+
+Q28
+During descent, pilots should:
+A. Avoid own prop wash
+B. Disable throttle
+C. Max throttle
+D. Ignore air flow
+Answer: A
+
+Q29
+What improves altitude consistency?
+A. Throttle Discipline
+B. Bigger Battery
+C. GPS
+D. Antenna
+Answer: A
+
+Q30
+What causes altitude hunting?
+A. Excessive throttle corrections
+B. GPS
+C. Camera
+D. ESC
+Answer: A
+
+Q31
+For cinematic shots, turns should be:
+A. Wide and smooth
+B. Sharp
+C. Aggressive
+D. Instant
+Answer: A
+
+Q32
+Smooth drifts require:
+A. Controlled roll and yaw
+B. Full throttle
+C. GPS
+D. Brake mode
+Answer: A
+
+Q33
+What makes drone motion appear professional?
+A. Predictable movement
+B. Random movement
+C. Fast movement
+D. Aggressive movement
+Answer: A
+
+Q34
+Which skill is most important for target tracking?
+A. Relative Position Awareness
+B. Maximum Speed
+C. Bigger Battery
+D. High KV Motors
+Answer: A
+
+Q35
+The best way to learn precision flying is:
+A. Repeat drills daily
+B. Buy larger motors
+C. Use stronger VTX
+D. Fly randomly
+Answer: A
+
+HARD LEVEL
+3 Points Each
+Q36
+Professional cinematic pilots often use:
+A. Expo and Rates Tuning
+B. Maximum Rates
+C. Racing Rates
+D. Default Settings Only
+Answer: A
+
+Q37
+The biggest reason for wobble after a turn is:
+A. Excessive correction input
+B. Battery Voltage
+C. GPS
+D. OSD
+Answer: A
+
+Q38
+What is throttle modulation?
+A. Fine throttle adjustments
+B. Full throttle
+C. Motor replacement
+D. ESC tuning
+Answer: A
+
+Q39
+A perfect orbit shot requires:
+A. Constant radius around target
+B. Random radius
+C. Random speed
+D. Full yaw
+Answer: A
+
+Q40
+Professional pilots maintain altitude by:
+A. Continuous micro-adjustments
+B. Full throttle bursts
+C. GPS only
+D. Ignoring throttle
+Answer: A
+
+Q41
+When entering a turn at high speed:
+A. Plan exit before entry
+B. React at last second
+C. Full yaw
+D. Full roll
+Answer: A
+
+Q42
+The fastest racing pilots focus on:
+A. Smoothness over aggression
+B. Maximum aggression
+C. Random corrections
+D. Bigger batteries
+Answer: A
+
+Q43
+The key to smooth dives is:
+A. Controlled throttle management
+B. Full throttle
+C. GPS lock
+D. Higher camera angle
+Answer: A
+
+Q44
+Why do professional pilots look ahead?
+A. Predict future path
+B. Avoid flying
+C. Reduce speed
+D. Save battery
+Answer: A
+
+Q45
+What is the primary purpose of racing lines?
+A. Minimize time through course
+B. Increase battery weight
+C. Improve GPS
+D. Reduce VTX power
+Answer: A
+
+Q46
+A professional chase shot requires:
+A. Constant framing and distance
+B. Maximum speed
+C. Random movement
+D. Aggressive yaw
+Answer: A
+
+Q47
+What causes over-shooting a target?
+A. Poor anticipation
+B. GPS
+C. Camera Settings
+D. Battery Type
+Answer: A
+
+Q48
+Professional pilots recover from mistakes by:
+A. Small corrections
+B. Large corrections
+C. Panic inputs
+D. Disarming
+Answer: A
+
+Q49
+The smoothest FPV flights are achieved through:
+A. Precision and anticipation
+B. Raw speed
+C. Bigger motors
+D. Higher VTX
+Answer: A
+
+Q50
+What separates a professional FPV pilot from a beginner?
+A. Ability to consistently place the drone exactly where intended
+B. Bigger batteries
+C. Faster motors
+D. Stronger antennas
+Answer: A
+
+ADVANCED PROFESSIONAL MODULES (51-120)
+
+Q51
+What is the primary goal of cinematic FPV flying?
+A. Maximum Speed
+B. Smooth Storytelling Through Motion
+C. Maximum Altitude
+D. Fastest Lap Time
+Answer: B
+
+Q52
+What creates professional-looking footage?
+A. Smooth Acceleration
+B. Smooth Deceleration
+C. Smooth Turns
+D. All of the Above
+Answer: D
+
+Q53
+The most common mistake in cinematic FPV is:
+A. Overcorrection
+B. Too Smooth Flying
+C. Low VTX Power
+D. Low Battery
+Answer: A
+
+Q54
+What is an Orbit Shot?
+A. Flying Circles Around Subject
+B. Hovering
+C. Landing
+D. Racing
+Answer: A
+
+Q55
+During an orbit shot the subject should remain:
+A. Center Frame
+B. Behind Drone
+C. Above Drone
+D. Below Drone
+Answer: A
+
+Q56
+What controls orbit radius?
+A. Roll + Yaw Balance
+B. Throttle Only
+C. Pitch Only
+D. GPS
+Answer: A
+
+Q57
+What is a Reveal Shot?
+A. Gradually Showing Subject
+B. Fast Dive
+C. Crash Recovery
+D. Hover
+Answer: A
+
+Q58
+A Reveal Shot creates:
+A. Surprise
+B. Storytelling
+C. Scale
+D. All of the Above
+Answer: D
+
+Q59
+What is a Dolly Shot?
+A. Constant Speed Forward Motion
+B. Hover
+C. Roll Only
+D. Yaw Only
+Answer: A
+
+Q60
+Parallax Effect occurs when:
+A. Foreground Moves Faster Than Background
+B. Everything Moves Same Speed
+C. Drone Stops
+D. GPS Fails
+Answer: A
+
+Q61
+Professional pilots use yaw:
+A. Sparingly
+B. Constantly
+C. Aggressively
+D. Randomly
+Answer: A
+
+Q62
+For cinematic footage throttle should be:
+A. Smooth
+B. Aggressive
+C. Random
+D. Maximum
+Answer: A
+
+Q63
+Smooth footage depends mostly on:
+A. Pilot Skill
+B. Battery Brand
+C. Antenna Type
+D. Frame Color
+Answer: A
+
+Q64
+The best orbit speed is:
+A. Constant
+B. Random
+C. Maximum
+D. Minimum
+Answer: A
+
+Q65
+Good framing means:
+A. Subject Positioned Intentionally
+B. Random Subject Placement
+C. Maximum Zoom
+D. Fast Motion
+Answer: A
+
+Q66
+Lead Room means:
+A. Space Ahead of Subject
+B. Space Behind Subject
+C. Empty Sky
+D. GPS Data
+Answer: A
+
+Q67
+A professional chase shot maintains:
+A. Constant Distance
+B. Constant Altitude
+C. Consistent Framing
+D. All of the Above
+Answer: D
+
+Q68
+The biggest enemy of cinematic footage is:
+A. Jerky Inputs
+B. Low Wind
+C. High Battery
+D. GPS
+Answer: A
+
+Q69
+Professional pilots look:
+A. Ahead of Current Position
+B. At Drone
+C. At Ground
+D. At OSD Only
+Answer: A
+
+Q70
+The secret of cinematic flying is:
+A. Predictability
+B. Randomness
+C. Aggression
+D. Speed
+Answer: A
+
+Q71
+The fastest path through a corner is called:
+A. Racing Line
+B. Hover Line
+C. GPS Line
+D. Orbit Line
+Answer: A
+
+Q72
+Professional racers prioritize:
+A. Exit Speed
+B. Entry Speed
+C. Top Speed
+D. Battery Life
+Answer: A
+
+Q73
+The apex is:
+A. Inside Point of Turn
+B. Landing Point
+C. Start Gate
+D. Finish Gate
+Answer: A
+
+Q74
+A late apex usually provides:
+A. Better Exit
+B. Worse Exit
+C. Slower Turn
+D. More Wobble
+Answer: A
+
+Q75
+Fast racers fly:
+A. Smooth
+B. Aggressive
+C. Random
+D. Unpredictable
+Answer: A
+
+Q76
+The largest time loss usually occurs from:
+A. Poor Corners
+B. Straight Sections
+C. Takeoff
+D. Landing
+Answer: A
+
+Q77
+The purpose of race lines is:
+A. Minimize Lap Time
+B. Increase Battery Life
+C. Improve GPS
+D. Increase Altitude
+Answer: A
+
+Q78
+Professional racers brake:
+A. Before Turn
+B. During Turn
+C. After Turn
+D. Never
+Answer: A
+
+Q79
+Overshooting a gate usually means:
+A. Poor Corner Setup
+B. GPS Failure
+C. ESC Failure
+D. Camera Failure
+Answer: A
+
+Q80
+The fastest pilots are:
+A. Efficient
+B. Aggressive
+C. Reckless
+D. Lucky
+Answer: A
+
+Q81
+What improves gate accuracy?
+A. Repetition
+B. Bigger Motors
+C. Bigger Battery
+D. Higher VTX
+Answer: A
+
+Q82
+What is race consistency?
+A. Repeating Same Lap
+B. Maximum Speed
+C. Biggest Battery
+D. Highest Altitude
+Answer: A
+
+Q83
+Fast pilots focus on:
+A. Exit Point
+B. Drone
+C. Props
+D. OSD
+Answer: A
+
+Q84
+Professional racers anticipate:
+A. Next Gate
+B. Current Gate
+C. OSD
+D. Battery
+Answer: A
+
+Q85
+The best racers make:
+A. Minimal Corrections
+B. Large Corrections
+C. Random Corrections
+D. Panic Inputs
+Answer: A
+
+Q86
+A perfect lap is:
+A. Smooth and Consistent
+B. Aggressive
+C. Random
+D. Lucky
+Answer: A
+
+Q87
+Race performance improves most from:
+A. Practice
+B. Hardware
+C. Batteries
+D. VTX
+Answer: A
+
+Q88
+The biggest beginner mistake is:
+A. Looking Too Close
+B. Looking Ahead
+C. Smooth Flying
+D. Planning Turns
+Answer: A
+
+Q89
+Good racers fly:
+A. Predictable Lines
+B. Random Lines
+C. Wide Lines Only
+D. Tight Lines Only
+Answer: A
+
+Q90
+The fastest race drone is useless without:
+A. Pilot Skill
+B. Battery
+C. GPS
+D. OSD
+Answer: A
+
+Q91
+Pure Pursuit means:
+A. Point Directly At Target
+B. Fly Away
+C. Hover
+D. Orbit
+Answer: A
+
+Q92
+Lead Pursuit means:
+A. Aim Ahead of Target
+B. Aim Behind Target
+C. Aim Below Target
+D. Aim Randomly
+Answer: A
+
+Q93
+Which pursuit reaches moving targets fastest?
+A. Lead Pursuit
+B. Lag Pursuit
+C. Hover Pursuit
+D. Random Pursuit
+Answer: A
+
+Q94
+Closing Velocity means:
+A. Rate Distance Shrinks
+B. Motor RPM
+C. Battery Voltage
+D. GPS Speed
+Answer: A
+
+Q95
+Target tracking requires:
+A. Prediction
+B. Aggression
+C. Random Inputs
+D. High VTX
+Answer: A
+
+Q96
+Interceptor pilots focus on:
+A. Intercept Point
+B. Current Position
+C. Battery
+D. OSD
+Answer: A
+
+Q97
+Moving targets require:
+A. Anticipation
+B. Guessing
+C. Luck
+D. Hovering
+Answer: A
+
+Q98
+Fast targets require:
+A. Lead Angle
+B. Hovering
+C. Orbiting
+D. Landing
+Answer: A
+
+Q99
+The biggest mistake in tracking is:
+A. Chasing Current Position
+B. Predicting Movement
+C. Smooth Flying
+D. Looking Ahead
+Answer: A
+
+Q100
+Professional tracking requires:
+A. Constant Relative Position
+B. Constant Battery
+C. Constant Altitude
+D. Constant Yaw
+Answer: A
+
+Q101
+Maintaining target center frame requires:
+A. Continuous Small Corrections
+B. Large Corrections
+C. Random Inputs
+D. Full Roll
+Answer: A
+
+Q102
+Professional pilots avoid:
+A. Tunnel Vision
+B. Situational Awareness
+C. Planning
+D. Prediction
+Answer: A
+
+Q103
+Good tracking footage appears:
+A. Effortless
+B. Aggressive
+C. Jerky
+D. Random
+Answer: A
+
+Q104
+Tracking skill improves through:
+A. Repetition
+B. Hardware
+C. Batteries
+D. Antennas
+Answer: A
+
+Q105
+The best tracking pilots think:
+A. Several Seconds Ahead
+B. One Frame Ahead
+C. Randomly
+D. Only Present Moment
+Answer: A
+
+Q106
+Professional hovering means maintaining position within:
+A. Small Defined Area
+B. Entire Field
+C. Random Position
+D. GPS Range
+Answer: A
+
+Q107
+Altitude holding skill depends on:
+A. Throttle Discipline
+B. Battery Size
+C. GPS
+D. Motors
+Answer: A
+
+Q108
+Professional landings are:
+A. Controlled
+B. Aggressive
+C. Fast
+D. Random
+Answer: A
+
+Q109
+Smooth flying requires:
+A. Muscle Memory
+B. Bigger Battery
+C. GPS
+D. Faster ESC
+Answer: A
+
+Q110
+Muscle memory develops from:
+A. Repetition
+B. Watching Videos
+C. Buying Equipment
+D. Reading Manuals Only
+Answer: A
+
+Q111
+The best pilots use:
+A. Minimal Inputs
+B. Maximum Inputs
+C. Random Inputs
+D. Aggressive Inputs
+Answer: A
+
+Q112
+Wind compensation requires:
+A. Anticipation
+B. Guessing
+C. Aggression
+D. Hovering
+Answer: A
+
+Q113
+Professional recovery means:
+A. Correcting Early
+B. Correcting Late
+C. Panic Inputs
+D. Disarming
+Answer: A
+
+Q114
+A professional pilot's most important asset is:
+A. Situational Awareness
+B. Battery
+C. VTX
+D. Camera
+Answer: A
+
+Q115
+Good FPV pilots constantly monitor:
+A. Position, Speed, Altitude
+B. Motors Only
+C. Battery Only
+D. Camera Only
+Answer: A
+
+Q116
+The hallmark of expertise is:
+A. Consistency
+B. Luck
+C. Hardware
+D. Power
+Answer: A
+
+Q117
+Professional flying prioritizes:
+A. Control
+B. Speed
+C. Power
+D. Hardware
+Answer: A
+
+Q118
+Advanced pilots think:
+A. Ahead of the Aircraft
+B. At the Aircraft
+C. Behind the Aircraft
+D. Randomly
+Answer: A
+
+Q119
+The ultimate FPV skill is:
+A. Precise Intentional Control
+B. Maximum Speed
+C. Highest Altitude
+D. Biggest Battery
+Answer: A
+
+Q120
+A master FPV pilot can:
+A. Place the Drone Exactly Where Intended Every Time
+B. Fly Fast Only
+C. Hover Only
+D. Race Only
+Answer: A

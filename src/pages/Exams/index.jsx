@@ -8,6 +8,7 @@ import styles from './Exams.module.css'
 import ExamSidebar from './components/ExamSidebar'
 import ExamTable from './components/ExamTable'
 import ExamQuestion from './components/ExamQuestion'
+import Certificate from './components/Certificate'
 
 export default function ExamPage() {
   const { categoryId } = useParams()
@@ -20,6 +21,10 @@ export default function ExamPage() {
   const [score, setScore] = useState(0)
   const [grade, setGrade] = useState({ letter: '', feedback: '' })
   const [reportCard, setReportCard] = useState(null)
+  
+  const [studentName, setStudentName] = useState('')
+  const [timeRemaining, setTimeRemaining] = useState(0)
+  const [showPreview, setShowPreview] = useState(false)
 
   const examData = EXAM_BANKS[categoryId] || EXAM_BANKS['esc']
 
@@ -32,10 +37,55 @@ export default function ExamPage() {
     setScore(0)
     setGrade({ letter: '', feedback: '' })
     setReportCard(null)
+    setStudentName('')
+    setTimeRemaining(0)
   }, [categoryId])
+
+  // Timer logic
+  useEffect(() => {
+    let timer;
+    if (examState === 'running' && categoryId === 'all') {
+      timer = setInterval(() => {
+        setTimeRemaining(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [examState, categoryId]);
 
   // Initialize and select random questions
   const startExam = () => {
+    if (categoryId === 'all') {
+      if (!studentName.trim()) return;
+      let allHard = [];
+      let allMedium = [];
+      let allEasy = [];
+      Object.entries(EXAM_BANKS).forEach(([key, bank]) => {
+        if (key !== 'all') {
+          allHard.push(...bank.questions.filter(q => q.difficulty === 'hard'));
+          allMedium.push(...bank.questions.filter(q => q.difficulty === 'medium'));
+          allEasy.push(...bank.questions.filter(q => q.difficulty === 'easy'));
+        }
+      });
+      const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
+      const selected = [
+        ...shuffle(allHard).slice(0, 30),
+        ...shuffle(allMedium).slice(0, 10),
+        ...shuffle(allEasy).slice(0, 10)
+      ];
+      setQuestions(shuffle(selected));
+      setCurrentView('all');
+      setAnswers({});
+      setTimeRemaining(7200); // 2 hours
+      setExamState('running');
+      return;
+    }
+
     const allQs = examData.questions
     
     if (allQs.length < 20) {
@@ -101,6 +151,12 @@ export default function ExamPage() {
         unattempted++
       }
     })
+    let maxScore = 0
+    questions.forEach(q => {
+      if (q.difficulty === 'hard') maxScore += 3
+      else if (q.difficulty === 'medium') maxScore += 2
+      else maxScore += 1
+    })
 
     setScore(totalScore)
     setReportCard({ 
@@ -108,18 +164,27 @@ export default function ExamPage() {
       attempted, 
       unattempted, 
       correct, 
-      incorrect 
+      incorrect,
+      maxPossible: maxScore
     })
     
-    if (totalScore >= 85) setGrade({ letter: 'A+', feedback: 'ESC Expert' })
-    else if (totalScore >= 75) setGrade({ letter: 'A', feedback: 'Advanced FPV Builder' })
-    else if (totalScore >= 60) setGrade({ letter: 'B', feedback: 'Intermediate Pilot' })
-    else if (totalScore >= 45) setGrade({ letter: 'C', feedback: 'Beginner Builder' })
-    else if (totalScore >= 30) setGrade({ letter: 'D', feedback: 'Needs More Practice' })
-    else setGrade({ letter: 'F', feedback: 'Re-study ESC Fundamentals' })
+    const pct = totalScore / maxScore
+    if (pct >= 0.90) setGrade({ letter: 'A+', feedback: 'Master / Expert Level' })
+    else if (pct >= 0.80) setGrade({ letter: 'A', feedback: 'Advanced Professional' })
+    else if (pct >= 0.70) setGrade({ letter: 'B', feedback: 'Intermediate Operator' })
+    else if (pct >= 0.50) setGrade({ letter: 'C', feedback: 'Beginner / Novice' })
+    else if (pct >= 0.35) setGrade({ letter: 'D', feedback: 'Needs More Practice' })
+    else setGrade({ letter: 'F', feedback: 'Re-study Core Fundamentals' })
 
     setExamState('results')
   }
+
+  // Auto-submit when timer hits 0
+  useEffect(() => {
+    if (examState === 'running' && categoryId === 'all' && timeRemaining === 0) {
+      finishExam();
+    }
+  }, [timeRemaining, examState, categoryId]); // eslint-disable-line
 
   if (!categoryId) {
     return (
@@ -191,28 +256,80 @@ export default function ExamPage() {
   return (
     <PageWrapper>
       {examState === 'intro' && (
-        <div style={{ padding: '4rem 1rem', maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ padding: '4rem 1rem', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{examData.title}</h1>
           <p style={{ color: 'var(--color-text-secondary)', marginBottom: '3rem' }}>FPV Drone Certification Exam</p>
           
           <div style={{ background: 'var(--color-bg-card)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
             {categoryId === 'all' ? (
-              <p style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
-                This section is the final exam for the FPV Drone Certification.<br/>
-                It contains all component-related questions.<br/>
-                <strong>Total:</strong> 50 questions | <strong>Time:</strong> 2 hours<br/><br/>
-                <em>Topics covered: piloting, building, ESC, FC, motor, wiring, soldering, safety, battery maintenance, VTX, goggles, controller, and all related systems.</em><br/><br/>
-                Once you clear this exam, you will receive an official certification from <strong>Egirerobatics</strong>!
-              </p>
+              <>
+                <p style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+                  This section is the final exam for the FPV Drone Certification.<br/>
+                  It contains randomly pooled questions from all other exam categories.<br/>
+                  <strong>Total:</strong> 50 questions | <strong>Max Score:</strong> 120 points | <strong>Time:</strong> 2 hours<br/><br/>
+                  <em>Topics covered: piloting, building, ESC, FC, motor, wiring, soldering, safety, battery maintenance, VTX, goggles, controller, and all related systems.</em><br/><br/>
+                  Once you clear this exam, you will receive an official certification from <strong>Egirerobatics</strong>!
+                </p>
+                <div style={{ marginBottom: '2rem', textAlign: 'left', background: 'var(--color-bg-secondary)', padding: '1.5rem', borderRadius: '8px' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: 'var(--color-text-primary)' }}>Full Name for Certification:</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. John Doe"
+                    value={studentName}
+                    onChange={(e) => setStudentName(e.target.value)}
+                    style={{ width: '100%', padding: '0.8rem', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', marginBottom: '1rem' }}
+                  />
+                  <button 
+                    onClick={() => setShowPreview(!showPreview)}
+                    style={{ background: 'var(--color-accent-primary)', color: 'white', padding: '0.5rem 1rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
+                  >
+                    {showPreview ? 'Hide Preview' : 'Preview Certificate'}
+                  </button>
+                </div>
+                
+                {showPreview && studentName.trim() && (
+                  <div style={{ marginBottom: '3rem', padding: '1.5rem', background: 'var(--color-bg-primary)', borderRadius: '12px', border: '1px dashed var(--color-border)' }}>
+                    <h3 style={{ marginBottom: '1rem', color: 'var(--color-text-secondary)', fontSize: '1rem' }}>Certificate Preview</h3>
+                    <Certificate studentName={studentName} />
+                  </div>
+                )}
+              </>
             ) : (
-              <p style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
-                This exam consists of 20 randomly selected multiple-choice questions.<br/>
-                Total possible score is 50 points.
-              </p>
+              <>
+                <p style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
+                  This exam consists of 20 randomly selected multiple-choice questions.<br/>
+                  Total possible score is 50 points.
+                </p>
+                {examData.topicsCovered && (
+                  <div style={{ textAlign: 'left', background: 'var(--color-bg-secondary)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid var(--color-border)' }}>
+                    <h3 style={{ fontSize: '1.2rem', marginBottom: '1.25rem', color: 'var(--color-text-primary)' }}>Topics Covered:</h3>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                      {examData.topicsCovered.map((topic, i) => (
+                        <span 
+                          key={i} 
+                          style={{
+                            background: 'var(--color-bg-card)',
+                            color: 'var(--color-text-secondary)',
+                            padding: '0.4rem 1rem',
+                            borderRadius: '9999px',
+                            fontSize: '0.85rem',
+                            border: '1px solid var(--color-border)',
+                            display: 'inline-block'
+                          }}
+                        >
+                          ✓ {topic}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
             <button 
               onClick={startExam}
               className={styles.startBtn}
+              disabled={categoryId === 'all' && !studentName.trim()}
+              style={{ opacity: (categoryId === 'all' && !studentName.trim()) ? 0.5 : 1, cursor: (categoryId === 'all' && !studentName.trim()) ? 'not-allowed' : 'pointer' }}
             >
               Start Exam
             </button>
@@ -234,12 +351,16 @@ export default function ExamPage() {
               <div className={`${styles.navTab} ${styles.navTabActive}`}>
                 Exam {Object.keys(answers).length}/{questions.length}
               </div>
+              {categoryId === 'all' && (
+                <div style={{ padding: '0.5rem 1rem', background: timeRemaining < 300 ? '#ef4444' : 'var(--color-bg-secondary)', color: timeRemaining < 300 ? 'white' : 'var(--color-text-primary)', borderRadius: '6px', fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.2rem', marginLeft: '1rem' }}>
+                  ⏱ {Math.floor(timeRemaining / 3600)}:{String(Math.floor((timeRemaining % 3600) / 60)).padStart(2, '0')}:{String(timeRemaining % 60).padStart(2, '0')}
+                </div>
+              )}
               <div style={{ flex: 1 }} />
               <button onClick={finishExam} style={{ background: '#ef4444', color: 'white', padding: '0.5rem 1rem', borderRadius: '4px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
                 Finish Exam
               </button>
             </div>
-            
 
 
             {currentView === 'all' ? (
@@ -274,7 +395,7 @@ export default function ExamPage() {
               {/* Left Side: Score & Grade */}
               <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg-card)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
                 <div className={styles.scoreCircle} style={grade.letter === 'F' ? { borderColor: '#ef4444', color: '#ef4444' } : {}}>
-                  {score}/50
+                  {score}/{reportCard?.maxPossible || 50}
                 </div>
                 <div style={{ fontSize: '3rem', fontWeight: 800, color: grade.letter === 'F' ? '#ef4444' : 'var(--color-text-primary)', marginBottom: '1rem' }}>
                   {grade.letter}
@@ -340,6 +461,16 @@ export default function ExamPage() {
               </div>
 
             </div>
+
+            {/* Certificate Generation Section */}
+            {categoryId === 'all' && grade.letter !== 'F' && grade.letter !== 'D' && (
+              <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--color-bg-card)', borderRadius: '12px', border: '1px solid var(--color-border)', textAlign: 'center' }}>
+                <h2 style={{ fontSize: '2rem', color: 'var(--color-accent-primary)', marginBottom: '1rem' }}>🏆 Official Certification</h2>
+                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>Congratulations, <strong>{studentName}</strong>! Here is your official FPV Master Pilot Certification.</p>
+                
+                <Certificate studentName={studentName} />
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -1,0 +1,198 @@
+.certificateWrapper {
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+  position: relative;
+  /* Top half dark navy, bottom half gold/bronze */
+  background: linear-gradient(to bottom, #091a3b 50%, #b2884a 50%);
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  box-sizing: border-box;
+}
+
+.certificateContainer {
+  background: #ffffff;
+  /* Very faint hexagonal pattern */
+  background-image: 
+    linear-gradient(30deg, #f0f4f8 12%, transparent 12.5%, transparent 87%, #f0f4f8 87.5%, #f0f4f8),
+    linear-gradient(150deg, #f0f4f8 12%, transparent 12.5%, transparent 87%, #f0f4f8 87.5%, #f0f4f8),
+    linear-gradient(30deg, #f0f4f8 12%, transparent 12.5%, transparent 87%, #f0f4f8 87.5%, #f0f4f8),
+    linear-gradient(150deg, #f0f4f8 12%, transparent 12.5%, transparent 87%, #f0f4f8 87.5%, #f0f4f8),
+    linear-gradient(60deg, #f8fafc 25%, transparent 25.5%, transparent 75%, #f8fafc 75%, #f8fafc),
+    linear-gradient(60deg, #f8fafc 25%, transparent 25.5%, transparent 75%, #f8fafc 75%, #f8fafc);
+  background-size: 40px 70px;
+  background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+  padding: 16px;
+  height: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.innerBorder {
+  border: 1.5px solid #b2884a;
+  position: relative;
+  padding: 50px 60px;
+  text-align: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Elegant Arced Corners */
+.cornerTopLeft {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 50px;
+  height: 50px;
+  border-top: 1.5px solid #b2884a;
+  border-left: 1.5px solid #b2884a;
+  border-top-left-radius: 100%;
+}
+
+.cornerTopRight {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 50px;
+  height: 50px;
+  border-top: 1.5px solid #b2884a;
+  border-right: 1.5px solid #b2884a;
+  border-top-right-radius: 100%;
+}
+
+.cornerBottomLeft {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  width: 50px;
+  height: 50px;
+  border-bottom: 1.5px solid #b2884a;
+  border-left: 1.5px solid #b2884a;
+  border-bottom-left-radius: 100%;
+}
+
+.cornerBottomRight {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 50px;
+  height: 50px;
+  border-bottom: 1.5px solid #b2884a;
+  border-right: 1.5px solid #b2884a;
+  border-bottom-right-radius: 100%;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rollNo {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  font-family: 'Montserrat', sans-serif;
+  color: #9c7131;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.title {
+  color: #091a3b;
+  font-size: 4rem;
+  margin: 1rem 0 0;
+  letter-spacing: 0.05em;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.subtitle {
+  color: #b2884a;
+  font-size: 1.6rem;
+  margin: 0 0 2rem;
+  letter-spacing: 0.15em;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+}
+
+.presentedTo {
+  color: #8c6a28;
+  font-size: 1.2rem;
+  margin: 1.5rem 0 1rem;
+  font-style: italic;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.studentName {
+  color: #091a3b;
+  font-size: 3.2rem;
+  margin: 0.5rem 0 1rem;
+  text-transform: uppercase;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.divider {
+  width: 65%;
+  height: 1.5px;
+  background: #b2884a;
+  margin: 0 auto 2rem;
+}
+
+.description {
+  color: #7b591b;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  max-width: 85%;
+  margin: 0 auto 3.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+.signatureSection {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.signatureBlock {
+  text-align: center;
+  width: 280px;
+}
+
+.signatureFont {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  color: #091a3b;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.signatureLine {
+  width: 100%;
+  height: 1.5px;
+  background: #b2884a;
+  margin: 0.5rem 0;
+}
+
+.signatureName {
+  color: #8c6a28;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  font-family: 'Cinzel', serif;
+}
+
+.signatureTitle {
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}

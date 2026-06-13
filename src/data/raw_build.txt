@@ -1,0 +1,566 @@
+FPV Drone Building & Assembly Certification Exam
+Soldering • Wiring • Frame Selection • Stack Assembly • Power Systems
+Difficulty
+Easy → 1 Point
+Medium → 2 Points
+Hard → 3 Points
+
+Goal: These questions are intentionally designed to make students think like real FPV builders rather than memorize definitions.
+
+SECTION 1: SOLDERING FUNDAMENTALS
+Q1
+
+A solder joint appears shiny but breaks when the wire is lightly moved. What is the most likely cause?
+
+A. Excessive flux usage
+B. Cold solder joint hidden under surface solder
+C. Excessive copper thickness
+D. High quality solder
+
+Answer: B
+
+Q2
+
+Which is generally the most reliable soldering sequence?
+
+A. Heat solder → Heat pad → Add wire
+B. Heat wire only
+C. Heat pad and wire together, then apply solder
+D. Melt solder first and drop it onto the pad
+
+Answer: C
+
+Q3
+
+A student increases iron temperature from 350°C to 480°C to solder faster. What is the biggest risk?
+
+A. Better conductivity
+B. Pad delamination and PCB damage
+C. Reduced oxidation
+D. Stronger solder joints
+
+Answer: B
+
+Q4
+
+Why is flux often more important than increasing soldering temperature?
+
+A. It reduces wire resistance
+B. It removes oxidation and improves wetting
+C. It increases current carrying capacity
+D. It cools the solder
+
+Answer: B
+
+Q5
+
+A solder joint forms a perfect sphere sitting on the pad. What does this usually indicate?
+
+A. Excellent wetting
+B. Excessive heat transfer
+C. Poor wetting or contamination
+D. High current capability
+
+Answer: C
+
+Q6
+
+What is the primary reason builders pre-tin wires?
+
+A. Improve appearance
+B. Reduce solder consumption
+C. Improve final bond quality and heat transfer
+D. Reduce wire flexibility
+
+Answer: C
+
+Q7
+
+Which soldering mistake most commonly damages FC pads?
+
+A. Using flux
+B. Repeated reheating and pulling wires
+C. Using silicone wires
+D. Cleaning with IPA
+
+Answer: B
+
+Q8
+
+A solder joint looks dull gray instead of shiny. What should be suspected first?
+
+A. Strong joint
+B. Cold joint
+C. Excessive copper
+D. Excessive current capacity
+
+Answer: B
+
+Q9
+
+What is the safest way to remove excess solder from a pad?
+
+A. Knife
+B. Wire cutter
+C. Solder wick
+D. Screwdriver
+
+Answer: C
+
+Q10
+
+When soldering XT60 connectors, the greatest danger is:
+
+A. High resistance
+B. Connector melting from prolonged heating
+C. Too much flux
+D. Wire flexibility
+
+Answer: B
+
+SECTION 2: TOOLS & WORKSHOP
+Q11
+
+Which tool provides the biggest improvement in soldering quality?
+
+A. Expensive drone frame
+B. Quality temperature-controlled soldering station
+C. Larger battery
+D. Better propellers
+
+Answer: B
+
+Q12
+
+Why do professional builders use helping hands or PCB holders?
+
+A. Reduce battery consumption
+B. Prevent movement during soldering
+C. Increase current flow
+D. Reduce weight
+
+Answer: B
+
+Q13
+
+Which tool is most useful for checking short circuits before connecting a battery?
+
+A. GPS
+B. Multimeter
+C. Oscilloscope
+D. Receiver
+
+Answer: B
+
+Q14
+
+What is the purpose of heat shrink tubing?
+
+A. Reduce resistance
+B. Insulate exposed connections
+C. Increase current capacity
+D. Cool wires
+
+Answer: B
+
+Q15
+
+A builder owns only one test instrument. Which should it be?
+
+A. Spectrum Analyzer
+B. Multimeter
+C. GPS
+D. RF Meter
+
+Answer: B
+
+SECTION 3: POWER SYSTEMS
+Q16
+
+Why is a smoke stopper used during first power-up?
+
+A. Increase voltage
+B. Limit catastrophic current during shorts
+C. Improve ESC performance
+D. Improve signal quality
+
+Answer: B
+
+Q17
+
+After assembly, continuity exists between XT60 positive and negative pads. What should be done first?
+
+A. Connect battery
+B. Power through USB
+C. Investigate before applying power
+D. Increase capacitor size
+
+Answer: C
+
+Q18
+
+Why are battery leads generally kept short?
+
+A. Lower weight only
+B. Reduce voltage spikes and resistance
+C. Improve GPS
+D. Better aesthetics
+
+Answer: B
+
+Q19
+
+What is the primary purpose of a low-ESR capacitor on the ESC?
+
+A. Increase RPM
+B. Reduce voltage spikes and noise
+C. Improve GPS lock
+D. Increase VTX power
+
+Answer: B
+
+Q20
+
+A 6S build occasionally resets during punch-outs. What is most likely?
+
+A. Too much GPS signal
+B. Voltage sag/noise issue
+C. Excessive VTX power
+D. Antenna mismatch
+
+Answer: B
+
+SECTION 4: ESC ↔ FC ↔ MOTOR
+Q21
+
+Three motor wires are connected to an ESC. Two wires are swapped. Result?
+
+A. ESC burns
+B. Motor reverses direction
+C. Motor stops permanently
+D. FC fails
+
+Answer: B
+
+Q22
+
+Why should motor screws be checked carefully?
+
+A. Aesthetic reasons
+B. Too-long screws can touch windings
+C. ESC protocol issues
+D. GPS interference
+
+Answer: B
+
+Q23
+
+Which signal is commonly used between FC and ESC today?
+
+A. VGA
+B. HDMI
+C. DShot
+D. Analog Video
+
+Answer: C
+
+Q24
+
+What is the biggest danger of routing motor wires near gyro chips?
+
+A. Increased lift
+B. Electrical noise affecting sensors
+C. Better filtering
+D. Better responsiveness
+
+Answer: B
+
+Q25
+
+A motor stutters on arm. Most likely cause?
+
+A. Broken GPS
+B. Damaged motor wire or ESC phase issue
+C. VTX overheating
+D. Camera lens issue
+
+Answer: B
+
+SECTION 5: FC ↔ VTX ↔ CAMERA
+Q26
+
+Why should video wires be kept away from power wires when possible?
+
+A. Weight reduction
+B. Noise reduction
+C. Better airflow
+D. Better soldering
+
+Answer: B
+
+Q27
+
+A VTX powers up but no video appears. First suspect?
+
+A. Motor direction
+B. Camera signal path
+C. GPS baud rate
+D. ESC timing
+
+Answer: B
+
+Q28
+
+A digital VTX suddenly shuts down in flight. Most likely?
+
+A. Low battery
+B. Overheating
+C. High GPS count
+D. Motor KV
+
+Answer: B
+
+Q29
+
+Why should antennas always be installed before powering a VTX?
+
+A. Better image quality
+B. Prevent RF damage from reflected power
+C. Increase resolution
+D. Increase FPS
+
+Answer: B
+
+Q30
+
+Which connection is most critical in a digital FPV system?
+
+A. Camera signal path
+B. LED strip
+C. GPS
+D. Buzzer
+
+Answer: A
+
+SECTION 6: FRAME SELECTION
+Q31
+
+A beginner wants durability above all else. Which frame characteristic matters most?
+
+A. Color
+B. Carbon thickness and arm strength
+C. Sticker quality
+D. Battery strap color
+
+Answer: B
+
+Q32
+
+Why are deadcat frames popular for cinematic builds?
+
+A. Faster motors
+B. Props stay out of camera view
+C. Stronger VTX signal
+D. Better GPS
+
+Answer: B
+
+Q33
+
+Which frame typically survives crashes better?
+
+A. Integrated-arm frame
+B. Replaceable-arm frame
+C. Plastic frame
+D. Thin frame
+
+Answer: B
+
+Q34
+
+A 7-inch long-range frame generally prioritizes:
+
+A. Efficiency and stability
+B. Maximum agility
+C. Tiny size
+D. Indoor flying
+
+Answer: A
+
+Q35
+
+Which frame characteristic most affects resonance?
+
+A. Carbon design and stiffness
+B. VTX power
+C. GPS brand
+D. Camera angle
+
+Answer: A
+
+SECTION 7: COMPONENT MATCHING
+Q36
+
+Which combination is most likely to cause overheating?
+
+A. Small ESC + Extremely Powerful Motors
+B. Balanced Components
+C. Large ESC + Small Motor
+D. Properly Sized Stack
+
+Answer: A
+
+Q37
+
+What should determine ESC current rating selection?
+
+A. Frame color
+B. Expected motor current draw
+C. GPS size
+D. Antenna gain
+
+Answer: B
+
+Q38
+
+A 15-inch heavy-lift drone requires:
+
+A. Tiny Whoop Electronics
+B. Components sized for expected current loads
+C. Racing ESCs only
+D. Smaller motors
+
+Answer: B
+
+Q39
+
+Which build requires greatest attention to vibration isolation?
+
+A. Cinematic build
+B. Racing build
+C. Tiny Whoop
+D. Bench test
+
+Answer: A
+
+Q40
+
+What should be selected first during a build?
+
+A. Stickers
+B. Flight goals and requirements
+C. Battery strap
+D. Receiver color
+
+Answer: B
+
+SECTION 8: PROFESSIONAL BUILDING THINKING
+Q41
+
+A professional builder finishes soldering. What is done before battery connection?
+
+A. Fly immediately
+B. Continuity test
+C. Increase VTX power
+D. Install props
+
+Answer: B
+
+Q42
+
+What causes most beginner build failures?
+
+A. Expensive components
+B. Poor workmanship
+C. Frame weight
+D. Propeller color
+
+Answer: B
+
+Q43
+
+A drone powers through USB but not battery. First suspect?
+
+A. GPS
+B. Battery power path issue
+C. Camera
+D. Receiver
+
+Answer: B
+
+Q44
+
+Why do professional builders route wires carefully?
+
+A. Appearance only
+B. Reliability, maintenance, noise reduction
+C. Increase battery capacity
+D. Improve GPS accuracy
+
+Answer: B
+
+Q45
+
+What is the purpose of strain relief?
+
+A. Improve aesthetics
+B. Prevent wire fatigue and breakage
+C. Improve VTX range
+D. Improve ESC efficiency
+
+Answer: B
+
+Q46
+
+A builder repeatedly crashes and breaks antennas. What should change?
+
+A. VTX power
+B. Antenna mounting strategy
+C. ESC firmware
+D. Camera settings
+
+Answer: B
+
+Q47
+
+The best solder joint is:
+
+A. Largest possible
+B. Smallest possible
+C. Mechanically secure and electrically sound
+D. Most shiny
+
+Answer: C
+
+Q48
+
+A professional build is characterized by:
+
+A. Expensive parts
+B. Reliability and serviceability
+C. Highest KV motors
+D. Largest battery
+
+Answer: B
+
+Q49
+
+What should be verified before installing propellers?
+
+A. Motor direction
+B. Receiver operation
+C. Failsafe
+D. All of the Above
+
+Answer: D
+
+Q50
+
+The mindset of a professional FPV builder is:
+
+A. Build Fast
+B. Build Cheap
+C. Build Once, Test Thoroughly, Fly Reliably
+D. Build Randomly
+
+Answer: C

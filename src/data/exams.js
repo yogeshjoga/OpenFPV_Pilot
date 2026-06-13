@@ -1,4 +1,1452 @@
 export const EXAM_BANKS = {
+  piloting: {
+    id: 'piloting',
+    title: 'FPV Professional Pilot Certification Exam',
+    topicsCovered: ["Hovering","Altitude Control","Throttle Management","Smooth Turns","Banking","Coordinated Turns","Figure-8 Patterns","Cinematic Flying","Racing Techniques","Freestyle Techniques","Target Tracking","Gap Flying","Emergency Recovery","Precision Landing","Speed Control","Drift Control","Prop Wash Handling","Wind Compensation","Long Range Flying","Interceptor Drone Skills","Professional Camera Movement"],
+    questions: [
+      {
+            "id": "q1",
+            "difficulty": "easy",
+            "question": "What stick primarily controls altitude?",
+            "options": [
+                  "Roll",
+                  "Pitch",
+                  "Throttle",
+                  "Yaw"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q2",
+            "difficulty": "easy",
+            "question": "What stick controls left-right tilt?",
+            "options": [
+                  "Pitch",
+                  "Roll",
+                  "Throttle",
+                  "GPS"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q3",
+            "difficulty": "easy",
+            "question": "What stick rotates the drone left or right?",
+            "options": [
+                  "Roll",
+                  "Pitch",
+                  "Yaw",
+                  "Throttle"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q4",
+            "difficulty": "easy",
+            "question": "To hover at the same height, the pilot should:",
+            "options": [
+                  "Hold constant throttle",
+                  "Hold maximum throttle",
+                  "Hold minimum throttle",
+                  "Disable motors"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q5",
+            "difficulty": "easy",
+            "question": "The best practice for learning FPV is:",
+            "options": [
+                  "Acro mode immediately",
+                  "Simulator first",
+                  "Full speed flights",
+                  "Racing first day"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q6",
+            "difficulty": "easy",
+            "question": "What causes sudden altitude jumps?",
+            "options": [
+                  "Aggressive throttle inputs",
+                  "GPS",
+                  "Camera angle",
+                  "VTX power"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q7",
+            "difficulty": "easy",
+            "question": "Which movement causes forward flight?",
+            "options": [
+                  "Roll",
+                  "Pitch Forward",
+                  "Yaw",
+                  "Throttle Only"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q8",
+            "difficulty": "easy",
+            "question": "Which movement causes sideways flight?",
+            "options": [
+                  "Roll",
+                  "Pitch",
+                  "Throttle",
+                  "GPS"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q9",
+            "difficulty": "easy",
+            "question": "What is the safest first maneuver?",
+            "options": [
+                  "Power Loop",
+                  "Hover",
+                  "Dive",
+                  "Split-S"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q10",
+            "difficulty": "easy",
+            "question": "Why should stick movements be small?",
+            "options": [
+                  "Better control",
+                  "More crashes",
+                  "More speed",
+                  "More battery"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q11",
+            "difficulty": "easy",
+            "question": "What is the purpose of a hover exercise?",
+            "options": [
+                  "Learn throttle control",
+                  "Learn GPS",
+                  "Learn batteries",
+                  "Learn ESC"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q12",
+            "difficulty": "easy",
+            "question": "What is the easiest landing technique?",
+            "options": [
+                  "Full throttle drop",
+                  "Slow descent",
+                  "Disarm mid-air",
+                  "Dive landing"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q13",
+            "difficulty": "easy",
+            "question": "During takeoff, throttle should be:",
+            "options": [
+                  "Smoothly increased",
+                  "Instantly maxed",
+                  "Constantly pulsed",
+                  "Disabled"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q14",
+            "difficulty": "easy",
+            "question": "When learning, altitude should be:",
+            "options": [
+                  "High enough to recover",
+                  "1 cm above ground",
+                  "Maximum possible",
+                  "Touching trees"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q15",
+            "difficulty": "easy",
+            "question": "What skill prevents crashes most?",
+            "options": [
+                  "Orientation Awareness",
+                  "Fast Motors",
+                  "High VTX",
+                  "GPS"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q16",
+            "difficulty": "medium",
+            "question": "When making a smooth turn, which controls are combined?",
+            "options": [
+                  "Roll + Pitch",
+                  "Throttle Only",
+                  "Yaw Only",
+                  "Roll Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q17",
+            "difficulty": "medium",
+            "question": "What is a coordinated turn?",
+            "options": [
+                  "Roll + Pitch + Small Yaw",
+                  "Throttle Only",
+                  "Pitch Only",
+                  "Roll Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q18",
+            "difficulty": "medium",
+            "question": "Why do beginners wobble during turns?",
+            "options": [
+                  "Overcorrection",
+                  "Strong Motors",
+                  "GPS",
+                  "Antennas"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q19",
+            "difficulty": "medium",
+            "question": "The best method to eliminate wobbling is:",
+            "options": [
+                  "Smaller stick corrections",
+                  "Bigger corrections",
+                  "Full throttle",
+                  "More yaw"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q20",
+            "difficulty": "medium",
+            "question": "For cinematic flying, stick movement should be:",
+            "options": [
+                  "Smooth",
+                  "Aggressive",
+                  "Random",
+                  "Maximum"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q21",
+            "difficulty": "medium",
+            "question": "Which maneuver teaches smooth transitions?",
+            "options": [
+                  "Figure-8",
+                  "Crash Recovery",
+                  "Dive",
+                  "Split-S"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q22",
+            "difficulty": "medium",
+            "question": "The purpose of a Figure-8 drill is:",
+            "options": [
+                  "Learn coordinated turns",
+                  "Learn GPS",
+                  "Learn batteries",
+                  "Learn charging"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q23",
+            "difficulty": "medium",
+            "question": "When following a moving car, pilots should:",
+            "options": [
+                  "Predict movement",
+                  "Chase aggressively",
+                  "Ignore speed",
+                  "Fly randomly"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q24",
+            "difficulty": "medium",
+            "question": "What creates jerky video?",
+            "options": [
+                  "Abrupt stick inputs",
+                  "GPS",
+                  "OSD",
+                  "Battery"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q25",
+            "difficulty": "medium",
+            "question": "What causes prop wash oscillations?",
+            "options": [
+                  "Turbulent air",
+                  "GPS",
+                  "VTX",
+                  "Receiver"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q26",
+            "difficulty": "medium",
+            "question": "The best way to fly through a gap is:",
+            "options": [
+                  "Focus beyond the gap",
+                  "Look at obstacle",
+                  "Close eyes",
+                  "Full throttle"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q27",
+            "difficulty": "medium",
+            "question": "Which skill improves race line efficiency?",
+            "options": [
+                  "Corner Entry Planning",
+                  "More Power",
+                  "Bigger Props",
+                  "Louder Beeper"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q28",
+            "difficulty": "medium",
+            "question": "During descent, pilots should:",
+            "options": [
+                  "Avoid own prop wash",
+                  "Disable throttle",
+                  "Max throttle",
+                  "Ignore air flow"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q29",
+            "difficulty": "medium",
+            "question": "What improves altitude consistency?",
+            "options": [
+                  "Throttle Discipline",
+                  "Bigger Battery",
+                  "GPS",
+                  "Antenna"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q30",
+            "difficulty": "medium",
+            "question": "What causes altitude hunting?",
+            "options": [
+                  "Excessive throttle corrections",
+                  "GPS",
+                  "Camera",
+                  "ESC"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q31",
+            "difficulty": "medium",
+            "question": "For cinematic shots, turns should be:",
+            "options": [
+                  "Wide and smooth",
+                  "Sharp",
+                  "Aggressive",
+                  "Instant"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q32",
+            "difficulty": "medium",
+            "question": "Smooth drifts require:",
+            "options": [
+                  "Controlled roll and yaw",
+                  "Full throttle",
+                  "GPS",
+                  "Brake mode"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q33",
+            "difficulty": "medium",
+            "question": "What makes drone motion appear professional?",
+            "options": [
+                  "Predictable movement",
+                  "Random movement",
+                  "Fast movement",
+                  "Aggressive movement"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q34",
+            "difficulty": "medium",
+            "question": "Which skill is most important for target tracking?",
+            "options": [
+                  "Relative Position Awareness",
+                  "Maximum Speed",
+                  "Bigger Battery",
+                  "High KV Motors"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q35",
+            "difficulty": "medium",
+            "question": "The best way to learn precision flying is:",
+            "options": [
+                  "Repeat drills daily",
+                  "Buy larger motors",
+                  "Use stronger VTX",
+                  "Fly randomly"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q36",
+            "difficulty": "hard",
+            "question": "Professional cinematic pilots often use:",
+            "options": [
+                  "Expo and Rates Tuning",
+                  "Maximum Rates",
+                  "Racing Rates",
+                  "Default Settings Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q37",
+            "difficulty": "hard",
+            "question": "The biggest reason for wobble after a turn is:",
+            "options": [
+                  "Excessive correction input",
+                  "Battery Voltage",
+                  "GPS",
+                  "OSD"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q38",
+            "difficulty": "hard",
+            "question": "What is throttle modulation?",
+            "options": [
+                  "Fine throttle adjustments",
+                  "Full throttle",
+                  "Motor replacement",
+                  "ESC tuning"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q39",
+            "difficulty": "hard",
+            "question": "A perfect orbit shot requires:",
+            "options": [
+                  "Constant radius around target",
+                  "Random radius",
+                  "Random speed",
+                  "Full yaw"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q40",
+            "difficulty": "hard",
+            "question": "Professional pilots maintain altitude by:",
+            "options": [
+                  "Continuous micro-adjustments",
+                  "Full throttle bursts",
+                  "GPS only",
+                  "Ignoring throttle"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q41",
+            "difficulty": "hard",
+            "question": "When entering a turn at high speed:",
+            "options": [
+                  "Plan exit before entry",
+                  "React at last second",
+                  "Full yaw",
+                  "Full roll"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q42",
+            "difficulty": "hard",
+            "question": "The fastest racing pilots focus on:",
+            "options": [
+                  "Smoothness over aggression",
+                  "Maximum aggression",
+                  "Random corrections",
+                  "Bigger batteries"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q43",
+            "difficulty": "hard",
+            "question": "The key to smooth dives is:",
+            "options": [
+                  "Controlled throttle management",
+                  "Full throttle",
+                  "GPS lock",
+                  "Higher camera angle"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q44",
+            "difficulty": "hard",
+            "question": "Why do professional pilots look ahead?",
+            "options": [
+                  "Predict future path",
+                  "Avoid flying",
+                  "Reduce speed",
+                  "Save battery"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q45",
+            "difficulty": "hard",
+            "question": "What is the primary purpose of racing lines?",
+            "options": [
+                  "Minimize time through course",
+                  "Increase battery weight",
+                  "Improve GPS",
+                  "Reduce VTX power"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q46",
+            "difficulty": "hard",
+            "question": "A professional chase shot requires:",
+            "options": [
+                  "Constant framing and distance",
+                  "Maximum speed",
+                  "Random movement",
+                  "Aggressive yaw"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q47",
+            "difficulty": "hard",
+            "question": "What causes over-shooting a target?",
+            "options": [
+                  "Poor anticipation",
+                  "GPS",
+                  "Camera Settings",
+                  "Battery Type"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q48",
+            "difficulty": "hard",
+            "question": "Professional pilots recover from mistakes by:",
+            "options": [
+                  "Small corrections",
+                  "Large corrections",
+                  "Panic inputs",
+                  "Disarming"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q49",
+            "difficulty": "hard",
+            "question": "The smoothest FPV flights are achieved through:",
+            "options": [
+                  "Precision and anticipation",
+                  "Raw speed",
+                  "Bigger motors",
+                  "Higher VTX"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q50",
+            "difficulty": "hard",
+            "question": "What separates a professional FPV pilot from a beginner?",
+            "options": [
+                  "Ability to consistently place the drone exactly where intended",
+                  "Bigger batteries",
+                  "Faster motors",
+                  "Stronger antennas"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q51",
+            "difficulty": "hard",
+            "question": "What is the primary goal of cinematic FPV flying?",
+            "options": [
+                  "Maximum Speed",
+                  "Smooth Storytelling Through Motion",
+                  "Maximum Altitude",
+                  "Fastest Lap Time"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q52",
+            "difficulty": "hard",
+            "question": "What creates professional-looking footage?",
+            "options": [
+                  "Smooth Acceleration",
+                  "Smooth Deceleration",
+                  "Smooth Turns",
+                  "All of the Above"
+            ],
+            "answer": 3
+      },
+      {
+            "id": "q53",
+            "difficulty": "hard",
+            "question": "The most common mistake in cinematic FPV is:",
+            "options": [
+                  "Overcorrection",
+                  "Too Smooth Flying",
+                  "Low VTX Power",
+                  "Low Battery"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q54",
+            "difficulty": "hard",
+            "question": "What is an Orbit Shot?",
+            "options": [
+                  "Flying Circles Around Subject",
+                  "Hovering",
+                  "Landing",
+                  "Racing"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q55",
+            "difficulty": "hard",
+            "question": "During an orbit shot the subject should remain:",
+            "options": [
+                  "Center Frame",
+                  "Behind Drone",
+                  "Above Drone",
+                  "Below Drone"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q56",
+            "difficulty": "hard",
+            "question": "What controls orbit radius?",
+            "options": [
+                  "Roll + Yaw Balance",
+                  "Throttle Only",
+                  "Pitch Only",
+                  "GPS"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q57",
+            "difficulty": "hard",
+            "question": "What is a Reveal Shot?",
+            "options": [
+                  "Gradually Showing Subject",
+                  "Fast Dive",
+                  "Crash Recovery",
+                  "Hover"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q58",
+            "difficulty": "hard",
+            "question": "A Reveal Shot creates:",
+            "options": [
+                  "Surprise",
+                  "Storytelling",
+                  "Scale",
+                  "All of the Above"
+            ],
+            "answer": 3
+      },
+      {
+            "id": "q59",
+            "difficulty": "hard",
+            "question": "What is a Dolly Shot?",
+            "options": [
+                  "Constant Speed Forward Motion",
+                  "Hover",
+                  "Roll Only",
+                  "Yaw Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q60",
+            "difficulty": "hard",
+            "question": "Parallax Effect occurs when:",
+            "options": [
+                  "Foreground Moves Faster Than Background",
+                  "Everything Moves Same Speed",
+                  "Drone Stops",
+                  "GPS Fails"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q61",
+            "difficulty": "hard",
+            "question": "Professional pilots use yaw:",
+            "options": [
+                  "Sparingly",
+                  "Constantly",
+                  "Aggressively",
+                  "Randomly"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q62",
+            "difficulty": "hard",
+            "question": "For cinematic footage throttle should be:",
+            "options": [
+                  "Smooth",
+                  "Aggressive",
+                  "Random",
+                  "Maximum"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q63",
+            "difficulty": "hard",
+            "question": "Smooth footage depends mostly on:",
+            "options": [
+                  "Pilot Skill",
+                  "Battery Brand",
+                  "Antenna Type",
+                  "Frame Color"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q64",
+            "difficulty": "hard",
+            "question": "The best orbit speed is:",
+            "options": [
+                  "Constant",
+                  "Random",
+                  "Maximum",
+                  "Minimum"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q65",
+            "difficulty": "hard",
+            "question": "Good framing means:",
+            "options": [
+                  "Subject Positioned Intentionally",
+                  "Random Subject Placement",
+                  "Maximum Zoom",
+                  "Fast Motion"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q66",
+            "difficulty": "hard",
+            "question": "Lead Room means:",
+            "options": [
+                  "Space Ahead of Subject",
+                  "Space Behind Subject",
+                  "Empty Sky",
+                  "GPS Data"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q67",
+            "difficulty": "hard",
+            "question": "A professional chase shot maintains:",
+            "options": [
+                  "Constant Distance",
+                  "Constant Altitude",
+                  "Consistent Framing",
+                  "All of the Above"
+            ],
+            "answer": 3
+      },
+      {
+            "id": "q68",
+            "difficulty": "hard",
+            "question": "The biggest enemy of cinematic footage is:",
+            "options": [
+                  "Jerky Inputs",
+                  "Low Wind",
+                  "High Battery",
+                  "GPS"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q69",
+            "difficulty": "hard",
+            "question": "Professional pilots look:",
+            "options": [
+                  "Ahead of Current Position",
+                  "At Drone",
+                  "At Ground",
+                  "At OSD Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q70",
+            "difficulty": "hard",
+            "question": "The secret of cinematic flying is:",
+            "options": [
+                  "Predictability",
+                  "Randomness",
+                  "Aggression",
+                  "Speed"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q71",
+            "difficulty": "hard",
+            "question": "The fastest path through a corner is called:",
+            "options": [
+                  "Racing Line",
+                  "Hover Line",
+                  "GPS Line",
+                  "Orbit Line"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q72",
+            "difficulty": "hard",
+            "question": "Professional racers prioritize:",
+            "options": [
+                  "Exit Speed",
+                  "Entry Speed",
+                  "Top Speed",
+                  "Battery Life"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q73",
+            "difficulty": "hard",
+            "question": "The apex is:",
+            "options": [
+                  "Inside Point of Turn",
+                  "Landing Point",
+                  "Start Gate",
+                  "Finish Gate"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q74",
+            "difficulty": "hard",
+            "question": "A late apex usually provides:",
+            "options": [
+                  "Better Exit",
+                  "Worse Exit",
+                  "Slower Turn",
+                  "More Wobble"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q75",
+            "difficulty": "hard",
+            "question": "Fast racers fly:",
+            "options": [
+                  "Smooth",
+                  "Aggressive",
+                  "Random",
+                  "Unpredictable"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q76",
+            "difficulty": "hard",
+            "question": "The largest time loss usually occurs from:",
+            "options": [
+                  "Poor Corners",
+                  "Straight Sections",
+                  "Takeoff",
+                  "Landing"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q77",
+            "difficulty": "hard",
+            "question": "The purpose of race lines is:",
+            "options": [
+                  "Minimize Lap Time",
+                  "Increase Battery Life",
+                  "Improve GPS",
+                  "Increase Altitude"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q78",
+            "difficulty": "hard",
+            "question": "Professional racers brake:",
+            "options": [
+                  "Before Turn",
+                  "During Turn",
+                  "After Turn",
+                  "Never"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q79",
+            "difficulty": "hard",
+            "question": "Overshooting a gate usually means:",
+            "options": [
+                  "Poor Corner Setup",
+                  "GPS Failure",
+                  "ESC Failure",
+                  "Camera Failure"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q80",
+            "difficulty": "hard",
+            "question": "The fastest pilots are:",
+            "options": [
+                  "Efficient",
+                  "Aggressive",
+                  "Reckless",
+                  "Lucky"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q81",
+            "difficulty": "hard",
+            "question": "What improves gate accuracy?",
+            "options": [
+                  "Repetition",
+                  "Bigger Motors",
+                  "Bigger Battery",
+                  "Higher VTX"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q82",
+            "difficulty": "hard",
+            "question": "What is race consistency?",
+            "options": [
+                  "Repeating Same Lap",
+                  "Maximum Speed",
+                  "Biggest Battery",
+                  "Highest Altitude"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q83",
+            "difficulty": "hard",
+            "question": "Fast pilots focus on:",
+            "options": [
+                  "Exit Point",
+                  "Drone",
+                  "Props",
+                  "OSD"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q84",
+            "difficulty": "hard",
+            "question": "Professional racers anticipate:",
+            "options": [
+                  "Next Gate",
+                  "Current Gate",
+                  "OSD",
+                  "Battery"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q85",
+            "difficulty": "hard",
+            "question": "The best racers make:",
+            "options": [
+                  "Minimal Corrections",
+                  "Large Corrections",
+                  "Random Corrections",
+                  "Panic Inputs"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q86",
+            "difficulty": "hard",
+            "question": "A perfect lap is:",
+            "options": [
+                  "Smooth and Consistent",
+                  "Aggressive",
+                  "Random",
+                  "Lucky"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q87",
+            "difficulty": "hard",
+            "question": "Race performance improves most from:",
+            "options": [
+                  "Practice",
+                  "Hardware",
+                  "Batteries",
+                  "VTX"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q88",
+            "difficulty": "hard",
+            "question": "The biggest beginner mistake is:",
+            "options": [
+                  "Looking Too Close",
+                  "Looking Ahead",
+                  "Smooth Flying",
+                  "Planning Turns"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q89",
+            "difficulty": "hard",
+            "question": "Good racers fly:",
+            "options": [
+                  "Predictable Lines",
+                  "Random Lines",
+                  "Wide Lines Only",
+                  "Tight Lines Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q90",
+            "difficulty": "hard",
+            "question": "The fastest race drone is useless without:",
+            "options": [
+                  "Pilot Skill",
+                  "Battery",
+                  "GPS",
+                  "OSD"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q91",
+            "difficulty": "hard",
+            "question": "Pure Pursuit means:",
+            "options": [
+                  "Point Directly At Target",
+                  "Fly Away",
+                  "Hover",
+                  "Orbit"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q92",
+            "difficulty": "hard",
+            "question": "Lead Pursuit means:",
+            "options": [
+                  "Aim Ahead of Target",
+                  "Aim Behind Target",
+                  "Aim Below Target",
+                  "Aim Randomly"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q93",
+            "difficulty": "hard",
+            "question": "Which pursuit reaches moving targets fastest?",
+            "options": [
+                  "Lead Pursuit",
+                  "Lag Pursuit",
+                  "Hover Pursuit",
+                  "Random Pursuit"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q94",
+            "difficulty": "hard",
+            "question": "Closing Velocity means:",
+            "options": [
+                  "Rate Distance Shrinks",
+                  "Motor RPM",
+                  "Battery Voltage",
+                  "GPS Speed"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q95",
+            "difficulty": "hard",
+            "question": "Target tracking requires:",
+            "options": [
+                  "Prediction",
+                  "Aggression",
+                  "Random Inputs",
+                  "High VTX"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q96",
+            "difficulty": "hard",
+            "question": "Interceptor pilots focus on:",
+            "options": [
+                  "Intercept Point",
+                  "Current Position",
+                  "Battery",
+                  "OSD"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q97",
+            "difficulty": "hard",
+            "question": "Moving targets require:",
+            "options": [
+                  "Anticipation",
+                  "Guessing",
+                  "Luck",
+                  "Hovering"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q98",
+            "difficulty": "hard",
+            "question": "Fast targets require:",
+            "options": [
+                  "Lead Angle",
+                  "Hovering",
+                  "Orbiting",
+                  "Landing"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q99",
+            "difficulty": "hard",
+            "question": "The biggest mistake in tracking is:",
+            "options": [
+                  "Chasing Current Position",
+                  "Predicting Movement",
+                  "Smooth Flying",
+                  "Looking Ahead"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q100",
+            "difficulty": "hard",
+            "question": "Professional tracking requires:",
+            "options": [
+                  "Constant Relative Position",
+                  "Constant Battery",
+                  "Constant Altitude",
+                  "Constant Yaw"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q101",
+            "difficulty": "hard",
+            "question": "Maintaining target center frame requires:",
+            "options": [
+                  "Continuous Small Corrections",
+                  "Large Corrections",
+                  "Random Inputs",
+                  "Full Roll"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q102",
+            "difficulty": "hard",
+            "question": "Professional pilots avoid:",
+            "options": [
+                  "Tunnel Vision",
+                  "Situational Awareness",
+                  "Planning",
+                  "Prediction"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q103",
+            "difficulty": "hard",
+            "question": "Good tracking footage appears:",
+            "options": [
+                  "Effortless",
+                  "Aggressive",
+                  "Jerky",
+                  "Random"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q104",
+            "difficulty": "hard",
+            "question": "Tracking skill improves through:",
+            "options": [
+                  "Repetition",
+                  "Hardware",
+                  "Batteries",
+                  "Antennas"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q105",
+            "difficulty": "hard",
+            "question": "The best tracking pilots think:",
+            "options": [
+                  "Several Seconds Ahead",
+                  "One Frame Ahead",
+                  "Randomly",
+                  "Only Present Moment"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q106",
+            "difficulty": "hard",
+            "question": "Professional hovering means maintaining position within:",
+            "options": [
+                  "Small Defined Area",
+                  "Entire Field",
+                  "Random Position",
+                  "GPS Range"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q107",
+            "difficulty": "hard",
+            "question": "Altitude holding skill depends on:",
+            "options": [
+                  "Throttle Discipline",
+                  "Battery Size",
+                  "GPS",
+                  "Motors"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q108",
+            "difficulty": "hard",
+            "question": "Professional landings are:",
+            "options": [
+                  "Controlled",
+                  "Aggressive",
+                  "Fast",
+                  "Random"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q109",
+            "difficulty": "hard",
+            "question": "Smooth flying requires:",
+            "options": [
+                  "Muscle Memory",
+                  "Bigger Battery",
+                  "GPS",
+                  "Faster ESC"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q110",
+            "difficulty": "hard",
+            "question": "Muscle memory develops from:",
+            "options": [
+                  "Repetition",
+                  "Watching Videos",
+                  "Buying Equipment",
+                  "Reading Manuals Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q111",
+            "difficulty": "hard",
+            "question": "The best pilots use:",
+            "options": [
+                  "Minimal Inputs",
+                  "Maximum Inputs",
+                  "Random Inputs",
+                  "Aggressive Inputs"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q112",
+            "difficulty": "hard",
+            "question": "Wind compensation requires:",
+            "options": [
+                  "Anticipation",
+                  "Guessing",
+                  "Aggression",
+                  "Hovering"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q113",
+            "difficulty": "hard",
+            "question": "Professional recovery means:",
+            "options": [
+                  "Correcting Early",
+                  "Correcting Late",
+                  "Panic Inputs",
+                  "Disarming"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q114",
+            "difficulty": "hard",
+            "question": "A professional pilot's most important asset is:",
+            "options": [
+                  "Situational Awareness",
+                  "Battery",
+                  "VTX",
+                  "Camera"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q115",
+            "difficulty": "hard",
+            "question": "Good FPV pilots constantly monitor:",
+            "options": [
+                  "Position, Speed, Altitude",
+                  "Motors Only",
+                  "Battery Only",
+                  "Camera Only"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q116",
+            "difficulty": "hard",
+            "question": "The hallmark of expertise is:",
+            "options": [
+                  "Consistency",
+                  "Luck",
+                  "Hardware",
+                  "Power"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q117",
+            "difficulty": "hard",
+            "question": "Professional flying prioritizes:",
+            "options": [
+                  "Control",
+                  "Speed",
+                  "Power",
+                  "Hardware"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q118",
+            "difficulty": "hard",
+            "question": "Advanced pilots think:",
+            "options": [
+                  "Ahead of the Aircraft",
+                  "At the Aircraft",
+                  "Behind the Aircraft",
+                  "Randomly"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q119",
+            "difficulty": "hard",
+            "question": "The ultimate FPV skill is:",
+            "options": [
+                  "Precise Intentional Control",
+                  "Maximum Speed",
+                  "Highest Altitude",
+                  "Biggest Battery"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q120",
+            "difficulty": "hard",
+            "question": "A master FPV pilot can:",
+            "options": [
+                  "Place the Drone Exactly Where Intended Every Time",
+                  "Fly Fast Only",
+                  "Hover Only",
+                  "Race Only"
+            ],
+            "answer": 0
+      }
+]
+  },
+
   esc: {
     id: 'esc',
     title: 'ESC Certification Exam',
@@ -281,15 +1729,613 @@ export const EXAM_BANKS = {
       { id: 'v50', difficulty: 'hard', question: 'What is the fundamental purpose of an FPV VTX and Camera system?', options: ['Convert Real-World Visual Information into Wireless Video Data for the Pilot', 'Generate Thrust', 'Control Motors', 'Navigate GPS'], answer: 0 }
     ]
   },
-  piloting: {
-    id: 'piloting',
-    title: 'Piloting Certification Exam',
-    questions: [] // Placeholder
-  },
-  build: {
+
+    build: {
     id: 'build',
-    title: 'Building Certification Exam',
-    questions: [] // Placeholder
+    title: 'FPV Drone Building & Assembly Certification Exam',
+    topicsCovered: ["Soldering Science","Flux Usage","Heat Transfer","Wire Management","XT60 Connections","ESC-FC Wiring","Motor Wiring","VTX-Camera Wiring","Capacitor Installation","Frame Selection","Power System Design","Build Reliability","Troubleshooting","Professional Assembly Practices","Safety Procedures","Pre-Flight Verification"],
+    questions: [
+      {
+            "id": "q1",
+            "difficulty": "easy",
+            "question": "A solder joint appears shiny but breaks when the wire is lightly moved. What is the most likely cause?",
+            "options": [
+                  "Excessive flux usage",
+                  "Cold solder joint hidden under surface solder",
+                  "Excessive copper thickness",
+                  "High quality solder"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q2",
+            "difficulty": "easy",
+            "question": "Which is generally the most reliable soldering sequence?",
+            "options": [
+                  "Heat solder → Heat pad → Add wire",
+                  "Heat wire only",
+                  "Heat pad and wire together, then apply solder",
+                  "Melt solder first and drop it onto the pad"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q3",
+            "difficulty": "easy",
+            "question": "A student increases iron temperature from 350°C to 480°C to solder faster. What is the biggest risk?",
+            "options": [
+                  "Better conductivity",
+                  "Pad delamination and PCB damage",
+                  "Reduced oxidation",
+                  "Stronger solder joints"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q4",
+            "difficulty": "easy",
+            "question": "Why is flux often more important than increasing soldering temperature?",
+            "options": [
+                  "It reduces wire resistance",
+                  "It removes oxidation and improves wetting",
+                  "It increases current carrying capacity",
+                  "It cools the solder"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q5",
+            "difficulty": "easy",
+            "question": "A solder joint forms a perfect sphere sitting on the pad. What does this usually indicate?",
+            "options": [
+                  "Excellent wetting",
+                  "Excessive heat transfer",
+                  "Poor wetting or contamination",
+                  "High current capability"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q6",
+            "difficulty": "easy",
+            "question": "What is the primary reason builders pre-tin wires?",
+            "options": [
+                  "Improve appearance",
+                  "Reduce solder consumption",
+                  "Improve final bond quality and heat transfer",
+                  "Reduce wire flexibility"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q7",
+            "difficulty": "easy",
+            "question": "Which soldering mistake most commonly damages FC pads?",
+            "options": [
+                  "Using flux",
+                  "Repeated reheating and pulling wires",
+                  "Using silicone wires",
+                  "Cleaning with IPA"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q8",
+            "difficulty": "easy",
+            "question": "A solder joint looks dull gray instead of shiny. What should be suspected first?",
+            "options": [
+                  "Strong joint",
+                  "Cold joint",
+                  "Excessive copper",
+                  "Excessive current capacity"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q9",
+            "difficulty": "easy",
+            "question": "What is the safest way to remove excess solder from a pad?",
+            "options": [
+                  "Knife",
+                  "Wire cutter",
+                  "Solder wick",
+                  "Screwdriver"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q10",
+            "difficulty": "easy",
+            "question": "When soldering XT60 connectors, the greatest danger is:",
+            "options": [
+                  "High resistance",
+                  "Connector melting from prolonged heating",
+                  "Too much flux",
+                  "Wire flexibility"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q11",
+            "difficulty": "easy",
+            "question": "Which tool provides the biggest improvement in soldering quality?",
+            "options": [
+                  "Expensive drone frame",
+                  "Quality temperature-controlled soldering station",
+                  "Larger battery",
+                  "Better propellers"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q12",
+            "difficulty": "easy",
+            "question": "Why do professional builders use helping hands or PCB holders?",
+            "options": [
+                  "Reduce battery consumption",
+                  "Prevent movement during soldering",
+                  "Increase current flow",
+                  "Reduce weight"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q13",
+            "difficulty": "easy",
+            "question": "Which tool is most useful for checking short circuits before connecting a battery?",
+            "options": [
+                  "GPS",
+                  "Multimeter",
+                  "Oscilloscope",
+                  "Receiver"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q14",
+            "difficulty": "easy",
+            "question": "What is the purpose of heat shrink tubing?",
+            "options": [
+                  "Reduce resistance",
+                  "Insulate exposed connections",
+                  "Increase current capacity",
+                  "Cool wires"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q15",
+            "difficulty": "easy",
+            "question": "A builder owns only one test instrument. Which should it be?",
+            "options": [
+                  "Spectrum Analyzer",
+                  "Multimeter",
+                  "GPS",
+                  "RF Meter"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q16",
+            "difficulty": "medium",
+            "question": "Why is a smoke stopper used during first power-up?",
+            "options": [
+                  "Increase voltage",
+                  "Limit catastrophic current during shorts",
+                  "Improve ESC performance",
+                  "Improve signal quality"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q17",
+            "difficulty": "medium",
+            "question": "After assembly, continuity exists between XT60 positive and negative pads. What should be done first?",
+            "options": [
+                  "Connect battery",
+                  "Power through USB",
+                  "Investigate before applying power",
+                  "Increase capacitor size"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q18",
+            "difficulty": "medium",
+            "question": "Why are battery leads generally kept short?",
+            "options": [
+                  "Lower weight only",
+                  "Reduce voltage spikes and resistance",
+                  "Improve GPS",
+                  "Better aesthetics"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q19",
+            "difficulty": "medium",
+            "question": "What is the primary purpose of a low-ESR capacitor on the ESC?",
+            "options": [
+                  "Increase RPM",
+                  "Reduce voltage spikes and noise",
+                  "Improve GPS lock",
+                  "Increase VTX power"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q20",
+            "difficulty": "medium",
+            "question": "A 6S build occasionally resets during punch-outs. What is most likely?",
+            "options": [
+                  "Too much GPS signal",
+                  "Voltage sag/noise issue",
+                  "Excessive VTX power",
+                  "Antenna mismatch"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q21",
+            "difficulty": "medium",
+            "question": "Three motor wires are connected to an ESC. Two wires are swapped. Result?",
+            "options": [
+                  "ESC burns",
+                  "Motor reverses direction",
+                  "Motor stops permanently",
+                  "FC fails"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q22",
+            "difficulty": "medium",
+            "question": "Why should motor screws be checked carefully?",
+            "options": [
+                  "Aesthetic reasons",
+                  "Too-long screws can touch windings",
+                  "ESC protocol issues",
+                  "GPS interference"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q23",
+            "difficulty": "medium",
+            "question": "Which signal is commonly used between FC and ESC today?",
+            "options": [
+                  "VGA",
+                  "HDMI",
+                  "DShot",
+                  "Analog Video"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q24",
+            "difficulty": "medium",
+            "question": "What is the biggest danger of routing motor wires near gyro chips?",
+            "options": [
+                  "Increased lift",
+                  "Electrical noise affecting sensors",
+                  "Better filtering",
+                  "Better responsiveness"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q25",
+            "difficulty": "medium",
+            "question": "A motor stutters on arm. Most likely cause?",
+            "options": [
+                  "Broken GPS",
+                  "Damaged motor wire or ESC phase issue",
+                  "VTX overheating",
+                  "Camera lens issue"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q26",
+            "difficulty": "medium",
+            "question": "Why should video wires be kept away from power wires when possible?",
+            "options": [
+                  "Weight reduction",
+                  "Noise reduction",
+                  "Better airflow",
+                  "Better soldering"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q27",
+            "difficulty": "medium",
+            "question": "A VTX powers up but no video appears. First suspect?",
+            "options": [
+                  "Motor direction",
+                  "Camera signal path",
+                  "GPS baud rate",
+                  "ESC timing"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q28",
+            "difficulty": "medium",
+            "question": "A digital VTX suddenly shuts down in flight. Most likely?",
+            "options": [
+                  "Low battery",
+                  "Overheating",
+                  "High GPS count",
+                  "Motor KV"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q29",
+            "difficulty": "medium",
+            "question": "Why should antennas always be installed before powering a VTX?",
+            "options": [
+                  "Better image quality",
+                  "Prevent RF damage from reflected power",
+                  "Increase resolution",
+                  "Increase FPS"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q30",
+            "difficulty": "medium",
+            "question": "Which connection is most critical in a digital FPV system?",
+            "options": [
+                  "Camera signal path",
+                  "LED strip",
+                  "GPS",
+                  "Buzzer"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q31",
+            "difficulty": "medium",
+            "question": "A beginner wants durability above all else. Which frame characteristic matters most?",
+            "options": [
+                  "Color",
+                  "Carbon thickness and arm strength",
+                  "Sticker quality",
+                  "Battery strap color"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q32",
+            "difficulty": "medium",
+            "question": "Why are deadcat frames popular for cinematic builds?",
+            "options": [
+                  "Faster motors",
+                  "Props stay out of camera view",
+                  "Stronger VTX signal",
+                  "Better GPS"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q33",
+            "difficulty": "medium",
+            "question": "Which frame typically survives crashes better?",
+            "options": [
+                  "Integrated-arm frame",
+                  "Replaceable-arm frame",
+                  "Plastic frame",
+                  "Thin frame"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q34",
+            "difficulty": "medium",
+            "question": "A 7-inch long-range frame generally prioritizes:",
+            "options": [
+                  "Efficiency and stability",
+                  "Maximum agility",
+                  "Tiny size",
+                  "Indoor flying"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q35",
+            "difficulty": "medium",
+            "question": "Which frame characteristic most affects resonance?",
+            "options": [
+                  "Carbon design and stiffness",
+                  "VTX power",
+                  "GPS brand",
+                  "Camera angle"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q36",
+            "difficulty": "hard",
+            "question": "Which combination is most likely to cause overheating?",
+            "options": [
+                  "Small ESC + Extremely Powerful Motors",
+                  "Balanced Components",
+                  "Large ESC + Small Motor",
+                  "Properly Sized Stack"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q37",
+            "difficulty": "hard",
+            "question": "What should determine ESC current rating selection?",
+            "options": [
+                  "Frame color",
+                  "Expected motor current draw",
+                  "GPS size",
+                  "Antenna gain"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q38",
+            "difficulty": "hard",
+            "question": "A 15-inch heavy-lift drone requires:",
+            "options": [
+                  "Tiny Whoop Electronics",
+                  "Components sized for expected current loads",
+                  "Racing ESCs only",
+                  "Smaller motors"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q39",
+            "difficulty": "hard",
+            "question": "Which build requires greatest attention to vibration isolation?",
+            "options": [
+                  "Cinematic build",
+                  "Racing build",
+                  "Tiny Whoop",
+                  "Bench test"
+            ],
+            "answer": 0
+      },
+      {
+            "id": "q40",
+            "difficulty": "hard",
+            "question": "What should be selected first during a build?",
+            "options": [
+                  "Stickers",
+                  "Flight goals and requirements",
+                  "Battery strap",
+                  "Receiver color"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q41",
+            "difficulty": "hard",
+            "question": "A professional builder finishes soldering. What is done before battery connection?",
+            "options": [
+                  "Fly immediately",
+                  "Continuity test",
+                  "Increase VTX power",
+                  "Install props"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q42",
+            "difficulty": "hard",
+            "question": "What causes most beginner build failures?",
+            "options": [
+                  "Expensive components",
+                  "Poor workmanship",
+                  "Frame weight",
+                  "Propeller color"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q43",
+            "difficulty": "hard",
+            "question": "A drone powers through USB but not battery. First suspect?",
+            "options": [
+                  "GPS",
+                  "Battery power path issue",
+                  "Camera",
+                  "Receiver"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q44",
+            "difficulty": "hard",
+            "question": "Why do professional builders route wires carefully?",
+            "options": [
+                  "Appearance only",
+                  "Reliability, maintenance, noise reduction",
+                  "Increase battery capacity",
+                  "Improve GPS accuracy"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q45",
+            "difficulty": "hard",
+            "question": "What is the purpose of strain relief?",
+            "options": [
+                  "Improve aesthetics",
+                  "Prevent wire fatigue and breakage",
+                  "Improve VTX range",
+                  "Improve ESC efficiency"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q46",
+            "difficulty": "hard",
+            "question": "A builder repeatedly crashes and breaks antennas. What should change?",
+            "options": [
+                  "VTX power",
+                  "Antenna mounting strategy",
+                  "ESC firmware",
+                  "Camera settings"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q47",
+            "difficulty": "hard",
+            "question": "The best solder joint is:",
+            "options": [
+                  "Largest possible",
+                  "Smallest possible",
+                  "Mechanically secure and electrically sound",
+                  "Most shiny"
+            ],
+            "answer": 2
+      },
+      {
+            "id": "q48",
+            "difficulty": "hard",
+            "question": "A professional build is characterized by:",
+            "options": [
+                  "Expensive parts",
+                  "Reliability and serviceability",
+                  "Highest KV motors",
+                  "Largest battery"
+            ],
+            "answer": 1
+      },
+      {
+            "id": "q49",
+            "difficulty": "hard",
+            "question": "What should be verified before installing propellers?",
+            "options": [
+                  "Motor direction",
+                  "Receiver operation",
+                  "Failsafe",
+                  "All of the Above"
+            ],
+            "answer": 3
+      },
+      {
+            "id": "q50",
+            "difficulty": "hard",
+            "question": "The mindset of a professional FPV builder is:",
+            "options": [
+                  "Build Fast",
+                  "Build Cheap",
+                  "Build Once, Test Thoroughly, Fly Reliably",
+                  "Build Randomly"
+            ],
+            "answer": 2
+      }
+]
   },
   all: {
     id: 'all',

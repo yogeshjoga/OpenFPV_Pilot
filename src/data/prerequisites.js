@@ -1,167 +1,166 @@
-
 export const PREREQUISITES_DATA = [
   {
     category: '🧰 Tools',
     items: [
       {
-        name: 'Soldering iron (temperature controlled)',
-        description: 'A tool that supplies precise heat to melt solder, joining electrical components.',
-        whenToUse: 'Used during electrical assembly, motor wiring, and component replacement.',
-        whereToUse: 'Flight controllers, ESC pads, battery leads, receiver wiring.',
-        whyToUse: 'Temperature control is critical; small pads need low heat to avoid lifting, thick ground pads need high heat for solid joints.',
-        impact: 'Poor soldering is the #1 cause of drone crashes. A good iron ensures solid, shiny joints that survive vibrations.'
+        name: 'Soldering Iron (Temperature Controlled)',
+        description: 'A precision heating tool utilized to melt solder, effectively joining electrical components.',
+        whenToUse: 'Required during electrical assembly, motor wiring, and component replacement or repair.',
+        whereToUse: 'Applied to flight controllers, ESC pads, battery leads, and receiver wiring interfaces.',
+        whyToUse: 'Precise temperature control is essential; small pads require lower heat to prevent delamination, whereas large ground pads necessitate high thermal output to ensure solid connections.',
+        impact: 'Improper soldering is a primary cause of system failure. A high-quality iron ensures robust, oxidation-free joints capable of withstanding severe operational vibrations.'
       },
       {
-        name: 'Solder wire (lead / lead-free)',
-        description: 'Metal alloy wire containing flux core that melts to form electrical connections.',
-        whenToUse: 'Whenever joining two wires or a wire to a PCB pad.',
-        whereToUse: 'Anywhere electrical contact is established.',
-        whyToUse: '63/37 (tin/lead) is easiest to work with for drones because of its lower melting point compared to lead-free.',
-        impact: 'Good solder flows easily, speeding up the build and creating physically stronger connections.'
+        name: 'Solder Wire (Lead / Lead-Free)',
+        description: 'A metal alloy wire featuring a flux core that melts to form reliable electrical connections.',
+        whenToUse: 'Utilized whenever joining two wires or bonding a wire to a PCB pad.',
+        whereToUse: 'Applicable anywhere electrical contact must be permanently established.',
+        whyToUse: 'A 63/37 (tin/lead) alloy is optimal for drone assembly due to its lower melting point and superior flow characteristics compared to lead-free alternatives.',
+        impact: 'High-quality solder flows efficiently, accelerating the build process and establishing physically stronger electrical connections.'
       },
       {
         name: 'Flux',
-        description: 'A chemical cleaning agent that facilitates soldering by removing oxidation.',
-        whenToUse: 'Applied before soldering dirty joints, ground pads, or when a joint refuses to flow.',
-        whereToUse: 'On PCB pads and bare wire ends before tinning.',
-        whyToUse: 'It breaks surface tension, allowing solder to flow instantly into a shiny bead rather than stubbornly sticking to the iron.',
-        impact: 'Dramatically reduces cold solder joints and saves delicate components from overheating.',
+        description: 'A chemical cleaning agent that facilitates the soldering process by eliminating oxidation.',
+        whenToUse: 'Applied prior to soldering oxidized joints, heavy ground pads, or when solder fails to flow smoothly.',
+        whereToUse: 'Utilized on PCB pads and bare wire ends prior to the tinning process.',
+        whyToUse: 'Flux reduces surface tension, enabling solder to flow instantaneously into a uniform bead rather than adhering improperly to the iron.',
+        impact: 'Significantly reduces the occurrence of cold solder joints and protects delicate components from thermal damage.'
       },
       {
-        name: 'Solder wick (desoldering braid)',
-        description: 'Braided copper wire that soaks up molten solder via capillary action.',
-        whenToUse: 'When making a mistake, removing a component, or cleaning up a messy pad full of old solder.',
-        whereToUse: 'Flight controller pads or ESCs during repairs.',
-        whyToUse: 'Without it, removing excess solder is nearly impossible. It prepares a surface for a clean new joint.',
-        impact: 'Prevents solder bridges (short circuits) between tiny adjacent pads.'
+        name: 'Solder Wick (Desoldering Braid)',
+        description: 'A braided copper wire designed to extract molten solder via capillary action.',
+        whenToUse: 'Required for correcting errors, removing components, or cleaning excess solder from PCB pads.',
+        whereToUse: 'Primarily used on flight controller pads or ESCs during maintenance and repair procedures.',
+        whyToUse: 'Extracting excess solder is highly difficult without wick. It effectively prepares surfaces for clean, reliable new joints.',
+        impact: 'Prevents solder bridges and short circuits between densely packed electronic components.'
       },
       {
-        name: 'Solder sucker',
-        description: 'A spring-loaded vacuum syringe for removing large globs of molten solder.',
-        whenToUse: 'Removing large connections like XT60 battery wires from power boards.',
-        whereToUse: 'Heavy gauge wire pads.',
-        whyToUse: 'Much faster than solder wick for massive joints.',
-        impact: 'Speeds up repair work on main power components.'
+        name: 'Solder Sucker',
+        description: 'A spring-loaded vacuum device engineered to extract large quantities of molten solder.',
+        whenToUse: 'Employed when removing substantial connections, such as XT60 battery wires from power distribution boards.',
+        whereToUse: 'Utilized on heavy-gauge wire pads and large terminals.',
+        whyToUse: 'Significantly more efficient than solder wick for removing massive solder joints.',
+        impact: 'Accelerates repair and maintenance procedures on primary power delivery components.'
       },
       {
-        name: 'Helping hands / PCB holder',
-        description: 'Adjustable clamps or alligator clips that hold components steady.',
-        whenToUse: 'Used to hold the flight controller or wires while your hands navigate the iron and solder.',
-        whereToUse: 'On your workbench during complex soldering steps.',
-        whyToUse: 'Humans only have two hands; you need one for the iron, one for the solder, leaving none to hold the wire.',
-        impact: 'Prevents burns, shaking hands, and imprecise joints.'
+        name: 'Helping Hands / PCB Holder',
+        description: 'An adjustable clamping system equipped with alligator clips to secure components firmly.',
+        whenToUse: 'Utilized to stabilize the flight controller or wires during intricate soldering procedures.',
+        whereToUse: 'Deployed on the workbench during complex assembly and soldering stages.',
+        whyToUse: 'Provides essential stability, as both hands are required to manipulate the soldering iron and solder wire simultaneously.',
+        impact: 'Enhances precision, prevents thermal injuries, and eliminates joint instability caused by hand tremors.'
       },
       {
-        name: 'Heat gun / lighter',
-        description: 'A tool generating high heat used to shrink heat-shrink tubing.',
-        whenToUse: 'After soldering a wire joint (e.g., motor wires) to insulate the connection.',
-        whereToUse: 'Over exposed wire joints or around antennas.',
-        whyToUse: 'A heat gun provides even heat, preventing the tubing from burning (which a lighter can cause).',
-        impact: 'Protects against short circuits caused by carbon fiber frames touching exposed wires.'
+        name: 'Heat Gun / Lighter',
+        description: 'A thermal tool utilized to apply high heat for shrinking heat-shrink tubing.',
+        whenToUse: 'Applied after soldering wire joints (e.g., motor wires) to provide electrical insulation.',
+        whereToUse: 'Utilized over exposed wire splices or around vulnerable antenna bases.',
+        whyToUse: 'A heat gun delivers consistent, even heat, preventing the tubing from sustaining thermal damage often caused by direct flames.',
+        impact: 'Mitigates the risk of short circuits resulting from conductive carbon fiber frames contacting exposed wiring.'
       },
       {
-        name: 'Wire stripper',
-        description: 'Tool used to strip the silicone insulation off the wire ends without cutting the copper core.',
-        whenToUse: 'Before tinning and soldering any wire.',
-        whereToUse: 'On silicone motor wires, receiver wires, battery leads.',
-        whyToUse: 'Using a knife often severs copper strands, reducing current capacity.',
-        impact: 'Ensures maximum wire thickness is preserved for current flow.'
+        name: 'Wire Stripper',
+        description: 'A specialized tool designed to remove silicone insulation from wire ends without damaging the internal copper core.',
+        whenToUse: 'Required prior to tinning and soldering any electrical wire.',
+        whereToUse: 'Utilized on silicone motor wires, receiver cables, and battery leads.',
+        whyToUse: 'Alternative cutting tools frequently sever copper strands, which reduces the wire\'s current-carrying capacity.',
+        impact: 'Ensures the maximum cross-sectional area of the wire is preserved for optimal current flow.'
       },
       {
-        name: 'Wire cutter (flush cutter)',
-        description: 'A plier-like tool designed to cut cleanly flush against a surface.',
-        whenToUse: 'Trimming excess wire, cutting zip ties flush.',
-        whereToUse: 'Through-hole component legs, zip tie tails.',
-        whyToUse: 'Standard cutters leave sharp points on zip ties that will slice your fingers. Flush cutters leave a flat edge.',
-        impact: 'Clean wire runs and blood-free fingers when gripping your drone.'
+        name: 'Wire Cutter (Flush Cutter)',
+        description: 'A precision cutting tool engineered to cut cleanly and flush against a flat surface.',
+        whenToUse: 'Employed for trimming excess wire length and cutting zip ties flush.',
+        whereToUse: 'Applied to through-hole component leads and zip tie tails.',
+        whyToUse: 'Standard cutters leave sharp, hazardous protrusions on zip ties. Flush cutters ensure a smooth, flat edge.',
+        impact: 'Promotes clean wire routing and prevents lacerations during drone handling and maintenance.'
       },
       {
-        name: 'Needle nose pliers',
-        description: 'Pliers with long, thin jaws for gripping in tight spaces.',
-        whenToUse: 'Retrieving dropped screws, holding tiny nuts, or pulling zip ties tight.',
-        whereToUse: 'Deep inside the drone stack or around delicate electronics.',
-        whyToUse: 'Fingers are too large for the dense real estate of a 5" drone stack.',
-        impact: 'Saves time and frustration during tight mechanical assembly.'
+        name: 'Needle Nose Pliers',
+        description: 'Pliers featuring elongated, narrow jaws optimized for gripping objects in confined spaces.',
+        whenToUse: 'Utilized for retrieving dropped hardware, securing miniature nuts, or tightening zip ties.',
+        whereToUse: 'Employed deep within the electronics stack or around delicate peripheral components.',
+        whyToUse: 'Standard tools and fingers are too bulky for the dense component layout of modern FPV drone frames.',
+        impact: 'Improves efficiency and reduces frustration during intricate mechanical assembly tasks.'
       },
       {
-        name: 'Hex driver set (1.5mm / 2mm / 2.5mm)',
-        description: 'Screwdrivers for hexagonal socket screws (standard in FPV).',
-        whenToUse: 'Building the frame, mounting motors, securing the top plate.',
-        whereToUse: 'All M2 and M3 structural screws on the drone.',
-        whyToUse: 'Allen keys strip easily. Dedicated drivers offer torque and precision.',
-        impact: 'Prevents stripped screws which can permanently trap components on the frame.'
+        name: 'Hex Driver Set (1.5mm / 2mm / 2.5mm)',
+        description: 'Precision screwdrivers designed specifically for hexagonal socket screws standard in FPV drone assembly.',
+        whenToUse: 'Required for frame construction, motor mounting, and securing structural plates.',
+        whereToUse: 'Utilized on all M2 and M3 structural fasteners throughout the drone.',
+        whyToUse: 'Standard Allen keys strip fastener heads easily. Dedicated drivers provide superior torque and precision.',
+        impact: 'Prevents stripped screw heads, ensuring components can be safely installed and removed.'
       },
       {
-        name: 'Screwdriver set',
-        description: 'Standard Phillips and flathead drivers.',
-        whenToUse: 'Rarely used in the frame, but needed for specific peripherals like action camera mounts or radio controllers.',
-        whereToUse: 'Goggles, radios, and peripheral cases.',
-        whyToUse: 'Necessary for tearing down supplementary gear.',
-        impact: 'Allows full ecosystem maintenance.'
+        name: 'Screwdriver Set',
+        description: 'A comprehensive set of standard Phillips and flathead screwdrivers.',
+        whenToUse: 'Required for specific peripheral maintenance, such as action camera mounts or radio controllers.',
+        whereToUse: 'Applied to goggles, radio transmitters, and peripheral equipment enclosures.',
+        whyToUse: 'Essential for the teardown and maintenance of supplementary ecosystem hardware.',
+        impact: 'Enables comprehensive maintenance of the entire FPV equipment ecosystem.'
       },
       {
-        name: 'Tweezers (ESD safe)',
-        description: 'Anti-static tweezers for manipulating tiny objects.',
-        whenToUse: 'Placing tiny receiver wires on pads, threading wires through small gaps.',
-        whereToUse: 'Directly on flight controller pads or tight frame cutouts.',
-        whyToUse: 'ESD safe prevents static discharge from killing delicate chips.',
-        impact: 'Drastically improves accuracy when soldering 30 AWG wires.'
+        name: 'Tweezers (ESD Safe)',
+        description: 'Anti-static precision tweezers designed for manipulating miniature electronic components.',
+        whenToUse: 'Employed when positioning tiny receiver wires on pads or routing wires through restricted clearances.',
+        whereToUse: 'Utilized directly on flight controller components or within tight carbon fiber frame cutouts.',
+        whyToUse: 'ESD-safe construction prevents electrostatic discharge from damaging highly sensitive microchips.',
+        impact: 'Substantially improves accuracy and safety when manipulating fine-gauge (e.g., 30 AWG) wiring.'
       },
       {
         name: 'Multimeter',
-        description: 'An electronic measuring instrument for voltage, current, and resistance.',
-        whenToUse: 'BEFORE plugging in the battery for the first time.',
-        whereToUse: 'Continuity testing across the XT60 power pads.',
-        whyToUse: 'To verify there is no short circuit (zero resistance) between positive and negative.',
-        impact: 'Saves hundreds of dollars by catching a short before the battery fries the electronics.'
+        description: 'An essential electronic diagnostic instrument used to measure voltage, current, and electrical resistance.',
+        whenToUse: 'Mandatory prior to connecting the battery to the drone for the initial power-up.',
+        whereToUse: 'Utilized for continuity testing across the primary XT60 power terminals.',
+        whyToUse: 'Crucial for verifying the absence of short circuits (zero resistance) between positive and negative terminals.',
+        impact: 'Prevents catastrophic electrical failure, safeguarding expensive electronics from severe damage.'
       },
       {
-        name: 'Smoke stopper',
-        description: 'A resettable fuse or lightbulb circuit inserted between battery and drone.',
-        whenToUse: 'Plugging in the battery for the first time on a new build or after a repair.',
-        whereToUse: 'In series with the XT60 connector.',
-        whyToUse: 'If there is a short, it trips instantly, cutting power before magic smoke escapes.',
-        impact: 'The ultimate insurance policy for any drone builder.'
+        name: 'Smoke Stopper',
+        description: 'A resettable fuse or current-limiting circuit installed between the battery and the drone.',
+        whenToUse: 'Employed during the initial battery connection on a new build or following significant repairs.',
+        whereToUse: 'Installed in series with the primary XT60 power connector.',
+        whyToUse: 'In the event of a short circuit, it trips instantaneously, severing power before electronic components are destroyed.',
+        impact: 'Serves as the ultimate diagnostic safety mechanism, preventing immediate electrical fires.'
       },
       {
-        name: 'Digital caliper',
-        description: 'Precision measuring tool.',
-        whenToUse: 'Measuring frame standoffs, screw lengths, or 3D print dimensions.',
-        whereToUse: 'Mechanical parts.',
-        whyToUse: 'Using a screw that is 1mm too long can piece your motor windings, destroying the motor.',
-        impact: 'Ensures hardware compatibility and prevents motor destruction.'
+        name: 'Digital Caliper',
+        description: 'A highly accurate precision measurement instrument.',
+        whenToUse: 'Utilized for measuring frame standoffs, fastener lengths, and 3D printed component dimensions.',
+        whereToUse: 'Applied exclusively to mechanical parts and structural hardware.',
+        whyToUse: 'Installing a screw that exceeds the required length by even 1mm can pierce motor windings, destroying the motor.',
+        impact: 'Ensures strict hardware compatibility and prevents critical mechanical failures.'
       },
       {
-        name: 'Hot glue gun / Conformal Coating',
-        description: 'Adhesive/protective material for sealing electronics.',
-        whenToUse: 'Protecting soldered pads from stress or weatherproofing the flight controller.',
-        whereToUse: 'Antenna U.FL connectors, wire bases.',
-        whyToUse: 'Prevents tiny connectors from popping off in crashes and protects against wet grass.',
-        impact: 'Vastly improves durability and waterproofs the drone.'
+        name: 'Hot Glue Gun / Conformal Coating',
+        description: 'Adhesive and protective materials utilized for sealing and insulating electronics.',
+        whenToUse: 'Applied for protecting soldered connections from mechanical stress and weatherproofing the flight controller.',
+        whereToUse: 'Utilized on antenna U.FL connectors and vulnerable wire bases.',
+        whyToUse: 'Prevents miniature connectors from detaching during impacts and provides protection against moisture ingress.',
+        impact: 'Substantially enhances overall durability and provides critical environmental resistance.'
       },
       {
-        name: 'Double-sided tape (3M)',
-        description: 'High-strength mounting tape.',
-        whenToUse: 'Mounting receivers, VTXs, or components that don\'t have screw holes.',
-        whereToUse: 'Between the frame and flat-bottomed components.',
-        whyToUse: 'Absorbs vibrations and securely holds lightweight parts.',
-        impact: 'Clean build without loose components rattling into the props.'
+        name: 'Double-Sided Tape (3M)',
+        description: 'An industrial-strength, high-adhesion mounting tape.',
+        whenToUse: 'Required for mounting receivers, video transmitters, or components lacking dedicated mounting hardware.',
+        whereToUse: 'Applied between the carbon fiber frame and flat-bottomed electronic modules.',
+        whyToUse: 'Effectively dampens high-frequency vibrations while securely retaining lightweight components.',
+        impact: 'Ensures a clean, professional build, preventing loose components from shifting into rotating propellers.'
       },
       {
-        name: 'Zip ties',
-        description: 'Nylon cable ties.',
-        whenToUse: 'Securing motor wires to arms, mounting antennas.',
-        whereToUse: 'Along the carbon fiber arms and rear standoffs.',
-        whyToUse: 'The universal FPV mounting solution. They keep wires out of the spinning propellers.',
-        impact: 'Prevents the most common cause of mid-air failure: chopped wires.'
+        name: 'Zip Ties',
+        description: 'High-tensile nylon cable fastening ties.',
+        whenToUse: 'Employed for securing motor wiring to frame arms and mounting antenna systems.',
+        whereToUse: 'Applied along the carbon fiber arms and rear aluminum standoffs.',
+        whyToUse: 'Serves as a universal and lightweight FPV mounting solution, keeping vulnerable wiring clear of propellers.',
+        impact: 'Mitigates the most frequent cause of mid-air electrical failure: propeller-severed wiring.'
       },
       {
-        name: 'Electrical tape',
-        description: 'Insulating tape (though fabric tape like Tesa is preferred).',
-        whenToUse: 'Wrapping arms to secure ESC wiring or insulating carbon fiber edges.',
-        whereToUse: 'Drone arms.',
-        whyToUse: 'Carbon fiber is highly conductive. Tape prevents wires from wearing against sharp edges and shorting out.',
-        impact: 'Prevents electrical shorts on the conductive carbon frame.'
+        name: 'Electrical Tape',
+        description: 'Insulating adhesive tape (premium fabric tape, such as Tesa, is highly recommended).',
+        whenToUse: 'Utilized for wrapping arms to secure ESC wiring or insulating sharp carbon fiber edges.',
+        whereToUse: 'Applied primarily to the drone frame arms and wiring bundles.',
+        whyToUse: 'Carbon fiber is highly conductive. Tape prevents wire insulation from fraying against sharp edges and causing short circuits.',
+        impact: 'Effectively prevents catastrophic electrical shorts against the conductive carbon fiber chassis.'
       }
     ]
   },
@@ -169,36 +168,36 @@ export const PREREQUISITES_DATA = [
     category: '🔌 Wires',
     items: [
       {
-        name: 'Silicone wires (14 AWG – battery lead)',
-        description: 'Thick, flexible wire designed to carry immense burst currents (100A+).',
-        whenToUse: 'Wiring the XT60 power connector to the ESC/PDB.',
-        whereToUse: 'Main power delivery.',
-        whyToUse: 'Silicone insulation does not melt during soldering unlike PVC.',
-        impact: 'Ensures the drone receives the massive voltage spikes needed for acrobatic punch-outs without burning wires.'
+        name: 'Silicone Wires (14 AWG – Battery Lead)',
+        description: 'Thick, highly flexible wire engineered to conduct substantial burst currents (exceeding 100A).',
+        whenToUse: 'Required when wiring the XT60 power connector to the ESC or Power Distribution Board (PDB).',
+        whereToUse: 'Utilized exclusively for the main power delivery circuit.',
+        whyToUse: 'Premium silicone insulation resists melting during high-temperature soldering, unlike standard PVC.',
+        impact: 'Ensures the drone receives optimal voltage delivery required for aggressive maneuvers without thermal degradation.'
       },
       {
-        name: 'Silicone wires (16-18 AWG)',
-        description: 'Medium thickness wire for sustained moderate current.',
-        whenToUse: 'Extending motor wires or powering high-draw peripherals.',
-        whereToUse: 'Motors, heavy VTX units.',
-        whyToUse: 'Balances flexibility and weight with current capacity.',
-        impact: 'Prevents voltage bottlenecks to heavy motors.'
+        name: 'Silicone Wires (16-18 AWG)',
+        description: 'Medium-gauge wire designed for sustained, moderate current delivery.',
+        whenToUse: 'Employed when extending motor wires or providing power to high-draw peripheral devices.',
+        whereToUse: 'Utilized on motor connections and heavy-duty video transmitter units.',
+        whyToUse: 'Provides an optimal balance between physical flexibility, weight reduction, and current capacity.',
+        impact: 'Eliminates voltage bottlenecks to high-performance motors, maintaining system efficiency.'
       },
       {
-        name: 'Silicone wires (20–30 AWG – signal wires)',
-        description: 'Very thin wire for transmitting data.',
-        whenToUse: 'Wiring receivers, GPS, camera video signals.',
-        whereToUse: 'Between flight controller and peripherals.',
-        whyToUse: 'Data signals draw almost zero current, so thick wires just add unnecessary weight.',
-        impact: 'Keeps the drone light and wiring neat.'
+        name: 'Silicone Wires (20–30 AWG – Signal Wires)',
+        description: 'Fine-gauge wire optimized for low-current data transmission.',
+        whenToUse: 'Required for wiring radio receivers, GPS modules, and camera video signal lines.',
+        whereToUse: 'Utilized for connections between the flight controller and peripheral sensors.',
+        whyToUse: 'Data signals draw negligible current; utilizing thicker gauge wire adds unnecessary weight and clutter.',
+        impact: 'Maintains an optimal thrust-to-weight ratio while ensuring clean, organized wiring.'
       },
       {
-        name: 'Coaxial cable (for VTX antenna if needed)',
-        description: 'Shielded cable for RF video transmission.',
-        whenToUse: 'Extending a video transmitter to an antenna mount.',
-        whereToUse: 'Between the VTX and the rear TPU antenna mount.',
-        whyToUse: 'Unshielded wire leaks radio frequency, destroying your video feed range.',
-        impact: 'Allows long-range clear video by preventing RF interference.'
+        name: 'Coaxial Cable (VTX Antenna Extension)',
+        description: 'A heavily shielded cable designed for high-frequency RF video transmission.',
+        whenToUse: 'Required when extending a video transmitter output to a remote antenna mounting point.',
+        whereToUse: 'Installed between the VTX module and the rear TPU antenna mount.',
+        whyToUse: 'Unshielded wiring leaks radio frequency energy, severely degrading video feed range and quality.',
+        impact: 'Ensures pristine, long-range video transmission by eliminating RF interference and signal degradation.'
       }
     ]
   },
@@ -206,28 +205,28 @@ export const PREREQUISITES_DATA = [
     category: '🔋 Power Connectors',
     items: [
       {
-        name: 'XT60 connectors (male & female)',
-        description: 'The standard high-current unpolarized connector for 5" drones.',
-        whenToUse: 'Connecting the LiPo battery to the drone.',
-        whereToUse: 'Main power lead.',
-        whyToUse: 'Handles 60 amps continuous, perfectly matching the sustained draw of a 5" drone.',
-        impact: 'Ensures no bottleneck or melting at the power connection.'
+        name: 'XT60 Connectors (Male & Female)',
+        description: 'The industry-standard, high-current, polarized connector for 5" FPV drones.',
+        whenToUse: 'Employed to connect the high-capacity LiPo battery to the drone\'s power system.',
+        whereToUse: 'Integrated into the primary main power lead.',
+        whyToUse: 'Engineered to handle 60 amps continuous load, perfectly matching the sustained current draw of a 5" quadcopter.',
+        impact: 'Prevents thermal throttling and connector melting at the critical power junction.'
       },
       {
-        name: 'XT30 connectors',
-        description: 'Smaller version of XT60.',
-        whenToUse: 'Used on smaller 2" to 3" micro drones, not 5".',
-        whereToUse: 'Micro drone battery leads.',
-        whyToUse: 'Lighter weight for builds that pull less than 30 amps.',
-        impact: 'Saves critical grams on micro builds.'
+        name: 'XT30 Connectors',
+        description: 'A scaled-down, lighter variant of the standard XT60 connector.',
+        whenToUse: 'Utilized on smaller 2" to 3" micro drones with lower current requirements.',
+        whereToUse: 'Integrated into micro drone battery leads and ESC power inputs.',
+        whyToUse: 'Provides significant weight savings for sub-250g builds that draw less than 30 amps of continuous current.',
+        impact: 'Preserves critical payload capacity on micro-class drone builds.'
       },
       {
-        name: 'Balance connector (JST-XH)',
-        description: 'The small multi-wire plug on a LiPo battery.',
-        whenToUse: 'Plugging the battery into the charger.',
-        whereToUse: 'Charger balance board.',
-        whyToUse: 'Allows the charger to monitor and balance each individual cell voltage within the battery.',
-        impact: 'Prevents battery explosions by ensuring no single cell is overcharged.'
+        name: 'Balance Connector (JST-XH)',
+        description: 'The standard multi-wire diagnostic and charging plug integrated into LiPo batteries.',
+        whenToUse: 'Required when connecting the battery to a balanced smart charger.',
+        whereToUse: 'Plugged directly into the charger\'s balance board or integrated port.',
+        whyToUse: 'Enables the charger to precisely monitor and balance the voltage of each individual internal cell.',
+        impact: 'Prevents catastrophic battery failure by ensuring no single cell is overcharged beyond safe voltage limits.'
       }
     ]
   },
@@ -235,20 +234,20 @@ export const PREREQUISITES_DATA = [
     category: '🔗 Signal Connectors / Plugs',
     items: [
       {
-        name: 'JST connectors (PH 2.0 / SH 1.0 / GH)',
-        description: 'Tiny white plastic connectors used for plug-and-play electronics.',
-        whenToUse: 'Connecting digital VTXs (like DJI O3) or GPS units without soldering.',
-        whereToUse: 'Flight controller ports.',
-        whyToUse: 'Allows hot-swapping parts in the field without a soldering iron.',
-        impact: 'Makes maintenance and parts swapping drastically easier.'
+        name: 'JST Connectors (PH 2.0 / SH 1.0 / GH)',
+        description: 'Miniature precision connectors utilized for plug-and-play electronic integration.',
+        whenToUse: 'Required when connecting digital VTX modules (e.g., DJI O3) or GPS units without direct soldering.',
+        whereToUse: 'Utilized on dedicated flight controller integration ports.',
+        whyToUse: 'Facilitates rapid, hot-swappable component replacements in the field without requiring soldering equipment.',
+        impact: 'Substantially streamlines hardware maintenance and simplifies complex component upgrades.'
       },
       {
-        name: 'Dupont / Servo connectors',
-        description: 'Standard 3-pin black connectors.',
-        whenToUse: 'Rare in modern FPV, mostly used in fixed-wing or older PWM receivers.',
-        whereToUse: 'Legacy peripheral connections.',
-        whyToUse: 'Universal standard outside of FPV.',
-        impact: 'Allows compatibility with standard RC servos.'
+        name: 'Dupont / Servo Connectors',
+        description: 'Standardized 3-pin rectangular connectors historically common in RC aviation.',
+        whenToUse: 'Infrequently used in modern FPV; primarily reserved for fixed-wing aircraft or legacy PWM receivers.',
+        whereToUse: 'Employed for legacy peripheral connections and older servo integrations.',
+        whyToUse: 'Maintains universal standard compatibility with traditional radio control ecosystems outside of modern FPV.',
+        impact: 'Ensures backward compatibility with standard RC servos and traditional receiver hardware.'
       }
     ]
   },
@@ -256,20 +255,20 @@ export const PREREQUISITES_DATA = [
     category: '⚡ Power Components',
     items: [
       {
-        name: 'Capacitors (low ESR, 25V / 35V / 50V)',
-        description: 'Energy storage components acting as electrical shock absorbers.',
-        whenToUse: 'Absolutely mandatory on 4S-6S drone builds. Solder across the battery pads.',
-        whereToUse: 'Main ESC battery input pads.',
-        whyToUse: 'Motors act as generators when braking, sending massive voltage spikes back to the ESC. Cap catches these spikes.',
-        impact: 'Prevents your ESC and video transmitter from burning up mid-flight due to voltage spikes.'
+        name: 'Capacitors (Low ESR, 25V / 35V / 50V)',
+        description: 'High-capacity energy storage components functioning as electrical shock absorbers.',
+        whenToUse: 'Strictly mandatory on all 4S-6S drone builds; must be soldered across the main battery input pads.',
+        whereToUse: 'Installed directly at the main ESC battery input terminals.',
+        whyToUse: 'Motors generate massive regenerative voltage spikes during active braking. Capacitors absorb and neutralize these spikes.',
+        impact: 'Prevents catastrophic mid-flight failure of the ESC and video transmitter caused by voltage surges.'
       },
       {
-        name: 'BEC (5V / 9V regulators)',
-        description: 'Battery Eliminator Circuit - steps down raw battery voltage.',
-        whenToUse: 'Powering a GoPro, 5V receiver, or DJI Air Unit from a high voltage battery.',
-        whereToUse: 'Flight controller or standalone board.',
-        whyToUse: 'A 6S battery outputs 25V. Plugging a 5V receiver into 25V will explode it instantly.',
-        impact: 'Safely powers fragile electronics.'
+        name: 'BEC (5V / 9V Voltage Regulators)',
+        description: 'Battery Eliminator Circuit — a hardware module that steps down raw battery voltage to a stable lower voltage.',
+        whenToUse: 'Required when powering a GoPro, 5V receiver, or digital air unit from a high-voltage primary battery.',
+        whereToUse: 'Integrated onto the flight controller or installed as a standalone auxiliary board.',
+        whyToUse: 'A 6S battery outputs up to 25.2V. Connecting a 5V receiver directly to this voltage will cause immediate destruction.',
+        impact: 'Safely and reliably powers sensitive, low-voltage electronic peripherals.'
       }
     ]
   },
@@ -277,20 +276,20 @@ export const PREREQUISITES_DATA = [
     category: '📡 Antenna & RF Parts',
     items: [
       {
-        name: 'SMA / RP-SMA connectors',
-        description: 'Large, screw-on metal antenna connectors.',
-        whenToUse: 'Mounting heavy, durable video antennas to the frame.',
-        whereToUse: 'Video transmitter output.',
-        whyToUse: 'Incredibly durable in crashes compared to snap-on connectors.',
-        impact: 'Ensures your antenna doesn\'t rip off in a high-speed branch impact.'
+        name: 'SMA / RP-SMA Connectors',
+        description: 'Robust, threaded metal coaxial antenna connectors.',
+        whenToUse: 'Required for mounting heavy, durable video antennas securely to the drone chassis.',
+        whereToUse: 'Integrated at the video transmitter output stage.',
+        whyToUse: 'Offers unparalleled mechanical durability during crashes compared to fragile snap-on connectors.',
+        impact: 'Ensures critical antenna hardware is not sheared off during high-velocity impacts.'
       },
       {
-        name: 'U.FL (IPEX) / MMCX connectors',
-        description: 'Tiny snap-on antenna connectors.',
-        whenToUse: 'Connecting the antenna directly to the VTX circuit board.',
-        whereToUse: 'Inside the drone stack.',
-        whyToUse: 'Saves massive amounts of weight and circuit board space.',
-        impact: 'Allows ultra-compact VTX designs, though they pop off easily in crashes (hot glue recommended).'
+        name: 'U.FL (IPEX) / MMCX Connectors',
+        description: 'Ultra-miniature, snap-on coaxial RF connectors.',
+        whenToUse: 'Utilized for connecting the antenna directly to the VTX circuit board to save space.',
+        whereToUse: 'Located internally within the drone electronics stack.',
+        whyToUse: 'Provides massive reductions in weight and circuit board footprint for compact builds.',
+        impact: 'Enables ultra-compact VTX designs, though reinforcement (e.g., conformal coating or adhesive) is recommended to prevent detachment.'
       }
     ]
   },
@@ -298,28 +297,28 @@ export const PREREQUISITES_DATA = [
     category: '🔩 Mounting Hardware',
     items: [
       {
-        name: 'Frame screws (M2 / M3) & Nylock Nuts',
-        description: 'Titanium or steel metric hardware.',
-        whenToUse: 'Bolting the carbon fiber frame and motors together.',
-        whereToUse: 'Motors, arms, top plate.',
-        whyToUse: 'M3 is the standard for 5" drone structural integrity. Nylock nuts have nylon inserts that never vibrate loose.',
-        impact: 'Keeps the drone from violently disassembling itself mid-air.'
+        name: 'Frame Screws (M2 / M3) & Nylock Nuts',
+        description: 'High-tensile titanium or steel metric structural fasteners.',
+        whenToUse: 'Required for assembling the carbon fiber frame and mounting the brushless motors.',
+        whereToUse: 'Applied to motors, structural arms, and the top chassis plate.',
+        whyToUse: 'M3 hardware is the structural standard for 5" drones. Nylock nuts feature a nylon collar that prevents loosening under vibration.',
+        impact: 'Ensures the structural integrity of the frame, preventing violent mid-air disassembly.'
       },
       {
-        name: 'Nylon / Aluminum standoffs',
-        description: 'Columns that space the top and bottom plates, housing the electronics.',
-        whenToUse: 'Creating the central cage for the stack.',
-        whereToUse: 'Between carbon fiber plates.',
-        whyToUse: 'Provides clearance for electronics while giving the frame its 3D structural rigidity.',
-        impact: 'Protects the $150 flight controller in the event of an upside-down crash.'
+        name: 'Nylon / Aluminum Standoffs',
+        description: 'Structural columns utilized to separate the top and bottom carbon plates, housing the electronics.',
+        whenToUse: 'Required for constructing the central protective cage for the electronics stack.',
+        whereToUse: 'Installed vertically between the main carbon fiber chassis plates.',
+        whyToUse: 'Provides necessary clearance for electronics while establishing the frame\'s 3D structural rigidity.',
+        impact: 'Protects expensive flight controllers and VTX modules from direct impacts during inverted crashes.'
       },
       {
-        name: 'Rubber grommets (FC soft mount)',
-        description: 'Silicone dampers that screws pass through.',
-        whenToUse: 'Mounting the flight controller to the screws.',
-        whereToUse: 'Flight controller mounting holes.',
-        whyToUse: 'Motors generate intense high-frequency vibrations. Grommets absorb them before they reach the FC\'s sensitive gyro.',
-        impact: 'Prevents "flyaways" and twitchy behavior caused by a confused gyroscope.'
+        name: 'Rubber Grommets (FC Soft Mount)',
+        description: 'Silicone damping rings installed within the mounting holes of sensitive electronics.',
+        whenToUse: 'Mandatory when mounting the flight controller to the central stack screws.',
+        whereToUse: 'Installed within the flight controller and ESC mounting apertures.',
+        whyToUse: 'Brushless motors generate intense high-frequency vibrations. Grommets absorb these harmonics before they interfere with the gyroscope.',
+        impact: 'Prevents erratic flight behavior, "flyaways," and twitching caused by gyro desynchronization.'
       }
     ]
   },
@@ -327,20 +326,20 @@ export const PREREQUISITES_DATA = [
     category: '🧱 Frame Assembly Parts',
     items: [
       {
-        name: 'Arms',
-        description: 'The protruding carbon fiber beams.',
-        whenToUse: 'Provides leverage and a mounting point for motors far from the center.',
-        whereToUse: 'The X or H shape of the drone.',
-        whyToUse: 'Longer arms mean more stability; thicker arms (5-6mm) withstand impacts with concrete.',
-        impact: 'Defines the flight characteristics and durability of the drone.'
+        name: 'Carbon Fiber Arms',
+        description: 'The primary structural appendages of the drone chassis, milled from rigid carbon fiber.',
+        whenToUse: 'Essential for providing leverage and establishing a mounting point for motors away from the center of mass.',
+        whereToUse: 'Forms the foundational X or H geometry of the drone frame.',
+        whyToUse: 'Extended arms increase flight stability, while thicker arms (5-6mm) provide necessary resistance against concrete impacts.',
+        impact: 'Fundamentally defines the flight kinematics, resonance, and overall durability of the drone.'
       },
       {
-        name: 'Battery strap & pad',
-        description: 'Kevlar strap and grippy silicone pad.',
-        whenToUse: 'Securing the heavy LiPo battery to the frame.',
-        whereToUse: 'Top or bottom plate.',
-        whyToUse: 'A 200g battery turning at 100km/h carries immense inertia. Without grip, it turns into a projectile.',
-        impact: 'Prevents battery ejections which immediately kill drone power in the air.'
+        name: 'Battery Strap & Anti-Slip Pad',
+        description: 'A high-tensile Kevlar strap paired with a high-friction silicone mounting pad.',
+        whenToUse: 'Required for securing the heavy LiPo battery firmly to the chassis.',
+        whereToUse: 'Applied to the top or bottom structural plate, depending on frame design.',
+        whyToUse: 'A 200g battery maneuvering at 100km/h generates immense inertia. Without extreme grip, it becomes a dangerous projectile.',
+        impact: 'Prevents catastrophic battery ejections, ensuring continuous power delivery during aggressive flight.'
       }
     ]
   },
@@ -348,36 +347,36 @@ export const PREREQUISITES_DATA = [
     category: '⚙️ Electronics (Wiring Side)',
     items: [
       {
-        name: 'Flight controller (FC)',
-        description: 'The brain. Contains the gyro, processor (F4/F7/H7), and Betaflight OS.',
-        whenToUse: 'Wiring all peripherals (receiver, GPS, VTX) to central command.',
-        whereToUse: 'Top of the electronics stack.',
-        whyToUse: 'It translates your stick movements and gyro data into motor commands 8,000 times a second.',
-        impact: 'Determines how smooth and responsive the drone feels.'
+        name: 'Flight Controller (FC)',
+        description: 'The central processing unit of the drone, containing the gyroscope, main processor (F4/F7/H7), and operating system (e.g., Betaflight).',
+        whenToUse: 'Serves as the central integration hub for wiring all peripherals (receiver, GPS, VTX).',
+        whereToUse: 'Typically mounted at the top of the central electronics stack.',
+        whyToUse: 'It mathematically translates pilot stick inputs and real-time gyro data into precise motor commands up to 8,000 times per second.',
+        impact: 'Dictates the smoothness, responsiveness, and overall flight fidelity of the aircraft.'
       },
       {
         name: 'ESC (4-in-1)',
-        description: 'Electronic Speed Controller — routes raw battery power to the motors.',
-        whenToUse: 'Wiring motors and battery power.',
-        whereToUse: 'Bottom of the electronics stack.',
-        whyToUse: 'Takes low-voltage signals from the FC and converts them into high-current 3-phase AC power for motors.',
-        impact: 'Determines the maximum thrust and payload capacity.'
+        description: 'The Electronic Speed Controller — a high-power module that manages raw battery distribution to the motors.',
+        whenToUse: 'Required for interfacing the primary battery power with the individual brushless motors.',
+        whereToUse: 'Typically mounted at the base of the central electronics stack for optimal cooling and power routing.',
+        whyToUse: 'Converts low-voltage digital signals from the FC into high-current, 3-phase AC power required by the motors.',
+        impact: 'Determines the absolute maximum thrust output, acceleration curve, and payload capacity.'
       },
       {
         name: 'Receiver (RX)',
-        description: 'The radio antenna module (e.g., ExpressLRS).',
-        whenToUse: 'Wired via 4 wires: 5V, GND, TX, RX.',
-        whereToUse: 'Mounted off the back of the frame.',
-        whyToUse: 'To receive control link packets from your controller on the ground.',
-        impact: 'Determines if you can fly 100 meters or 10 miles away.'
+        description: 'The dedicated radio telemetry module (e.g., ExpressLRS or Crossfire).',
+        whenToUse: 'Wired to the flight controller via a standard 4-wire UART interface (5V, GND, TX, RX).',
+        whereToUse: 'Generally mounted at the rear of the frame to maximize antenna clearance.',
+        whyToUse: 'Essential for receiving highly compressed control link packets from the pilot\'s ground transmitter.',
+        impact: 'Determines the operational range of the aircraft, dictating whether it can fly 100 meters or 10 miles.'
       },
       {
         name: 'VTX & FPV Camera',
-        description: 'Video Transmitter and "eye" of the drone.',
-        whenToUse: 'Wired to transmit live video to your goggles.',
-        whereToUse: 'Camera at the front, VTX at the rear.',
-        whyToUse: 'Without low-latency 0-delay video, racing and freestyle are impossible.',
-        impact: 'Gives you the first-person perspective.'
+        description: 'The Video Transmitter and optical sensor module, functioning as the visual system of the drone.',
+        whenToUse: 'Wired directly to the flight controller to transmit real-time video telemetry back to the pilot\'s goggles.',
+        whereToUse: 'The camera is mounted at the front, while the VTX is secured at the rear of the chassis.',
+        whyToUse: 'Ultra-low-latency video transmission is absolutely critical; racing and freestyle flight are impossible with perceptible delay.',
+        impact: 'Provides the essential first-person perspective required for high-speed navigation.'
       }
     ]
   },
@@ -385,12 +384,12 @@ export const PREREQUISITES_DATA = [
     category: '🔌 Wiring Accessories',
     items: [
       {
-        name: 'Heat shrink tubes',
-        description: 'Plastic tubes that shrink when heated tightly around joints.',
-        whenToUse: 'Whenever a receiver or raw soldered wire is exposed to the elements.',
-        whereToUse: 'Over UART cable splices or bare receiver boards.',
-        whyToUse: 'Prevents shorts, adds mechanical strength to the wire joint.',
-        impact: 'A clean, professional build that doesn\'t short out in damp environments.'
+        name: 'Heat Shrink Tubing',
+        description: 'Thermoplastic tubes that contract uniformly when heated to create a tight protective seal.',
+        whenToUse: 'Required whenever a receiver board or raw soldered wire splice is exposed to the environment.',
+        whereToUse: 'Applied over UART cable splices, bare receiver boards, and motor wire extensions.',
+        whyToUse: 'Prevents electrical shorts and adds significant mechanical strain relief to vulnerable wire joints.',
+        impact: 'Ensures a professional-grade build that remains reliable even in damp or rigorous environments.'
       }
     ]
   },
@@ -398,20 +397,20 @@ export const PREREQUISITES_DATA = [
     category: '🧪 Safety & Testing',
     items: [
       {
-        name: 'LiPo battery checker',
-        description: 'Small screen device that plugs into the balance lead.',
-        whenToUse: 'Before and after every flight.',
-        whereToUse: 'Plugged into the battery.',
-        whyToUse: 'LiPos must not drop below 3.2V per cell or they are permanently damaged. Must check constantly.',
-        impact: 'Prevents battery degradation and catastrophic mid-air battery sags.'
+        name: 'LiPo Battery Checker',
+        description: 'A portable diagnostic screen that interfaces with the battery\'s balance lead.',
+        whenToUse: 'Mandatory before takeoff and immediately following every flight.',
+        whereToUse: 'Plugged directly into the battery\'s JST-XH balance connector.',
+        whyToUse: 'LiPo cells must never drop below 3.2V, or they suffer irreversible chemical damage. Constant monitoring is required.',
+        impact: 'Prevents severe battery degradation and avoids catastrophic mid-air voltage collapse.'
       },
       {
-        name: 'Fireproof LiPo bag',
-        description: 'Fiberglass lined bag.',
-        whenToUse: 'Charging, transporting, and storing batteries.',
-        whereToUse: 'In your backpack or charging station.',
-        whyToUse: 'LiPos are unstable chemistries. If punctured or overcharged, they violently ignite.',
-        impact: 'Prevents your house or car from burning down.'
+        name: 'Fireproof LiPo Bag',
+        description: 'A specialized containment bag lined with woven fiberglass.',
+        whenToUse: 'Strictly required during the charging, transportation, and long-term storage of all LiPo batteries.',
+        whereToUse: 'Utilized within the charging station setup or transport backpack.',
+        whyToUse: 'Lithium Polymer batteries possess highly volatile chemistries. If punctured or overcharged, they can violently ignite.',
+        impact: 'Provides critical fire containment, protecting property and preventing severe fire hazards.'
       }
     ]
   },
@@ -420,11 +419,11 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'USB Type-C Cable',
-        description: 'Data connection cable.',
-        whenToUse: 'Connecting the flight controller to your PC to use Betaflight Configurator.',
-        whereToUse: 'Flight controller USB port.',
-        whyToUse: 'To flash firmware, set up receiver channels, and tune PIDs.',
-        impact: 'No build flies without software configuration.'
+        description: 'A high-speed data transmission cable.',
+        whenToUse: 'Required for connecting the drone\'s flight controller to a PC running Betaflight Configurator.',
+        whereToUse: 'Interfaced with the primary USB port on the flight controller.',
+        whyToUse: 'Essential for flashing firmware, establishing receiver channels, and tuning PID loops.',
+        impact: 'Software configuration is mandatory; an unconfigured drone cannot achieve stable flight.'
       }
     ]
   },
@@ -433,11 +432,11 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Raspberry Pi / Companion Computer',
-        description: 'Onboard computer for autonomous processing.',
-        whenToUse: 'When building a drone that tracks objects or flies via code instead of radio.',
-        whereToUse: 'Mounted on an extended top frame.',
-        whyToUse: 'The flight controller only handles stabilization. True "AI" requires Linux and OpenCV.',
-        impact: 'Transforms a manual hobby drone into an intelligent robotic platform.'
+        description: 'An onboard microcomputer utilized for high-level autonomous processing and computer vision.',
+        whenToUse: 'Required when engineering a drone capable of object tracking or autonomous code-driven flight.',
+        whereToUse: 'Mounted securely on an extended top frame or custom secondary deck.',
+        whyToUse: 'Standard flight controllers only handle low-level stabilization. Advanced AI requires Linux-based environments and OpenCV.',
+        impact: 'Effectively transforms a manual remote-controlled drone into an intelligent, autonomous robotic platform.'
       }
     ]
   }
