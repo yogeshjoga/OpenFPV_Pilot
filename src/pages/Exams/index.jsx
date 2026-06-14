@@ -28,15 +28,15 @@ export default function ExamPage() {
   const [studentName, setStudentName] = useState('')
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [showPreview, setShowPreview] = useState(false)
-  const [certVersion, setCertVersion] = useState('v1')
+  const [certVersion, setCertVersion] = useState('v2')
 
   const examData = EXAM_BANKS[categoryId] || EXAM_BANKS['esc']
 
   const getGradeColor = (letter) => {
-    if (letter === 'Level 3') return '#10b981';
-    if (letter === 'Level 2') return '#f97316';
-    if (letter === 'Level 1') return '#ef4444';
-    if (letter === 'Level 0') return '#ef4444';
+    if (letter === 'Grade 1') return '#10b981';
+    if (letter === 'Grade 2') return '#f97316';
+    if (letter === 'Grade 3') return '#ef4444';
+    if (letter === 'Grade 4') return '#ef4444';
     if (letter === 'Failed') return '#ef4444';
     return 'var(--color-text-primary)';
   };
@@ -292,11 +292,11 @@ export default function ExamPage() {
     })
     
     const pct = totalScore / maxScore
-    if (pct >= 0.90) setGrade({ letter: 'Level 3', feedback: 'Master / Expert Level' })
-    else if (pct >= 0.80) setGrade({ letter: 'Level 3', feedback: 'Advanced Professional' })
-    else if (pct >= 0.70) setGrade({ letter: 'Level 2', feedback: 'Intermediate Operator' })
-    else if (pct >= 0.50) setGrade({ letter: 'Level 1', feedback: 'Beginner / Novice' })
-    else if (pct >= 0.35) setGrade({ letter: 'Level 0', feedback: 'Needs More Practice' })
+    if (pct >= 0.90) setGrade({ letter: 'Grade 1', feedback: 'Master / Expert Level' })
+    else if (pct >= 0.80) setGrade({ letter: 'Grade 1', feedback: 'Advanced Professional' })
+    else if (pct >= 0.70) setGrade({ letter: 'Grade 2', feedback: 'Intermediate Operator' })
+    else if (pct >= 0.50) setGrade({ letter: 'Grade 3', feedback: 'Beginner / Novice' })
+    else if (pct >= 0.35) setGrade({ letter: 'Grade 4', feedback: 'Needs More Practice' })
     else setGrade({ letter: 'Failed', feedback: 'Re-study Core Fundamentals' })
 
     setExamState('results')
@@ -414,12 +414,8 @@ export default function ExamPage() {
                   <div style={{ marginBottom: '3rem', padding: '1.5rem', background: 'var(--color-bg-primary)', borderRadius: '12px', border: '1px dashed var(--color-border)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                       <h3 style={{ color: 'var(--color-text-secondary)', fontSize: '1rem', margin: 0 }}>Certificate Preview</h3>
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button onClick={() => setCertVersion('v1')} style={{ padding: '0.4rem 0.8rem', background: certVersion === 'v1' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: `1px solid var(--color-border)`, color: 'white', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}>Classic V1</button>
-                        <button onClick={() => setCertVersion('v2')} style={{ padding: '0.4rem 0.8rem', background: certVersion === 'v2' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: `1px solid var(--color-border)`, color: 'white', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}>Modern V2</button>
-                      </div>
                     </div>
-                    {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={true} /> : <CertificateV2 studentName={studentName} isPreview={true} grade="Level 3" />}
+                    {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={true} /> : <CertificateV2 studentName={studentName} isPreview={true} grade="Grade 1" />}
                     <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                       <button onClick={() => handleDownloadCertificate(true)} style={{ background: 'var(--color-bg-secondary)', color: 'var(--color-text-primary)', padding: '0.6rem 1.2rem', borderRadius: '6px', border: '1px solid var(--color-border)', cursor: 'pointer', fontWeight: 'bold' }}>Download Preview (Watermarked)</button>
                       <button onClick={() => handleDownloadCertificate(false)} style={{ background: 'var(--color-accent-primary)', color: 'white', padding: '0.6rem 1.2rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Download Official (Requires Password)</button>
@@ -519,8 +515,8 @@ export default function ExamPage() {
       {examState === 'results' && (
         <div className={styles.layout}>
           <div className={styles.resultsView} style={{ overflowY: 'auto', padding: '2rem' }}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: (grade.letter === 'Failed' || grade.letter === 'Level 0') ? '#ef4444' : 'var(--color-text-primary)' }}>
-              {(grade.letter === 'Failed' || grade.letter === 'Level 0') ? 'Exam Failed' : 'Exam Complete!'}
+            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: (grade.letter === 'Failed' || grade.letter === 'Grade 4') ? '#ef4444' : 'var(--color-text-primary)' }}>
+              {(grade.letter === 'Failed' || grade.letter === 'Grade 4') ? 'Exam Failed' : 'Exam Complete!'}
             </h2>
             
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', width: '100%', maxWidth: '1000px', alignItems: 'stretch' }}>
@@ -572,7 +568,7 @@ export default function ExamPage() {
                   </div>
                 )}
                 
-                {(grade.letter === 'Failed' || grade.letter === 'Level 0') && (
+                {(grade.letter === 'Failed' || grade.letter === 'Grade 4') && (
                   <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '1.5rem', borderRadius: '12px', textAlign: 'left' }}>
                     <h3 style={{ color: '#b91c1c', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <span>📚</span> Study Roadmap
@@ -596,15 +592,12 @@ export default function ExamPage() {
             </div>
 
             {/* Certificate Generation Section */}
-            {categoryId === 'all' && grade.letter !== 'Failed' && grade.letter !== 'Level 0' && (
+            {categoryId === 'all' && grade.letter !== 'Failed' && grade.letter !== 'Grade 4' && (
               <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--color-bg-card)', borderRadius: '12px', border: '1px solid var(--color-border)', textAlign: 'center' }}>
                 <h2 style={{ fontSize: '2rem', color: 'var(--color-accent-primary)', marginBottom: '1rem' }}>🏆 Official Certification</h2>
                 <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>Congratulations, <strong>{studentName}</strong>! Here is your official FPV Master Pilot Certification.</p>
                 
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                  <button onClick={() => setCertVersion('v1')} style={{ padding: '0.6rem 1.5rem', background: certVersion === 'v1' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>Classic V1 Certificate</button>
-                  <button onClick={() => setCertVersion('v2')} style={{ padding: '0.6rem 1.5rem', background: certVersion === 'v2' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>Modern V2 Certificate</button>
-                </div>
+                {/* V1 deprecated */}
 
                 {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={false} /> : <CertificateV2 studentName={studentName} isPreview={false} grade={grade.letter} />}
                 

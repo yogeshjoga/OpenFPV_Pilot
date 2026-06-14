@@ -17,7 +17,7 @@ const AUDIENCES = [
 const LEVELS = [
   {
     id: 'level3',
-    badge: 'Level 3',
+    badge: 'Grade 3',
     emoji: <Award size={24} />,
     title: 'Simulation Skill Certificate',
     subtitle: 'Team-Based • Group Controllers',
@@ -30,12 +30,12 @@ const LEVELS = [
       { icon: <BookOpen size={16} />, text: 'Theory: Drone fundamentals & regulations' },
       { icon: <Atom size={16} />, text: 'Physics of flight & UAV mechanics' },
       { icon: <Wind size={16} />, text: 'Aerodynamics principles' },
-      { icon: <FileText size={16} />, text: 'Level 3 Simulation Skill Certificate' },
+      { icon: <FileText size={16} />, text: 'Grade 3 Simulation Skill Certificate' },
     ],
   },
   {
     id: 'level2',
-    badge: 'Level 2',
+    badge: 'Grade 2',
     emoji: <Award size={24} />,
     title: 'Moderate Skill Certificate',
     subtitle: 'Individual Controller • Cinewoop Flying',
@@ -49,12 +49,12 @@ const LEVELS = [
       { icon: <BookOpen size={16} />, text: 'Theory: Drone systems & components' },
       { icon: <Atom size={16} />, text: 'Physics & flight dynamics' },
       { icon: <Wind size={16} />, text: 'Aerodynamics principles' },
-      { icon: <FileText size={16} />, text: 'Level 2 Moderate Skill Certificate' },
+      { icon: <FileText size={16} />, text: 'Grade 2 Moderate Skill Certificate' },
     ],
   },
   {
     id: 'level1',
-    badge: 'Level 1',
+    badge: 'Grade 1',
     emoji: <Award size={24} />,
     title: 'Professional Certificate',
     subtitle: 'Full Build • AI Integration • Pro Certificate',
@@ -141,7 +141,7 @@ export default function Workshops() {
               </h1>
               <p className={styles.heroSub}>
                 Week-based structured drone workshops for universities, engineering colleges,
-                aviation students, researchers &amp; hobbyists. Three certification levels:
+                aviation students, researchers &amp; hobbyists. Three certification grades:
                 simulation to professional.
               </p>
 
@@ -160,8 +160,8 @@ export default function Workshops() {
         {/* ── CERTIFICATION LEVELS ── */}
         <section className={`section ${styles.levelsSection}`}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>🏆 Certification Levels</h2>
-            <p className={styles.sectionSub}>Choose the right level for your institution. All programs are 1-week intensive workshops.</p>
+            <h2 className={styles.sectionTitle}>🏆 Certification Grades</h2>
+            <p className={styles.sectionSub}>Choose the right grade for your institution. All programs are 1-week intensive workshops.</p>
 
             {/* Layout Wrapper */}
             <div className={styles.levelsSplitLayout}>
@@ -171,7 +171,7 @@ export default function Workshops() {
                   activeId={activeLevel}
                   onSelect={setActiveLevel}
                   layoutIdPrefix="workshops"
-                  label="Levels"
+                  label="Grades"
                 />
               </div>
 
@@ -241,7 +241,7 @@ export default function Workshops() {
               <div>
                 <h3 className={styles.dgcaTitle}>DGCA Certification Pathway</h3>
                 <p className={styles.dgcaDesc}>
-                  Students who complete the <strong>Level 1 Professional Certificate</strong> are
+                  Students who complete the <strong>Grade 1 Professional Certificate</strong> are
                   eligible to apply for the <strong>DGCA Remote Pilot Certificate</strong>:
                   India's official drone pilot licence.
                 </p>

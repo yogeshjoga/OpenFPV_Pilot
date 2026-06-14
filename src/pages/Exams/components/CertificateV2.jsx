@@ -24,7 +24,7 @@ export default function CertificateV2({
   examColor = B.cyan, 
   timestamp,
   isPreview = false,
-  grade = "Level 3"
+  grade = "Grade 1"
 }) {
   const name = studentName?.trim() || "STUDENT NAME";
   
@@ -37,27 +37,27 @@ export default function CertificateV2({
   const accentColor = examColor;
   const alpha = isPreview ? 0.95 : 1; // Keep mostly opaque so they can see design, rely on watermark
 
-  // Map grade to performance levels and styling matching Level 3, 2, 1
-  let perfText = "Level 3";
-  let perfColor = "#10b981"; // Green
+  // Map grade to performance levels and styling matching Grade 1, 2, 3
+  let perfText = "Grade 1";
+  let perfColor = "#10b981"; // Green (highest)
   let perfBg = "#f0fdf4";
   let perfBorder = "#bbf7d0";
 
-  // Normalize grade to handle A+, A, B, C or Level 1, 2, 3
+  // Normalize grade to handle Grade 1, 2, 3
   const normalizedGrade = String(grade).toUpperCase();
 
-  if (normalizedGrade.includes("C") || normalizedGrade.includes("LEVEL 1") || normalizedGrade === "1") {
-    perfText = "Level 1";
+  if (normalizedGrade.includes("C") || normalizedGrade.includes("GRADE 3") || normalizedGrade.includes("LEVEL 3") || normalizedGrade === "3") {
+    perfText = "Grade 3";
     perfColor = "#ef4444"; // Red
     perfBg = "#fef2f2";
     perfBorder = "#fecaca";
-  } else if (normalizedGrade.includes("B") || normalizedGrade.includes("LEVEL 2") || normalizedGrade === "2") {
-    perfText = "Level 2";
+  } else if (normalizedGrade.includes("B") || normalizedGrade.includes("GRADE 2") || normalizedGrade.includes("LEVEL 2") || normalizedGrade === "2") {
+    perfText = "Grade 2";
     perfColor = "#f97316"; // Orange
     perfBg = "#fff7ed";
     perfBorder = "#fed7aa";
   } else {
-    perfText = "Level 3";
+    perfText = "Grade 1";
     perfColor = "#10b981"; // Green
     perfBg = "#f0fdf4";
     perfBorder = "#bbf7d0";
@@ -261,47 +261,24 @@ export default function CertificateV2({
             marginBottom: 44,
             flexWrap: "wrap",
           }}>
-            {/* Completion Pill */}
-            <div style={{
-              background: "linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%)",
-              border: "1px solid #7dd3fc",
-              borderRadius: 12,
-              padding: "12px 28px",
-              textAlign: "center",
-              boxShadow: "0 4px 12px rgba(125,211,252,0.15)",
-              minWidth: 120,
-            }}>
-              <div style={{ color: "#0284c7", fontSize: 16, fontWeight: 800 }}>100%</div>
-              <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>Completion</div>
-            </div>
-
-            {/* DGCA Pill */}
-            <div style={{
-              background: "linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%)",
-              border: "1px solid #7dd3fc",
-              borderRadius: 12,
-              padding: "12px 28px",
-              textAlign: "center",
-              boxShadow: "0 4px 12px rgba(125,211,252,0.15)",
-              minWidth: 120,
-            }}>
-              <div style={{ color: "#0284c7", fontSize: 16, fontWeight: 800 }}>DGCA</div>
-              <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>Certified</div>
-            </div>
-
-            {/* Performance Pill (Dynamic styling matching the level) */}
-            <div style={{
-              background: perfBg,
-              border: `1px solid ${perfBorder}`,
-              borderRadius: 12,
-              padding: "12px 28px",
-              textAlign: "center",
-              boxShadow: `0 4px 12px ${hexAlpha(perfColor, "15")}`,
-              minWidth: 120,
-            }}>
-              <div style={{ color: perfColor, fontSize: 16, fontWeight: 800 }}>{perfText}</div>
-              <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>Performance</div>
-            </div>
+            {[
+              { val: "100%", label: "Completion" },
+              { val: "EGIREROBOTICS", label: "Certified" },
+              { val: perfText, label: "Performance" },
+            ].map(({ val, label }) => (
+              <div key={label} style={{
+                background: "linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%)",
+                border: "1px solid #7dd3fc",
+                borderRadius: 12,
+                padding: "12px 28px",
+                textAlign: "center",
+                boxShadow: "0 4px 12px rgba(125,211,252,0.15)",
+                minWidth: 120,
+              }}>
+                <div style={{ color: "#0284c7", fontSize: 16, fontWeight: 800, whiteSpace: "nowrap" }}>{val}</div>
+                <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>{label}</div>
+              </div>
+            ))}
           </div>
 
           {/* Divider */}
@@ -416,7 +393,7 @@ export default function CertificateV2({
           position: "relative", zIndex: 2,
           background: `linear-gradient(90deg, ${hexAlpha(accentColor, "10")}, ${hexAlpha(B.purple, "10")})`,
           borderTop: `1px solid ${hexAlpha(accentColor, "20")}`,
-          padding: "10px 40px",
+          padding: "16px 56px 26px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
