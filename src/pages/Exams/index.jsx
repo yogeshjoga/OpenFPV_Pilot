@@ -10,6 +10,8 @@ import ExamTable from './components/ExamTable'
 import ExamQuestion from './components/ExamQuestion'
 import Certificate from './components/Certificate'
 import CertificateV2 from './components/CertificateV2'
+import html2canvas from 'html2canvas'
+import { jsPDF } from 'jspdf'
 
 export default function ExamPage() {
   const { categoryId } = useParams()
@@ -29,6 +31,15 @@ export default function ExamPage() {
   const [certVersion, setCertVersion] = useState('v1')
 
   const examData = EXAM_BANKS[categoryId] || EXAM_BANKS['esc']
+
+  const getGradeColor = (letter) => {
+    if (letter === 'Level 3') return '#10b981';
+    if (letter === 'Level 2') return '#f97316';
+    if (letter === 'Level 1') return '#ef4444';
+    if (letter === 'Level 0') return '#ef4444';
+    if (letter === 'Failed') return '#ef4444';
+    return 'var(--color-text-primary)';
+  };
 
   // Reset exam state when switching between categories in the navbar
   useEffect(() => {
@@ -59,6 +70,116 @@ export default function ExamPage() {
     }
     return () => clearInterval(timer);
   }, [examState, categoryId]);
+
+  const handleDownloadCertificate = async (watermarkEnabled) => {
+    if (!watermarkEnabled && examState !== 'results') {
+      const pwd = window.prompt("Enter admin password to download unwatermarked certificate:");
+      if (pwd !== "7799250107@Yz") {
+        alert("Incorrect password!");
+        return;
+      }
+    }
+
+    const element = document.getElementById("certificate-area");
+    if (!element) return;
+
+    let tmp = null;
+    try {
+      const isV2 = certVersion === 'v2';
+      const targetWidth = isV2 ? 1056 : 860;
+
+      // 1. Create a temporary container appended to <body>
+      //    position:absolute, left way off screen, but NOT visibility:hidden / display:none
+      //    html2canvas CANNOT render hidden elements — opacity:0 is also blocked in some browsers
+      //    Solution: move it far left with overflow:hidden on body temporarily
+      tmp = document.createElement("div");
+      tmp.style.cssText = [
+        "position: absolute",
+        "left: -99999px",
+        "top: 0",
+        `width: ${targetWidth}px`,
+        "z-index: -1",
+        "pointer-events: none",
+      ].join(";");
+
+      const clone = element.cloneNode(true);
+      clone.style.width = targetWidth + 'px';
+      clone.style.maxWidth = targetWidth + 'px';
+      clone.style.minWidth = targetWidth + 'px';
+      clone.style.margin = "0";
+
+      // Hide watermark in clone if not enabled
+      const watermarkEl = clone.querySelector('.cert-watermark');
+      if (watermarkEl && !watermarkEnabled) {
+        watermarkEl.remove();
+      }
+
+      tmp.appendChild(clone);
+      document.body.appendChild(tmp);
+
+      // 2. Wait for fonts & layout
+      await document.fonts.ready;
+      await new Promise(r => setTimeout(r, 400));
+
+      const W = clone.scrollWidth || targetWidth;
+      const H = clone.scrollHeight;
+
+      // 3. Capture — pass explicit windowWidth/windowHeight to match element size
+      const canvas = await html2canvas(clone, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
+        width: W,
+        height: H,
+        windowWidth: W,
+        windowHeight: H,
+      });
+
+      if (canvas.width === 0 || canvas.height === 0) {
+        throw new Error("Canvas is empty — capture failed");
+      }
+
+      // 4. Build PDF — A4 landscape
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a4"
+      });
+      const pdfW = pdf.internal.pageSize.getWidth();
+      const pdfH = pdf.internal.pageSize.getHeight();
+      
+      const ratio = canvas.width / canvas.height;
+      let imgW = pdfW;
+      let imgH = pdfW / ratio;
+
+      if (imgH > pdfH) {
+        imgH = pdfH;
+        imgW = pdfH * ratio;
+      }
+
+      const xOff = Math.max(0, (pdfW - imgW) / 2);
+      const yOff = Math.max(0, (pdfH - imgH) / 2);
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.97);
+      pdf.addImage(imgData, "JPEG", xOff, yOff, imgW, imgH);
+      pdf.save(`${studentName.trim().replace(/\s+/g, '_')}_Certificate.pdf`);
+
+    } catch (e) {
+      console.error("PDF generation failed", e);
+      alert("Failed to generate PDF:\n" + (e.message || e.toString()));
+    } finally {
+      // 5. Cleanup temp node
+      if (tmp && tmp.parentNode) {
+        tmp.parentNode.removeChild(tmp);
+      }
+    }
+  };
 
   // Initialize and select random questions
   const startExam = () => {
@@ -171,12 +292,12 @@ export default function ExamPage() {
     })
     
     const pct = totalScore / maxScore
-    if (pct >= 0.90) setGrade({ letter: 'A+', feedback: 'Master / Expert Level' })
-    else if (pct >= 0.80) setGrade({ letter: 'A', feedback: 'Advanced Professional' })
-    else if (pct >= 0.70) setGrade({ letter: 'B', feedback: 'Intermediate Operator' })
-    else if (pct >= 0.50) setGrade({ letter: 'C', feedback: 'Beginner / Novice' })
-    else if (pct >= 0.35) setGrade({ letter: 'D', feedback: 'Needs More Practice' })
-    else setGrade({ letter: 'F', feedback: 'Re-study Core Fundamentals' })
+    if (pct >= 0.90) setGrade({ letter: 'Level 3', feedback: 'Master / Expert Level' })
+    else if (pct >= 0.80) setGrade({ letter: 'Level 3', feedback: 'Advanced Professional' })
+    else if (pct >= 0.70) setGrade({ letter: 'Level 2', feedback: 'Intermediate Operator' })
+    else if (pct >= 0.50) setGrade({ letter: 'Level 1', feedback: 'Beginner / Novice' })
+    else if (pct >= 0.35) setGrade({ letter: 'Level 0', feedback: 'Needs More Practice' })
+    else setGrade({ letter: 'Failed', feedback: 'Re-study Core Fundamentals' })
 
     setExamState('results')
   }
@@ -298,7 +419,11 @@ export default function ExamPage() {
                         <button onClick={() => setCertVersion('v2')} style={{ padding: '0.4rem 0.8rem', background: certVersion === 'v2' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: `1px solid var(--color-border)`, color: 'white', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}>Modern V2</button>
                       </div>
                     </div>
-                    {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={true} /> : <CertificateV2 studentName={studentName} isPreview={true} />}
+                    {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={true} /> : <CertificateV2 studentName={studentName} isPreview={true} grade="Level 3" />}
+                    <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                      <button onClick={() => handleDownloadCertificate(true)} style={{ background: 'var(--color-bg-secondary)', color: 'var(--color-text-primary)', padding: '0.6rem 1.2rem', borderRadius: '6px', border: '1px solid var(--color-border)', cursor: 'pointer', fontWeight: 'bold' }}>Download Preview (Watermarked)</button>
+                      <button onClick={() => handleDownloadCertificate(false)} style={{ background: 'var(--color-accent-primary)', color: 'white', padding: '0.6rem 1.2rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Download Official (Requires Password)</button>
+                    </div>
                   </div>
                 )}
               </>
@@ -394,18 +519,18 @@ export default function ExamPage() {
       {examState === 'results' && (
         <div className={styles.layout}>
           <div className={styles.resultsView} style={{ overflowY: 'auto', padding: '2rem' }}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: grade.letter === 'F' ? '#ef4444' : 'var(--color-text-primary)' }}>
-              {grade.letter === 'F' ? 'Exam Failed' : 'Exam Complete!'}
+            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: (grade.letter === 'Failed' || grade.letter === 'Level 0') ? '#ef4444' : 'var(--color-text-primary)' }}>
+              {(grade.letter === 'Failed' || grade.letter === 'Level 0') ? 'Exam Failed' : 'Exam Complete!'}
             </h2>
             
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', width: '100%', maxWidth: '1000px', alignItems: 'stretch' }}>
               
               {/* Left Side: Score & Grade */}
               <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg-card)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
-                <div className={styles.scoreCircle} style={grade.letter === 'F' ? { borderColor: '#ef4444', color: '#ef4444' } : {}}>
+                <div className={styles.scoreCircle} style={{ borderColor: getGradeColor(grade.letter), color: getGradeColor(grade.letter) }}>
                   {score}/{reportCard?.maxPossible || 50}
                 </div>
-                <div style={{ fontSize: '3rem', fontWeight: 800, color: grade.letter === 'F' ? '#ef4444' : 'var(--color-text-primary)', marginBottom: '1rem' }}>
+                <div style={{ fontSize: '3rem', fontWeight: 800, color: getGradeColor(grade.letter), marginBottom: '1rem' }}>
                   {grade.letter}
                 </div>
                 <p style={{ fontSize: '1.2rem', color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>{grade.feedback}</p>
@@ -447,7 +572,7 @@ export default function ExamPage() {
                   </div>
                 )}
                 
-                {grade.letter === 'F' && (
+                {(grade.letter === 'Failed' || grade.letter === 'Level 0') && (
                   <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '1.5rem', borderRadius: '12px', textAlign: 'left' }}>
                     <h3 style={{ color: '#b91c1c', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <span>📚</span> Study Roadmap
@@ -471,7 +596,7 @@ export default function ExamPage() {
             </div>
 
             {/* Certificate Generation Section */}
-            {categoryId === 'all' && grade.letter !== 'F' && grade.letter !== 'D' && (
+            {categoryId === 'all' && grade.letter !== 'Failed' && grade.letter !== 'Level 0' && (
               <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--color-bg-card)', borderRadius: '12px', border: '1px solid var(--color-border)', textAlign: 'center' }}>
                 <h2 style={{ fontSize: '2rem', color: 'var(--color-accent-primary)', marginBottom: '1rem' }}>🏆 Official Certification</h2>
                 <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>Congratulations, <strong>{studentName}</strong>! Here is your official FPV Master Pilot Certification.</p>
@@ -481,7 +606,11 @@ export default function ExamPage() {
                   <button onClick={() => setCertVersion('v2')} style={{ padding: '0.6rem 1.5rem', background: certVersion === 'v2' ? 'var(--color-accent-primary)' : 'var(--color-bg-secondary)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>Modern V2 Certificate</button>
                 </div>
 
-                {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={false} /> : <CertificateV2 studentName={studentName} isPreview={false} />}
+                {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={false} /> : <CertificateV2 studentName={studentName} isPreview={false} grade={grade.letter} />}
+                
+                <div style={{ marginTop: '2rem' }}>
+                  <button onClick={() => handleDownloadCertificate(false)} style={{ background: 'var(--color-accent-primary)', color: 'white', padding: '0.8rem 2rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 'bold', boxShadow: '0 4px 12px rgba(37,99,235,0.2)' }}>Download PDF Certificate</button>
+                </div>
               </div>
             )}
           </div>

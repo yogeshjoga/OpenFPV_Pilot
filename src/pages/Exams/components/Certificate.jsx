@@ -49,7 +49,7 @@ const styles = {
     overflow: "hidden",
   },
 
-  /* hex watermark pattern */
+  /* hex pattern */
   hexPattern: {
     position: "absolute",
     top: 0, left: 0, right: 0, bottom: 0,
@@ -98,8 +98,8 @@ const styles = {
     color: "#1a2b5e",
     letterSpacing: "3px",
     textTransform: "uppercase",
-    lineHeight: 1.1,
-    margin: "0 0 10px",
+    lineHeight: 1.3,
+    margin: "0 0 16px",
   },
 
   nameDivider: {
@@ -109,6 +109,7 @@ const styles = {
     margin: "0 0 18px",
   },
 
+  // body text
   certBody: {
     fontFamily: "'Georgia', serif",
     fontStyle: "italic",
@@ -131,7 +132,8 @@ const styles = {
     fontFamily: "'Pacifico', 'Dancing Script', cursive",
     fontSize: "34px",
     color: "#1a2b5e",
-    lineHeight: 1.2,
+    lineHeight: 1.3,
+    marginBottom: "12px",
   },
 
   sigLine: {
@@ -332,7 +334,7 @@ export default function Certificate({ studentName, timestamp, isPreview = false 
 
         {/* ── WATERMARK OVERLAY ── */}
         {isPreview && (
-          <div style={{
+          <div className="cert-watermark" style={{
             position: "absolute", inset: 0, zIndex: 100,
             display: "flex", justifyContent: "center", alignItems: "center",
             pointerEvents: "none", overflow: "hidden"
@@ -350,7 +352,7 @@ export default function Certificate({ studentName, timestamp, isPreview = false 
             }}>
               Preview Only
             </div>
-            {/* Tiled Watermark */}
+            {/* Tiled watermark */}
             <div style={{
               position: "absolute", inset: 0,
               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='rgba(239,68,68,0.05)' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45 200 200)'%3EUNOFFICIAL PREVIEW%3C/text%3E%3C/svg%3E")`,

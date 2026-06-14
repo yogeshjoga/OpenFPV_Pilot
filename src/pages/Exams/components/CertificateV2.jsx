@@ -23,7 +23,8 @@ export default function CertificateV2({
   rollNo, 
   examColor = B.cyan, 
   timestamp,
-  isPreview = false
+  isPreview = false,
+  grade = "Level 3"
 }) {
   const name = studentName?.trim() || "STUDENT NAME";
   
@@ -35,6 +36,44 @@ export default function CertificateV2({
   
   const accentColor = examColor;
   const alpha = isPreview ? 0.95 : 1; // Keep mostly opaque so they can see design, rely on watermark
+
+  // Map grade to performance levels and styling matching Level 3, 2, 1
+  let perfText = "Level 3";
+  let perfColor = "#10b981"; // Green
+  let perfBg = "#f0fdf4";
+  let perfBorder = "#bbf7d0";
+
+  // Normalize grade to handle A+, A, B, C or Level 1, 2, 3
+  const normalizedGrade = String(grade).toUpperCase();
+
+  if (normalizedGrade.includes("C") || normalizedGrade.includes("LEVEL 1") || normalizedGrade === "1") {
+    perfText = "Level 1";
+    perfColor = "#ef4444"; // Red
+    perfBg = "#fef2f2";
+    perfBorder = "#fecaca";
+  } else if (normalizedGrade.includes("B") || normalizedGrade.includes("LEVEL 2") || normalizedGrade === "2") {
+    perfText = "Level 2";
+    perfColor = "#f97316"; // Orange
+    perfBg = "#fff7ed";
+    perfBorder = "#fed7aa";
+  } else {
+    perfText = "Level 3";
+    perfColor = "#10b981"; // Green
+    perfBg = "#f0fdf4";
+    perfBorder = "#bbf7d0";
+  }
+
+  // Helper for html2canvas compatibility (avoids 8-digit hex colors)
+  const hexAlpha = (hex, alphaHex) => {
+    if (!hex || !hex.startsWith('#') || hex.length !== 7) return 'transparent';
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    const a = parseInt(alphaHex, 16) / 255;
+    return `rgba(${r}, ${g}, ${b}, ${a.toFixed(3)})`;
+  };
+
+  // No SVG backgrounds — original SVG patterns are used (html2canvas handles them correctly via off-screen clone)
 
   // Fallback rollNo if not provided
   let roll = rollNo;
@@ -51,6 +90,7 @@ export default function CertificateV2({
   return (
     <>
       <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');`}</style>
       <div
         id="certificate-area"
         style={{
@@ -59,8 +99,11 @@ export default function CertificateV2({
           minHeight: 816, // Standard Letter height (8.5 inches at 96dpi)
           margin: "0 auto",
           background: B.bgPrimary,
-          borderRadius: 12, // Increased border radius
-          overflow: "hidden", // Ensures background stays inside
+          borderRadius: 12,
+          // Use clip-path instead of overflow:hidden so badge with whiteSpace:nowrap is never clipped
+          // clip-path applies border radius AND clips content to the element boundary
+          clipPath: "inset(0 round 12px)",
+          overflow: "visible",
           boxShadow: isPreview
             ? "none"
             : "0 20px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(37,99,235,0.15)",
@@ -71,13 +114,10 @@ export default function CertificateV2({
           flexDirection: "column",
         }}
       >
-        {/* Grid background */}
+        {/* Grid pattern */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 0,
-          backgroundImage: `
-            linear-gradient(${B.gridLine} 1px, transparent 1px),
-            linear-gradient(90deg, ${B.gridLine} 1px, transparent 1px)
-          `,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='%232563eb' stroke-width='1.5' stroke-opacity='0.08'/%3E%3C/svg%3E")`,
           backgroundSize: "40px 40px",
         }} />
 
@@ -118,7 +158,7 @@ export default function CertificateV2({
               <div style={{ color: accentColor, fontSize: 16, fontWeight: 800, letterSpacing: 4, textTransform: "uppercase" }}>
                 EGIREROBOTICS
               </div>
-              <div style={{ color: B.textFaint, fontSize: 11, letterSpacing: 2, textTransform: "uppercase", marginTop: 2, fontWeight: 600 }}>
+              <div style={{ color: B.textFaint, fontSize: 11, letterSpacing: 2, textTransform: "uppercase", marginTop: 2, fontWeight: 600, whiteSpace: "nowrap" }}>
                 DGCA Certified Training Academy
               </div>
             </div>
@@ -138,21 +178,25 @@ export default function CertificateV2({
         {/* ── BODY ── */}
         <div style={{ position: "relative", zIndex: 2, padding: "44px 56px 36px" }}>
 
-          {/* Exam badge — top center */}
-          <div style={{ textAlign: "center", marginBottom: 28 }}>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              background: `${accentColor}08`,
-              border: `1px solid ${accentColor}25`,
+          {/* Exam badge — single line, both dots always visible */}
+          <div style={{ textAlign: "center", marginBottom: 28, lineHeight: 0 }}>
+            <span style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              background: hexAlpha(accentColor, "08"),
+              border: `1px solid ${hexAlpha(accentColor, "25")}`,
               borderRadius: 100,
-              padding: "6px 20px",
+              padding: "7px 20px",
+              whiteSpace: "nowrap",
+              lineHeight: 1.5,
             }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", background: accentColor }} />
-              <span style={{ color: accentColor, fontSize: 11, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase" }}>
+              <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: accentColor, verticalAlign: "middle", flexShrink: 0 }} />
+              <span style={{ color: accentColor, fontSize: 10, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase", verticalAlign: "middle" }}>
                 {examName}
               </span>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", background: accentColor }} />
-            </div>
+              <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: accentColor, verticalAlign: "middle", flexShrink: 0 }} />
+            </span>
           </div>
 
           {/* Main title */}
@@ -163,15 +207,15 @@ export default function CertificateV2({
           </div>
 
           {/* Student name */}
-          <div style={{ textAlign: "center", marginBottom: 8 }}>
+          <div style={{ textAlign: "center", marginBottom: 16 }}>
             <div style={{
               fontSize: Math.max(28, Math.min(52, 52 - Math.max(0, name.length - 12) * 1.5)),
               fontWeight: 800,
               letterSpacing: 2,
               textTransform: "uppercase",
               color: B.textMain,
-              lineHeight: 1.1,
-              textShadow: `0 4px 12px ${accentColor}15`,
+              lineHeight: 1.3,
+              textShadow: `0 4px 12px ${hexAlpha(accentColor, "15")}`,
             }}>
               {name}
             </div>
@@ -217,23 +261,47 @@ export default function CertificateV2({
             marginBottom: 44,
             flexWrap: "wrap",
           }}>
-            {[
-              { val: "100%", label: "Completion" },
-              { val: "DGCA", label: "Certified" },
-              { val: "Master", label: "Performance" },
-            ].map(({ val, label }) => (
-              <div key={label} style={{
-                background: "linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%)",
-                border: "1px solid #7dd3fc",
-                borderRadius: 12,
-                padding: "12px 28px",
-                textAlign: "center",
-                boxShadow: "0 4px 12px rgba(125,211,252,0.15)",
-              }}>
-                <div style={{ color: "#0284c7", fontSize: 16, fontWeight: 800 }}>{val}</div>
-                <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>{label}</div>
-              </div>
-            ))}
+            {/* Completion Pill */}
+            <div style={{
+              background: "linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%)",
+              border: "1px solid #7dd3fc",
+              borderRadius: 12,
+              padding: "12px 28px",
+              textAlign: "center",
+              boxShadow: "0 4px 12px rgba(125,211,252,0.15)",
+              minWidth: 120,
+            }}>
+              <div style={{ color: "#0284c7", fontSize: 16, fontWeight: 800 }}>100%</div>
+              <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>Completion</div>
+            </div>
+
+            {/* DGCA Pill */}
+            <div style={{
+              background: "linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%)",
+              border: "1px solid #7dd3fc",
+              borderRadius: 12,
+              padding: "12px 28px",
+              textAlign: "center",
+              boxShadow: "0 4px 12px rgba(125,211,252,0.15)",
+              minWidth: 120,
+            }}>
+              <div style={{ color: "#0284c7", fontSize: 16, fontWeight: 800 }}>DGCA</div>
+              <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>Certified</div>
+            </div>
+
+            {/* Performance Pill (Dynamic styling matching the level) */}
+            <div style={{
+              background: perfBg,
+              border: `1px solid ${perfBorder}`,
+              borderRadius: 12,
+              padding: "12px 28px",
+              textAlign: "center",
+              boxShadow: `0 4px 12px ${hexAlpha(perfColor, "15")}`,
+              minWidth: 120,
+            }}>
+              <div style={{ color: perfColor, fontSize: 16, fontWeight: 800 }}>{perfText}</div>
+              <div style={{ color: "#475569", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", marginTop: 4, fontWeight: 700 }}>Performance</div>
+            </div>
           </div>
 
           {/* Divider */}
@@ -242,30 +310,47 @@ export default function CertificateV2({
           {/* Signature + seal row */}
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
 
-            {/* Signature block */}
+            {/* Signature block — matches V1 style exactly */}
             <div>
               <div style={{
                 fontFamily: "'Pacifico', 'Dancing Script', cursive",
-                fontSize: 30,
-                color: B.textMain,
-                lineHeight: 1.2,
-                marginBottom: 6,
+                fontSize: 38,
+                color: "#1a2b5e",
+                lineHeight: 1.3,
+                marginBottom: 12,
+                whiteSpace: "nowrap",
               }}>
                 Yogesh Joga
               </div>
               <div style={{
-                width: 180,
-                height: 1,
-                background: `linear-gradient(90deg, ${B.border}, transparent)`,
-                marginBottom: 8,
+                border: "none",
+                borderTop: "1.5px solid #1a2b5e",
+                width: 200,
+                margin: "4px 0 6px",
               }} />
-              <div style={{ color: B.textMain, fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase" }}>
+              <div style={{
+                fontFamily: "'Georgia', serif",
+                fontWeight: 700,
+                fontSize: 13,
+                color: "#1a2b5e",
+                letterSpacing: 3,
+                textTransform: "uppercase",
+              }}>
                 Yogesh Joga
               </div>
-              <div style={{ color: B.textMuted, fontSize: 11, marginTop: 2, fontWeight: 500 }}>
-                DGCA Certified Drone Pilot & Trainer
+              <div style={{
+                fontFamily: "'Georgia', serif",
+                fontSize: 12,
+                color: "#1a2b5e",
+                marginTop: 3,
+              }}>
+                DGCA Certified Drone Pilot &amp; Trainer
               </div>
-              <div style={{ color: B.textMuted, fontSize: 11, fontWeight: 500 }}>
+              <div style={{
+                fontFamily: "'Georgia', serif",
+                fontSize: 12,
+                color: "#1a2b5e",
+              }}>
                 Founder, <span style={{ color: accentColor, fontWeight: 700 }}>EGIREROBOTICS</span>
               </div>
             </div>
@@ -274,13 +359,13 @@ export default function CertificateV2({
             <div style={{ textAlign: "center" }}>
               <div style={{
                 width: 72, height: 72,
-                border: `2px solid ${accentColor}40`,
+                border: `2px solid ${hexAlpha(accentColor, "40")}`,
                 borderRadius: "50%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 8px",
-                background: `${accentColor}08`,
+                background: hexAlpha(accentColor, "08"),
                 position: "relative",
               }}>
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
@@ -292,7 +377,7 @@ export default function CertificateV2({
                 <div style={{
                   position: "absolute", inset: -4,
                   borderRadius: "50%",
-                  border: `1px dashed ${accentColor}30`,
+                  border: `1px dashed ${hexAlpha(accentColor, "30")}`,
                 }} />
               </div>
               <div style={{ color: B.textFaint, fontSize: 9, letterSpacing: 1, textTransform: "uppercase", fontWeight: 700 }}>
@@ -329,19 +414,22 @@ export default function CertificateV2({
         {/* ── FOOTER BAND ── */}
         <div style={{
           position: "relative", zIndex: 2,
-          background: `linear-gradient(90deg, ${accentColor}10, ${B.purple}10)`,
-          borderTop: `1px solid ${accentColor}20`,
+          background: `linear-gradient(90deg, ${hexAlpha(accentColor, "10")}, ${hexAlpha(B.purple, "10")})`,
+          borderTop: `1px solid ${hexAlpha(accentColor, "20")}`,
           padding: "10px 40px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          flexWrap: "nowrap",
+          overflow: "hidden",
+          gap: 8,
         }}>
-          <div style={{ color: B.textMuted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontWeight: 600 }}>
+          <div style={{ color: B.textMuted, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap", flexShrink: 0 }}>
             EGIREROBOTICS · Professional FPV Learning
           </div>
-          <div style={{ display: "flex", gap: 20 }}>
+          <div style={{ display: "flex", gap: 12, flexShrink: 0 }}>
             {["FPV Build", "ESC", "FC", "Soldering", "Piloting"].map(tag => (
-              <span key={tag} style={{ color: B.textFaint, fontSize: 9, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600 }}>{tag}</span>
+              <span key={tag} style={{ color: B.textFaint, fontSize: 9, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap" }}>{tag}</span>
             ))}
           </div>
           <div style={{ color: B.textMuted, fontSize: 9, letterSpacing: 1, fontWeight: 600 }}>
@@ -351,7 +439,7 @@ export default function CertificateV2({
 
         {/* ── WATERMARK OVERLAY ── */}
         {isPreview && (
-          <div style={{
+          <div className="cert-watermark" style={{
             position: "absolute", inset: 0, zIndex: 100,
             display: "flex", justifyContent: "center", alignItems: "center",
             pointerEvents: "none", overflow: "hidden"
@@ -369,7 +457,7 @@ export default function CertificateV2({
             }}>
               Preview Only
             </div>
-            {/* Tiled Watermark */}
+            {/* Tiled watermark */}
             <div style={{
               position: "absolute", inset: 0,
               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='rgba(239,68,68,0.05)' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45 200 200)'%3EUNOFFICIAL PREVIEW%3C/text%3E%3C/svg%3E")`,

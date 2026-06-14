@@ -261,21 +261,24 @@
   transition: border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
   overflow: hidden;
   flex-shrink: 0;
+  color: var(--color-text-primary);
 }
 
 .themeToggle:hover {
   border-color: var(--color-border-hover);
   background: var(--color-bg-card);
   box-shadow: var(--shadow-glow);
+  color: var(--color-accent-primary);
 }
 
 .themeIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1;
   user-select: none;
+  color: currentColor;
 }
 
 /* === MOBILE THEME TOGGLE === */
