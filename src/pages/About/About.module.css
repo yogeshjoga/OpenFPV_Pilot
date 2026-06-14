@@ -71,6 +71,78 @@
 /* === TEAM / FOUNDER === */
 .teamSection {}
 
+.sliderContainer {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.sliderWindow {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-height: 480px;
+}
+
+.navBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  outline: none;
+  flex-shrink: 0;
+}
+.navBtn:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(0, 212, 255, 0.4);
+  color: var(--color-accent-primary);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+  transform: scale(1.05);
+}
+.navBtn:active {
+  transform: scale(0.95);
+}
+
+.dotsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: var(--space-8);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+.dot:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.activeDot {
+  background: var(--color-accent-primary);
+  width: 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
+}
+
 .founderCard {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -256,4 +328,14 @@
   .tags { justify-content: center; }
   .socialRow { justify-content: center; }
   .founderInfo .eyebrow { text-align: center; }
+
+  .navBtn {
+    display: none;
+  }
+  .sliderContainer {
+    padding: 0;
+  }
+  .sliderWindow {
+    min-height: auto;
+  }
 }
