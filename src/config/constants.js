@@ -5,12 +5,12 @@ export const APP_DESCRIPTION =
 
 export const NAV_LINKS = [
   { label: 'Home', path: '/' },
-  { label: 'Catalog', path: '/catalog' },
   { label: 'Workshops', path: '/workshops' },
   { 
     label: 'Academy', 
     subLinks: [
       { label: 'Intro to Drones', path: '/intro' },
+      { label: 'Catalog', path: '/catalog' },
       { label: 'Programs', path: '/training' },
       { label: 'Physics', path: '/physics', minLevel: 3 },
       { label: 'Simulator', path: '/simulator' },
