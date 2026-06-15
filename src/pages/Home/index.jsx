@@ -330,18 +330,20 @@ function PrerequisitesSlider() {
               </div>
             </div>
             <div className={styles.prereqCardRight}>
-              <img src={currentImage} alt={currentItem.name} className={styles.prereqImage} />
+              <div className={styles.prereqImageWrapper}>
+                <img src={currentImage} alt={currentItem.name} className={styles.prereqImage} />
+              </div>
+              <div className={styles.prereqControlsRight}>
+                <span className={styles.sliderCountCompact}>{currentIndex + 1} / {ALL_PREREQS.length}</span>
+                <button className={styles.shuffleBtn} onClick={handleRandom} title="Shuffle to a random card">
+                  <Dices size={18} />
+                  <span>Shuffle</span>
+                </button>
+              </div>
             </div>
           </motion.div>
 
           <button className={styles.sliderNavBtn} onClick={handleNext} aria-label="Next"><ArrowRight size={24} /></button>
-        </div>
-
-        <div className={styles.randomBtnContainer}>
-          <button className={styles.primaryBtn} onClick={handleRandom}>
-            <Dices size={20} style={{ marginRight: 8 }} /> Random Learning
-          </button>
-          <p className={styles.sliderCount}>{currentIndex + 1} / {ALL_PREREQS.length}</p>
         </div>
       </div>
     </section>
