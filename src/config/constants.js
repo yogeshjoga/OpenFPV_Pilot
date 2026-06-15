@@ -23,6 +23,7 @@ export const NAV_LINKS = [
   { label: 'FPV Quote', path: '/builder' },
   { label: 'Blog', path: '/blog' },
   { label: 'About', path: '/about' },
+  { label: 'Login', path: '/login' },
 ]
 
 
