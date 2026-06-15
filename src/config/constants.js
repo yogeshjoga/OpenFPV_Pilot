@@ -13,6 +13,7 @@ export const NAV_LINKS = [
       { label: 'Catalog', path: '/catalog' },
       { label: 'Programs', path: '/training' },
       { label: 'Physics', path: '/physics', minLevel: 3 },
+      { label: 'PID Tuning', path: '/pid-tuning' },
       { label: 'Simulator', path: '/simulator' },
       { label: '3D Assembly', path: '/assembly-3d' },
       { label: 'Exams', path: '/exams' },

@@ -16,6 +16,7 @@ const Assembly3D = lazy(() => import('@pages/Assembly3D'))
 const IntroToDrones = lazy(() => import('@pages/IntroToDrones'))
 const Blog = lazy(() => import('@pages/Blog'))
 const Exams = lazy(() => import('@pages/Exams'))
+const PidTuning = lazy(() => import('@pages/PidTuning'))
 
 const Login = lazy(() => import('@pages/Auth/Login'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
@@ -83,6 +84,7 @@ export default function AppRouter() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/exams" element={<Exams />} />
           <Route path="/exams/:categoryId" element={<Exams />} />
+          <Route path="/pid-tuning" element={<PidTuning />} />
 
           <Route path="/admin" element={
             <ProtectedRoute requiredLevel={4}>
