@@ -63,7 +63,8 @@ const BRANDS = [
     name: 'RadioMaster',
     tagline: 'The Control Standard',
     desc: 'The undisputed king of FPV controllers. Makers of the TX16S, Boxer, and Pocket radios running EdgeTX firmware.',
-    color: '#ff4b4b'
+    color: '#ff4b4b',
+    logo: '/images/brands/radiomaster.png'
   },
   {
     id: 'betafpv',
@@ -94,7 +95,8 @@ const BRANDS = [
     name: 'Team BlackSheep',
     tagline: 'Long Range Pioneers',
     desc: 'Legendary brand that pioneered the Crossfire long-range control link and the iconic TBS Tango 2 controller.',
-    color: '#ffa500'
+    color: '#ffa500',
+    logo: '/images/brands/tbs.png'
   }
 ]
 
