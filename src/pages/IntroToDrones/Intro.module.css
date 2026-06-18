@@ -166,6 +166,28 @@
   padding: var(--space-2);
 }
 
+.brandLogoWrapper {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border: 2px solid var(--brand-color);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--space-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.brandLogoImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+
 .brandInfo h3 {
   font-family: var(--font-display);
   font-size: var(--text-2xl);

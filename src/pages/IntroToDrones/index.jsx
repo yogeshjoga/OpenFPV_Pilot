@@ -47,14 +47,16 @@ const BRANDS = [
     name: 'DJI',
     tagline: 'The Industry Giant',
     desc: 'Dominates the digital video transmission space (DJI O3 Air Unit) and sells premium pre-built drones like the DJI Avata 2 and FPV.',
-    color: '#E0E0E0'
+    color: '#E0E0E0',
+    logo: '/images/brands/dji.png'
   },
   {
     id: 'iflight',
     name: 'iFlight',
     tagline: 'Premium Bind-and-Fly',
     desc: 'Famous for the Nazgul series. Produces incredibly high-quality pre-built drones, frames, and motors loved by beginners and pros alike.',
-    color: '#00d4ff'
+    color: '#00d4ff',
+    logo: '/images/brands/iflight.png'
   },
   {
     id: 'radiomaster',
@@ -68,7 +70,24 @@ const BRANDS = [
     name: 'BetaFPV',
     tagline: 'Micro Drone Leaders',
     desc: 'Pioneers in the Tiny Whoop and micro drone categories. Excellent entry-level kits and ELRS hardware.',
-    color: '#0055ff'
+    color: '#0055ff',
+    logo: '/images/brands/betafpv.png'
+  },
+  {
+    id: 'speedybee',
+    name: 'SpeedyBee',
+    tagline: 'Bluetooth Tuning Pioneers',
+    desc: 'Famous for mobile-app configuration. They make excellent flight controllers, ESCs, and controllers that can be tuned wirelessly via Bluetooth.',
+    color: '#ffcc00',
+    logo: '/images/brands/speedybee.jpg'
+  },
+  {
+    id: 'geprc',
+    name: 'GEPRC',
+    tagline: 'High Performance Cinewhoops',
+    desc: 'Leading manufacturer of cinematic and freestyle drones. Renowned for their high-quality CineLog series and robust engineering.',
+    color: '#0070bb',
+    logo: '/images/brands/geprc.png'
   },
   {
     id: 'tbs',
@@ -151,9 +170,15 @@ export default function IntroToDrones() {
                 transition={{ delay: idx * 0.1 }}
                 style={{ '--brand-color': brand.color }}
               >
-                <div className={styles.brandLogoPlaceholder}>
-                  {brand.name.toUpperCase()}
-                </div>
+                {brand.logo ? (
+                  <div className={styles.brandLogoWrapper}>
+                    <img src={brand.logo} alt={`${brand.name} logo`} className={styles.brandLogoImg} />
+                  </div>
+                ) : (
+                  <div className={styles.brandLogoPlaceholder}>
+                    {brand.name.toUpperCase()}
+                  </div>
+                )}
                 <div className={styles.brandInfo}>
                   <h3>{brand.name}</h3>
                   <span className={styles.brandTagline}>{brand.tagline}</span>
