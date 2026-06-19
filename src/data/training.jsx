@@ -46,7 +46,7 @@ export const COURSES = [
         duration: '3h',
         topics: [
           'Motor KV ratings and propeller matching',
-          'Motor rotation directions (MRAF / Betaflight default)',
+          'Motor rotation directions (Default Props-In vs Reversed Props-Out)',
           'ESC types: 4-in-1 vs individual',
           'Soldering motor wires to ESC pads',
           'ESC protocols: DSHOT150 / DSHOT300 / DSHOT600',
@@ -356,7 +356,7 @@ export const COURSES = [
         duration: '3h',
         topics: [
           'How frame geometry affects flight characteristics',
-          'True X vs Squashed X vs Deadcat cornering differences',
+          'True X vs Stretched X vs Deadcat cornering differences',
           'Center of gravity / Center of mass tuning',
           'Battery placement and pendulum effect',
         ],

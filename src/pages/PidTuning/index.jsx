@@ -87,7 +87,7 @@ const WIZARD_STEPS = [
         <div className={styles.guidelineCard}>
           <ul>
             <li><strong>ARM Mode:</strong> Assign a two-position switch (preferably on AUX 1) to Arm the quad. Ensure it sits in active yellow range when toggled.</li>
-            <li><strong>Flight Modes:</strong> Assign AUX 2 to switch between flight controllers: <strong>Angle Mode</strong> (stabilized level limits, good for beginners) and default <strong>Acro Mode</strong> (pure gyroscopic rates, professional).</li>
+            <li><strong>Flight Modes:</strong> Assign AUX 2 to switch between flight modes: <strong>Angle Mode</strong> (stabilized level limits, good for beginners) and default <strong>Acro Mode</strong> (pure gyroscopic rates, professional).</li>
             <li><strong>Turtle Mode (Flip Over After Crash):</strong> Assign to an AUX channel to spin motors backwards. Allows you to flip a crashed, upside-down drone back onto its landing gear remotely.</li>
           </ul>
         </div>

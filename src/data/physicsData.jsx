@@ -78,7 +78,7 @@ export const PHYSICS_SECTIONS = [
         title: 'Moment of Inertia',
         image: '/images/physics/Moment of inertia in drones explained.png',
         explanation: 'Measures how much an object resists rotational acceleration (snappiness).',
-        longExplanation: 'Moment of Inertia is determined by how weight is distributed relative to the center. Imagine holding a heavy weights in your hands—if you pull your arms in, you can spin faster. The same applies to drones. \n\nA "mass-centralized" drone (heavy components like the FC, ESC, and battery close to the center) has a low moment of inertia and feels extremely snappy. A drone with long arms and heavy motors has a high moment of inertia and feels slower and more "caddish."'
+        longExplanation: 'Moment of Inertia is determined by how weight is distributed relative to the center. Imagine holding heavy weights in your hands—if you pull your arms in, you can spin faster. The same applies to drones. \n\nA "mass-centralized" drone (heavy components like the FC, ESC, and battery close to the center) has a low moment of inertia and feels extremely snappy. A drone with long arms and heavy motors has a high moment of inertia and feels slower and more sluggish.'
       },
       {
         id: 'gyroscopic-effect',
