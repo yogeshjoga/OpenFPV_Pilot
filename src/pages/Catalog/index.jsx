@@ -1,148 +1,14 @@
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
+import { PART_CATEGORIES } from '@data/parts.jsx'
 import styles from './Catalog.module.css'
-import { 
-  AlertTriangle, Award, BarChart2, Battery, Brain, Bug, Camera, Check, CheckCircle2, Circle, 
-  Construction, DollarSign, Eye, Fan, Film, Flag, Gamepad2, Hash, Hexagon, Leaf, 
-  Lightbulb, Link, MoveHorizontal, Plug, Plus, Radio, RadioReceiver, RefreshCw, 
-  Ruler, Scale, Settings, Shield, Square, Star, Target, Thermometer, Trash2, 
-  TrendingDown, Tv, Wrench, X, Zap 
-} from 'lucide-react'
-
-const iconMap = {
-  AlertTriangle: <AlertTriangle size={20} />,
-  Award: <Award size={20} />,
-  BarChart2: <BarChart2 size={20} />,
-  Battery: <Battery size={20} />,
-  Brain: <Brain size={20} />,
-  Bug: <Bug size={20} />,
-  Camera: <Camera size={20} />,
-  Check: <Check size={20} />,
-  CheckCircle2: <CheckCircle2 size={20} />,
-  Circle: <Circle size={20} />,
-  Construction: <Construction size={20} />,
-  DollarSign: <DollarSign size={20} />,
-  Eye: <Eye size={20} />,
-  Fan: <Fan size={20} />,
-  Film: <Film size={20} />,
-  Flag: <Flag size={20} />,
-  Gamepad2: <Gamepad2 size={20} />,
-  Hash: <Hash size={20} />,
-  Hexagon: <Hexagon size={20} />,
-  Leaf: <Leaf size={20} />,
-  Lightbulb: <Lightbulb size={20} />,
-  Link: <Link size={20} />,
-  MoveHorizontal: <MoveHorizontal size={20} />,
-  Plug: <Plug size={20} />,
-  Plus: <Plus size={20} />,
-  Radio: <Radio size={20} />,
-  RadioReceiver: <RadioReceiver size={20} />,
-  RefreshCw: <RefreshCw size={20} />,
-  Ruler: <Ruler size={20} />,
-  Scale: <Scale size={20} />,
-  Settings: <Settings size={20} />,
-  Shield: <Shield size={20} />,
-  Square: <Square size={20} />,
-  Star: <Star size={20} />,
-  Target: <Target size={20} />,
-  Thermometer: <Thermometer size={20} />,
-  Trash2: <Trash2 size={20} />,
-  TrendingDown: <TrendingDown size={20} />,
-  Tv: <Tv size={20} />,
-  Wrench: <Wrench size={20} />,
-  X: <X size={20} />,
-  Zap: <Zap size={20} />
-};
-
-const resolveIcon = (name) => {
-  return iconMap[name] || <Settings size={20} />;
-};
 
 export default function Catalog() {
-  const [categories, setCategories] = useState([])
-  const [activeId, setActiveId] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    fetch('/api/catalog')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Failed to fetch catalog data')
-        }
-        return res.json()
-      })
-      .then(data => {
-        const parsedData = data.map(item => {
-          const sections = typeof item.sections === 'string' ? JSON.parse(item.sections) : item.sections;
-          const mappedSections = sections.map(sec => {
-            if (sec.type === 'cards') {
-              return {
-                ...sec,
-                items: sec.items.map(card => ({
-                  ...card,
-                  icon: resolveIcon(card.icon)
-                }))
-              };
-            }
-            if (sec.type === 'tips') {
-              return {
-                ...sec,
-                items: sec.items.map(tip => ({
-                  ...tip,
-                  icon: resolveIcon(tip.icon)
-                }))
-              };
-            }
-            return sec;
-          });
-          
-          return {
-            ...item,
-            sections: mappedSections,
-            image: item.imageUrl,
-            icon: resolveIcon(item.icon)
-          };
-        });
-        
-        setCategories(parsedData)
-        if (parsedData.length > 0) {
-          setActiveId(parsedData[0].id)
-        }
-        setLoading(false)
-      })
-      .catch(err => {
-        setError(err.message)
-        setLoading(false)
-      })
-  }, [])
-
-  if (loading) {
-    return (
-      <PageWrapper>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: 'var(--color-text-primary)' }}>
-          <p>Loading FPV Parts Encyclopedia...</p>
-        </div>
-      </PageWrapper>
-    )
-  }
-
-  if (error) {
-    return (
-      <PageWrapper>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: '#ef4444' }}>
-          <p>Error loading catalog: {error}</p>
-        </div>
-      </PageWrapper>
-    )
-  }
-
-  const category = categories.find((c) => c.id === activeId)
-  if (!category) return null;
-
+  const [activeId, setActiveId] = useState(PART_CATEGORIES[0].id)
+  const category = PART_CATEGORIES.find((c) => c.id === activeId)
 
   return (
     <PageWrapper>
@@ -150,7 +16,7 @@ export default function Catalog() {
 
         {/* ===== SIDEBAR ===== */}
         <SidebarMenu
-          items={categories}
+          items={PART_CATEGORIES}
           activeId={activeId}
           onSelect={setActiveId}
           layoutIdPrefix="catalog"
@@ -269,7 +135,7 @@ export default function Catalog() {
 
               {/* ===== CATEGORY NAV FOOTER ===== */}
               <div className={styles.catNav}>
-                {categories.map((cat) => (
+                {PART_CATEGORIES.map((cat) => (
                   cat.id !== activeId && (
                     <button
                       key={cat.id}
