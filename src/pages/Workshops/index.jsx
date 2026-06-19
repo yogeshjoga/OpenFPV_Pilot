@@ -60,8 +60,8 @@ const LEVELS = [
     subtitle: 'Full Build • AI Integration • Pro Certificate',
     color: '#ef4444',
     duration: '1 Week',
-    cert: 'Professional Certificate (DGCA Eligible)',
-    highlight: 'DGCA Eligible',
+    cert: 'Professional Certificate',
+    highlight: 'Certification Included',
     includes: [
       { icon: <Gamepad2 size={16} />, text: 'Personal controller for each student' },
       { icon: <MonitorPlay size={16} />, text: '1-week simulation training' },
@@ -74,7 +74,7 @@ const LEVELS = [
       { icon: <BatteryCharging size={16} />, text: 'Assembly & troubleshooting' },
       { icon: <MonitorPlay size={16} />, text: 'ESC / FC programming' },
       { icon: <Flame size={16} />, text: 'Soldering skills' },
-      { icon: <Award size={16} />, text: 'Professional Certificate, DGCA eligible' },
+      { icon: <Award size={16} />, text: 'Professional Certificate' },
     ],
   },
 ]
@@ -227,28 +227,7 @@ export default function Workshops() {
           </div>
         </section>
 
-        {/* ── DGCA CALLOUT ── */}
-        <section className={styles.dgcaSection}>
-          <div className="container">
-            <motion.div
-              className={styles.dgcaCard}
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className={styles.dgcaEmoji}>🏛️</span>
-              <div>
-                <h3 className={styles.dgcaTitle}>DGCA Certification Pathway</h3>
-                <p className={styles.dgcaDesc}>
-                  Students who complete the <strong>Grade 1 Professional Certificate</strong> are
-                  eligible to apply for the <strong>DGCA Remote Pilot Certificate</strong>:
-                  India's official drone pilot licence.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+
 
         {/* ── DOMAIN TRACKS ── */}
         <section className={`section ${styles.domainsSection}`}>

@@ -159,7 +159,7 @@ export default function CertificateV2({
                 EGIREROBOTICS
               </div>
               <div style={{ color: B.textFaint, fontSize: 11, letterSpacing: 2, textTransform: "uppercase", marginTop: 2, fontWeight: 600, whiteSpace: "nowrap" }}>
-                DGCA Certified Training Academy
+                FPV Drone Training Academy
               </div>
             </div>
           </div>
@@ -410,7 +410,7 @@ export default function CertificateV2({
             ))}
           </div>
           <div style={{ color: B.textMuted, fontSize: 9, letterSpacing: 1, fontWeight: 600 }}>
-            dgca.gov.in · Certified
+            egirerobotics.com · Academy
           </div>
         </div>
 
