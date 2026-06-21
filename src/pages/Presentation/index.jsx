@@ -630,7 +630,18 @@ export default function Presentation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 70px)' }}
+              style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                minHeight: 'calc(100vh - 70px)',
+                '--deck-color': currentDeck.color === '#00d4ff' 
+                  ? 'var(--color-accent-primary)' 
+                  : currentDeck.color === '#22c55e'
+                    ? 'var(--color-success)'
+                    : currentDeck.color === '#f59e0b'
+                      ? 'var(--color-warning)'
+                      : 'var(--color-error)'
+              }}
             >
               {/* Header bar */}
               <div className={styles.playerHeader} style={{ '--deck-color': currentDeck.color }}>
@@ -657,14 +668,18 @@ export default function Presentation() {
                     transition={{ duration: 0.3 }}
                     style={{ '--deck-color': currentDeck.color }}
                   >
-                    <h2 className={styles.slideTitle}>{currentSlide.title}</h2>
-                    <p className={styles.slideSubtitle}>{currentSlide.subtitle}</p>
+                    {currentSlide.type !== 'title' && (
+                      <>
+                        <h2 className={styles.slideTitle}>{currentSlide.title}</h2>
+                        <p className={styles.slideSubtitle}>{currentSlide.subtitle}</p>
+                      </>
+                    )}
 
                     {/* RENDER DYNAMIC SLIDE CONTENT */}
                     {currentSlide.type === 'title' && (
-                      <div style={{ textAlign: 'center', paddingBlock: 'var(--space-6)' }}>
-                        <h3 style={{ fontSize: '2.5rem', marginBottom: 'var(--space-4)', fontWeight: 800 }}>{currentSlide.title}</h3>
-                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.2rem', marginBottom: 'var(--space-8)' }}>{currentSlide.subtitle}</p>
+                      <div className={styles.titleSlide}>
+                        <h3 className={styles.titleSlideTitle}>{currentSlide.title}</h3>
+                        <p className={styles.titleSlideSubtitle}>{currentSlide.subtitle}</p>
                         {currentSlide.content}
                       </div>
                     )}
@@ -696,82 +711,121 @@ export default function Presentation() {
 
                     {/* Interactive PID Sandbox Slide */}
                     {currentSlide.type === 'pid-sandbox' && (
-                      <div className={styles.slidePidWrap}>
+                      <div className={styles.pidSandbox}>
                         {/* Sliders panel */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                          <div>
-                            <span style={{ fontSize: '0.8rem', color: '#ff4444', fontWeight: 700 }}>P (Proportional)</span>
+                        <div className={styles.pidControlPanel}>
+                          <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--deck-color)', margin: '0 0 8px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px', letterSpacing: '0.5px' }}>Tuning Controls</h4>
+                          
+                          <div className={styles.pidSliderBlock}>
+                            <div className={styles.pidSliderHeader} style={{ color: '#ef4444' }}>
+                              <span>P (Proportional)</span>
+                              <span className={styles.pidSliderVal}>{p}</span>
+                            </div>
                             <input 
                               type="range" min="1" max="100" value={p}
                               onChange={(e) => { setP(Number(e.target.value)); stopSimulation(); }}
-                              style={{ width: '100%', accentColor: '#ff4444' }}
+                              className={styles.pidSlider}
+                              style={{ '--deck-color': '#ef4444', accentColor: '#ef4444' }}
                             />
                           </div>
-                          <div>
-                            <span style={{ fontSize: '0.8rem', color: '#00d4ff', fontWeight: 700 }}>I (Integral)</span>
+                          
+                          <div className={styles.pidSliderBlock}>
+                            <div className={styles.pidSliderHeader} style={{ color: '#00d4ff' }}>
+                              <span>I (Integral)</span>
+                              <span className={styles.pidSliderVal}>{i}</span>
+                            </div>
                             <input 
                               type="range" min="1" max="100" value={i}
                               onChange={(e) => { setI(Number(e.target.value)); stopSimulation(); }}
-                              style={{ width: '100%', accentColor: '#00d4ff' }}
+                              className={styles.pidSlider}
+                              style={{ '--deck-color': '#00d4ff', accentColor: '#00d4ff' }}
                             />
                           </div>
-                          <div>
-                            <span style={{ fontSize: '0.8rem', color: '#ffcc00', fontWeight: 700 }}>D (Derivative)</span>
+                          
+                          <div className={styles.pidSliderBlock}>
+                            <div className={styles.pidSliderHeader} style={{ color: '#f59e0b' }}>
+                              <span>D (Derivative)</span>
+                              <span className={styles.pidSliderVal}>{d}</span>
+                            </div>
                             <input 
                               type="range" min="1" max="100" value={d}
                               onChange={(e) => { setD(Number(e.target.value)); stopSimulation(); }}
-                              style={{ width: '100%', accentColor: '#ffcc00' }}
+                              className={styles.pidSlider}
+                              style={{ '--deck-color': '#f59e0b', accentColor: '#f59e0b' }}
                             />
                           </div>
-                          <div style={{ marginTop: '8px' }}>
+                          
+                          <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
                             {!isSimRunning ? (
                               <button onClick={runSimulation} className={styles.controlBtn} style={{ width: '100%', justifyContent: 'center' }}>
                                 <Play size={14} /> Run Simulation
                               </button>
                             ) : (
-                              <button onClick={stopSimulation} className={styles.controlBtn} style={{ width: '100%', justifyContent: 'center' }}>
-                                <RotateCcw size={14} /> Reset
+                              <button onClick={stopSimulation} className={styles.controlBtn} style={{ width: '100%', justifyContent: 'center', background: '#e2e8f0' }}>
+                                <RotateCcw size={14} /> Reset Sim
                               </button>
                             )}
                           </div>
                         </div>
 
                         {/* Visualizer output */}
-                        <div style={{ display: 'flex', gap: '20px', background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                          {/* 2D Drone Box */}
-                          <div style={{ flex: '0 0 160px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid rgba(255,255,255,0.05)', paddingRight: '20px' }}>
-                            <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '10px' }}>Tilt Visualizer</span>
-                            <div style={{ width: '100px', height: '100px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                              <div style={{ transform: `rotate(${droneAngle}deg)`, transition: 'transform 0.05s' }}>
-                                <svg width="70" height="20" viewBox="0 0 70 20">
-                                  <line x1="10" y1="10" x2="60" y2="10" stroke="white" strokeWidth="2" />
-                                  <circle cx="35" cy="10" r="6" fill="#00d4ff" />
-                                  <ellipse cx="10" cy="5" rx="8" ry="2" fill="rgba(0,212,255,0.5)" />
-                                  <ellipse cx="60" cy="5" rx="8" ry="2" fill="rgba(0,212,255,0.5)" />
+                        <div className={styles.pidVisualsGrid}>
+                          <div className={styles.pidMonitorRow}>
+                            {/* 2D Drone Box */}
+                            <div className={styles.pidTiltPanel}>
+                              <span className={styles.pidTiltTitle}>Attitude Tilt</span>
+                              <div className={styles.pidRadarScope}>
+                                <div className={styles.pidRadarSweep} />
+                                <div className={styles.pidDroneModel} style={{ transform: `rotate(${droneAngle}deg)` }}>
+                                  <svg width="76" height="20" viewBox="0 0 76 20">
+                                    <line x1="8" y1="10" x2="68" y2="10" stroke="currentColor" strokeWidth="2.5" />
+                                    <circle cx="38" cy="10" r="7" fill="var(--color-accent-primary)" stroke="currentColor" strokeWidth="1.5" />
+                                    <ellipse cx="8" cy="5" rx="8" ry="2" fill="rgba(239, 68, 68, 0.7)" />
+                                    <ellipse cx="68" cy="5" rx="8" ry="2" fill="rgba(239, 68, 68, 0.7)" />
+                                  </svg>
+                                </div>
+                              </div>
+                              <span className={styles.pidTiltReadout}>{Math.round(droneAngle)}° Pitch</span>
+                            </div>
+
+                            {/* Response graph */}
+                            <div className={styles.pidGraphPanel}>
+                              <span className={styles.pidGraphTitle}>Oscilloscope Signal</span>
+                              <div className={styles.pidGraphViewport}>
+                                <svg width="100%" height="100%" viewBox="0 0 100 60" preserveAspectRatio="none">
+                                  {/* Grid lines */}
+                                  <line x1="0" y1="15" x2="100" y2="15" stroke="var(--color-border)" strokeWidth="0.5" strokeOpacity="0.4" />
+                                  <line x1="0" y1="30" x2="100" y2="30" stroke="var(--color-accent-primary)" strokeWidth="0.5" strokeDasharray="3 3" strokeOpacity="0.6" />
+                                  <line x1="0" y1="45" x2="100" y2="45" stroke="var(--color-border)" strokeWidth="0.5" strokeOpacity="0.4" />
+                                  <line x1="25" y1="0" x2="25" y2="60" stroke="var(--color-border)" strokeWidth="0.5" strokeOpacity="0.3" />
+                                  <line x1="50" y1="0" x2="50" y2="60" stroke="var(--color-border)" strokeWidth="0.5" strokeOpacity="0.3" />
+                                  <line x1="75" y1="0" x2="75" y2="60" stroke="var(--color-border)" strokeWidth="0.5" strokeOpacity="0.3" />
+                                  
+                                  {points.length > 1 && (
+                                    <path 
+                                      d={`M ${points.map(p => `${p.x},${50 - (p.y * 0.5)}`).join(' L ')}`}
+                                      fill="none" 
+                                      stroke="var(--color-accent-primary)" 
+                                      strokeWidth="1.5" 
+                                      style={{ filter: 'drop-shadow(0 0 3px var(--color-accent-glow))' }}
+                                    />
+                                  )}
                                 </svg>
+                                <div className={styles.pidSetpointLine}>
+                                  <span>Setpoint: 40°</span>
+                                </div>
                               </div>
                             </div>
-                            <span style={{ fontSize: '0.75rem', marginTop: '10px', fontFamily: 'monospace' }}>Tilt: {Math.round(droneAngle)}°</span>
                           </div>
 
-                          {/* Response graph / Message */}
-                          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                            <div style={{ height: '110px', position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                              <svg width="100%" height="100%" viewBox="0 0 100 60" preserveAspectRatio="none">
-                                <line x1="0" y1="30" x2="100" y2="30" stroke="#00e5ff" strokeWidth="0.5" strokeDasharray="3 3" />
-                                {points.length > 1 && (
-                                  <path 
-                                    d={`M ${points.map(p => `${p.x},${50 - (p.y * 0.5)}`).join(' L ')}`}
-                                    fill="none" 
-                                    stroke="var(--color-accent-primary)" 
-                                    strokeWidth="1" 
-                                  />
-                                )}
-                              </svg>
-                              <div style={{ position: 'absolute', top: '50%', left: '8px', transform: 'translateY(-100%)', fontSize: '0.6rem', color: '#00e5ff' }}>Target Setpoint (40°)</div>
-                            </div>
-                            <div style={{ fontSize: '0.75rem', color: simStatus === 'success' ? '#10b981' : simStatus === 'warning' || simStatus === 'danger' ? '#ef4444' : 'var(--color-text-secondary)', padding: '6px 0 0 0' }}>
-                              {simMessage}
+                          {/* Terminal Output */}
+                          <div className={`${styles.pidTerminalPanel} ${styles[simStatus] || styles.idle}`}>
+                            <Activity size={14} style={{ marginTop: '2px', flexShrink: 0 }} />
+                            <div>
+                              <strong style={{ display: 'block', textTransform: 'uppercase', fontSize: '0.65rem', marginBottom: '2px', letterSpacing: '0.5px' }}>
+                                {simStatus === 'idle' ? 'System Ready' : simStatus === 'success' ? 'Tune Lock Confirmed' : simStatus === 'warning' ? 'Tuning Alert' : 'Critical Oscillation'}
+                              </strong>
+                              <span>{simMessage}</span>
                             </div>
                           </div>
                         </div>
