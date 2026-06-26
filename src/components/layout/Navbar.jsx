@@ -28,8 +28,10 @@ export default function Navbar() {
       <div className={`container ${styles.inner}`}>
         {/* Logo */}
         <Link to="/" className={styles.logo}>
-          <span className={styles.logoIcon}>✦</span>
-          <span className={styles.logoText}>{APP_NAME}</span>
+          <div className={styles.logoContainer}>
+            <span className={styles.logoText}>{APP_NAME}</span>
+            <span className={styles.logoCaption}>Autonomous Aerial Solutions</span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
