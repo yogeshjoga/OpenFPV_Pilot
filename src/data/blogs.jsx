@@ -7,7 +7,7 @@ export const BLOGS = [
     excerpt: 'Breaking into FPV without breaking the bank or getting overwhelmed. Everything you need to know to take your first flight.',
     category: 'Beginners',
     author: 'EGIRE Team',
-    date: 'Oct 24, 2026',
+    date: 'Jun 24, 2026',
     icon: BookOpen,
     readTime: '5 min read',
     content: `
@@ -35,7 +35,7 @@ No coding is required! The flight controller software (Betaflight) has a visual 
     excerpt: 'How engineers and tech professionals can leverage FPV drone building to master embedded systems and aerodynamics.',
     category: 'Advanced',
     author: 'Lead Engineer',
-    date: 'Nov 02, 2026',
+    date: 'Jun 02, 2026',
     icon: Briefcase,
     readTime: '8 min read',
     content: `
@@ -65,7 +65,7 @@ Whether you want to transition into the commercial drone industry or just need a
     excerpt: 'Military and army applications, rugged builds, and strategic FPV operations in modern environments.',
     category: 'Defense',
     author: 'Tactical Operations',
-    date: 'Nov 15, 2026',
+    date: 'Jun 15, 2026',
     icon: Shield,
     readTime: '6 min read',
     content: `
@@ -95,7 +95,7 @@ Our platform provides the foundational knowledge required to build, maintain, an
     excerpt: 'Safe, beginner-friendly paths for children to learn robotics, electronics, and aerodynamics through micro drones.',
     category: 'Education',
     author: 'Education Team',
-    date: 'Dec 05, 2026',
+    date: 'Jun 05, 2026',
     icon: ToyBrick,
     readTime: '4 min read',
     content: `
