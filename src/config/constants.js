@@ -3,10 +3,13 @@ export const APP_TAGLINE = 'Fly Beyond Limits'
 export const APP_DESCRIPTION =
   'A premium learning platform to build, tune, and fly FPV drones, from zero to first freestyle flight.'
 
+import navConfig from './navConfig.json'
+
+
 export const NAV_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'Workshops', path: '/workshops' },
-  { 
+  ...(navConfig.showAcademyNav ? [{ 
     label: 'Academy', 
     subLinks: [
       { label: 'Intro to Drones', path: '/intro' },
@@ -20,7 +23,7 @@ export const NAV_LINKS = [
       { label: 'Presentations', path: '/presentation' },
     ],
     minLevel: 1 
-  },
+  }] : []),
   { label: 'Gallery', path: '/gallery' },
   { label: 'FPV Quote', path: '/builder' },
   { label: 'Blog', path: '/blog' },
