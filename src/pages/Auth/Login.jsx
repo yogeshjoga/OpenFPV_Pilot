@@ -1,23 +1,15 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { Mail, Lock, User, ShieldCheck, Sparkles, ArrowRight } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ShieldCheck, Sparkles, ArrowRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import styles from './Login.module.css'
 
+const CRM_LOGIN_URL = import.meta.env.VITE_CRM_LOGIN_URL
+
 export default function Login() {
-  const [isSignUp, setIsSignUp] = useState(false)
-  const navigate = useNavigate()
+  const crmConfigured = Boolean(CRM_LOGIN_URL)
 
-  const handleGoogleLogin = () => {
-    // Simply route to Google OAuth flow
-    window.location.href = '/api/auth/google'
-  }
-
-  const handleLocalSubmit = (e) => {
-    e.preventDefault()
-    // Mock successful navigation to represent flow completion without backend checks
-    navigate('/')
+  const handleCrmLogin = () => {
+    window.location.href = CRM_LOGIN_URL
   }
 
   return (
@@ -91,130 +83,30 @@ export default function Login() {
                 EGIRE<span className="gradient-text">ROBOTICS</span>
               </h2>
               <p className={styles.brandingSubtitle}>
-                {isSignUp ? 'Join the next generation of FPV pilots' : 'Sign in to access your flight academy'}
+                Sign in through the FPV CRM to access your student account
               </p>
             </div>
 
-            {/* Switch Tabs */}
-            <div className={styles.tabGroup}>
-              <button 
-                type="button"
-                className={`${styles.tabBtn} ${!isSignUp ? styles.activeTab : ''}`}
-                onClick={() => setIsSignUp(false)}
-              >
-                Sign In
-              </button>
-              <button 
-                type="button"
-                className={`${styles.tabBtn} ${isSignUp ? styles.activeTab : ''}`}
-                onClick={() => setIsSignUp(true)}
-              >
-                Create Account
-              </button>
-            </div>
+            <button
+              type="button"
+              className={styles.primaryAuthSubmit}
+              onClick={handleCrmLogin}
+              disabled={!crmConfigured}
+            >
+              <span>{crmConfigured ? 'Continue to CRM Login' : 'CRM login not configured'}</span>
+              <ArrowRight size={18} className={styles.btnArrow} />
+            </button>
 
-            {/* OAuth Google Button (Highlighted) */}
-            <div className={styles.oauthSection}>
-              <button className={styles.googleOAuthBtn} onClick={handleGoogleLogin}>
-                <svg className={styles.googleIcon} viewBox="0 0 24 24" width="20" height="20">
-                  <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114A5.99 5.99 0 0 1 8 12.5a5.99 5.99 0 0 1 5.99-6.002c1.478 0 2.822.54 3.86 1.428l3.14-3.14A10.024 10.024 0 0 0 13.99 2 9.99 9.99 0 0 0 4 12c0 5.52 4.48 10 9.99 10 5.768 0 9.61-4.053 9.61-9.771 0-.66-.06-1.296-.17-1.944H12.24Z"/>
-                </svg>
-                <span>Continue with Google</span>
-              </button>
-            </div>
-
-            <div className={styles.dividerBlock}>
-              <span className={styles.dividerText}>or use email</span>
-            </div>
-
-            {/* Form Fields */}
-            <form onSubmit={handleLocalSubmit} className={styles.formFlow}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={isSignUp ? 'signup-fields' : 'login-fields'}
-                  initial={{ opacity: 0, x: isSignUp ? 10 : -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: isSignUp ? -10 : 10 }}
-                  transition={{ duration: 0.2 }}
-                  className={styles.fieldsContainer}
-                >
-                  {isSignUp && (
-                    <div className={styles.inputGroup}>
-                      <label htmlFor="auth-name" className={styles.inputLabel}>Full Name</label>
-                      <div className={styles.inputWrapper}>
-                        <User size={18} className={styles.fieldIcon} />
-                        <input 
-                          id="auth-name"
-                          type="text" 
-                          placeholder="Yogesh Joga" 
-                          className={styles.styledInput}
-                          required
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className={styles.inputGroup}>
-                    <label htmlFor="auth-email" className={styles.inputLabel}>Email Address</label>
-                    <div className={styles.inputWrapper}>
-                      <Mail size={18} className={styles.fieldIcon} />
-                      <input 
-                        id="auth-email"
-                        type="email" 
-                        placeholder="pilot@egirerobotics.com" 
-                        className={styles.styledInput}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles.inputGroup}>
-                    <div className={styles.labelRow}>
-                      <label htmlFor="auth-password" className={styles.inputLabel}>Password</label>
-                      {!isSignUp && (
-                        <button type="button" className={styles.forgotLink}>
-                          Forgot?
-                        </button>
-                      )}
-                    </div>
-                    <div className={styles.inputWrapper}>
-                      <Lock size={18} className={styles.fieldIcon} />
-                      <input 
-                        id="auth-password"
-                        type="password" 
-                        placeholder="••••••••" 
-                        className={styles.styledInput}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  {isSignUp && (
-                    <div className={styles.checkboxWrapper}>
-                      <input 
-                        id="auth-agree"
-                        type="checkbox" 
-                        className={styles.styledCheckbox}
-                        required
-                      />
-                      <label htmlFor="auth-agree" className={styles.checkboxLabel}>
-                        I agree to the Terms of Service & Privacy Policy
-                      </label>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-
-              <button type="submit" className={styles.primaryAuthSubmit}>
-                <span>{isSignUp ? 'Create Account' : 'Sign In Now'}</span>
-                <ArrowRight size={18} className={styles.btnArrow} />
-              </button>
-            </form>
+            {!crmConfigured && (
+              <p className={styles.configHint}>
+                Set <code>VITE_CRM_LOGIN_URL</code> in your .env file to enable this button.
+              </p>
+            )}
 
             {/* Footer terms */}
             <div className={styles.authCardFooter}>
               <ShieldCheck size={14} className={styles.footerShield} />
-              <span>Secure, encrypted authentication</span>
+              <span>Managed by the FPV CRM</span>
             </div>
           </motion.div>
         </div>

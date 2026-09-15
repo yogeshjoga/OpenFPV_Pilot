@@ -203,238 +203,6 @@
   margin: 0;
 }
 
-/* Tab Switching Control */
-.tabGroup {
-  display: flex;
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  padding: 4px;
-  margin-bottom: 1.25rem;
-  position: relative;
-}
-
-.tabBtn {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: 10px 16px;
-  border-radius: var(--radius-full);
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: var(--font-bold);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  transition: color var(--transition-base), background-color var(--transition-base);
-  z-index: 1;
-}
-
-.tabBtn:hover {
-  color: var(--color-text-primary);
-}
-
-.activeTab {
-  color: #ffffff !important;
-  background: var(--color-accent-primary);
-}
-
-/* OAuth Section */
-.oauthSection {
-  margin-bottom: 1.5rem;
-}
-
-.googleOAuthBtn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  height: 48px;
-  border-radius: var(--radius-full);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  cursor: pointer;
-  transition: all var(--transition-base);
-}
-
-.googleOAuthBtn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--color-accent-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
-}
-
-.googleIcon {
-  flex-shrink: 0;
-  transition: transform var(--transition-spring);
-}
-
-.googleOAuthBtn:hover .googleIcon {
-  transform: scale(1.1) rotate(5deg);
-}
-
-/* Divider block */
-.dividerBlock {
-  position: relative;
-  text-align: center;
-  margin-bottom: 1.25rem;
-}
-
-.dividerBlock::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--color-border);
-  z-index: 0;
-  opacity: 0.5;
-}
-
-.dividerText {
-  position: relative;
-  z-index: 1;
-  background: var(--color-bg-card); /* matches card bg color fallback */
-  padding: 0 12px;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* Form flow styling */
-.formFlow {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.fieldsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.inputLabel {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: var(--font-bold);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.labelRow {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.forgotLink {
-  background: none;
-  border: none;
-  padding: 0;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-accent-primary);
-  cursor: pointer;
-  text-decoration: none;
-  transition: opacity var(--transition-fast), text-shadow var(--transition-fast);
-}
-
-.forgotLink:hover {
-  opacity: 0.8;
-}
-
-.inputWrapper {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.fieldIcon {
-  position: absolute;
-  left: 16px;
-  color: var(--color-text-muted);
-  pointer-events: none;
-  transition: color var(--transition-base);
-}
-
-.styledInput {
-  width: 100%;
-  height: 48px;
-  padding: 0 16px 0 48px;
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  outline: none;
-  box-sizing: border-box;
-  transition: all var(--transition-base);
-}
-
-.styledInput::placeholder {
-  color: var(--color-text-muted);
-  opacity: 0.6;
-}
-
-.styledInput:focus {
-  border-color: var(--color-accent-primary);
-  background: rgba(0, 212, 255, 0.02);
-}
-
-.inputWrapper:focus-within .fieldIcon {
-  color: var(--color-accent-primary);
-}
-
-/* Translucent custom checkbox wrapper */
-.checkboxWrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 4px;
-  cursor: pointer;
-  text-align: left;
-}
-
-.styledCheckbox {
-  margin-top: 3px;
-  width: 16px;
-  height: 16px;
-  accent-color: var(--color-accent-primary);
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.checkboxLabel {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  color: var(--color-text-secondary);
-  line-height: 1.4;
-  user-select: none;
-  cursor: pointer;
-}
-
 /* Submit Button styling */
 .primaryAuthSubmit {
   display: flex;
@@ -467,12 +235,32 @@
   transform: translateY(0);
 }
 
+.primaryAuthSubmit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .btnArrow {
   transition: transform var(--transition-spring);
 }
 
-.primaryAuthSubmit:hover .btnArrow {
+.primaryAuthSubmit:hover:not(:disabled) .btnArrow {
   transform: translateX(4px);
+}
+
+.configHint {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.configHint code {
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
 }
 
 /* Card footer details */
