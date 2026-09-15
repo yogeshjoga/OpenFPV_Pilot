@@ -5,7 +5,7 @@
   "framework": "vite",
   "build": {
     "env": {
-      "VITE_CRM_LOGIN_URL": "https://fpv-aiz0hrr6h-yogeshs-projects-c124b825.vercel.app/login"
+      "VITE_CRM_LOGIN_URL": "https://crm.egirerobotics.com/login"
     }
   },
   "rewrites": [
