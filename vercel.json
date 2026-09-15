@@ -3,6 +3,11 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "build": {
+    "env": {
+      "VITE_CRM_LOGIN_URL": "https://fpv-aiz0hrr6h-yogeshs-projects-c124b825.vercel.app/login"
+    }
+  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
