@@ -72,7 +72,8 @@ export default function Home() {
 
         {/* Team photo background */}
         <div className={styles.heroBg} aria-hidden="true">
-          <img src="/gallery/workshop-1/full/roph9613.webp" alt="" width="3200" height="2133" fetchPriority="high" />
+          <img className={styles.heroBgBlur} src="/gallery/workshop-1/full/roph9613.webp" alt="" />
+          <img className={styles.heroBgSharp} src="/gallery/workshop-1/full/roph9613.webp" alt="" width="3200" height="2133" fetchPriority="high" />
         </div>
 
         {/* Hero Content */}
