@@ -9,17 +9,17 @@
 
 .heroTeam {
   position: absolute;
-  right: 3%;
+  left: max(var(--container-padding), calc((100vw - var(--max-width)) / 2 + var(--container-padding)));
   bottom: 0;
-  width: min(40%, 580px);
+  height: min(34dvh, 380px);
   z-index: 1;
   pointer-events: none;
 }
 
 .heroTeam img {
   display: block;
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
   filter: drop-shadow(0 24px 40px rgba(8, 11, 16, 0.25));
 }
 
@@ -44,7 +44,7 @@
   position: absolute;
   width: 200%;
   height: 65%; /* perfectly zoomed out 35% */
-  top: -2%; /* lifted so the drone flies above the team cutout */
+  top: 10%; /* shifted slightly up to reduce upper space */
   left: -50%;
   pointer-events: auto;
   border: none;
@@ -653,12 +653,27 @@
 
 
 
+@media (min-width: 901px) {
+  .hero {
+    align-items: flex-start;
+  }
+  .heroContent {
+    padding-block: var(--space-12) var(--space-8);
+  }
+}
+
 @media (max-width: 900px) {
   .heroTeam {
+    left: auto;
     right: 50%;
     transform: translateX(50%);
     width: min(88%, 520px);
+    height: auto;
     opacity: 0.35;
+  }
+  .heroTeam img {
+    width: 100%;
+    height: auto;
   }
   .canvasArea {
     right: 0;
