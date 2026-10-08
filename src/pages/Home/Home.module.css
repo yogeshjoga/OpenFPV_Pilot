@@ -7,26 +7,51 @@
   background: var(--color-bg-primary);
 }
 
-.heroPhoto {
+.heroTeam {
   position: absolute;
-  top: calc(var(--nav-height) + var(--space-8));
-  right: max(var(--container-padding), calc((100vw - var(--max-width)) / 2 + var(--container-padding)));
-  bottom: var(--space-12);
-  width: min(48%, 680px);
+  right: 3%;
+  bottom: 0;
+  width: min(40%, 580px);
   z-index: 1;
-  display: flex;
-  align-items: center;
+  pointer-events: none;
 }
 
-.heroPhoto img {
+.heroTeam img {
+  display: block;
   width: 100%;
   height: auto;
-  max-height: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-lg);
+  filter: drop-shadow(0 24px 40px rgba(8, 11, 16, 0.25));
+}
+
+.canvasArea {
+  position: absolute;
+  top: 0;
+  right: -5%;
+  bottom: 0;
+  width: 60%;
+  z-index: 1;
+  overflow: hidden;
+  /* Feather only the left edge so it perfectly blends into the white hero section */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%);
+  pointer-events: none; /* Let clicks pass through where possible */
+}
+
+/* By forcing the iframe to be extremely wide but standard height, 
+   Sketchfab sizes the model to fit height (zooming it out), 
+   while pushing the left/right watermarks completely off screen! */
+.canvasArea iframe {
+  position: absolute;
+  width: 200%;
+  height: 65%; /* perfectly zoomed out 35% */
+  top: -2%; /* lifted so the drone flies above the team cutout */
+  left: -50%;
+  pointer-events: auto;
+  border: none;
+  outline: none;
+  /* Feather the iframe's sharp top and bottom edges internally so they disappear completely, without cutting off the props horizontally! */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .grid {
@@ -629,19 +654,15 @@
 
 
 @media (max-width: 900px) {
-  .hero {
-    flex-direction: column;
-    justify-content: center;
+  .heroTeam {
+    right: 50%;
+    transform: translateX(50%);
+    width: min(88%, 520px);
+    opacity: 0.35;
   }
-  .heroContent {
-    padding-block: var(--space-12) var(--space-6);
-  }
-  .heroPhoto {
-    position: relative;
-    inset: auto;
-    order: 2;
+  .canvasArea {
+    right: 0;
     width: 100%;
-    padding: 0 var(--container-padding) var(--space-12);
   }
   .scrollIndicator {
     display: none;
