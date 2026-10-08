@@ -7,22 +7,6 @@
   background: var(--color-bg-primary);
 }
 
-.heroTeam {
-  position: absolute;
-  left: max(var(--container-padding), calc((100vw - var(--max-width)) / 2 + var(--container-padding)));
-  bottom: 0;
-  height: min(34dvh, 380px);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.heroTeam img {
-  display: block;
-  width: auto;
-  height: 100%;
-  filter: drop-shadow(0 24px 40px rgba(8, 11, 16, 0.25));
-}
-
 .canvasArea {
   position: absolute;
   top: 0;
@@ -652,34 +636,3 @@
 }
 
 
-
-@media (min-width: 901px) {
-  .hero {
-    align-items: flex-start;
-  }
-  .heroContent {
-    padding-block: var(--space-12) var(--space-8);
-  }
-}
-
-@media (max-width: 900px) {
-  .heroTeam {
-    left: auto;
-    right: 50%;
-    transform: translateX(50%);
-    width: min(88%, 520px);
-    height: auto;
-    opacity: 0.35;
-  }
-  .heroTeam img {
-    width: 100%;
-    height: auto;
-  }
-  .canvasArea {
-    right: 0;
-    width: 100%;
-  }
-  .scrollIndicator {
-    display: none;
-  }
-}

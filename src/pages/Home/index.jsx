@@ -54,17 +54,6 @@ export default function Home() {
     <PageWrapper fullHeight>
       {/* ======= HERO ======= */}
       <section className={styles.hero}>
-        {/* Team cutout (behind the 3D drone) */}
-        <div className={styles.heroTeam}>
-          <img
-            src="/images/team-cutout.webp"
-            alt="The EGIRE Robotics team with FPV goggles and a radio controller"
-            width="1025"
-            height="916"
-            fetchPriority="high"
-          />
-        </div>
-
         {/* Sketchfab 3D Embed */}
         <div className={styles.canvasArea}>
           <div className="sketchfab-embed-wrapper" style={{ width: '100%', height: '100%' }}>
