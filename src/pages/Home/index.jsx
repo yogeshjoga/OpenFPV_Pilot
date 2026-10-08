@@ -54,27 +54,21 @@ export default function Home() {
     <PageWrapper fullHeight>
       {/* ======= HERO ======= */}
       <section className={styles.hero}>
-        {/* Sketchfab 3D Embed */}
-        <div className={styles.canvasArea}>
-          <div className="sketchfab-embed-wrapper" style={{ width: '100%', height: '100%' }}>
-            <iframe
-              title="Game Ready iFlight Nazgul Evoque F6X FPV Drone"
-              frameBorder="0"
-              allow="autoplay; fullscreen; xr-spatial-tracking"
-              xr-spatial-tracking="true"
-              execution-while-out-of-viewport="true"
-              execution-while-not-rendered="true"
-              web-share="true"
-              src="https://sketchfab.com/models/d6d764a022a94736b9f80ccd45cee754/embed?autostart=1&transparent=1&ui_theme=light&ui_infos=0&ui_watermark=0&ui_watermark_link=0&ui_hint=0&ui_stop=0&autospin=1"
-            ></iframe>
-          </div>
+        <div className={styles.heroPhoto}>
+          <img
+            src="/gallery/workshop-1/full/roph9613.webp"
+            alt="The EGIRE Robotics team with FPV goggles and a radio controller"
+            width="3200"
+            height="2133"
+            fetchPriority="high"
+          />
         </div>
 
         {/* Grid overlay */}
         <div className={styles.grid} aria-hidden="true" />
 
         {/* Hero Content */}
-        <div className={`container ${styles.heroContent}`} style={{ pointerEvents: 'none' }}>
+        <div className={`container ${styles.heroContent}`}>
           <motion.div
             className={styles.heroText}
             initial={{ opacity: 0, x: -40 }}
@@ -90,7 +84,7 @@ export default function Home() {
               Build your own FPV drone from scratch. Learn to fly freestyle,
               cinematic &amp; racing, all in one platform.
             </p>
-            <div className={styles.heroActions} style={{ pointerEvents: 'auto' }}>
+            <div className={styles.heroActions}>
               <Link to="/catalog" className={styles.primaryBtn}>
                 Explore Parts
               </Link>

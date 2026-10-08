@@ -7,35 +7,26 @@
   background: var(--color-bg-primary);
 }
 
-.canvasArea {
+.heroPhoto {
   position: absolute;
-  top: 0;
-  right: -5%;
-  bottom: 0;
-  width: 60%;
+  top: calc(var(--nav-height) + var(--space-8));
+  right: max(var(--container-padding), calc((100vw - var(--max-width)) / 2 + var(--container-padding)));
+  bottom: var(--space-12);
+  width: min(48%, 680px);
   z-index: 1;
-  overflow: hidden;
-  /* Feather only the left edge so it perfectly blends into the white hero section */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%);
-  mask-image: linear-gradient(to right, transparent 0%, black 15%);
-  pointer-events: none; /* Let clicks pass through where possible */
+  display: flex;
+  align-items: center;
 }
 
-/* By forcing the iframe to be extremely wide but standard height, 
-   Sketchfab sizes the model to fit height (zooming it out), 
-   while pushing the left/right watermarks completely off screen! */
-.canvasArea iframe {
-  position: absolute;
-  width: 200%;
-  height: 65%; /* perfectly zoomed out 35% */
-  top: 10%; /* shifted slightly up to reduce upper space */
-  left: -50%;
-  pointer-events: auto;
-  border: none;
-  outline: none;
-  /* Feather the iframe's sharp top and bottom edges internally so they disappear completely, without cutting off the props horizontally! */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+.heroPhoto img {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
 }
 
 .grid {
@@ -636,3 +627,23 @@
 }
 
 
+
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .heroContent {
+    padding-block: var(--space-12) var(--space-6);
+  }
+  .heroPhoto {
+    position: relative;
+    inset: auto;
+    order: 2;
+    width: 100%;
+    padding: 0 var(--container-padding) var(--space-12);
+  }
+  .scrollIndicator {
+    display: none;
+  }
+}
