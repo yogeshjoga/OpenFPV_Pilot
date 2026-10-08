@@ -70,8 +70,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Grid overlay */}
-        <div className={styles.grid} aria-hidden="true" />
+        {/* Team photo background */}
+        <div className={styles.heroBg} aria-hidden="true">
+          <img src="/gallery/workshop-1/full/roph9613.webp" alt="" width="3200" height="2133" fetchPriority="high" />
+        </div>
 
         {/* Hero Content */}
         <div className={`container ${styles.heroContent}`} style={{ pointerEvents: 'none' }}>
