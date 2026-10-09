@@ -1,12 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
+import { BookOpen } from 'lucide-react'
 import { BLOGS } from '@data/blogs.jsx'
+import { fetchBlogPosts } from '@lib/siteApi'
 import Markdown from 'react-markdown'
 import styles from './Blog.module.css'
 
 export default function Blog() {
   const [selectedBlog, setSelectedBlog] = useState(null)
+  const [feed, setFeed] = useState({ status: 'loading', posts: [] })
+
+  useEffect(() => {
+    let live = true
+    fetchBlogPosts()
+      .then((posts) => live && setFeed({ status: 'ready', posts }))
+      .catch(() => live && setFeed({ status: 'ready', posts: BLOGS }))
+    return () => {
+      live = false
+    }
+  }, [])
 
   return (
     <PageWrapper>
@@ -45,6 +58,7 @@ export default function Blog() {
                 ← Back to Articles
               </button>
               <div className={styles.articleContent}>
+                {selectedBlog.cover && <img src={selectedBlog.cover} alt="" className={styles.articleCover} />}
                 <div className={styles.articleMeta}>
                   <span className={styles.category}>{selectedBlog.category}</span>
                   <span className={styles.readTime}>{selectedBlog.readTime}</span>
@@ -68,8 +82,12 @@ export default function Blog() {
               exit={{ opacity: 0 }}
               className={styles.grid}
             >
-              {BLOGS.map((blog, index) => {
-                const Icon = blog.icon
+              {feed.status === 'loading' && <p className={styles.feedNote}>Loading articles…</p>}
+              {feed.status === 'ready' && feed.posts.length === 0 && (
+                <p className={styles.feedNote}>No articles published yet. Check back soon.</p>
+              )}
+              {feed.posts.map((blog, index) => {
+                const Icon = blog.icon ?? BookOpen
                 return (
                   <motion.div
                     key={blog.id}
@@ -79,6 +97,7 @@ export default function Blog() {
                     className={styles.card}
                     onClick={() => setSelectedBlog(blog)}
                   >
+                    {blog.cover && <img src={blog.cover} alt="" loading="lazy" className={styles.cardCover} />}
                     <div className={styles.cardHeader}>
                       <div className={styles.iconWrapper}>
                         <Icon size={24} />

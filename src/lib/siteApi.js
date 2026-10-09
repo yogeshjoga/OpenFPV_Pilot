@@ -1,0 +1,69 @@
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
+const TIMEOUT_MS = 8000
+
+export const siteApiConfigured = Boolean(SUPABASE_URL && SUPABASE_KEY)
+
+export const mediaUrl = (path) => `${SUPABASE_URL}/storage/v1/object/public/site-media/${path}`
+
+async function get(table, query) {
+  if (!siteApiConfigured) throw new Error('Site content API is not configured')
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS)
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      signal: ctrl.signal,
+    })
+    if (!res.ok) throw new Error(`${table}: ${res.status}`)
+    return await res.json()
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+/** Published gallery: categories plus albums (with their published images). Row-level security hides drafts. */
+export async function fetchGallery() {
+  const [categories, albums] = await Promise.all([
+    get('site_gallery_categories', 'select=id,name,slug,sort_order&order=sort_order.asc,name.asc'),
+    get(
+      'site_gallery_albums',
+      'select=id,category_id,title,description,event_date,created_at,site_gallery_images(id,full_path,thumb_path,width,height,created_at)' +
+        '&is_published=eq.true&order=event_date.desc.nullslast,created_at.desc',
+    ),
+  ])
+  return {
+    categories,
+    albums: albums.map((a) => ({
+      id: a.id,
+      categoryId: a.category_id,
+      title: a.title,
+      description: a.description,
+      date: a.event_date,
+      images: [...(a.site_gallery_images ?? [])]
+        .sort((x, y) => x.created_at.localeCompare(y.created_at))
+        .map((i) => ({ id: i.id, w: i.width, h: i.height, thumb: mediaUrl(i.thumb_path), full: mediaUrl(i.full_path) })),
+    })),
+  }
+}
+
+/** Published blog posts, newest first. */
+export async function fetchBlogPosts() {
+  const rows = await get(
+    'site_blog_posts',
+    'select=slug,title,excerpt,category,author,content_md,cover_path,read_minutes,published_at&is_published=eq.true&order=published_at.desc.nullslast',
+  )
+  return rows.map((p) => ({
+    id: p.slug,
+    title: p.title,
+    excerpt: p.excerpt,
+    category: p.category,
+    author: p.author,
+    date: p.published_at
+      ? new Date(p.published_at).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+      : '',
+    readTime: `${p.read_minutes} min read`,
+    content: p.content_md,
+    cover: p.cover_path ? mediaUrl(p.cover_path) : null,
+  }))
+}

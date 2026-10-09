@@ -1,44 +1,85 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import manifest from '@data/galleryWorkshop1.json'
+import { fetchGallery } from '@lib/siteApi'
 import styles from './Gallery.module.css'
 
-const BASE = `/gallery/${manifest.set}`
+const STATIC_BASE = `/gallery/${manifest.set}`
+const STATIC_CATEGORY = { id: 'static-workshops', name: 'Workshops', slug: 'workshops' }
+const STATIC_ALBUM = {
+  id: 'static-workshop-1',
+  title: 'Workshop 1',
+  description: '',
+  date: null,
+  images: manifest.images.map((img) => ({
+    id: img.id,
+    w: img.w,
+    h: img.h,
+    thumb: `${STATIC_BASE}/thumb/${img.id}.webp`,
+    full: `${STATIC_BASE}/full/${img.id}.webp`,
+  })),
+}
 
-const GALLERY_ITEMS = manifest.images.map((img, i) => ({
-  ...img,
-  title: `Workshop photo ${i + 1}`,
-  thumb: `${BASE}/thumb/${img.id}.webp`,
-  full: `${BASE}/full/${img.id}.webp`,
-}))
+const formatDate = (d) =>
+  d ? new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ''
 
 export default function Gallery() {
+  const [remote, setRemote] = useState(null)
+  const [categoryId, setCategoryId] = useState('all')
+  const [albumId, setAlbumId] = useState(null)
   const [active, setActive] = useState(null)
+
+  useEffect(() => {
+    let live = true
+    fetchGallery()
+      .then((data) => live && setRemote(data))
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [])
+
+  const { categories, albums } = useMemo(() => {
+    const remoteCats = remote?.categories ?? []
+    const workshops = remoteCats.find((c) => c.slug === 'workshops') ?? STATIC_CATEGORY
+    const cats = remoteCats.some((c) => c.slug === 'workshops') ? remoteCats : [...remoteCats, STATIC_CATEGORY]
+    const all = [
+      ...(remote?.albums ?? []).filter((a) => a.images.length > 0),
+      { ...STATIC_ALBUM, categoryId: workshops.id },
+    ]
+    const used = new Set(all.map((a) => a.categoryId))
+    return { categories: cats.filter((c) => used.has(c.id)), albums: all }
+  }, [remote])
+
+  const album = albums.find((a) => a.id === albumId) ?? null
+  const shown = albums.filter((a) => categoryId === 'all' || a.categoryId === categoryId)
+  const images = album?.images ?? []
+  const current = active === null ? null : images[active]
+
+  const openAlbum = (id) => {
+    setAlbumId(id)
+    setActive(null)
+    window.scrollTo({ top: 0 })
+  }
 
   useEffect(() => {
     if (active === null) return
     const onKey = (e) => {
       if (e.key === 'Escape') setActive(null)
-      if (e.key === 'ArrowRight') setActive((i) => (i + 1) % GALLERY_ITEMS.length)
-      if (e.key === 'ArrowLeft') setActive((i) => (i - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length)
+      if (e.key === 'ArrowRight') setActive((i) => (i + 1) % images.length)
+      if (e.key === 'ArrowLeft') setActive((i) => (i - 1 + images.length) % images.length)
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [active])
-
-  const current = active === null ? null : GALLERY_ITEMS[active]
+  }, [active, images.length])
 
   return (
     <PageWrapper>
       <div className={styles.page}>
         <div className="container">
           <header className={styles.header}>
-            <motion.h1
-              className={styles.title}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
+            <motion.h1 className={styles.title} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
               Our <span className="gradient-text">Gallery</span>
             </motion.h1>
             <motion.p
@@ -47,33 +88,81 @@ export default function Gallery() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              Moments from our hands-on FPV drone workshops.
+              Our team, workshops, flying sessions and events.
             </motion.p>
           </header>
 
-          <div className={styles.masonryGrid}>
-            {GALLERY_ITEMS.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                className={styles.gridItem}
-                onClick={() => setActive(index)}
-                aria-label={`Open ${item.title}`}
-              >
-                <div className={styles.mediaWrap}>
-                  <img
-                    src={item.thumb}
-                    alt={item.title}
-                    width={item.w}
-                    height={item.h}
-                    loading="lazy"
-                    decoding="async"
-                    className={styles.media}
-                  />
-                </div>
-              </button>
-            ))}
-          </div>
+          {album ? (
+            <>
+              <div className={styles.albumHeader}>
+                <button type="button" className={styles.backBtn} onClick={() => openAlbum(null)}>
+                  ← All albums
+                </button>
+                <h2 className={styles.albumHeading}>{album.title}</h2>
+                <p className={styles.albumSub}>
+                  {[formatDate(album.date), `${images.length} photos`].filter(Boolean).join(' · ')}
+                </p>
+                {album.description && <p className={styles.albumDesc}>{album.description}</p>}
+              </div>
+
+              <div className={styles.masonryGrid}>
+                {images.map((img, index) => (
+                  <button
+                    key={img.id}
+                    type="button"
+                    className={styles.gridItem}
+                    onClick={() => setActive(index)}
+                    aria-label={`Open photo ${index + 1}`}
+                  >
+                    <div className={styles.mediaWrap}>
+                      <img
+                        src={img.thumb}
+                        alt={`${album.title} photo ${index + 1}`}
+                        width={img.w}
+                        height={img.h}
+                        loading="lazy"
+                        decoding="async"
+                        className={styles.media}
+                      />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.tabs} role="tablist" aria-label="Gallery categories">
+                {[{ id: 'all', name: 'All' }, ...categories].map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={categoryId === c.id}
+                    className={`${styles.tab} ${categoryId === c.id ? styles.tabActive : ''}`}
+                    onClick={() => setCategoryId(c.id)}
+                  >
+                    {c.name}
+                  </button>
+                ))}
+              </div>
+
+              <div className={styles.albumGrid}>
+                {shown.map((a) => (
+                  <button key={a.id} type="button" className={styles.albumCard} onClick={() => openAlbum(a.id)}>
+                    <div className={styles.albumCover}>
+                      <img src={a.images[0].thumb} alt="" loading="lazy" decoding="async" />
+                    </div>
+                    <div className={styles.albumMeta}>
+                      <span className={styles.albumTitle}>{a.title}</span>
+                      <span className={styles.albumCount}>
+                        {[formatDate(a.date), `${a.images.length} photos`].filter(Boolean).join(' · ')}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -82,25 +171,46 @@ export default function Gallery() {
           className={styles.lightbox}
           role="dialog"
           aria-modal="true"
-          aria-label={current.title}
+          aria-label={`${album.title} photo ${active + 1}`}
           onClick={() => setActive(null)}
         >
-          <button
-            type="button"
-            className={styles.lightboxClose}
-            onClick={() => setActive(null)}
-            aria-label="Close"
-          >
+          <button type="button" className={styles.lightboxClose} onClick={() => setActive(null)} aria-label="Close">
             ×
           </button>
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setActive((i) => (i - 1 + images.length) % images.length)
+                }}
+                aria-label="Previous photo"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className={`${styles.lightboxNav} ${styles.lightboxNext}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setActive((i) => (i + 1) % images.length)
+                }}
+                aria-label="Next photo"
+              >
+                ›
+              </button>
+            </>
+          )}
           <img
             src={current.full}
-            alt={current.title}
+            alt={`${album.title} photo ${active + 1}`}
             className={styles.lightboxImg}
             onClick={(e) => e.stopPropagation()}
           />
           <span className={styles.lightboxCount}>
-            {active + 1} / {GALLERY_ITEMS.length}
+            {active + 1} / {images.length}
           </span>
         </div>
       )}

@@ -5,7 +5,9 @@
   "framework": "vite",
   "build": {
     "env": {
-      "VITE_CRM_LOGIN_URL": "https://crm.egirerobotics.com/login"
+      "VITE_CRM_LOGIN_URL": "https://crm.egirerobotics.com/login",
+      "VITE_SUPABASE_URL": "https://txbrnewcztixcagdnnfx.supabase.co",
+      "VITE_SUPABASE_ANON_KEY": "sb_publishable_3U5FgNr8wNimcWj8j5pQ9Q_VwF3_c-2"
     }
   },
   "rewrites": [
