@@ -21,13 +21,6 @@
 }
 .logo:hover { color: var(--color-text-primary); }
 
-.logoText {
-  font-family: var(--font-display);
-  font-weight: var(--font-semibold);
-  font-size: var(--text-xl);
-  color: var(--color-accent-primary);
-}
-
 .tagline {
   color: var(--color-text-secondary);
   font-size: var(--text-sm);
@@ -98,4 +91,14 @@
     gap: var(--space-2);
     text-align: center;
   }
+}
+
+.logoImg {
+  display: block;
+  height: 56px;
+  width: auto;
+}
+
+[data-theme='dark'] .logoImg {
+  filter: invert(1);
 }

@@ -11,8 +11,8 @@ export default function Footer() {
       <div className={`container ${styles.inner}`}>
         {/* Brand */}
         <div className={styles.brand}>
-          <Link to="/" className={styles.logo}>
-            <span className={styles.logoText}>{APP_NAME}</span>
+          <Link to="/" className={styles.logo} aria-label="EGIRE Robotics home">
+            <img className={styles.logoImg} src="/images/logo-egire-robotics.png" alt="EGIRE Robotics: Explore, Engineer, Excel" width="165" height="56" />
           </Link>
           <p className={styles.tagline}>{APP_TAGLINE}</p>
           <p className={styles.email}>

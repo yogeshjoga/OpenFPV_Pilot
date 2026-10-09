@@ -33,30 +33,6 @@
 }
 .logo:hover { opacity: 0.85; color: var(--color-text-primary); }
 
-.logoContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.logoText {
-  font-family: var(--font-display);
-  font-weight: var(--font-bold);
-  font-size: var(--text-xl);
-  line-height: 1;
-  color: var(--color-accent-primary);
-}
-
-.logoCaption {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  letter-spacing: 0.06em;
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  margin-top: var(--space-1);
-  line-height: 1;
-}
-
 /* === DESKTOP NAV === */
 .navLinks {
   display: flex;
@@ -395,4 +371,21 @@
   font-size: var(--text-md);
   padding: var(--space-2) 0;
   border-bottom: none;
+}
+
+/* The logo file carries its own tagline; the header shows the mark and name only */
+.logoCrop {
+  display: block;
+  height: 40px;
+  overflow: hidden;
+}
+
+.logoImg {
+  display: block;
+  height: 48px;
+  width: auto;
+}
+
+[data-theme='dark'] .logoImg {
+  filter: invert(1);
 }

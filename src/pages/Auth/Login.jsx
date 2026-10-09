@@ -76,12 +76,7 @@ export default function Login() {
           >
             {/* Logo/Branding Header */}
             <div className={styles.brandingHeader}>
-              <div className={styles.logoBadge}>
-                <Sparkles size={24} className={styles.logoSparkle} />
-              </div>
-              <h2 className={styles.brandingTitle}>
-                EGIRE<span className="gradient-text">ROBOTICS</span>
-              </h2>
+              <img className={styles.loginLogo} src="/images/logo-egire-robotics.png" alt="EGIRE Robotics" width="197" height="67" />
               <p className={styles.brandingSubtitle}>
                 Sign in through the FPV CRM to access your student account
               </p>

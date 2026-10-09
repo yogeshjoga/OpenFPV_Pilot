@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { Sun, Moon } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { APP_NAME, NAV_LINKS } from '@config/constants'
+import { NAV_LINKS } from '@config/constants'
 import useUIStore from '@store/useUIStore'
 import styles from './Navbar.module.css'
 
@@ -28,11 +28,10 @@ export default function Navbar() {
     <header className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         {/* Logo */}
-        <Link to="/" className={styles.logo}>
-          <div className={styles.logoContainer}>
-            <span className={styles.logoText}>{APP_NAME}</span>
-            <span className={styles.logoCaption}>Autonomous Aerial Solutions</span>
-          </div>
+        <Link to="/" className={styles.logo} aria-label="EGIRE Robotics home">
+          <span className={styles.logoCrop}>
+            <img className={styles.logoImg} src="/images/logo-egire-robotics.png" alt="EGIRE Robotics" width="141" height="48" />
+          </span>
         </Link>
 
         {/* Desktop Nav */}
