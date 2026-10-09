@@ -38,12 +38,15 @@
   mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
-/* A still of the drone, placed where the live model sits, shown until the model is ready */
+/* A still captured from the live viewer, framed the way the viewer frames the model (fit to the
+   viewer's height, centred), so the swap to the live model does not jump */
 .heroPoster {
   top: 10%;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  width: auto;
+  max-width: none;
   height: 65%;
+  transform: translateX(-50%);
 }
 
 .heroContent {
