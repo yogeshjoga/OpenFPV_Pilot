@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
+import SketchfabEmbed from '@components/common/SketchfabEmbed'
 import ReviewsSection from '@components/sections/ReviewsSection'
 import PartnersSection from '@components/sections/PartnersSection'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
@@ -86,19 +87,13 @@ export default function Home() {
       <section className={styles.hero}>
         {/* Sketchfab 3D Embed */}
         <div className={styles.canvasArea}>
-          <div className="sketchfab-embed-wrapper" style={{ width: '100%', height: '100%' }}>
-            <iframe
-              title="Game Ready iFlight Nazgul Evoque F6X FPV Drone"
-              frameBorder="0"
-              allow="autoplay; fullscreen; xr-spatial-tracking"
-              xr-spatial-tracking="true"
-              execution-while-out-of-viewport="true"
-              execution-while-not-rendered="true"
-              web-share="true"
-              src="https://sketchfab.com/models/d6d764a022a94736b9f80ccd45cee754/embed?autostart=1&transparent=1&ui_theme=light&ui_infos=0&ui_watermark=0&ui_watermark_link=0&ui_hint=0&ui_stop=0&ui_controls=0&ui_inspector=0&ui_help=0&autospin=1"
-              tabIndex={-1}
-            ></iframe>
-          </div>
+          <SketchfabEmbed
+            uid="d6d764a022a94736b9f80ccd45cee754"
+            title="Game Ready iFlight Nazgul Evoque F6X FPV Drone"
+            poster="/images/hero-drone-poster.webp"
+            posterClassName={styles.heroPoster}
+            eager
+          />
         </div>
 
         {/* Hero Content */}
@@ -311,17 +306,7 @@ export default function Home() {
 
             <div className={styles.banner3D}>
               <div className={styles.sketchfabWrapper}>
-                <iframe
-                  title="Tiny Whoop FPV drone"
-                  frameBorder="0"
-                  allow="autoplay; fullscreen; xr-spatial-tracking"
-                  xr-spatial-tracking="true"
-                  execution-while-out-of-viewport="true"
-                  execution-while-not-rendered="true"
-                  web-share="true"
-                  src="https://sketchfab.com/models/15dd7ffce5724af0afcc62b00545c401/embed?autostart=1&transparent=1&ui_theme=dark&ui_infos=0&ui_watermark=0&ui_watermark_link=0&ui_hint=0&ui_stop=0&ui_controls=0&ui_inspector=0&ui_help=0&autospin=1"
-                  tabIndex={-1}
-                ></iframe>
+                <SketchfabEmbed uid="15dd7ffce5724af0afcc62b00545c401" title="Tiny Whoop FPV drone" theme="dark" />
               </div>
             </div>
           </motion.div>

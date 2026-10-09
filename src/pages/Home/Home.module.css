@@ -38,6 +38,14 @@
   mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
+/* A still of the drone, placed where the live model sits, shown until the model is ready */
+.heroPoster {
+  top: 10%;
+  left: 0;
+  width: 100%;
+  height: 65%;
+}
+
 .heroContent {
   position: relative;
   z-index: 2;
