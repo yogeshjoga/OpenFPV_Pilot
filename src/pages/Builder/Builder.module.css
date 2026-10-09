@@ -5,8 +5,8 @@
 .layout {
   display: grid;
   grid-template-columns: 1fr 480px;
-  gap: 2rem;
-  padding: 4rem 2rem;
+  gap: var(--space-8);
+  padding: var(--space-16) var(--space-8);
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -14,7 +14,7 @@
 @media (max-width: 1024px) {
   .layout {
     grid-template-columns: 1fr;
-    padding: 2rem 1rem;
+    padding: var(--space-8) var(--space-4);
   }
 }
 
@@ -22,54 +22,52 @@
 .configurator {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-8);
 }
 
 .header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-8);
 }
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--color-accent-secondary);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-size: var(--text-h1);
   line-height: 1.1;
   color: var(--color-text-primary);
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .sub {
-  font-size: 1.125rem;
+  font-size: var(--text-lg);
   color: var(--color-text-secondary);
   max-width: 600px;
 }
 
 /* Presets */
 .presetSection {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-8);
   border-bottom: 1px dashed var(--color-border);
 }
 
 .presetTitle {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   color: var(--color-text-secondary);
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .presetGrid {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-4);
   flex-wrap: wrap;
 }
 
@@ -77,15 +75,15 @@
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
   font-family: var(--font-sans);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .presetBtn:hover {
@@ -97,8 +95,8 @@
 .progressTracker {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
 }
 
 .stepDot {
@@ -109,7 +107,7 @@
   background: var(--color-bg-secondary);
   color: var(--color-text-secondary);
   font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,43 +124,43 @@
   background: var(--color-accent-primary);
   border-color: var(--color-accent-primary);
   color: #000;
-  font-weight: 600;
+  font-weight: var(--font-semibold);
 }
 
 /* Step Content */
 .stepContent {
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  padding: 2.5rem;
+  border-radius: var(--radius-xl);
+  padding: var(--space-10);
   min-height: 400px;
 }
 
 .stepTitle {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: var(--text-3xl);
   color: var(--color-text-primary);
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-8);
 }
 
 .optionsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.5rem;
+  gap: var(--space-6);
 }
 
 .fieldGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .fieldLabel {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--color-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .fieldSelect {
@@ -170,9 +168,9 @@
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
-  font-size: 1rem;
-  padding: 0.875rem 1rem;
-  border-radius: 0.5rem;
+  font-size: var(--text-base);
+  padding: var(--space-4) var(--space-4);
+  border-radius: var(--radius-md);
   outline: none;
   transition: all 0.2s;
   cursor: pointer;
@@ -195,17 +193,15 @@
 .navButtons {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  margin-top: var(--space-4);
 }
 
 .primaryBtn,
 .ghostBtn {
   font-family: var(--font-mono);
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 1rem 2rem;
-  border-radius: 999px;
+  font-size: var(--text-sm);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
@@ -214,7 +210,7 @@
 .primaryBtn {
   background: var(--color-accent-primary);
   color: #000;
-  font-weight: 600;
+  font-weight: var(--font-semibold);
 }
 
 .primaryBtn:hover:not(:disabled) {
@@ -254,22 +250,20 @@
   top: 100px;
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  padding: 2rem;
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-6);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
 .invoiceTitle {
   font-family: var(--font-mono);
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  font-size: var(--text-base);
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-border);
-  padding-bottom: 1rem;
+  padding-bottom: var(--space-4);
 }
 
 .invoiceList {
@@ -278,7 +272,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: var(--space-5);
   flex-grow: 1;
 }
 
@@ -286,8 +280,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.8rem;
-  gap: 1rem;
+  font-size: var(--text-sm);
+  gap: var(--space-4);
 }
 
 .invoiceKey {
@@ -307,32 +301,32 @@
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: var(--text-2xl);
   border-top: 1px solid var(--color-border);
-  padding-top: 1.5rem;
-  margin-top: 0.5rem;
+  padding-top: var(--space-6);
+  margin-top: var(--space-2);
 }
 
 .performanceBox {
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-top: 0.5rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-top: var(--space-2);
 }
 
 .perfLabel {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--color-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-1);
 }
 
 .perfVal {
   color: var(--color-accent-primary);
-  font-weight: 500;
+  font-weight: var(--font-medium);
 }
 
 .exportBtn {
@@ -341,11 +335,9 @@
   color: var(--color-accent-secondary);
   border: 1px solid var(--color-accent-secondary);
   font-family: var(--font-mono);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 1rem;
-  border-radius: 0.5rem;
+  font-size: var(--text-sm);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.2s ease;
 }

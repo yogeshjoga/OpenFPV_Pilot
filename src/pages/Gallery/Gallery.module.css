@@ -42,8 +42,6 @@
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
 }
 
@@ -55,7 +53,7 @@
 .tabActive {
   background: var(--color-accent-primary);
   border-color: var(--color-accent-primary);
-  color: #fff;
+  color: var(--color-on-accent);
 }
 
 .tabActive:hover {
@@ -229,7 +227,7 @@
   background: none;
   border: none;
   color: #fff;
-  font-size: 2.5rem;
+  font-size: var(--text-4xl);
   line-height: 1;
   cursor: pointer;
 }
@@ -244,7 +242,7 @@
   border: none;
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
-  font-size: 2rem;
+  font-size: var(--text-3xl);
   line-height: 1;
   cursor: pointer;
 }

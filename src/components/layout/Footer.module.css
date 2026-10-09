@@ -30,12 +30,7 @@
   font-family: var(--font-display);
   font-weight: var(--font-bold);
   font-size: var(--text-lg);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-accent-primary);
 }
 
 .tagline {
@@ -67,7 +62,7 @@
 .heading {
   font-family: var(--font-display);
   font-size: var(--text-xs);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-text-muted);
   margin-bottom: var(--space-3);

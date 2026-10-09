@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1.5rem;
+  padding: var(--space-6) var(--space-6);
   overflow: hidden;
   background: var(--color-bg-primary);
 }
@@ -16,7 +16,7 @@
 .authGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
+  gap: var(--space-12);
   align-items: center;
   z-index: 1;
   max-width: 1100px;
@@ -26,7 +26,7 @@
 @media (min-width: 992px) {
   .authGrid {
     grid-template-columns: 1.15fr 0.85fr;
-    gap: 4.5rem;
+    gap: var(--space-20);
   }
 }
 
@@ -44,22 +44,19 @@
   font-size: var(--text-xs);
   font-weight: var(--font-bold);
   color: var(--color-accent-primary);
-  background: rgba(0, 212, 255, 0.08);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  padding: 4px 12px;
+  background: rgba(var(--color-accent-primary-rgb), 0.08);
+  border: 1px solid rgba(var(--color-accent-primary-rgb), 0.2);
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
-  letter-spacing: 0.1em;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
 }
 
 .infoTitle {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-size: var(--text-h1);
   font-weight: var(--font-extrabold);
   line-height: 1.1;
-  margin: 0 0 1.5rem 0;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  margin: 0 0 var(--space-6) 0;
   color: var(--color-text-primary);
 }
 
@@ -68,20 +65,20 @@
   font-size: var(--text-base);
   color: var(--color-text-secondary);
   line-height: 1.6;
-  margin: 0 0 2.5rem 0;
+  margin: 0 0 var(--space-10) 0;
   max-width: 580px;
 }
 
 .featureList {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-6);
   width: 100%;
 }
 
 .featureItem {
   display: flex;
-  gap: 1.25rem;
+  gap: var(--space-5);
   align-items: flex-start;
 }
 
@@ -89,8 +86,8 @@
   width: 38px;
   height: 38px;
   border-radius: var(--radius-lg);
-  background: rgba(0, 212, 255, 0.05);
-  border: 1px solid rgba(0, 212, 255, 0.15);
+  background: rgba(var(--color-accent-primary-rgb), 0.05);
+  border: 1px solid rgba(var(--color-accent-primary-rgb), 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,7 +97,7 @@
 }
 
 .featureItem:hover .featureIconWrapper {
-  background: rgba(0, 212, 255, 0.1);
+  background: rgba(var(--color-accent-primary-rgb), 0.1);
   border-color: var(--color-accent-primary);
   transform: translateY(-2px);
 }
@@ -110,9 +107,7 @@
   font-size: var(--text-lg);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
-  margin: 0 0 0.25rem 0;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  margin: 0 0 var(--space-1) 0;
 }
 
 .featureDesc {
@@ -142,10 +137,8 @@
   background: var(--color-bg-glass);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
-  padding: 2rem 2.25rem;
+  padding: var(--space-8) var(--space-10);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -160,19 +153,19 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: var(--space-5);
 }
 
 .logoBadge {
   width: 54px;
   height: 54px;
-  border-radius: 16px;
-  background: rgba(0, 212, 255, 0.08);
-  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: var(--radius-xl);
+  background: rgba(var(--color-accent-primary-rgb), 0.08);
+  border: 1px solid rgba(var(--color-accent-primary-rgb), 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
   transition: transform var(--transition-spring), border-color var(--transition-base);
 }
 
@@ -187,11 +180,9 @@
 
 .brandingTitle {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: var(--text-3xl);
   font-weight: var(--font-extrabold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--space-2) 0;
   color: var(--color-text-primary);
 }
 
@@ -208,7 +199,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
   height: 50px;
   border: none;
@@ -218,8 +209,6 @@
   font-family: var(--font-display);
   font-size: var(--text-base);
   font-weight: var(--font-bold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform var(--transition-fast), box-shadow var(--transition-base), filter var(--transition-base);
@@ -251,7 +240,7 @@
 }
 
 .configHint {
-  margin-top: 0.75rem;
+  margin-top: var(--space-3);
   text-align: center;
   font-family: var(--font-body);
   font-size: var(--text-xs);
@@ -268,15 +257,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
   border-top: 1px solid var(--color-border);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .footerShield {

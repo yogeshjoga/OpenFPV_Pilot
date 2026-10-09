@@ -101,19 +101,16 @@
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   color: var(--color-accent-primary);
-  letter-spacing: 0.12em;
   margin-bottom: var(--space-4);
   opacity: 0.9;
 }
 
 .headline {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-size: var(--text-h1);
   font-weight: var(--font-extrabold);
   line-height: 1.05;
-  letter-spacing: 0.02em;
   margin-bottom: var(--space-6);
-  text-transform: uppercase;
 }
 
 .sub {
@@ -137,8 +134,6 @@
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: var(--font-bold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   text-decoration: none;
   color: var(--color-bg-primary);
   background: var(--gradient-accent);
@@ -158,8 +153,6 @@
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   text-decoration: none;
   color: var(--color-text-primary);
   border: 1px solid var(--color-border-hover);
@@ -170,7 +163,7 @@
 .ghostBtn:hover {
   color: var(--color-text-primary);
   border-color: var(--color-accent-primary);
-  background: rgba(0, 212, 255, 0.05);
+  background: rgba(var(--color-accent-primary-rgb), 0.05);
 }
 
 .scrollIndicator {
@@ -235,17 +228,16 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 2rem;
+  font-size: var(--text-3xl);
   color: var(--color-accent-primary);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
-  backdrop-filter: blur(8px);
 }
 
 .roadmapStep:hover .roadmapIconWrapper {
   border-color: var(--color-accent-primary);
   transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .roadmapContent {
@@ -258,8 +250,6 @@
   font-size: var(--text-2xl);
   font-weight: var(--font-extrabold);
   margin-bottom: var(--space-2);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .roadmapStepTagline {
@@ -294,7 +284,6 @@
   background: var(--color-bg-glass);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  backdrop-filter: blur(8px);
   text-align: center;
   transition: border-color var(--transition-base);
 }
@@ -304,17 +293,12 @@
   font-family: var(--font-display);
   font-size: var(--text-3xl);
   font-weight: var(--font-extrabold);
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-accent-primary);
 }
 
 .statLabel {
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
 }
 
 /* === FEATURED === */
@@ -327,15 +311,12 @@
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   color: var(--color-accent-primary);
-  letter-spacing: 0.12em;
   margin-bottom: var(--space-3);
 }
 
 .sectionTitle {
   font-size: var(--text-4xl);
   font-weight: var(--font-extrabold);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   margin-bottom: var(--space-4);
 }
 
@@ -360,7 +341,7 @@
 /* === PREREQUISITES SLIDER === */
 .prereqSection {
   padding-block: var(--space-20);
-  background: linear-gradient(180deg, var(--color-bg-primary) 0%, rgba(0, 212, 255, 0.02) 100%);
+  background: linear-gradient(180deg, var(--color-bg-primary) 0%, rgba(var(--color-accent-primary-rgb), 0.02) 100%);
 }
 
 .sliderContainer {
@@ -377,20 +358,19 @@
   background: var(--color-bg-glass);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all var(--transition-base);
-  backdrop-filter: blur(8px);
   flex-shrink: 0;
 }
 .sliderNavBtn:hover {
   border-color: var(--color-accent-primary);
   color: var(--color-accent-primary);
   transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .prereqCardLarge {
@@ -445,7 +425,7 @@
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   margin-bottom: var(--space-6);
 }
 
@@ -484,7 +464,7 @@
   font-size: var(--text-xs);
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   font-weight: var(--font-bold);
 }
 
@@ -510,12 +490,11 @@
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  letter-spacing: 0.1em;
 }
 
 /* === CTA BANNER === */
 .ctaBanner {
-  background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.03));
+  background: linear-gradient(180deg, transparent, rgba(var(--color-accent-primary-rgb), 0.03));
 }
 
 .bannerInner {
@@ -529,7 +508,6 @@
   background: var(--color-bg-glass);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
-  backdrop-filter: blur(12px);
   text-align: left;
 }
 
@@ -563,7 +541,6 @@
 .bannerTitle {
   font-size: var(--text-4xl);
   font-weight: var(--font-extrabold);
-  text-transform: uppercase;
   margin-bottom: var(--space-4);
 }
 
@@ -607,7 +584,7 @@
 @media (max-width: 640px) {
   .productGrid { grid-template-columns: 1fr; }
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
-  .headline { font-size: 2.5rem; }
+  .headline { font-size: var(--text-4xl); }
   .prereqGridList { grid-template-columns: 1fr; }
   .sliderContainer { flex-direction: column; }
   .sliderNavBtn { 
@@ -642,30 +619,27 @@
   font-size: var(--text-xl);
   color: var(--color-text-secondary);
   font-weight: var(--font-semibold);
-  letter-spacing: 0.05em;
 }
 
 .shuffleBtn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: var(--font-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
   color: var(--color-accent-primary);
-  background: rgba(0, 212, 255, 0.05);
+  background: rgba(var(--color-accent-primary-rgb), 0.05);
   border: 2px solid var(--color-accent-primary);
-  padding: 8px 24px;
+  padding: var(--space-2) var(--space-6);
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--transition-base);
 }
 
 .shuffleBtn:hover {
-  background: rgba(0, 212, 255, 0.12);
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.25);
+  background: rgba(var(--color-accent-primary-rgb), 0.12);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 

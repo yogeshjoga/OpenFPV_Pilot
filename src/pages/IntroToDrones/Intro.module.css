@@ -9,20 +9,15 @@
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   color: var(--color-accent-primary);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   margin-bottom: var(--space-4);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: var(--text-h1);
   font-weight: var(--font-extrabold);
-  text-transform: uppercase;
   margin-bottom: var(--space-6);
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-accent-primary);
 }
 
 .subtitle {
@@ -75,11 +70,11 @@
 .card:hover {
   border-color: var(--color-accent-primary);
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(var(--color-accent-primary-rgb), 0.05);
 }
 
 .cardIcon {
-  font-size: 3rem;
+  font-size: var(--text-5xl);
   margin-bottom: var(--space-4);
 }
 
@@ -201,7 +196,7 @@
   font-size: var(--text-xs);
   color: var(--brand-color);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   margin-bottom: var(--space-3);
 }
 

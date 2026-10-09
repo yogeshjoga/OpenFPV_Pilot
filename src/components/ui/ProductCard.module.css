@@ -11,7 +11,7 @@
 
 .card:hover {
   border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-card), 0 0 32px rgba(0, 212, 255, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 /* === IMAGE === */
@@ -33,13 +33,10 @@
 
 .glyph {
   font-size: 5rem;
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   opacity: 0.7;
-  filter: drop-shadow(0 0 16px rgba(0, 212, 255, 0.3));
+  filter: drop-shadow(0 0 16px rgba(var(--color-accent-primary-rgb), 0.3));
   transition: transform var(--transition-base), opacity var(--transition-base);
+  color: var(--color-accent-primary);
 }
 .card:hover .glyph {
   transform: scale(1.1) rotate(5deg);
@@ -54,7 +51,7 @@
   font-family: var(--font-display);
   font-size: var(--text-xs);
   font-weight: var(--font-bold);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 3px var(--space-3);
   border-radius: var(--radius-full);
@@ -64,7 +61,7 @@
 .badge_best_seller { background: var(--gradient-accent); }
 .badge_new { background: var(--color-success); }
 .badge_sale { background: var(--color-warning); color: #000; }
-.badge_top_rated { background: var(--color-accent-secondary); color: #fff; }
+.badge_top_rated { background: var(--color-accent-secondary); color: var(--color-on-accent); }
 
 .outOfStock {
   position: absolute;
@@ -72,12 +69,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 11, 16, 0.75);
+  background: color-mix(in srgb, var(--color-bg-primary) 75%, transparent);
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: var(--font-bold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--color-text-muted);
 }
 
@@ -93,7 +88,7 @@
 .category {
   font-size: var(--text-xs);
   font-family: var(--font-display);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-accent-primary);
 }
@@ -115,8 +110,8 @@
 
 .stars { display: flex; align-items: center; gap: 1px; }
 .star { font-size: var(--text-sm); color: var(--color-text-muted); }
-.star.filled { color: #f59e0b; }
-.ratingNum { font-size: var(--text-xs); color: var(--color-text-secondary); margin-left: 4px; }
+.star.filled { color: var(--color-warning); }
+.ratingNum { font-size: var(--text-xs); color: var(--color-text-secondary); margin-left: var(--space-1); }
 .reviewCount { font-size: var(--text-xs); color: var(--color-text-muted); }
 
 /* === PRICE === */
@@ -156,8 +151,6 @@
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--color-accent-primary);
   text-decoration: none;
   transition: gap var(--transition-fast), color var(--transition-fast);
