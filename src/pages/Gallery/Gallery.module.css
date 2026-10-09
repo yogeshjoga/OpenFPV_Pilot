@@ -162,6 +162,15 @@
   column-gap: var(--space-6);
 }
 
+.wideGrid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.wideGrid .gridItem {
+  margin: 0;
+}
+
 .gridItem {
   display: block;
   width: 100%;
@@ -276,6 +285,9 @@
   .masonryGrid {
     columns: 2 150px;
     column-gap: var(--space-3);
+  }
+  .wideGrid {
+    gap: var(--space-3);
   }
   .gridItem {
     margin-bottom: var(--space-3);

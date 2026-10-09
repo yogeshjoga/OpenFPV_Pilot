@@ -1,0 +1,17 @@
+{
+ "set": "sivani-srikakulam",
+ "title": "Sivani Engineering College, Srikakulam",
+ "description": "Our FPV drone workshop at Sivani Engineering College, Srikakulam: the participants with the EGIRE Robotics team, and the certificates handed out at the end.",
+ "images": [
+  {
+   "id": "sivani-group",
+   "w": 2000,
+   "h": 1125
+  },
+  {
+   "id": "sivani-certificates",
+   "w": 2000,
+   "h": 879
+  }
+ ]
+}

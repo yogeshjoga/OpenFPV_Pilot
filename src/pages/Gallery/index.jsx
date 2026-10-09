@@ -2,25 +2,40 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import manifest from '@data/galleryWorkshop1.json'
+import sivani from '@data/gallerySivani.json'
 import { fetchGallery } from '@lib/siteApi'
 import styles from './Gallery.module.css'
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
 
-const STATIC_BASE = `/gallery/${manifest.set}`
 const STATIC_CATEGORY = { id: 'static-workshops', name: 'Workshops', slug: 'workshops' }
-const STATIC_ALBUM = {
-  id: 'static-workshop-1',
-  title: 'Workshop 1',
-  description: '',
-  date: null,
-  images: manifest.images.map((img) => ({
+
+const staticImages = (set, images) =>
+  images.map((img) => ({
     id: img.id,
     w: img.w,
     h: img.h,
-    thumb: `${STATIC_BASE}/thumb/${img.id}.webp`,
-    full: `${STATIC_BASE}/full/${img.id}.webp`,
-  })),
-}
+    thumb: `/gallery/${set}/thumb/${img.id}.webp`,
+    full: `/gallery/${set}/full/${img.id}.webp`,
+  }))
+
+// Albums bundled with the site. A `wide` album shows its few photos large, one per row, instead of a masonry grid.
+const STATIC_ALBUMS = [
+  {
+    id: 'static-sivani-srikakulam',
+    title: sivani.title,
+    description: sivani.description,
+    date: null,
+    wide: true,
+    images: staticImages(sivani.set, sivani.images),
+  },
+  {
+    id: 'static-workshop-1',
+    title: 'Workshop 1',
+    description: '',
+    date: null,
+    images: staticImages(manifest.set, manifest.images),
+  },
+]
 
 const formatDate = (d) =>
   d ? new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ''
@@ -47,7 +62,7 @@ export default function Gallery() {
     const cats = remoteCats.some((c) => c.slug === 'workshops') ? remoteCats : [...remoteCats, STATIC_CATEGORY]
     const all = [
       ...(remote?.albums ?? []).filter((a) => a.images.length > 0),
-      { ...STATIC_ALBUM, categoryId: workshops.id },
+      ...STATIC_ALBUMS.map((a) => ({ ...a, categoryId: workshops.id })),
     ]
     const used = new Set(all.map((a) => a.categoryId))
     return { categories: cats.filter((c) => used.has(c.id)), albums: all }
@@ -106,7 +121,7 @@ export default function Gallery() {
                 {album.description && <p className={styles.albumDesc}>{album.description}</p>}
               </div>
 
-              <div className={styles.masonryGrid}>
+              <div className={album.wide ? styles.wideGrid : styles.masonryGrid}>
                 {images.map((img, index) => (
                   <button
                     key={img.id}
@@ -117,7 +132,7 @@ export default function Gallery() {
                   >
                     <div className={styles.mediaWrap}>
                       <img
-                        src={img.thumb}
+                        src={album.wide ? img.full : img.thumb}
                         alt={`${album.title} photo ${index + 1}`}
                         width={img.w}
                         height={img.h}
