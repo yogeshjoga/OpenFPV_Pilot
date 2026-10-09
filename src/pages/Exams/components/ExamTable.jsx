@@ -22,7 +22,7 @@ export default function ExamTable({ questions, answers, onSolve }) {
             return (
               <tr key={q.id}>
                 <td>Q{idx + 1}. {q.question.substring(0, 50)}...</td>
-                <td style={{ color: q.difficulty === 'hard' ? '#ef4444' : q.difficulty === 'medium' ? '#f59e0b' : '#10b981' }}>
+                <td style={{ color: q.difficulty === 'hard' ? 'var(--color-error)' : q.difficulty === 'medium' ? 'var(--color-warning)' : 'var(--color-success)' }}>
                   {q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)}
                 </td>
                 <td>{pts} {pts === 1 ? 'Point' : 'Points'}</td>

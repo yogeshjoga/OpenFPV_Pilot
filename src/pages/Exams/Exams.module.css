@@ -129,11 +129,11 @@
 }
 
 .alertBar {
-  background: #fffbea;
-  border-bottom: 1px solid #fef08a;
+  background: color-mix(in srgb, var(--color-warning) 12%, var(--color-bg-card));
+  border-bottom: 1px solid color-mix(in srgb, var(--color-warning) 35%, transparent);
   padding: var(--space-3) var(--space-8);
   font-size: var(--text-sm);
-  color: #854d0e;
+  color: var(--color-text-primary);
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -177,12 +177,12 @@
 }
 
 .solveBtn {
-  background: var(--gradient-accent);
+  background: var(--color-accent-primary);
   color: var(--color-bg-primary);
   border: none;
   border-radius: var(--radius-full);
   padding: var(--space-2) var(--space-6);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-bold);
   cursor: pointer;
@@ -374,12 +374,12 @@
 }
 
 .finishBtn {
-  background: var(--gradient-accent);
+  background: var(--color-accent-primary);
   color: var(--color-bg-primary);
   border: none;
   border-radius: var(--radius-full);
   padding: var(--space-4) var(--space-8);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-bold);
   cursor: pointer;
@@ -392,12 +392,12 @@
 }
 
 .startBtn {
-  background: var(--gradient-accent);
+  background: var(--color-accent-primary);
   color: var(--color-bg-primary);
   border: none;
   border-radius: var(--radius-full);
   padding: var(--space-4) var(--space-8);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-bold);
   cursor: pointer;

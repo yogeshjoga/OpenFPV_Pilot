@@ -10,7 +10,7 @@ export const COURSES = [
     level: 'Beginner → Intermediate',
     totalHours: 21,
     badge: 'Most Popular',
-    color: '#00d4ff',
+    color: '#3e6aa8',
     syllabus: [
       {
         day: 1,
@@ -124,7 +124,7 @@ export const COURSES = [
     level: 'Beginner → Advanced',
     totalHours: 42,
     badge: 'Recommended',
-    color: '#7c3aed',
+    color: '#8a5a9e',
     syllabus: [
       {
         day: 1,
@@ -335,7 +335,7 @@ export const COURSES = [
     level: 'Advanced',
     totalHours: 15,
     badge: 'Pro Level',
-    color: '#ff0055',
+    color: '#b94a3c',
     syllabus: [
       {
         day: 1,
@@ -412,7 +412,7 @@ export const COURSES = [
     duration: '3 Days',
     level: 'Beginner',
     totalHours: 6,
-    color: '#00ffaa',
+    color: '#4f8a4b',
     syllabus: [
       {
         day: 1,
@@ -463,7 +463,7 @@ export const COURSES = [
     duration: '4 Days',
     level: 'Intermediate',
     totalHours: 8,
-    color: '#ffaa00',
+    color: '#b8862b',
     syllabus: [
       {
         day: 1,
@@ -527,7 +527,7 @@ export const COURSES = [
     duration: '4 Days',
     level: 'Beginner → Intermediate',
     totalHours: 8,
-    color: '#aa00ff',
+    color: '#8a5a9e',
     syllabus: [
       {
         day: 1,
@@ -592,7 +592,7 @@ export const COURSES = [
     level: 'Absolute Beginner',
     totalHours: 20,
     badge: 'Start Here',
-    color: '#ffe600',
+    color: '#b8862b',
     syllabus: [
       {
         day: 1,

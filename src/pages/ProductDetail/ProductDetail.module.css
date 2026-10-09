@@ -71,7 +71,7 @@
 .thumbBtn {
   width: 60px;
   height: 60px;
-  border: 1px solid #a2a6ac;
+  border: 1px solid var(--color-border-hover);
   border-radius: var(--radius-sm);
   background: #fff;
   padding: var(--space-1);
@@ -136,7 +136,7 @@
 .discountPrice {
   font-size: var(--text-2xl);
   font-weight: var(--font-medium);
-  color: #b12704;
+  color: var(--color-error);
 }
 
 .originalPrice {
@@ -172,7 +172,7 @@
 
 /* BUY BOX */
 .buyBox {
-  border: 1px solid #d5d9d9;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-5);
   height: fit-content;
@@ -192,14 +192,14 @@
 }
 
 .inStock {
-  color: #007600;
+  color: var(--color-success);
   font-size: var(--text-lg);
   font-weight: var(--font-medium);
   margin-bottom: var(--space-4);
 }
 
 .outOfStock {
-  color: #b12704;
+  color: var(--color-error);
   font-size: var(--text-lg);
   font-weight: var(--font-medium);
   margin-bottom: var(--space-4);
@@ -214,14 +214,14 @@
 .quantity select {
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-md);
-  border: 1px solid #d5d9d9;
-  background: #f0f2f2;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
 }
 
 .addCartBtn, .buyNowBtn {
   width: 100%;
   padding: var(--space-3);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-full);
   border: 1px solid;
   font-size: var(--text-base);
   cursor: pointer;
@@ -230,23 +230,23 @@
 }
 
 .addCartBtn {
-  background: #ffd814;
-  border-color: #fcd200;
-  color: var(--color-text-primary);
+  background: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+  color: var(--color-on-accent);
 }
 
 .addCartBtn:hover {
-  background: #f7ca00;
+  filter: brightness(1.12);
 }
 
 .buyNowBtn {
   background: var(--color-accent-secondary);
-  border-color: #ff8f00;
-  color: var(--color-text-primary);
+  border-color: var(--color-accent-secondary);
+  color: var(--color-on-accent);
 }
 
 .buyNowBtn:hover {
-  background: #fa8900;
+  filter: brightness(1.08);
 }
 
 .secureBox {
@@ -299,7 +299,7 @@
 }
 
 .specsTable th {
-  background: #f3f3f3;
+  background: var(--color-bg-secondary);
   width: 40%;
   font-weight: var(--font-medium);
 }
@@ -377,4 +377,10 @@
   .topSection, .bottomSection {
     grid-template-columns: 1fr;
   }
+}
+
+.secureNote {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
 }

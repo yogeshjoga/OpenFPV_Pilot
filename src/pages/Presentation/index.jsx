@@ -31,7 +31,7 @@ const DECKS = [
     title: 'FPV Master Syllabus',
     subtitle: '14-Day Comprehensive Program',
     badge: 'Course 1',
-    color: '#00d4ff',
+    color: '#3e6aa8',
     desc: 'From basic electronics and frame building to Acro flight dynamics, dynamic PID tuning, and diagnostics.',
     slides: [
       {
@@ -150,7 +150,7 @@ const DECKS = [
     title: 'Grade 3 Workshop',
     subtitle: 'Simulation & Foundation',
     badge: 'Level 3',
-    color: '#22c55e',
+    color: '#4f8a4b',
     desc: 'Ideal for large introductory groups. Covers basic aerodynamics, regulations, and team-based simulation exercises.',
     slides: [
       {
@@ -219,7 +219,7 @@ const DECKS = [
     title: 'Grade 2 Workshop',
     subtitle: 'Moderate Skill & Cinewhoop',
     badge: 'Level 2',
-    color: '#f59e0b',
+    color: '#b8862b',
     desc: 'Combines individual simulator hours with real-world stabilized flying of ducted Cinewhoop drones.',
     slides: [
       {
@@ -316,7 +316,7 @@ const DECKS = [
     title: 'Grade 1 Workshop',
     subtitle: 'Professional Build & AI',
     badge: 'Level 1',
-    color: '#ef4444',
+    color: '#b94a3c',
     desc: 'Advanced curriculum. Build a 5" drone from scratch, master advanced soldering, and integrate autonomous AI python code.',
     slides: [
       {
@@ -634,11 +634,11 @@ export default function Presentation() {
                 display: 'flex', 
                 flexDirection: 'column', 
                 minHeight: 'calc(100vh - 70px)',
-                '--deck-color': currentDeck.color === '#00d4ff' 
+                '--deck-color': currentDeck.color === '#3e6aa8' 
                   ? 'var(--color-accent-primary)' 
-                  : currentDeck.color === '#22c55e'
+                  : currentDeck.color === '#4f8a4b'
                     ? 'var(--color-success)'
-                    : currentDeck.color === '#f59e0b'
+                    : currentDeck.color === '#b8862b'
                       ? 'var(--color-warning)'
                       : 'var(--color-error)'
               }}
@@ -717,7 +717,7 @@ export default function Presentation() {
                           <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--deck-color)', margin: '0 0 8px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px', letterSpacing: '0.5px' }}>Tuning Controls</h4>
                           
                           <div className={styles.pidSliderBlock}>
-                            <div className={styles.pidSliderHeader} style={{ color: '#ef4444' }}>
+                            <div className={styles.pidSliderHeader} style={{ color: '#b94a3c' }}>
                               <span>P (Proportional)</span>
                               <span className={styles.pidSliderVal}>{p}</span>
                             </div>
@@ -725,12 +725,12 @@ export default function Presentation() {
                               type="range" min="1" max="100" value={p}
                               onChange={(e) => { setP(Number(e.target.value)); stopSimulation(); }}
                               className={styles.pidSlider}
-                              style={{ '--deck-color': '#ef4444', accentColor: '#ef4444' }}
+                              style={{ '--deck-color': '#b94a3c', accentColor: '#b94a3c' }}
                             />
                           </div>
                           
                           <div className={styles.pidSliderBlock}>
-                            <div className={styles.pidSliderHeader} style={{ color: '#00d4ff' }}>
+                            <div className={styles.pidSliderHeader} style={{ color: '#3e6aa8' }}>
                               <span>I (Integral)</span>
                               <span className={styles.pidSliderVal}>{i}</span>
                             </div>
@@ -738,12 +738,12 @@ export default function Presentation() {
                               type="range" min="1" max="100" value={i}
                               onChange={(e) => { setI(Number(e.target.value)); stopSimulation(); }}
                               className={styles.pidSlider}
-                              style={{ '--deck-color': '#00d4ff', accentColor: '#00d4ff' }}
+                              style={{ '--deck-color': '#3e6aa8', accentColor: '#3e6aa8' }}
                             />
                           </div>
                           
                           <div className={styles.pidSliderBlock}>
-                            <div className={styles.pidSliderHeader} style={{ color: '#f59e0b' }}>
+                            <div className={styles.pidSliderHeader} style={{ color: '#b8862b' }}>
                               <span>D (Derivative)</span>
                               <span className={styles.pidSliderVal}>{d}</span>
                             </div>
@@ -751,7 +751,7 @@ export default function Presentation() {
                               type="range" min="1" max="100" value={d}
                               onChange={(e) => { setD(Number(e.target.value)); stopSimulation(); }}
                               className={styles.pidSlider}
-                              style={{ '--deck-color': '#f59e0b', accentColor: '#f59e0b' }}
+                              style={{ '--deck-color': '#b8862b', accentColor: '#b8862b' }}
                             />
                           </div>
                           

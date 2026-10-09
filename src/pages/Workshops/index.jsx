@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout } from 'lucide-react'
+import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import styles from './Workshops.module.css'
@@ -21,7 +21,7 @@ const LEVELS = [
     emoji: <Award size={24} />,
     title: 'Simulation Skill Certificate',
     subtitle: 'Team-Based • Group Controllers',
-    color: '#22c55e',
+    color: '#4f8a4b',
     duration: '1 Week',
     cert: 'Simulation Based Skill Certificate',
     includes: [
@@ -39,7 +39,7 @@ const LEVELS = [
     emoji: <Award size={24} />,
     title: 'Moderate Skill Certificate',
     subtitle: 'Individual Controller • Cinewoop Flying',
-    color: '#f59e0b',
+    color: '#b8862b',
     duration: '1 Week',
     cert: 'Moderate Skill Certificate',
     includes: [
@@ -58,7 +58,7 @@ const LEVELS = [
     emoji: <Award size={24} />,
     title: 'Professional Certificate',
     subtitle: 'Full Build • AI Integration • Pro Certificate',
-    color: '#ef4444',
+    color: '#b94a3c',
     duration: '1 Week',
     cert: 'Professional Certificate',
     highlight: 'Certification Included',
@@ -83,37 +83,37 @@ const DOMAINS = [
   {
     icon: <MonitorPlay size={32} />,
     branch: 'CSE / Computer Science',
-    color: '#6366f1',
+    color: '#3e6aa8',
     focus: 'Drone Monitoring & Dashboard Development',
     topics: ['Drone telemetry dashboards', 'Agriculture drone monitoring', 'Domain-specific data pipelines', 'Real-time sensor visualization'],
   },
   {
     icon: <Zap size={32} />,
     branch: 'ECE / EEE',
-    color: '#f59e0b',
+    color: '#b8862b',
     focus: 'Drone Repair, ESC & FC Board Design',
     topics: ['Drone troubleshooting & repair', 'ESC design & programming', 'FC board layout & soldering', 'Signal & power management'],
   },
   {
     icon: <Settings size={32} />,
     branch: 'Mechanical Engineering',
-    color: '#22c55e',
+    color: '#4f8a4b',
     focus: 'Frame Design, Fabrication & 3D Printing',
     topics: ['Drone frame structural analysis', 'CAD modelling & 3D printing', 'Material selection & fabrication', 'Weight-to-thrust optimization'],
   },
   {
     icon: <Bot size={32} />,
     branch: 'AI / ML / CS (Advanced)',
-    color: '#00d4ff',
+    color: '#3e6aa8',
     focus: 'Autonomous Drones with AI / ML / DL',
     topics: ['Autopilot using AI/ML/Deep Learning', 'Computer vision object detection', 'FPV fighter drone AI systems', 'Edge AI model deployment on FC'],
   },
   {
     icon: <Sprout size={32} />,
     branch: 'Other Domains',
-    color: '#a78bfa',
+    color: '#8a5a9e',
     focus: 'Structured Syllabus in Progress',
-    topics: ['Civil & environmental monitoring', 'Surveying & mapping drones', 'Medical / disaster response UAVs', 'Custom syllabi being developed ✦'],
+    topics: ['Civil & environmental monitoring', 'Surveying & mapping drones', 'Medical / disaster response UAVs', 'Custom syllabi being developed'],
   },
 ]
 
@@ -160,7 +160,7 @@ export default function Workshops() {
         {/* ── CERTIFICATION LEVELS ── */}
         <section className={`section ${styles.levelsSection}`}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>🏆 Certification Grades</h2>
+            <h2 className={styles.sectionTitle}>Certification grades</h2>
             <p className={styles.sectionSub}>Choose the right grade for your institution. All programs are 1-week intensive workshops.</p>
 
             {/* Layout Wrapper */}
@@ -195,9 +195,9 @@ export default function Workshops() {
                     <p className={styles.levelCardSub}>{level.subtitle}</p>
                   </div>
                   <div className={styles.levelMeta}>
-                    <div className={styles.metaChip}>📅 {level.duration}</div>
+                    <div className={styles.metaChip}><Calendar size={14} /> {level.duration}</div>
                     {level.highlight && (
-                      <div className={styles.dgcaChip}>🏛️ {level.highlight}</div>
+                      <div className={styles.dgcaChip}><Landmark size={14} /> {level.highlight}</div>
                     )}
                   </div>
                 </div>
@@ -218,7 +218,7 @@ export default function Workshops() {
                 </div>
 
                 <div className={styles.certBanner}>
-                  <span className={styles.certIcon}>📜</span>
+                  <span className={styles.certIcon}><Award size={20} /></span>
                   <span className={styles.certText}>Certificate: <strong>{level.cert}</strong></span>
                 </div>
               </motion.div>
@@ -232,7 +232,7 @@ export default function Workshops() {
         {/* ── DOMAIN TRACKS ── */}
         <section className={`section ${styles.domainsSection}`}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>🎯 Domain-Based Tracks</h2>
+            <h2 className={styles.sectionTitle}>Domain-based tracks</h2>
             <p className={styles.sectionSub}>Specialised courses built for your engineering branch and career goals.</p>
 
             <div className={styles.domainsGrid}>
@@ -289,7 +289,7 @@ export default function Workshops() {
                   className={styles.phoneBtn}
                   id="workshop-phone-cta"
                 >
-                  📞 +91 9110566354
+                  <Phone size={16} /> +91 9110566354
                 </a>
                 <a
                   href="https://www.linkedin.com/in/yogeshjoga/"
@@ -298,7 +298,7 @@ export default function Workshops() {
                   className={styles.websiteBtn}
                   id="workshop-linkedin-cta"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 8 }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 'var(--space-2)' }}>
                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                   </svg>
                   LinkedIn

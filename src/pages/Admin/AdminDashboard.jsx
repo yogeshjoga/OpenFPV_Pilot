@@ -160,39 +160,39 @@ export default function AdminDashboard() {
                 </div>
                 <div style={{ flex: 1 }}>
                     <div className={styles.profileTitle}>{profileForm.name}</div>
-                    <div style={{color: '#777'}}>Manage your account</div>
+                    <div style={{color: 'var(--color-text-muted)'}}>Manage your account</div>
                 </div>
                 <button 
                   type="button"
                   onClick={() => setIsEditingProfile(!isEditingProfile)}
-                  style={{ padding: '8px 16px', background: isEditingProfile ? '#f1f5f9' : '#eaf1ff', color: isEditingProfile ? '#64748b' : '#4F8CFF', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+                  style={{ padding: 'var(--space-2) var(--space-4)', background: isEditingProfile ? '#f1f5f9' : '#eaf1ff', color: isEditingProfile ? 'var(--color-text-secondary)' : '#4F8CFF', border: 'none', borderRadius: 'var(--radius-md)', fontWeight: 'bold', cursor: 'pointer' }}
                 >
                   {isEditingProfile ? 'Cancel' : 'Edit Profile'}
                 </button>
             </div>
 
             {!isEditingProfile ? (
-              <div style={{ padding: '10px 0' }}>
+              <div style={{ padding: 'var(--space-3) 0' }}>
                   <div className={styles.sectionTitle}>Personal Information</div>
                   
-                  <div className={styles.formGroup} style={{ marginBottom: 15 }}>
+                  <div className={styles.formGroup} style={{ marginBottom: 'var(--space-4)' }}>
                       <label>Full Name</label>
-                      <div style={{ fontWeight: 600, color: '#1e293b' }}>{profileForm.name}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>{profileForm.name}</div>
                   </div>
 
-                  <div className={styles.formGroup} style={{ marginBottom: 15 }}>
+                  <div className={styles.formGroup} style={{ marginBottom: 'var(--space-4)' }}>
                       <label>Email (cannot be changed)</label>
-                      <div style={{ fontWeight: 600, color: '#1e293b' }}>{profileForm.email}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>{profileForm.email}</div>
                   </div>
 
-                  <div className={styles.formGroup} style={{ marginBottom: 15 }}>
+                  <div className={styles.formGroup} style={{ marginBottom: 'var(--space-4)' }}>
                       <label>Phone Number</label>
-                      <div style={{ fontWeight: 600, color: '#1e293b' }}>{profileForm.phone || '—'}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>{profileForm.phone || '—'}</div>
                   </div>
 
-                  <div className={styles.formGroup} style={{ marginBottom: 15 }}>
+                  <div className={styles.formGroup} style={{ marginBottom: 'var(--space-4)' }}>
                       <label>Address</label>
-                      <div style={{ fontWeight: 600, color: '#1e293b' }}>{profileForm.address || '—'}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>{profileForm.address || '—'}</div>
                   </div>
               </div>
             ) : (

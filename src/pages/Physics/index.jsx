@@ -109,7 +109,7 @@ export default function Physics() {
         <section className={styles.footer_note}>
           <div className="container">
             <div className={styles.noteBox}>
-              <h3>✦ Scientific Rigor</h3>
+              <h3>Scientific rigor</h3>
               <p>
                 This guide is designed for educational purposes, integrating principles from fluid dynamics, 
                 classical mechanics, and electrical engineering as applied specifically to multirotor UAVs.

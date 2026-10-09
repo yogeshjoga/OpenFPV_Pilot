@@ -21,7 +21,7 @@ export default function ExamQuestion({ question, index, total, answer, onSelect,
       </div>
       
       <div className={styles.rightPane}>
-        <div style={{ marginBottom: '1.5rem', color: '#64748b', fontSize: '0.95rem' }}>
+        <div style={{ marginBottom: 'var(--space-6)', color: 'var(--color-text-secondary)', fontSize: 'var(--text-base)' }}>
           Choose the correct answer from below:
         </div>
         
@@ -44,7 +44,7 @@ export default function ExamQuestion({ question, index, total, answer, onSelect,
         </div>
         
         <div className={styles.submitFooter}>
-          <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
+          <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
             ⓘ Feel free to submit your answer. You can change it until final submission.
           </div>
           <button 

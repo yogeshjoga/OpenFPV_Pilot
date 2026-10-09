@@ -3,19 +3,18 @@
 /* ── HERO ── */
 .hero {
   padding: var(--space-8) 0 var(--space-6);
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-accent-primary-rgb), 0.07) 0%, transparent 70%),
-    linear-gradient(135deg, rgba(var(--color-accent-secondary-rgb), 0.04) 0%, rgba(var(--color-accent-primary-rgb), 0.03) 100%);
+  background: var(--color-bg-secondary);
   border-bottom: 1px solid var(--color-border);
 }
 
 .heroContent { max-width: 900px; }
 
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--color-accent-primary);
   margin-bottom: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-secondary);
 }
 
 .heroTitle {
@@ -55,7 +54,7 @@
 /* ── SECTION SHARED ── */
 .sectionTitle {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--text-h2);
   font-weight: var(--font-extrabold);
   margin-bottom: var(--space-3);
 }
@@ -84,7 +83,7 @@
   flex: 1;
   min-width: 0;
   padding: var(--space-10);
-  background: var(--gradient-card);
+  background: var(--color-bg-card);
   border: 1px solid var(--level-color, var(--color-border));
   border-radius: var(--radius-2xl);
   box-shadow: 0 0 32px color-mix(in srgb, var(--level-color, transparent) 12%, transparent);
@@ -104,7 +103,7 @@
   padding: var(--space-1) var(--space-4);
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-weight: var(--font-semibold);
   color: #000;
   margin-bottom: var(--space-2);
@@ -134,7 +133,7 @@
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   white-space: nowrap;
 }
 .metaChip {
@@ -194,7 +193,7 @@
   align-items: center;
   gap: var(--space-6);
   padding: var(--space-8) var(--space-10);
-  background: linear-gradient(135deg, rgba(var(--color-accent-primary-rgb), 0.08), rgba(var(--color-accent-secondary-rgb), 0.08));
+  background: rgba(var(--color-accent-primary-rgb), 0.08);
   border: 1px solid rgba(var(--color-accent-primary-rgb), 0.3);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-md);
@@ -234,7 +233,7 @@
   min-width: 260px;
   max-width: 340px;
   padding: var(--space-8) var(--space-8) var(--space-6);
-  background: var(--gradient-card);
+  background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
@@ -261,7 +260,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 80px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--domain-color) 10%, transparent), transparent);
+  background: none;
   pointer-events: none;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
@@ -294,7 +293,7 @@
 .domainBranch {
   position: relative;
   z-index: 1;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   color: var(--domain-color);
@@ -349,9 +348,7 @@
 .contactCard {
   text-align: center;
   padding: var(--space-16) var(--space-10);
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(var(--color-accent-secondary-rgb), 0.1) 0%, transparent 70%),
-    var(--gradient-card);
+  background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
   max-width: 800px;
@@ -360,7 +357,7 @@
 
 .contactTitle {
   font-family: var(--font-display);
-  font-size: var(--text-h1);
+  font-size: var(--text-h2);
   font-weight: var(--font-extrabold);
   line-height: 1.15;
   margin-bottom: var(--space-4);
@@ -397,7 +394,7 @@
 
 .phoneBtn {
   background: var(--color-accent-primary);
-  color: #fff;
+  color: var(--color-on-accent);
   box-shadow: 0 4px 24px rgba(var(--color-accent-primary-rgb), 0.3);
 }
 .phoneBtn:hover {
@@ -406,12 +403,12 @@
 }
 
 .websiteBtn {
-  background: linear-gradient(135deg, rgba(var(--color-accent-primary-rgb), 0.15), rgba(var(--color-accent-secondary-rgb), 0.15));
+  background: rgba(var(--color-accent-primary-rgb), 0.08);
   color: var(--color-accent-primary);
   border: 1px solid rgba(var(--color-accent-primary-rgb), 0.3);
 }
 .websiteBtn:hover {
-  background: linear-gradient(135deg, rgba(var(--color-accent-primary-rgb), 0.25), rgba(var(--color-accent-secondary-rgb), 0.25));
+  background: rgba(var(--color-accent-primary-rgb), 0.16);
   box-shadow: 0 4px 20px rgba(var(--color-accent-primary-rgb), 0.2);
   transform: translateY(-2px);
 }
@@ -472,4 +469,10 @@
   .contactCard { padding: var(--space-10) var(--space-6); }
 }
 
-
+.metaChip,
+.dgcaChip,
+.phoneBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}

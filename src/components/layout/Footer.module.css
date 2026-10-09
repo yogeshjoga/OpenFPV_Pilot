@@ -21,15 +21,10 @@
 }
 .logo:hover { color: var(--color-text-primary); }
 
-.logoIcon {
-  font-size: var(--text-lg);
-  color: var(--color-accent-primary);
-}
-
 .logoText {
   font-family: var(--font-display);
-  font-weight: var(--font-bold);
-  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-xl);
   color: var(--color-accent-primary);
 }
 
@@ -60,7 +55,7 @@
 }
 
 .heading {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   letter-spacing: 0.06em;
   text-transform: uppercase;

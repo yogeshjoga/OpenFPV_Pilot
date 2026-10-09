@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
+import { X, XCircle, CheckCircle2, AlertTriangle } from 'lucide-react'
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -207,7 +208,7 @@ function SimulatorInner() {
 
     let isSuccess = false
     if (results.every(r => r.type === 'success') && results.length > 0) {
-      results.unshift({ type: 'success', msg: '🎉 PERFECT BUILD! Props are spinning!' })
+      results.unshift({ type: 'success', msg: 'Perfect build! Props are spinning.' })
       isSuccess = true
     } else {
       results.unshift({ type: 'error', msg: 'Build Incomplete or Errors found.' })
@@ -264,7 +265,7 @@ function SimulatorInner() {
 
           {diagnostics && (
             <div className={styles.diagnostics}>
-              <button className={styles.closeBtn} onClick={() => setDiagnostics(null)}>✖</button>
+              <button className={styles.closeBtn} onClick={() => setDiagnostics(null)} aria-label="Close"><X size={16} /></button>
               <h3 className={styles.diagTitle}>Diagnostics Report</h3>
               <ul className={styles.diagList}>
                 {diagnostics.map((d, i) => (
@@ -272,9 +273,9 @@ function SimulatorInner() {
                     d.type === 'error' ? styles.diagError :
                     d.type === 'success' ? styles.diagSuccess : styles.diagWarning
                   }`}>
-                    {d.type === 'error' && '❌ '}
-                    {d.type === 'success' && '✅ '}
-                    {d.type === 'warning' && '⚠️ '}
+                    {d.type === 'error' && <XCircle size={16} className={styles.diagIcon} />}
+                    {d.type === 'success' && <CheckCircle2 size={16} className={styles.diagIcon} />}
+                    {d.type === 'warning' && <AlertTriangle size={16} className={styles.diagIcon} />}
                     {d.msg}
                   </li>
                 ))}

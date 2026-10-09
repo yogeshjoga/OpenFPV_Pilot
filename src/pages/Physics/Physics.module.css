@@ -12,15 +12,21 @@
 /* Hero Section */
 .hero {
   padding: var(--space-32) 0 var(--space-16);
-  background: radial-gradient(circle at 70% 30%, rgba(var(--color-accent-primary-rgb), 0.05) 0%, transparent 60%);
+  background: var(--color-bg-secondary);
   border-bottom: 1px border var(--color-border-primary);
 }
 
 .eyebrow {
-  font-family: var(--font-mono);
-  color: var(--color-accent-primary);
-  font-size: var(--text-sm);
+
   margin-bottom: var(--space-4);
+
+  font-family: var(--font-body);
+
+  font-size: var(--text-sm);
+
+  font-weight: var(--font-semibold);
+
+  color: var(--color-accent-secondary);
 }
 
 .title {
@@ -86,7 +92,7 @@
 
 .sectionTitle {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--text-h2);
   margin-bottom: var(--space-2);
 }
 
@@ -170,7 +176,7 @@
 }
 
 .readMore {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--color-accent-primary);
   font-weight: var(--font-semibold);
@@ -196,7 +202,7 @@
 }
 
 .noteBox h3 {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   color: var(--color-accent-primary);
   margin-bottom: var(--space-4);
 }

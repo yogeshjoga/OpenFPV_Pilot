@@ -22,7 +22,7 @@ export default function PhysicsDetail() {
   if (!currentTopic) {
     return (
       <PageWrapper>
-        <div className="container" style={{ padding: '8rem 0', textAlign: 'center' }}>
+        <div className="container" style={{ padding: 'var(--space-32) 0', textAlign: 'center' }}>
           <h2>Topic not found</h2>
           <Link to="/physics" className="gradient-text">← Back to Physics</Link>
         </div>
@@ -91,7 +91,7 @@ export default function PhysicsDetail() {
                 </div>
 
                 <div className={styles.callout}>
-                  <h4>✦ Key Takeaway</h4>
+                  <h4>Key takeaway</h4>
                   <p>{currentTopic.explanation}</p>
                 </div>
 

@@ -70,12 +70,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Team photo background */}
-        <div className={styles.heroBg} aria-hidden="true">
-          <img className={styles.heroBgBlur} src="/gallery/workshop-1/full/roph9613.webp" alt="" />
-          <img className={styles.heroBgSharp} src="/gallery/workshop-1/full/roph9613.webp" alt="" width="3200" height="2133" fetchPriority="high" />
-        </div>
-
         {/* Hero Content */}
         <div className={`container ${styles.heroContent}`} style={{ pointerEvents: 'none' }}>
           <motion.div
@@ -98,22 +92,55 @@ export default function Home() {
                 Explore Parts
               </Link>
               <Link to="/about" className={styles.ghostBtn}>
-                Learn More <ArrowRight size={16} style={{ marginLeft: 8 }} />
+                Learn More <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
               </Link>
             </div>
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className={styles.scrollIndicator}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div style={{ transform: 'rotate(90deg)' }}>
-            <ArrowRight size={24} />
-          </div>
-        </motion.div>
+      </section>
+
+      {/* ======= TEAM ======= */}
+      <section className={`section ${styles.teamSection}`}>
+        <div className={`container ${styles.teamGrid}`}>
+          <motion.div
+            className={styles.teamPhoto}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <img
+              src="/gallery/workshop-1/full/roph9613.webp"
+              alt="The EGIRE Robotics team with FPV goggles and a radio controller"
+              width="3200"
+              height="2133"
+              loading="lazy"
+            />
+          </motion.div>
+          <motion.div
+            className={styles.teamText}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <p className={styles.sectionEyebrow}>Our team</p>
+            <h2 className={styles.teamTitle}>Learn from people who build and fly</h2>
+            <p className={styles.teamCopy}>
+              Every lesson is hands-on: you build a real drone, not a simulation. Our workshops run for
+              universities, colleges and schools.
+            </p>
+            <div className={styles.heroActions}>
+              <Link to="/workshops" className={styles.primaryBtn}>
+                See workshops
+              </Link>
+              <Link to="/about" className={styles.ghostBtn}>
+                Meet the team <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       {/* ======= ROADMAP ======= */}
@@ -199,7 +226,7 @@ export default function Home() {
                 Start your FPV journey today, build, tune, and fly your first freestyle drone. Master the basics before taking to the real skies.
               </p>
               <Link to="/builder" className={styles.primaryBtn}>
-                Quote Your First Build <ArrowRight size={16} style={{ marginLeft: 8 }} />
+                Quote Your First Build <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
               </Link>
             </div>
 

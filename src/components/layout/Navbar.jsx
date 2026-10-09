@@ -1,5 +1,6 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { Sun, Moon } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { APP_NAME, NAV_LINKS } from '@config/constants'
@@ -91,7 +92,7 @@ export default function Navbar() {
               transition={{ duration: 0.25 }}
               className={styles.themeIcon}
             >
-              {theme === 'dark' ? '☀' : '🌙'}
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </motion.span>
           </motion.button>
 
@@ -159,7 +160,7 @@ export default function Navbar() {
               Learn Today →
             </Link>
             <button className={styles.mobileThemeToggle} onClick={toggleTheme}>
-              {theme === 'dark' ? '☀ Light Mode' : '🌙 Dark Mode'}
+              {theme === 'dark' ? 'Light mode' : 'Dark mode'}
             </button>
           </motion.nav>
         )}

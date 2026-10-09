@@ -30,10 +30,11 @@
 }
 
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--color-accent-secondary);
   margin-bottom: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-secondary);
 }
 
 .title {
@@ -58,7 +59,7 @@
 }
 
 .presetTitle {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   text-transform: uppercase;
   color: var(--color-text-secondary);
@@ -106,7 +107,7 @@
   border: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
   color: var(--color-text-secondary);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   display: flex;
   align-items: center;
@@ -123,7 +124,7 @@
 .activeDot {
   background: var(--color-accent-primary);
   border-color: var(--color-accent-primary);
-  color: #000;
+  color: var(--color-on-accent);
   font-weight: var(--font-semibold);
 }
 
@@ -138,7 +139,7 @@
 
 .stepTitle {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
   color: var(--color-text-primary);
   margin-bottom: var(--space-8);
 }
@@ -156,7 +157,7 @@
 }
 
 .fieldLabel {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
   text-transform: uppercase;
@@ -198,7 +199,7 @@
 
 .primaryBtn,
 .ghostBtn {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-full);
@@ -209,7 +210,7 @@
 
 .primaryBtn {
   background: var(--color-accent-primary);
-  color: #000;
+  color: var(--color-on-accent);
   font-weight: var(--font-semibold);
 }
 
@@ -259,7 +260,7 @@
 }
 
 .invoiceTitle {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-base);
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-border);
@@ -316,7 +317,7 @@
 }
 
 .perfLabel {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
   text-transform: uppercase;
@@ -334,7 +335,7 @@
   background: transparent;
   color: var(--color-accent-secondary);
   border: 1px solid var(--color-accent-secondary);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   padding: var(--space-4);
   border-radius: var(--radius-md);
@@ -344,10 +345,17 @@
 
 .exportBtn:hover:not(:disabled) {
   background: var(--color-accent-secondary);
-  color: #000;
+  color: var(--color-on-accent);
 }
 
 .exportBtn:disabled {
   opacity: 0.5;
   cursor: wait;
+}
+
+.exportBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
 }

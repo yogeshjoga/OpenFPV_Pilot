@@ -87,7 +87,7 @@
   border-radius: var(--radius-sm);
   background: var(--color-bg-card);
   cursor: pointer;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   transition: all var(--transition-fast);
   text-align: left;
@@ -117,7 +117,7 @@
   left: 20px;
   color: white;
   pointer-events: none;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   background: rgba(0,0,0,0.5);
   padding: var(--space-3);
   border-radius: var(--radius-sm);

@@ -85,12 +85,12 @@ function DroneGlyph({ category }) {
     motors: '◎',
     'flight-controllers': '◈',
     cameras: '⊡',
-    props: '✦',
+    props: '◇',
     goggles: '◉',
   }
   return (
     <span className={styles.glyph}>
-      {glyphs[category] || '✦'}
+      {glyphs[category] || '◇'}
     </span>
   )
 }

@@ -7,7 +7,7 @@ export const PART_CATEGORIES = [
     id: 'motors',
     label: 'Motors',
     icon: <Settings size={20} />,
-    color: '#00d4ff',
+    color: '#3e6aa8',
     image: '/images/Motor.png',
     tagline: 'The muscles of your drone',
     intro:
@@ -21,7 +21,7 @@ export const PART_CATEGORIES = [
             name: 'Brushed Motor',
             image: '/images/Motor.png',
             badge: 'Legacy',
-            badgeColor: '#f59e0b',
+            badgeColor: '#b8862b',
             icon: <Wrench size={20} />,
             desc: 'Uses carbon brushes to deliver current to the rotating coil. Simple and cheap but wears out quickly due to friction. Found in toy-grade drones only.',
             specs: ['Low efficiency: ~75%', 'Short lifespan: ~100h', 'Self-contained driver', 'Typical: 8520, 716'],
@@ -30,7 +30,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Brushless Outrunner',
             badge: 'Standard',
-            badgeColor: '#10b981',
+            badgeColor: '#4f8a4b',
             icon: <Zap size={20} />,
             desc: 'The outer bell (case) rotates around the fixed inner stator. Produces massive torque at low RPM. This is the standard for all modern FPV drones.',
             specs: ['Efficiency: ~90–95%', 'Long lifespan: 300+h', 'Requires ESC', 'Typical: 2306, 2207, 1404'],
@@ -39,7 +39,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Brushless Inrunner',
             badge: 'Specialty',
-            badgeColor: '#7c3aed',
+            badgeColor: '#8a5a9e',
             icon: <Target size={20} />,
             desc: 'Inner rotor spins inside a fixed outer stator. High RPM, low torque. Needs a gearbox to drive propellers effectively. Rare in FPV.',
             specs: ['Very high RPM', 'Low torque output', 'Needs gearbox', 'Common in RC cars'],
@@ -99,7 +99,7 @@ export const PART_CATEGORIES = [
     label: 'Frames',
     icon: <Construction size={20} />,
     image: '/images/Frame.png',
-    color: '#7c3aed',
+    color: '#8a5a9e',
     tagline: 'The skeleton of your build',
     intro:
       'The frame holds all components together and defines the drone\'s size, weight, durability, and flying style. Frame geometry directly affects flight characteristics.',
@@ -112,7 +112,7 @@ export const PART_CATEGORIES = [
           {
             name: 'True-X',
             badge: 'Racing',
-            badgeColor: '#ef4444',
+            badgeColor: '#b94a3c',
             icon: <X size={20} />,
             desc: 'All four arms equally spaced — front motors directly in FPV camera view. Symmetrical handling. Fast and precise.',
             specs: ['Symmetrical arm spacing', 'Props slightly in view', 'Stiff and lightweight', 'Example: Armattan Marmotte'],
@@ -121,7 +121,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Stretched-X',
             badge: 'Freestyle',
-            badgeColor: '#10b981',
+            badgeColor: '#4f8a4b',
             icon: <MoveHorizontal size={20} />,
             desc: 'Rear arms spread wider than front. Props completely out of camera view. More rotation authority for tricks. The most popular freestyle geometry.',
             specs: ['Clean FPV view', 'Better yaw authority', 'Slightly wider stance', 'Example: ImpulseRC Apex, Armattan Chameleon'],
@@ -130,7 +130,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Deadcat',
             badge: 'Cinematic',
-            badgeColor: '#0095b8',
+            badgeColor: '#2f8f89',
             icon: <Film size={20} />,
             desc: 'Front arms angled forward aggressively to push props out of the camera frame entirely. Optimized for clean footage.',
             specs: ['Completely prop-free view', 'Usually heavier', 'Carries HD cameras', 'Example: GepRC Crocodile'],
@@ -139,7 +139,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Cinewhoop',
             badge: 'Indoor/Safe',
-            badgeColor: '#f59e0b',
+            badgeColor: '#b8862b',
             icon: <Shield size={20} />,
             desc: 'Ducted propeller guards (shrouds) protect props and people. Flies indoors safely. Carries an HD action cam.',
             specs: ['Prop guards/ducts', 'Very stable flight', 'Heavier and slower', 'Example: DJI Avata style, GepRC Cinelog'],
@@ -148,7 +148,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Toothpick / Longrange',
             badge: 'Efficiency',
-            badgeColor: '#6d28d9',
+            badgeColor: '#8a5a9e',
             icon: <Radio size={20} />,
             desc: 'Ultra-light frame running larger props (3.5"–7") on efficient lower-KV motors. Flies for 20–40+ minutes on one battery.',
             specs: ['Very lightweight', 'Large prop clearance', 'Low battery consumption', 'Example: BetaFPV Performer, GEPRC Mark4 7"'],
@@ -157,7 +157,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Tiny Whoop',
             badge: 'Beginner',
-            badgeColor: '#ec4899',
+            badgeColor: '#8a5a9e',
             icon: <Bug size={20} />,
             desc: 'Tiny 65–75mm ducted micro drone. Extremely safe, flying indoors, great for learning FPV basics with minimal crash damage.',
             specs: ['65–75mm motor-to-motor', '1S battery', 'All-in-one FC/ESC', 'Example: BetaFPV Meteor65, Emax Tinyhawk'],
@@ -186,8 +186,8 @@ export const PART_CATEGORIES = [
         title: 'Frame Materials',
         type: 'cards',
         items: [
-          { name: 'Carbon Fiber (3K Twill)', badge: 'Best', badgeColor: '#10b981', icon: <Square size={20} />, desc: 'Strongest strength-to-weight ratio of any frame material. Stiff, durable, and conductive. Standard for all mid-to-high-end FPV frames.', specs: ['3K / 5K weave', 'Thickness: 2mm / 3mm / 4mm', 'Conductive — can short electronics', '95% of performance builds'], use: 'Every serious FPV build.' },
-          { name: 'Injection Molded Plastic', badge: 'Beginner', badgeColor: '#f59e0b', icon: <Circle size={20} />, desc: 'Cheap, light, and non-conductive. Less stiff than carbon — flexes on hard crashes. Used in tiny whoops and beginner frames.', specs: ['Non-conductive', 'Impact-resistant', 'Less stiff', 'Common in micro drones'], use: 'Tiny whoops, beginner micro drones.' },
+          { name: 'Carbon Fiber (3K Twill)', badge: 'Best', badgeColor: '#4f8a4b', icon: <Square size={20} />, desc: 'Strongest strength-to-weight ratio of any frame material. Stiff, durable, and conductive. Standard for all mid-to-high-end FPV frames.', specs: ['3K / 5K weave', 'Thickness: 2mm / 3mm / 4mm', 'Conductive — can short electronics', '95% of performance builds'], use: 'Every serious FPV build.' },
+          { name: 'Injection Molded Plastic', badge: 'Beginner', badgeColor: '#b8862b', icon: <Circle size={20} />, desc: 'Cheap, light, and non-conductive. Less stiff than carbon — flexes on hard crashes. Used in tiny whoops and beginner frames.', specs: ['Non-conductive', 'Impact-resistant', 'Less stiff', 'Common in micro drones'], use: 'Tiny whoops, beginner micro drones.' },
           { name: 'Aluminium Alloy', badge: 'Rare', badgeColor: '#94a3b8', icon: <Square size={20} />, desc: 'Strong but heavy. Used for standoffs, camera mounts, and motor mounts — rarely for the main frame arms.', specs: ['Heavy', 'Non-conductive', 'Often used for standoffs', 'Arms: uncommon'], use: 'Hardware accessories — standoffs, screws, mounts.' },
         ],
       },
@@ -209,7 +209,7 @@ export const PART_CATEGORIES = [
     label: 'Batteries',
     icon: <Battery size={20} />,
     image: '/images/Battery.png',
-    color: '#10b981',
+    color: '#4f8a4b',
     tagline: 'The power source — choose wisely',
     intro:
       'FPV drones use Lithium Polymer (LiPo) batteries. Choosing the right battery affects flight time, power output, weight, and safety. Understanding battery specs is critical.',
@@ -222,7 +222,7 @@ export const PART_CATEGORIES = [
             name: 'LiPo (Lithium Polymer)',
             badge: 'Most Common',
             image: '/images/Battery.png',
-            badgeColor: '#10b981',
+            badgeColor: '#4f8a4b',
             icon: <Battery size={20} />,
             desc: 'The standard for FPV drones. High discharge rate, great power-to-weight ratio. Needs careful handling — can catch fire if punctured or overcharged.',
             specs: ['Nominal: 3.7V per cell', 'Fully charged: 4.2V/cell', 'Storage: 3.8V/cell', 'Cutoff: 3.3–3.5V/cell'],
@@ -231,7 +231,7 @@ export const PART_CATEGORIES = [
           {
             name: 'LiHV (High Voltage LiPo)',
             badge: 'Performance',
-            badgeColor: '#0095b8',
+            badgeColor: '#2f8f89',
             icon: <Zap size={20} />,
             desc: 'Charges to 4.35V per cell instead of 4.2V — gives ~5–8% more capacity and slightly better punch. Requires a LiHV-compatible charger.',
             specs: ['Charged: 4.35V/cell', 'Extra capacity burst', 'Needs LiHV charger', 'Same discharge as LiPo'],
@@ -240,7 +240,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Li-Ion (Lithium Ion)',
             badge: 'Long Range',
-            badgeColor: '#6d28d9',
+            badgeColor: '#8a5a9e',
             icon: <Circle size={20} />,
             desc: '2–3x the energy density of LiPo by weight. Much longer flight times but low discharge rate — can\'t handle the power spikes of freestyle. Perfect for slow efficient long-range flights.',
             specs: ['Nominal: 3.6V/cell', 'Very high capacity', 'Low C-rating (5–10C)', '18650 / 21700 cells'],
@@ -301,10 +301,10 @@ export const PART_CATEGORIES = [
         title: 'Connector Standards',
         type: 'cards',
         items: [
-          { name: 'GNB27 / BT2.0', badge: '1S Micro', badgeColor: '#ec4899', icon: <Plug size={20} />, desc: 'Ultra-tiny connector for 1S micro drones. Lower resistance than old PH2.0. Standard for modern tiny whoops.', specs: ['1S only', 'Very low resistance', 'Small & light', 'BetaFPV standard'], use: 'Tiny whoops and 1S micro builds.' },
-          { name: 'XT30', badge: '2S–4S Small', badgeColor: '#f59e0b', icon: <Hexagon size={20} />, desc: 'Compact connector rated to 30A (60A burst). Used on lightweight 3"–4" builds and toothpicks where weight matters.', specs: ['30A continuous', '60A burst', 'Gold plated', 'Common on 2S–4S'], use: '3" builds, toothpicks, ultralight 5".' },
-          { name: 'XT60', badge: 'Standard', badgeColor: '#10b981', icon: <Hexagon size={20} />, desc: 'The universal standard on 5" FPV drones and above. Rated 60A continuous, 180A burst. Gold-plated and extremely reliable.', specs: ['60A continuous', '180A burst', 'Universal standard', 'Every 5" build'], use: 'Standard 5" freestyle, racing, cinematic.' },
-          { name: 'XT90', badge: 'High Power', badgeColor: '#0095b8', icon: <Square size={20} />, desc: 'Heavy-duty connector for high-power applications. 90A continuous. Used on large 7"+ or heavy lifting builds.', specs: ['90A continuous', '200A+ burst', 'Large and heavy', '7"+ builds'], use: 'Large quads, 6S+ high-current builds.' },
+          { name: 'GNB27 / BT2.0', badge: '1S Micro', badgeColor: '#8a5a9e', icon: <Plug size={20} />, desc: 'Ultra-tiny connector for 1S micro drones. Lower resistance than old PH2.0. Standard for modern tiny whoops.', specs: ['1S only', 'Very low resistance', 'Small & light', 'BetaFPV standard'], use: 'Tiny whoops and 1S micro builds.' },
+          { name: 'XT30', badge: '2S–4S Small', badgeColor: '#b8862b', icon: <Hexagon size={20} />, desc: 'Compact connector rated to 30A (60A burst). Used on lightweight 3"–4" builds and toothpicks where weight matters.', specs: ['30A continuous', '60A burst', 'Gold plated', 'Common on 2S–4S'], use: '3" builds, toothpicks, ultralight 5".' },
+          { name: 'XT60', badge: 'Standard', badgeColor: '#4f8a4b', icon: <Hexagon size={20} />, desc: 'The universal standard on 5" FPV drones and above. Rated 60A continuous, 180A burst. Gold-plated and extremely reliable.', specs: ['60A continuous', '180A burst', 'Universal standard', 'Every 5" build'], use: 'Standard 5" freestyle, racing, cinematic.' },
+          { name: 'XT90', badge: 'High Power', badgeColor: '#2f8f89', icon: <Square size={20} />, desc: 'Heavy-duty connector for high-power applications. 90A continuous. Used on large 7"+ or heavy lifting builds.', specs: ['90A continuous', '200A+ burst', 'Large and heavy', '7"+ builds'], use: 'Large quads, 6S+ high-current builds.' },
         ],
       },
       {
@@ -326,7 +326,7 @@ export const PART_CATEGORIES = [
     label: 'ESC',
     icon: <Plug size={20} />,
     image: '/images/ESC.png',
-    color: '#f59e0b',
+    color: '#b8862b',
     tagline: 'Electronic Speed Controller — the motor driver',
     intro:
       'The ESC (Electronic Speed Controller) converts the flight controller\'s digital commands into three-phase AC power to drive brushless motors. It\'s the interface between the brain (FC) and the muscles (motors).',
@@ -339,7 +339,7 @@ export const PART_CATEGORIES = [
             name: '4-in-1 ESC',
             badge: 'Modern Standard',
             image: '/images/ESC.png',
-            badgeColor: '#10b981',
+            badgeColor: '#4f8a4b',
             icon: <Square size={20} />,
             desc: 'All four motor controllers on a single PCB. Saves weight, reduces wiring, and mounts directly below the flight controller in a stack. The standard for 3"–7" builds.',
             specs: ['Single PCB for all 4 motors', 'Cleaner build', 'Stack compatible', 'Current: 20A–60A per motor'],
@@ -348,7 +348,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Individual ESC',
             badge: 'Modular',
-            badgeColor: '#f59e0b',
+            badgeColor: '#b8862b',
             icon: <Square size={20} />,
             desc: 'One ESC per motor, mounted at each arm. If one ESC fails you replace just that one. More wiring but more redundancy. Common in large quads.',
             specs: ['One failure = replace one ESC', 'More wiring', 'Arm-mounted', 'Common: large / racing'],
@@ -403,12 +403,12 @@ export const PART_CATEGORIES = [
         title: 'Main Internal Components',
         type: 'cards',
         items: [
-          { name: 'Capacitors', badge: 'Smoothing', badgeColor: '#0095b8', icon: <Square size={20} />, desc: 'Large cylindrical components that act like a water tank smoothing water pressure. They remove voltage spikes, smooth battery power, and protect MOSFETs.', specs: ['Absorbs voltage jumps (e.g. 22V to 30V)'], use: 'Essential for protecting the ESC from sudden battery spikes.' },
-          { name: 'TVS Diode', badge: 'Protection', badgeColor: '#ef4444', icon: <Shield size={20} />, desc: 'An electrical pressure relief valve. Protects the ESC from sudden extreme voltage spikes, like when a battery disconnects suddenly.', specs: ['Clamps voltage spikes (e.g. 40V)'], use: 'Extreme voltage protection.' },
-          { name: 'Voltage Regulators', badge: 'Power', badgeColor: '#f59e0b', icon: <Zap size={20} />, desc: 'Converts high battery voltage (e.g. 22V) down to safe levels for the MCU (usually 5V and 3.3V). Common chips include AMS1117 or MP1584.', specs: ['Steps down 22V to 3.3V'], use: 'Powering the ESC\'s internal brain.' },
-          { name: 'Microcontroller (MCU)', badge: 'Brain', badgeColor: '#10b981', icon: <Brain size={20} />, desc: 'A tiny computer (BB21, STM32) running firmware like BLHeli_32 or Bluejay. Receives throttle commands and calculates switching timing.', specs: ['Runs at up to 48 MHz', 'Calculates timing'], use: 'Controlling the MOSFET switches.' },
-          { name: 'Gate Driver IC', badge: 'Amplifier', badgeColor: '#7c3aed', icon: <Radio size={20} />, desc: 'The power amplifier between the brain and muscle. The MCU cannot directly drive MOSFETs, so the driver boosts the 3.3V signal to the ~10V needed.', specs: ['Chips like FD6288', 'Provides high current pulse'], use: 'Bridging the MCU and MOSFETs.' },
-          { name: 'MOSFETs', badge: 'Switches', badgeColor: '#ec4899', icon: <Check size={20} />, desc: 'Electronic switches that turn ON/OFF millions of times to create fake AC power. A typical 4-in-1 ESC needs 24 MOSFETs (6 per motor).', specs: ['High Side & Low Side', 'Converts DC to 3-Phase AC'], use: 'Delivering switched power to the motors.' },
+          { name: 'Capacitors', badge: 'Smoothing', badgeColor: '#2f8f89', icon: <Square size={20} />, desc: 'Large cylindrical components that act like a water tank smoothing water pressure. They remove voltage spikes, smooth battery power, and protect MOSFETs.', specs: ['Absorbs voltage jumps (e.g. 22V to 30V)'], use: 'Essential for protecting the ESC from sudden battery spikes.' },
+          { name: 'TVS Diode', badge: 'Protection', badgeColor: '#b94a3c', icon: <Shield size={20} />, desc: 'An electrical pressure relief valve. Protects the ESC from sudden extreme voltage spikes, like when a battery disconnects suddenly.', specs: ['Clamps voltage spikes (e.g. 40V)'], use: 'Extreme voltage protection.' },
+          { name: 'Voltage Regulators', badge: 'Power', badgeColor: '#b8862b', icon: <Zap size={20} />, desc: 'Converts high battery voltage (e.g. 22V) down to safe levels for the MCU (usually 5V and 3.3V). Common chips include AMS1117 or MP1584.', specs: ['Steps down 22V to 3.3V'], use: 'Powering the ESC\'s internal brain.' },
+          { name: 'Microcontroller (MCU)', badge: 'Brain', badgeColor: '#4f8a4b', icon: <Brain size={20} />, desc: 'A tiny computer (BB21, STM32) running firmware like BLHeli_32 or Bluejay. Receives throttle commands and calculates switching timing.', specs: ['Runs at up to 48 MHz', 'Calculates timing'], use: 'Controlling the MOSFET switches.' },
+          { name: 'Gate Driver IC', badge: 'Amplifier', badgeColor: '#8a5a9e', icon: <Radio size={20} />, desc: 'The power amplifier between the brain and muscle. The MCU cannot directly drive MOSFETs, so the driver boosts the 3.3V signal to the ~10V needed.', specs: ['Chips like FD6288', 'Provides high current pulse'], use: 'Bridging the MCU and MOSFETs.' },
+          { name: 'MOSFETs', badge: 'Switches', badgeColor: '#8a5a9e', icon: <Check size={20} />, desc: 'Electronic switches that turn ON/OFF millions of times to create fake AC power. A typical 4-in-1 ESC needs 24 MOSFETs (6 per motor).', specs: ['High Side & Low Side', 'Converts DC to 3-Phase AC'], use: 'Delivering switched power to the motors.' },
         ],
       },
       {
@@ -420,8 +420,8 @@ export const PART_CATEGORIES = [
         title: 'How ESC Knows Rotor Position',
         type: 'cards',
         items: [
-          { name: 'Sensorless (Back EMF)', badge: 'Most Common', badgeColor: '#10b981', icon: <RadioReceiver size={20} />, desc: 'When the motor spins, it acts as a tiny generator and creates voltage (Back EMF). The ESC measures this voltage to calculate rotor position and speed. Used in nearly all FPV drones.', specs: ['No sensors needed', 'Motor talks back to ESC'], use: 'All standard FPV builds.' },
-          { name: 'Hall Sensors', badge: 'Rare in FPV', badgeColor: '#f59e0b', icon: <Target size={20} />, desc: 'Physical sensors inside the motor detect magnet position. More expensive and heavier.', specs: ['Physical magnet sensors'], use: 'Common in E-bikes and Electric cars, rare in FPV.' },
+          { name: 'Sensorless (Back EMF)', badge: 'Most Common', badgeColor: '#4f8a4b', icon: <RadioReceiver size={20} />, desc: 'When the motor spins, it acts as a tiny generator and creates voltage (Back EMF). The ESC measures this voltage to calculate rotor position and speed. Used in nearly all FPV drones.', specs: ['No sensors needed', 'Motor talks back to ESC'], use: 'All standard FPV builds.' },
+          { name: 'Hall Sensors', badge: 'Rare in FPV', badgeColor: '#b8862b', icon: <Target size={20} />, desc: 'Physical sensors inside the motor detect magnet position. More expensive and heavier.', specs: ['Physical magnet sensors'], use: 'Common in E-bikes and Electric cars, rare in FPV.' },
         ],
       },
       {
@@ -445,7 +445,7 @@ export const PART_CATEGORIES = [
     label: 'Flight Controller',
     icon: <Brain size={20} />,
     image: '/images/FC.png',
-    color: '#ec4899',
+    color: '#8a5a9e',
     tagline: 'The brain of your drone',
     intro:
       'The Flight Controller (FC) reads sensor data, runs the stabilization algorithms (like Betaflight), and sends commands to motors through ESCs. The FC is the most software-critical component of the drone.',
@@ -455,9 +455,9 @@ export const PART_CATEGORIES = [
         type: 'cards',
         image: '/images/FC.png',
         items: [
-          { name: 'F4 (STM32F4)', badge: 'Entry', badgeColor: '#f59e0b', icon: <Circle size={20} />, desc: 'Older but reliable 168MHz processor. Enough for most freestyle builds. Limited UARTs and peripheral counts. Still popular due to cost.', specs: ['168MHz', '3–4 UARTs', 'DSHOT300 max', 'Budget friendly'], use: 'Budget / beginner builds where cost matters.' },
-          { name: 'F7 (STM32F7)', badge: 'Standard', badgeColor: '#10b981', icon: <Circle size={20} />, desc: 'The current mainstream standard at 216MHz. Supports DSHOT600, bidirectional DSHOT, more UARTs, and better peripheral handling.', specs: ['216MHz', '5–6 UARTs', 'DSHOT600', 'Most builds'], use: '5" freestyle and racing — the sweet spot.' },
-          { name: 'H7 (STM32H7)', badge: 'High End', badgeColor: '#0095b8', icon: <Circle size={20} />, desc: '480MHz powerhouse. Runs DSHOT300 bidirectional that is effectively better than F7\'s DSHOT600. Used in high-performance and digital FPV systems.', specs: ['480MHz', '8+ UARTs', 'Best RPM filter', 'Digital FPV ready'], use: 'Digital FPV (DJI, Walksnail), high-end performance builds.' },
+          { name: 'F4 (STM32F4)', badge: 'Entry', badgeColor: '#b8862b', icon: <Circle size={20} />, desc: 'Older but reliable 168MHz processor. Enough for most freestyle builds. Limited UARTs and peripheral counts. Still popular due to cost.', specs: ['168MHz', '3–4 UARTs', 'DSHOT300 max', 'Budget friendly'], use: 'Budget / beginner builds where cost matters.' },
+          { name: 'F7 (STM32F7)', badge: 'Standard', badgeColor: '#4f8a4b', icon: <Circle size={20} />, desc: 'The current mainstream standard at 216MHz. Supports DSHOT600, bidirectional DSHOT, more UARTs, and better peripheral handling.', specs: ['216MHz', '5–6 UARTs', 'DSHOT600', 'Most builds'], use: '5" freestyle and racing — the sweet spot.' },
+          { name: 'H7 (STM32H7)', badge: 'High End', badgeColor: '#2f8f89', icon: <Circle size={20} />, desc: '480MHz powerhouse. Runs DSHOT300 bidirectional that is effectively better than F7\'s DSHOT600. Used in high-performance and digital FPV systems.', specs: ['480MHz', '8+ UARTs', 'Best RPM filter', 'Digital FPV ready'], use: 'Digital FPV (DJI, Walksnail), high-end performance builds.' },
         ],
       },
       {
@@ -468,10 +468,10 @@ export const PART_CATEGORIES = [
         table: {
           headers: ['Gyro Chip', 'Quality', 'Notes'],
           rows: [
-            ['MPU6000', '⭐⭐⭐⭐⭐', 'Gold standard — low noise, reliable, excellent for tuning'],
-            ['ICM20689', '⭐⭐⭐⭐', 'Good. Slightly higher noise than MPU6000'],
-            ['ICM42688-P', '⭐⭐⭐⭐⭐', 'Modern standard — very low noise, fast sampling'],
-            ['BMI270', '⭐⭐⭐⭐', 'Good performance, common in newer budget FCs'],
+            ['MPU6000', '★★★★★', 'Gold standard — low noise, reliable, excellent for tuning'],
+            ['ICM20689', '★★★★☆', 'Good. Slightly higher noise than MPU6000'],
+            ['ICM42688-P', '★★★★★', 'Modern standard — very low noise, fast sampling'],
+            ['BMI270', '★★★★☆', 'Good performance, common in newer budget FCs'],
           ],
         },
       },
@@ -518,9 +518,9 @@ export const PART_CATEGORIES = [
         title: 'Blade Count Comparison',
         type: 'cards',
         items: [
-          { name: 'Bi-blade (2-blade)', badge: 'Efficiency', badgeColor: '#10b981', icon: <Check size={20} />, desc: 'Least drag, highest efficiency. Common in long range and cinematic builds where flight time matters more than punch.', specs: ['Highest efficiency', 'Smooth/quiet', 'Less thrust/punch', 'Long range standard'], use: 'Long range, cinematic, battery life priority.' },
-          { name: 'Tri-blade (3-blade)', badge: 'Standard', badgeColor: '#0095b8', icon: <Leaf size={20} />, desc: 'The sweet spot — good thrust, acceptable efficiency, and great overall performance. The most common choice for freestyle.', specs: ['Balanced thrust/efficiency', 'Most popular', 'Good punch', '5" freestyle standard'], use: 'Freestyle standard. The most common 5" choice.' },
-          { name: 'Quad-blade (4-blade)', badge: 'Racing', badgeColor: '#ef4444', icon: <Plus size={20} />, desc: 'Maximum thrust and mid-range punch at the cost of efficiency. Used in racing for snappy throttle response and fastest acceleration.', specs: ['Maximum thrust', 'High current draw', 'Less efficient', 'Racing builds'], use: 'Racing — maximum punch and acceleration.' },
+          { name: 'Bi-blade (2-blade)', badge: 'Efficiency', badgeColor: '#4f8a4b', icon: <Check size={20} />, desc: 'Least drag, highest efficiency. Common in long range and cinematic builds where flight time matters more than punch.', specs: ['Highest efficiency', 'Smooth/quiet', 'Less thrust/punch', 'Long range standard'], use: 'Long range, cinematic, battery life priority.' },
+          { name: 'Tri-blade (3-blade)', badge: 'Standard', badgeColor: '#2f8f89', icon: <Leaf size={20} />, desc: 'The sweet spot — good thrust, acceptable efficiency, and great overall performance. The most common choice for freestyle.', specs: ['Balanced thrust/efficiency', 'Most popular', 'Good punch', '5" freestyle standard'], use: 'Freestyle standard. The most common 5" choice.' },
+          { name: 'Quad-blade (4-blade)', badge: 'Racing', badgeColor: '#b94a3c', icon: <Plus size={20} />, desc: 'Maximum thrust and mid-range punch at the cost of efficiency. Used in racing for snappy throttle response and fastest acceleration.', specs: ['Maximum thrust', 'High current draw', 'Less efficient', 'Racing builds'], use: 'Racing — maximum punch and acceleration.' },
         ],
       },
       {
@@ -542,7 +542,7 @@ export const PART_CATEGORIES = [
     label: 'Video Systems',
     icon: <Camera size={20} />,
     image: '/images/vtx.png',
-    color: '#f97316',
+    color: '#d0692a',
     tagline: 'Your eyes in the sky',
     intro:
       'The FPV video system transmits live camera feed to your goggles. This is what makes FPV flying immersive. There are two fundamentally different approaches: analog and digital.',
@@ -555,7 +555,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Analog FPV',
             badge: 'Classic',
-            badgeColor: '#10b981',
+            badgeColor: '#4f8a4b',
             icon: <Tv size={20} />,
             desc: 'Traditional system: camera → VTX → goggles over 5.8GHz radio. Very low latency (<1ms). Affordable. Image quality is 480–600 TVL — grainy but fast.',
             specs: ['< 1ms latency', '480–800 TVL', '5.8 GHz', 'Cheapest entry point'],
@@ -564,7 +564,7 @@ export const PART_CATEGORIES = [
           {
             name: 'DJI O3 / Digital',
             badge: 'Premium',
-            badgeColor: '#0095b8',
+            badgeColor: '#2f8f89',
             icon: <Radio size={20} />,
             desc: '1080p or 4K digital transmission. Crystal-clear image with 22ms latency — barely noticeable. DJI O3 Air Unit is the most popular digital system. Expensive but transforms FPV experience.',
             specs: ['1080p / 4K', '< 22ms latency', 'Up to 10km range', 'DJI goggles required'],
@@ -573,7 +573,7 @@ export const PART_CATEGORIES = [
           {
             name: 'Walksnail Avatar',
             badge: 'Competitor',
-            badgeColor: '#7c3aed',
+            badgeColor: '#8a5a9e',
             icon: <Eye size={20} />,
             desc: 'Caddx\'s digital system competing with DJI O3. Similar 1080p quality. Uses different goggles. Supports head tracking. Growing ecosystem.',
             specs: ['1080p 60fps', '< 22ms', 'Head tracking support', 'Walksnail goggles'],
@@ -582,7 +582,7 @@ export const PART_CATEGORIES = [
           {
             name: 'HDZero',
             badge: 'Low Latency Digital',
-            badgeColor: '#ef4444',
+            badgeColor: '#b94a3c',
             icon: <Zap size={20} />,
             desc: 'Digital system with ~5–8ms latency — much lower than DJI. Preferred by digital racers who need the fastest response. 720p image quality.',
             specs: ['720p 60fps', '< 8ms latency', 'Racing focused', 'Analog goggle compatible (module)'],
@@ -623,7 +623,7 @@ export const PART_CATEGORIES = [
     label: 'Radio Control',
     icon: <RadioReceiver size={20} />,
     image: '/images/controller.png',
-    color: '#a855f7',
+    color: '#8a5a9e',
     tagline: 'How you control the drone',
     intro:
       'The radio control system is the link between your hands and the drone. It consists of a transmitter (controller) and a receiver. Protocol choice affects range, latency, and reliability.',

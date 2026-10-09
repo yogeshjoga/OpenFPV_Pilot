@@ -108,7 +108,7 @@
   background: none;
   border: none;
   color: var(--color-text-secondary);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   cursor: pointer;
   padding: 0;

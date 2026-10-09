@@ -12,7 +12,6 @@ export default function Footer() {
         {/* Brand */}
         <div className={styles.brand}>
           <Link to="/" className={styles.logo}>
-            <span className={styles.logoIcon}>✦</span>
             <span className={styles.logoText}>{APP_NAME}</span>
           </Link>
           <p className={styles.tagline}>{APP_TAGLINE}</p>

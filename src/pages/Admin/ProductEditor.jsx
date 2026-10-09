@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { Image as ImageIcon, Video } from 'lucide-react'
 import { motion } from 'framer-motion';
 import useProductStore from '@store/useProductStore';
 import styles from './ProductEditor.module.css';
@@ -255,7 +256,7 @@ export default function ProductEditor({ product, onClose }) {
             <div className={styles.formSectionTitle}>Media Assets</div>
             <div className={styles.mediaUploads}>
               <div className={styles.uploadBox} onClick={() => imgRef.current.click()}>
-                <span className={styles.uploadIcon}>🖼️</span>
+                <span className={styles.uploadIcon}><ImageIcon size={28} /></span>
                 <span className={styles.uploadText}>Image (10MB)</span>
                 <input 
                   type="file" hidden ref={imgRef} accept="image/*"
@@ -264,7 +265,7 @@ export default function ProductEditor({ product, onClose }) {
               </div>
 
               <div className={styles.uploadBox} onClick={() => vidRef.current.click()}>
-                <span className={styles.uploadIcon}>🎥</span>
+                <span className={styles.uploadIcon}><Video size={28} /></span>
                 <span className={styles.uploadText}>Video (30MB)</span>
                 <input 
                   type="file" hidden ref={vidRef} accept="video/*"
@@ -327,7 +328,7 @@ export default function ProductEditor({ product, onClose }) {
                   <p className={styles.previewDesc}>{formData.description || 'Description will appear here...'}</p>
                   
                   {formData.useCase && (
-                      <p style={{fontSize: '0.8rem', color: '#64748b'}}><b>Best for:</b> {formData.useCase}</p>
+                      <p style={{fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)'}}><b>Best for:</b> {formData.useCase}</p>
                   )}
                   
                   <div className={styles.quickSpecs}>
@@ -357,7 +358,7 @@ export default function ProductEditor({ product, onClose }) {
                         )
                     })
                 ) : (
-                    <p style={{color: '#94a3b8', fontSize: '0.9rem'}}>No specs defined yet.</p>
+                    <p style={{color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)'}}>No specs defined yet.</p>
                 )}
               </div>
             )}

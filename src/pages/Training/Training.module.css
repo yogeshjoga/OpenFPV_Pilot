@@ -7,16 +7,17 @@
 /* ===== HEADER ===== */
 .header {
   padding: var(--space-16) 0 var(--space-12);
-  background: linear-gradient(135deg, rgba(var(--color-accent-primary-rgb), 0.05) 0%, rgba(var(--color-accent-secondary-rgb), 0.05) 100%);
+  background: var(--color-bg-secondary);
   border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--space-12);
 }
 
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--color-accent-primary);
   margin-bottom: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-secondary);
 }
 
 .title {
@@ -99,7 +100,7 @@
 .statIcon { font-size: var(--text-xl); }
 
 .statValue {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
@@ -131,7 +132,7 @@
   border: 1px solid var(--color-border);
   background: var(--color-bg-card);
   color: var(--color-text-secondary);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   font-weight: var(--font-bold);
   cursor: pointer;
@@ -197,7 +198,7 @@
 }
 
 .dayNum {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   font-weight: var(--font-extrabold);
   letter-spacing: 0.06em;
@@ -209,7 +210,7 @@
 }
 
 .dayTitle {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
   color: var(--color-text-primary);
@@ -219,7 +220,7 @@
 .dayDuration {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
 }
 
 .chevron {
@@ -250,7 +251,7 @@
 }
 
 .sectionHeading {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   font-weight: var(--font-bold);
   letter-spacing: 0.06em;
@@ -290,7 +291,7 @@
 
 .resourceTag {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
@@ -350,7 +351,7 @@
 }
 
 .prereqName {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-lg);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
@@ -380,7 +381,7 @@
 }
 
 .detailLabel {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-weight: var(--font-bold);
   color: var(--color-text-muted);
   text-transform: uppercase;
@@ -432,12 +433,12 @@
 .primaryBtn {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-bold);
   text-decoration: none;
   color: var(--color-bg-primary);
-  background: var(--gradient-accent);
+  background: var(--color-accent-primary);
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-full);
   transition: box-shadow var(--transition-base), transform var(--transition-fast);
@@ -451,7 +452,7 @@
 .ghostBtn {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   text-decoration: none;
@@ -478,4 +479,10 @@
 @media (max-width: 640px) {
   .courseTab { min-width: 100%; }
   .ctaBox { padding: var(--space-10) var(--space-6); }
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }

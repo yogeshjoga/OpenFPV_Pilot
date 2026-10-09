@@ -5,7 +5,7 @@ export default function ExamSidebar({ questions, answers, currentView, onChangeV
   return (
     <div className={styles.sidebar}>
       <div className={styles.sidebarHeader}>
-        <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>i</span>
+        <span style={{ fontSize: 'var(--text-xl)', fontWeight: 800 }}>i</span>
       </div>
       
       <div 

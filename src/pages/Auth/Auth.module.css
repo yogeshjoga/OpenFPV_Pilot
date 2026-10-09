@@ -16,7 +16,7 @@
 
 .errorIcon {
   font-size: var(--text-5xl);
-  color: #ff4444;
+  color: var(--color-error);
   margin-bottom: var(--space-8);
   display: block;
 }

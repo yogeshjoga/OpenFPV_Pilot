@@ -1,5 +1,6 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { Search, Package } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import { PRODUCTS } from '@data/products'
@@ -53,7 +54,7 @@ export default function Shop() {
             {/* Search Bar */}
             <div className={styles.searchContainer}>
               <div className={styles.searchWrapper}>
-                <span className={styles.searchIcon}>🔍</span>
+                <span className={styles.searchIcon}><Search size={18} /></span>
                 <input 
                   type="text" 
                   placeholder="Search for frames, motors, goggles..." 
@@ -108,7 +109,7 @@ export default function Shop() {
 
                 {displayProducts.length === 0 && (
                   <div className={styles.emptyState}>
-                    <span className={styles.emptyIcon}>📦</span>
+                    <span className={styles.emptyIcon}><Package size={40} /></span>
                     <h3>No products found</h3>
                     <p>Try adjusting your search or category filters.</p>
                     <button onClick={() => {setActiveCategory('all'); setSearchQuery('')}} className={styles.resetBtn}>

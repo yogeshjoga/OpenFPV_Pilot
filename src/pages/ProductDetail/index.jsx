@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState } from 'react'
+import { Lock } from 'lucide-react'
 import { useParams, Link } from 'react-router-dom'
 import PageWrapper from '@components/layout/PageWrapper'
 import { getProductById } from '@data/products'
@@ -115,7 +116,7 @@ export default function ProductDetail() {
               </button>
 
               <div className={styles.secureBox}>
-                <span>🔒 Secure transaction</span>
+                <span className={styles.secureNote}><Lock size={14} /> Secure transaction</span>
                 <div className={styles.shipsFrom}>Ships from: <span>EGIREROBOTICS</span></div>
                 <div className={styles.soldBy}>Sold by: <span>EGIREROBOTICS</span></div>
               </div>

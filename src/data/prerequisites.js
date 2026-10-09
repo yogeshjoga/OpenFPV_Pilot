@@ -1,6 +1,6 @@
 export const PREREQUISITES_DATA = [
   {
-    category: '🧰 Tools',
+    category: 'Tools',
     items: [
       {
         name: 'Soldering Iron (Temperature Controlled)',
@@ -165,7 +165,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🔌 Wires',
+    category: 'Wires',
     items: [
       {
         name: 'Silicone Wires (14 AWG – Battery Lead)',
@@ -202,7 +202,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🔋 Power Connectors',
+    category: 'Power Connectors',
     items: [
       {
         name: 'XT60 Connectors (Male & Female)',
@@ -231,7 +231,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🔗 Signal Connectors / Plugs',
+    category: 'Signal Connectors / Plugs',
     items: [
       {
         name: 'JST Connectors (PH 2.0 / SH 1.0 / GH)',
@@ -252,7 +252,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '⚡ Power Components',
+    category: 'Power Components',
     items: [
       {
         name: 'Capacitors (Low ESR, 25V / 35V / 50V)',
@@ -273,7 +273,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '📡 Antenna & RF Parts',
+    category: 'Antenna & RF Parts',
     items: [
       {
         name: 'SMA / RP-SMA Connectors',
@@ -294,7 +294,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🔩 Mounting Hardware',
+    category: 'Mounting Hardware',
     items: [
       {
         name: 'Frame Screws (M2 / M3) & Nylock Nuts',
@@ -323,7 +323,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🧱 Frame Assembly Parts',
+    category: 'Frame Assembly Parts',
     items: [
       {
         name: 'Carbon Fiber Arms',
@@ -344,7 +344,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '⚙️ Electronics (Wiring Side)',
+    category: 'Electronics (Wiring Side)',
     items: [
       {
         name: 'Flight Controller (FC)',
@@ -381,7 +381,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🔌 Wiring Accessories',
+    category: 'Wiring Accessories',
     items: [
       {
         name: 'Heat Shrink Tubing',
@@ -394,7 +394,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🧪 Safety & Testing',
+    category: 'Safety & Testing',
     items: [
       {
         name: 'LiPo Battery Checker',
@@ -415,7 +415,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '💻 Software / Interface Tools',
+    category: 'Software / Interface Tools',
     items: [
       {
         name: 'USB Type-C Cable',
@@ -428,7 +428,7 @@ export const PREREQUISITES_DATA = [
     ]
   },
   {
-    category: '🧠 Advanced (Optional for AI Builds)',
+    category: 'Advanced (Optional for AI Builds)',
     items: [
       {
         name: 'Raspberry Pi / Companion Computer',

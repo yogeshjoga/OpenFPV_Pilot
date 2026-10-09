@@ -99,7 +99,7 @@
 }
 
 .btn {
-  background: var(--gradient-accent);
+  background: var(--color-accent-primary);
   color: var(--color-on-accent);
   border: none;
   padding: var(--space-2) var(--space-6);
@@ -297,7 +297,7 @@
 
 .diagTitle {
   margin: 0 0 var(--space-2);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-lg);
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-border);
@@ -482,3 +482,9 @@
   background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px);
 }
 
+.diagIcon {
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: var(--space-2);
+  flex-shrink: 0;
+}

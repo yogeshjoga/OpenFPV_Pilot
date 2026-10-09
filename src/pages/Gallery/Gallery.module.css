@@ -39,7 +39,7 @@
   border: 1px solid var(--color-border);
   background: var(--color-bg-card);
   color: var(--color-text-secondary);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
@@ -110,7 +110,7 @@
 }
 
 .albumTitle {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-lg);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
@@ -140,7 +140,7 @@
 
 .albumHeading {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--text-h2);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
 }
@@ -265,7 +265,7 @@
   left: 50%;
   transform: translateX(-50%);
   color: rgba(255, 255, 255, 0.7);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
 }
 

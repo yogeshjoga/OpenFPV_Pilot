@@ -1,5 +1,6 @@
 
-import { useState } from 'react'
+import { useState } from 'react'
+import { CalendarDays, Clock, BarChart3, Calendar, BookOpen, Wrench, Paperclip } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
@@ -70,10 +71,10 @@ export default function Training() {
                   </div>
                 </div>
                 <div className={styles.overviewStats}>
-                  <Stat icon="📅" label="Duration" value={course.duration} />
-                  <Stat icon="⏱" label="Total Hours" value={`${course.totalHours}h`} />
-                  <Stat icon="📊" label="Level" value={course.level} />
-                  <Stat icon="📆" label="Sessions" value={`${course.syllabus.length} Days`} />
+                  <Stat icon={<CalendarDays size={18} />} label="Duration" value={course.duration} />
+                  <Stat icon={<Clock size={18} />} label="Total hours" value={`${course.totalHours}h`} />
+                  <Stat icon={<BarChart3 size={18} />} label="Level" value={course.level} />
+                  <Stat icon={<Calendar size={18} />} label="Sessions" value={`${course.syllabus.length} Days`} />
                 </div>
               </div>
 
@@ -173,7 +174,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
             <div className={styles.dayContent}>
               {/* Topics */}
               <div className={styles.section}>
-                <h4 className={styles.sectionHeading}>📚 Topics Covered</h4>
+                <h4 className={styles.sectionHeading}><BookOpen size={16} /> Topics covered</h4>
                 <ul className={styles.topicList}>
                   {day.topics.map((t, i) => (
                     <li key={i} className={styles.topicItem}>
@@ -186,7 +187,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
 
               {/* Practicals */}
               <div className={styles.section}>
-                <h4 className={styles.sectionHeading}>🛠 Practicals</h4>
+                <h4 className={styles.sectionHeading}><Wrench size={16} /> Practicals</h4>
                 <ul className={styles.practicalList}>
                   {day.practicals.map((p, i) => (
                     <li key={i} className={styles.practicalItem}>
@@ -199,7 +200,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
 
               {/* Resources */}
               <div className={styles.section}>
-                <h4 className={styles.sectionHeading}>📎 Resources</h4>
+                <h4 className={styles.sectionHeading}><Paperclip size={16} /> Resources</h4>
                 <div className={styles.resourceList}>
                   {day.resources.map((r, i) => (
                     <span key={i} className={styles.resourceTag} style={{ borderColor: color + '55', color }}>

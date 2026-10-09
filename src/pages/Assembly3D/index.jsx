@@ -162,7 +162,7 @@ export default function Assembly3D() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
               >
-                <h2 className="gradient-text" style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Drone Fully Assembled!</h2>
+                <h2 className="gradient-text" style={{ fontSize: 'var(--text-3xl)', marginBottom: 'var(--space-2)' }}>Drone Fully Assembled!</h2>
                 <p>Ready for Betaflight tuning and first flight.</p>
               </motion.div>
             )}

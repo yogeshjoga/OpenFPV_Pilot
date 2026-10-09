@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { BookOpen } from 'lucide-react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -312,17 +313,17 @@ export default function ExamPage() {
   if (!categoryId) {
     return (
       <PageWrapper>
-        <div style={{ padding: '4rem 1rem', maxWidth: '1200px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '3rem', marginBottom: '1rem', textAlign: 'center', color: 'var(--color-text-primary)' }}>
+        <div style={{ padding: 'var(--space-16) var(--space-4)', maxWidth: '1200px', margin: '0 auto' }}>
+          <h1 style={{ fontSize: 'var(--text-5xl)', marginBottom: 'var(--space-4)', textAlign: 'center', color: 'var(--color-text-primary)' }}>
             FPV Certification Exams
           </h1>
-          <p style={{ color: 'var(--color-text-secondary)', marginBottom: '4rem', textAlign: 'center', fontSize: '1.2rem' }}>
+          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-16)', textAlign: 'center', fontSize: 'var(--text-xl)' }}>
             Test your knowledge and earn certifications across various FPV drone disciplines.
           </p>
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-            gap: '2rem' 
+            gap: 'var(--space-8)' 
           }}>
             {Object.values(EXAM_BANKS).map((exam) => (
               <div 
@@ -331,8 +332,8 @@ export default function ExamPage() {
                 style={{
                   background: 'var(--color-bg-card)',
                   border: '1px solid var(--color-border)',
-                  borderRadius: '12px',
-                  padding: '2rem',
+                  borderRadius: 'var(--radius-md)',
+                  padding: 'var(--space-8)',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   textAlign: 'center',
@@ -352,10 +353,10 @@ export default function ExamPage() {
                   e.currentTarget.style.boxShadow = 'none'
                 }}
               >
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-accent-primary)' }}>
+                <h3 style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-4)', color: 'var(--color-accent-primary)' }}>
                   {exam.title.replace(' Certification Exam', '')}
                 </h3>
-                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-base)', lineHeight: '1.5' }}>
                   {exam.id === 'all' 
                     ? 'The final 50-question master certification test.' 
                     : `Test your knowledge of FPV ${exam.id.toUpperCase()} systems.`}
@@ -371,7 +372,7 @@ export default function ExamPage() {
   if (!examData) {
     return (
       <PageWrapper>
-        <div style={{ padding: '4rem', textAlign: 'center' }}>Exam category not found.</div>
+        <div style={{ padding: 'var(--space-16)', textAlign: 'center' }}>Exam category not found.</div>
       </PageWrapper>
     )
   }
@@ -379,69 +380,69 @@ export default function ExamPage() {
   return (
     <PageWrapper>
       {examState === 'intro' && (
-        <div style={{ padding: '4rem 1rem', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{examData.title}</h1>
-          <p style={{ color: 'var(--color-text-secondary)', marginBottom: '3rem' }}>FPV Drone Certification Exam</p>
+        <div style={{ padding: 'var(--space-16) var(--space-4)', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+          <h1 style={{ fontSize: 'var(--text-4xl)', marginBottom: 'var(--space-2)' }}>{examData.title}</h1>
+          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-12)' }}>FPV Drone Certification Exam</p>
           
-          <div style={{ background: 'var(--color-bg-card)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-card)', padding: 'var(--space-8)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
             {categoryId === 'all' ? (
               <>
-                <p style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+                <p style={{ marginBottom: 'var(--space-8)', fontSize: 'var(--text-lg)', lineHeight: '1.6' }}>
                   This section is the final exam for the FPV Drone Certification.<br/>
                   It contains randomly pooled questions from all other exam categories.<br/>
                   <strong>Total:</strong> 50 questions | <strong>Max Score:</strong> 120 points | <strong>Time:</strong> 2 hours<br/><br/>
                   <em>Topics covered: piloting, building, ESC, FC, motor, wiring, soldering, safety, battery maintenance, VTX, goggles, controller, and all related systems.</em><br/><br/>
                   Once you clear this exam, you will receive an official certification from <strong>Egirerobatics</strong>!
                 </p>
-                <div style={{ marginBottom: '2rem', textAlign: 'left', background: 'var(--color-bg-secondary)', padding: '1.5rem', borderRadius: '8px' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: 'var(--color-text-primary)' }}>Full Name for Certification:</label>
+                <div style={{ marginBottom: 'var(--space-8)', textAlign: 'left', background: 'var(--color-bg-secondary)', padding: 'var(--space-6)', borderRadius: 'var(--radius-md)' }}>
+                  <label style={{ display: 'block', marginBottom: 'var(--space-2)', fontWeight: 'bold', color: 'var(--color-text-primary)' }}>Full Name for Certification:</label>
                   <input 
                     type="text" 
                     placeholder="e.g. John Doe"
                     value={studentName}
                     onChange={(e) => setStudentName(e.target.value)}
-                    style={{ width: '100%', padding: '0.8rem', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', marginBottom: '1rem' }}
+                    style={{ width: '100%', padding: 'var(--space-3)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)', marginBottom: 'var(--space-4)' }}
                   />
                   <button 
                     onClick={() => setShowPreview(!showPreview)}
-                    style={{ background: 'var(--color-accent-primary)', color: 'white', padding: '0.5rem 1rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
+                    style={{ background: 'var(--color-accent-primary)', color: 'white', padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontSize: 'var(--text-sm)' }}
                   >
                     {showPreview ? 'Hide Preview' : 'Preview Certificate'}
                   </button>
                 </div>
                 
                 {showPreview && studentName.trim() && (
-                  <div style={{ marginBottom: '3rem', padding: '1.5rem', background: 'var(--color-bg-primary)', borderRadius: '12px', border: '1px dashed var(--color-border)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                      <h3 style={{ color: 'var(--color-text-secondary)', fontSize: '1rem', margin: 0 }}>Certificate Preview</h3>
+                  <div style={{ marginBottom: 'var(--space-12)', padding: 'var(--space-6)', background: 'var(--color-bg-primary)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
+                      <h3 style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-base)', margin: 0 }}>Certificate Preview</h3>
                     </div>
                     {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={true} /> : <CertificateV2 studentName={studentName} isPreview={true} grade="Grade 1" />}
-                    <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                      <button onClick={() => handleDownloadCertificate(true)} style={{ background: 'var(--color-bg-secondary)', color: 'var(--color-text-primary)', padding: '0.6rem 1.2rem', borderRadius: '6px', border: '1px solid var(--color-border)', cursor: 'pointer', fontWeight: 'bold' }}>Download Preview (Watermarked)</button>
-                      <button onClick={() => handleDownloadCertificate(false)} style={{ background: 'var(--color-accent-primary)', color: 'white', padding: '0.6rem 1.2rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Download Official (Requires Password)</button>
+                    <div style={{ marginTop: 'var(--space-6)', display: 'flex', gap: 'var(--space-4)', justifyContent: 'center' }}>
+                      <button onClick={() => handleDownloadCertificate(true)} style={{ background: 'var(--color-bg-secondary)', color: 'var(--color-text-primary)', padding: 'var(--space-2) var(--space-5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', cursor: 'pointer', fontWeight: 'bold' }}>Download Preview (Watermarked)</button>
+                      <button onClick={() => handleDownloadCertificate(false)} style={{ background: 'var(--color-accent-primary)', color: 'white', padding: 'var(--space-2) var(--space-5)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Download Official (Requires Password)</button>
                     </div>
                   </div>
                 )}
               </>
             ) : (
               <>
-                <p style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
+                <p style={{ marginBottom: 'var(--space-8)', fontSize: 'var(--text-lg)' }}>
                   This exam consists of 20 randomly selected multiple-choice questions.<br/>
                   Total possible score is 50 points.
                 </p>
                 {examData.topicsCovered && (
-                  <div style={{ textAlign: 'left', background: 'var(--color-bg-secondary)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid var(--color-border)' }}>
-                    <h3 style={{ fontSize: '1.2rem', marginBottom: '1.25rem', color: 'var(--color-text-primary)' }}>Topics Covered:</h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                  <div style={{ textAlign: 'left', background: 'var(--color-bg-secondary)', padding: 'var(--space-6)', borderRadius: 'var(--radius-md)', marginBottom: 'var(--space-8)', border: '1px solid var(--color-border)' }}>
+                    <h3 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-5)', color: 'var(--color-text-primary)' }}>Topics Covered:</h3>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
                       {examData.topicsCovered.map((topic, i) => (
                         <span 
                           key={i} 
                           style={{
                             background: 'var(--color-bg-card)',
                             color: 'var(--color-text-secondary)',
-                            padding: '0.4rem 1rem',
-                            borderRadius: '9999px',
-                            fontSize: '0.85rem',
+                            padding: 'var(--space-2) var(--space-4)',
+                            borderRadius: 'var(--radius-full)',
+                            fontSize: 'var(--text-sm)',
                             border: '1px solid var(--color-border)',
                             display: 'inline-block'
                           }}
@@ -481,12 +482,12 @@ export default function ExamPage() {
                 Exam {Object.keys(answers).length}/{questions.length}
               </div>
               {categoryId === 'all' && (
-                <div style={{ padding: '0.5rem 1rem', background: timeRemaining < 300 ? '#ef4444' : 'var(--color-bg-secondary)', color: timeRemaining < 300 ? 'white' : 'var(--color-text-primary)', borderRadius: '6px', fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.2rem', marginLeft: '1rem' }}>
+                <div style={{ padding: 'var(--space-2) var(--space-4)', background: timeRemaining < 300 ? 'var(--color-error)' : 'var(--color-bg-secondary)', color: timeRemaining < 300 ? 'white' : 'var(--color-text-primary)', borderRadius: 'var(--radius-sm)', fontWeight: 'bold', fontFamily: 'monospace', fontSize: 'var(--text-xl)', marginLeft: 'var(--space-4)' }}>
                   ⏱ {Math.floor(timeRemaining / 3600)}:{String(Math.floor((timeRemaining % 3600) / 60)).padStart(2, '0')}:{String(timeRemaining % 60).padStart(2, '0')}
                 </div>
               )}
               <div style={{ flex: 1 }} />
-              <button onClick={finishExam} style={{ background: '#ef4444', color: 'white', padding: '0.5rem 1rem', borderRadius: '4px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
+              <button onClick={finishExam} style={{ background: 'var(--color-error)', color: 'white', padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
                 Finish Exam
               </button>
             </div>
@@ -514,22 +515,22 @@ export default function ExamPage() {
 
       {examState === 'results' && (
         <div className={styles.layout}>
-          <div className={styles.resultsView} style={{ overflowY: 'auto', padding: '2rem' }}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: (grade.letter === 'Failed' || grade.letter === 'Grade 4') ? '#ef4444' : 'var(--color-text-primary)' }}>
+          <div className={styles.resultsView} style={{ overflowY: 'auto', padding: 'var(--space-8)' }}>
+            <h2 style={{ fontSize: 'var(--text-3xl)', marginBottom: 'var(--space-8)', color: (grade.letter === 'Failed' || grade.letter === 'Grade 4') ? 'var(--color-error)' : 'var(--color-text-primary)' }}>
               {(grade.letter === 'Failed' || grade.letter === 'Grade 4') ? 'Exam Failed' : 'Exam Complete!'}
             </h2>
             
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', width: '100%', maxWidth: '1000px', alignItems: 'stretch' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-8)', justifyContent: 'center', width: '100%', maxWidth: '1000px', alignItems: 'stretch' }}>
               
               {/* Left Side: Score & Grade */}
-              <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg-card)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
+              <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg-card)', padding: 'var(--space-8)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                 <div className={styles.scoreCircle} style={{ borderColor: getGradeColor(grade.letter), color: getGradeColor(grade.letter) }}>
                   {score}/{reportCard?.maxPossible || 50}
                 </div>
-                <div style={{ fontSize: '3rem', fontWeight: 800, color: getGradeColor(grade.letter), marginBottom: '1rem' }}>
+                <div style={{ fontSize: 'var(--text-5xl)', fontWeight: 800, color: getGradeColor(grade.letter), marginBottom: 'var(--space-4)' }}>
                   {grade.letter}
                 </div>
-                <p style={{ fontSize: '1.2rem', color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>{grade.feedback}</p>
+                <p style={{ fontSize: 'var(--text-xl)', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-8)' }}>{grade.feedback}</p>
                 
                 <button 
                   className={styles.finishBtn} 
@@ -541,47 +542,47 @@ export default function ExamPage() {
               </div>
 
               {/* Right Side: Report Card & Roadmap */}
-              <div style={{ flex: '1.5', minWidth: '350px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ flex: '1.5', minWidth: '350px', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
                 {reportCard && (
-                  <div style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '2rem', width: '100%', textAlign: 'left' }}>
-                    <h3 style={{ color: 'var(--color-text-primary)', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem', marginBottom: '1rem' }}>Exam Report Card</h3>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                  <div style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: 'var(--space-8)', width: '100%', textAlign: 'left' }}>
+                    <h3 style={{ color: 'var(--color-text-primary)', borderBottom: '1px solid var(--color-border)', paddingBottom: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>Exam Report Card</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-2)' }}>
                       <span>Total Questions:</span>
                       <span style={{ fontWeight: 'bold', color: 'var(--color-text-primary)' }}>{reportCard.total}</span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-2)' }}>
                       <span>Attempted:</span>
                       <span style={{ fontWeight: 'bold', color: 'var(--color-text-primary)' }}>{reportCard.attempted}</span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-2)' }}>
                       <span>Unattempted:</span>
                       <span style={{ fontWeight: 'bold', color: 'var(--color-text-primary)' }}>{reportCard.unattempted}</span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-2)' }}>
                       <span>Correct Answers:</span>
-                      <span style={{ fontWeight: 'bold', color: '#10b981' }}>{reportCard.correct}</span>
+                      <span style={{ fontWeight: 'bold', color: 'var(--color-success)' }}>{reportCard.correct}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-secondary)' }}>
                       <span>Incorrect Answers:</span>
-                      <span style={{ fontWeight: 'bold', color: '#ef4444' }}>{reportCard.incorrect}</span>
+                      <span style={{ fontWeight: 'bold', color: 'var(--color-error)' }}>{reportCard.incorrect}</span>
                     </div>
                   </div>
                 )}
                 
                 {(grade.letter === 'Failed' || grade.letter === 'Grade 4') && (
-                  <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '1.5rem', borderRadius: '12px', textAlign: 'left' }}>
-                    <h3 style={{ color: '#b91c1c', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span>📚</span> Study Roadmap
+                  <div style={{ background: 'color-mix(in srgb, var(--color-error) 8%, var(--color-bg-card))', border: '1px solid color-mix(in srgb, var(--color-error) 30%, transparent)', padding: 'var(--space-6)', borderRadius: 'var(--radius-md)', textAlign: 'left' }}>
+                    <h3 style={{ color: 'var(--color-error)', marginBottom: 'var(--space-4)', display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                      <BookOpen size={18} /> Study Roadmap
                     </h3>
-                    <p style={{ color: '#7f1d1d', marginBottom: '1rem', fontSize: '0.9rem' }}>Review the core concepts in the <strong>Catalog</strong> before retaking the exam.</p>
-                    <ul style={{ color: '#991b1b', marginLeft: '1.5rem', marginBottom: '1.5rem', lineHeight: '1.4', fontSize: '0.9rem' }}>
+                    <p style={{ color: 'var(--color-error)', marginBottom: 'var(--space-4)', fontSize: 'var(--text-sm)' }}>Review the core concepts in the <strong>Catalog</strong> before retaking the exam.</p>
+                    <ul style={{ color: 'var(--color-error)', marginLeft: 'var(--space-6)', marginBottom: 'var(--space-6)', lineHeight: '1.4', fontSize: 'var(--text-sm)' }}>
                       <li>Read up on <strong>{examData.title.replace(' Certification Exam', '')}</strong>.</li>
                       <li>Understand basic terminology (e.g. KV, Back EMF).</li>
                       <li>Review the wiring, specifications, and safety guidelines.</li>
                     </ul>
                     <button 
                       onClick={() => navigate('/catalog')} 
-                      style={{ background: '#ef4444', color: 'white', padding: '0.5rem 1rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem' }}
+                      style={{ background: 'var(--color-error)', color: 'white', padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: 'var(--text-sm)' }}
                     >
                       Go to Catalog →
                     </button>
@@ -593,16 +594,16 @@ export default function ExamPage() {
 
             {/* Certificate Generation Section */}
             {categoryId === 'all' && grade.letter !== 'Failed' && grade.letter !== 'Grade 4' && (
-              <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--color-bg-card)', borderRadius: '12px', border: '1px solid var(--color-border)', textAlign: 'center' }}>
-                <h2 style={{ fontSize: '2rem', color: 'var(--color-accent-primary)', marginBottom: '1rem' }}>🏆 Official Certification</h2>
-                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>Congratulations, <strong>{studentName}</strong>! Here is your official FPV Master Pilot Certification.</p>
+              <div style={{ marginTop: 'var(--space-16)', padding: 'var(--space-8)', background: 'var(--color-bg-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', textAlign: 'center' }}>
+                <h2 style={{ fontSize: 'var(--text-3xl)', color: 'var(--color-accent-primary)', marginBottom: 'var(--space-4)' }}>Official Certification</h2>
+                <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-8)' }}>Congratulations, <strong>{studentName}</strong>! Here is your official FPV Master Pilot Certification.</p>
                 
                 {/* V1 deprecated */}
 
                 {certVersion === 'v1' ? <Certificate studentName={studentName} isPreview={false} /> : <CertificateV2 studentName={studentName} isPreview={false} grade={grade.letter} />}
                 
-                <div style={{ marginTop: '2rem' }}>
-                  <button onClick={() => handleDownloadCertificate(false)} style={{ background: 'var(--color-accent-primary)', color: 'white', padding: '0.8rem 2rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 'bold', boxShadow: '0 4px 12px rgba(37,99,235,0.2)' }}>Download PDF Certificate</button>
+                <div style={{ marginTop: 'var(--space-8)' }}>
+                  <button onClick={() => handleDownloadCertificate(false)} style={{ background: 'var(--color-accent-primary)', color: 'white', padding: 'var(--space-3) var(--space-8)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontSize: 'var(--text-lg)', fontWeight: 'bold', boxShadow: '0 4px 12px rgba(37,99,235,0.2)' }}>Download PDF Certificate</button>
                 </div>
               </div>
             )}

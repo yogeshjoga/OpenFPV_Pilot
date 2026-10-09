@@ -48,7 +48,7 @@ function PageLoader() {
         fontFamily: 'var(--font-mono)',
         color: 'var(--color-accent-primary)',
         letterSpacing: '0.1em',
-        fontSize: '0.875rem',
+        fontSize: 'var(--text-sm)',
       }}
     >
       Loading...
@@ -100,8 +100,8 @@ export default function AppRouter() {
           <Route
             path="*"
             element={
-              <div style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
-                <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '4rem', color: 'var(--color-accent-primary)' }}>404</h1>
+              <div style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 'var(--space-4)' }}>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-5xl)', color: 'var(--color-accent-primary)' }}>404</h1>
                 <p style={{ color: 'var(--color-text-secondary)' }}>Page not found</p>
                 <a href="/" style={{ color: 'var(--color-accent-primary)' }}>← Go Home</a>
               </div>

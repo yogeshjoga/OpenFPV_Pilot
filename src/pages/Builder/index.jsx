@@ -1,5 +1,6 @@
 
-import { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
+import { Download } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import styles from './Builder.module.css'
@@ -253,13 +254,13 @@ export default function Builder() {
                 className={styles.presetBtn}
                 onClick={() => setConfig({ ...PRESETS.cinewhoop, preset: 'cinewhoop' })}
               >
-                🚁 Beginner Cinewhoop (Indoor/Park)
+                Beginner Cinewhoop (Indoor/Park)
               </button>
               <button
                 className={styles.presetBtn}
                 onClick={() => setConfig({ ...PRESETS.freestyle, preset: 'freestyle' })}
               >
-                ⚡ 5" Bando Freestyle (Aggressive)
+                5" Bando Freestyle (Aggressive)
               </button>
             </div>
           </div>
@@ -323,7 +324,7 @@ export default function Builder() {
                 disabled={isExporting}
                 style={{ background: 'var(--gradient-accent)', border: 'none' }}
               >
-                {isExporting ? 'Generating PDF...' : '⬇ Download PDF'}
+                {isExporting ? 'Generating PDF...' : <><Download size={16} /> Download PDF</>}
               </button>
             ) : (
               <button
@@ -359,7 +360,7 @@ export default function Builder() {
               <p>Est. Total Cost</p>
               <div style={{ textAlign: 'right' }}>
                 <p className="gradient-text">${quoteDetails.grandTotal.toFixed(2)}</p>
-                <p style={{ fontSize: '1rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem', fontFamily: 'var(--font-mono)' }}>
+                <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-1)', fontFamily: 'var(--font-mono)' }}>
                   ≈ ₹{Math.round(quoteDetails.grandTotalINR).toLocaleString('en-IN')}
                 </p>
               </div>
@@ -370,7 +371,7 @@ export default function Builder() {
               onClick={handleExportPDF}
               disabled={isExporting}
             >
-              {isExporting ? 'Generating PDF...' : '⬇ Download PDF'}
+              {isExporting ? 'Generating PDF...' : <><Download size={16} /> Download PDF</>}
             </button>
             <button
               className={styles.ghostBtn}
@@ -378,7 +379,7 @@ export default function Builder() {
                 setConfig(DEFAULT_CONFIG)
                 setActiveStep(0)
               }}
-              style={{ width: '100%', marginTop: '0.5rem', padding: '0.75rem', fontSize: '0.85rem' }}
+              style={{ width: '100%', marginTop: 'var(--space-2)', padding: 'var(--space-3)', fontSize: 'var(--text-sm)' }}
             >
               ⟲ Reset Builder
             </button>
