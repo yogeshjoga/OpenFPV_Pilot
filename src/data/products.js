@@ -11,8 +11,8 @@ export const PRODUCTS = [
     badge: 'Best Seller',
     inStock: true,
     modelPath: '/models/frame_hx5.glb', // placeholder path
-    thumbnail: '/images/Frame.png',
-    images: ['/images/Frame.png', '/images/Frame.png', '/images/Frame.png', '/images/Frame.png'],
+    thumbnail: '/images/opt/Frame-960.webp',
+    images: ['/images/opt/Frame-960.webp', '/images/opt/Frame-960.webp', '/images/opt/Frame-960.webp', '/images/opt/Frame-960.webp'],
     aboutThisItem: [
       'Engineered with premium 3K Toray Carbon for maximum durability against concrete.',
       'Unibody bottom plate ensures extreme stiffness during high-G maneuvers (over 10G).',
@@ -52,8 +52,8 @@ export const PRODUCTS = [
     badge: 'New',
     inStock: true,
     modelPath: '/models/motor_nexus.glb',
-    thumbnail: '/images/Motor.png',
-    images: ['/images/Motor.png', '/images/Motor.png', '/images/Motor.png'],
+    thumbnail: '/images/opt/Motor-960.webp',
+    images: ['/images/opt/Motor-960.webp', '/images/opt/Motor-960.webp', '/images/opt/Motor-960.webp'],
     aboutThisItem: [
       'Massive 2507 stator size provides extreme torque for 5-inch heavy freestyle builds or 7-inch long range platforms.',
       'Built with ultra-high-temperature N52H curved magnets for sustained efficiency.',

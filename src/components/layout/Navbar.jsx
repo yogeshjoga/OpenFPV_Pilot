@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react'
-import { Sun, Moon, ArrowRight } from 'lucide-react'
+import { Sun, Moon, ArrowRight, ChevronDown } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NAV_LINKS } from '@config/constants'
@@ -41,7 +41,7 @@ export default function Navbar() {
               return (
                 <div key={link.label} className={styles.navDropdownGroup}>
                   <button className={styles.navLink}>
-                    {link.label} <span className={styles.dropdownIcon}>▾</span>
+                    {link.label} <ChevronDown size={14} className={styles.dropdownIcon} aria-hidden="true" />
                   </button>
                   <div className={styles.navDropdown}>
                     {link.subLinks.map((sub) => (

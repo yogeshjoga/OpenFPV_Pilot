@@ -9,7 +9,7 @@ export const PART_CATEGORIES = [
     label: 'Motors',
     icon: <Settings size={20} />,
     color: '#3e6aa8',
-    image: '/images/Motor.png',
+    image: '/images/opt/Motor-960.webp',
     tagline: 'The muscles of your drone',
     intro:
       'A motor converts electrical energy into rotational force (torque) that spins the propellers to generate lift. Understanding motors is fundamental to building and tuning any FPV drone.',
@@ -20,7 +20,7 @@ export const PART_CATEGORIES = [
         items: [
           {
             name: 'Brushed Motor',
-            image: '/images/Motor.png',
+            image: '/images/opt/Motor-960.webp',
             badge: 'Legacy',
             badgeColor: '#b8862b',
             icon: <Wrench size={20} />,
@@ -99,7 +99,7 @@ export const PART_CATEGORIES = [
     id: 'frames',
     label: 'Frames',
     icon: <Construction size={20} />,
-    image: '/images/Frame.png',
+    image: '/images/opt/Frame-960.webp',
     color: '#8a5a9e',
     tagline: 'The skeleton of your build',
     intro:
@@ -108,7 +108,7 @@ export const PART_CATEGORIES = [
       {
         title: 'Frame Geometry Types',
         type: 'cards',
-        image: '/images/Frame.png',
+        image: '/images/opt/Frame-960.webp',
         items: [
           {
             name: 'True-X',
@@ -209,7 +209,7 @@ export const PART_CATEGORIES = [
     id: 'batteries',
     label: 'Batteries',
     icon: <Battery size={20} />,
-    image: '/images/Battery.png',
+    image: '/images/opt/Battery-960.webp',
     color: '#4f8a4b',
     tagline: 'The power source — choose wisely',
     intro:
@@ -222,7 +222,7 @@ export const PART_CATEGORIES = [
           {
             name: 'LiPo (Lithium Polymer)',
             badge: 'Most Common',
-            image: '/images/Battery.png',
+            image: '/images/opt/Battery-960.webp',
             badgeColor: '#4f8a4b',
             icon: <Battery size={20} />,
             desc: 'The standard for FPV drones. High discharge rate, great power-to-weight ratio. Needs careful handling — can catch fire if punctured or overcharged.',
@@ -326,7 +326,7 @@ export const PART_CATEGORIES = [
     id: 'esc',
     label: 'ESC',
     icon: <Plug size={20} />,
-    image: '/images/ESC.png',
+    image: '/images/opt/ESC-960.webp',
     color: '#b8862b',
     tagline: 'Electronic Speed Controller — the motor driver',
     intro:
@@ -339,7 +339,7 @@ export const PART_CATEGORIES = [
           {
             name: '4-in-1 ESC',
             badge: 'Modern Standard',
-            image: '/images/ESC.png',
+            image: '/images/opt/ESC-960.webp',
             badgeColor: '#4f8a4b',
             icon: <Square size={20} />,
             desc: 'All four motor controllers on a single PCB. Saves weight, reduces wiring, and mounts directly below the flight controller in a stack. The standard for 3"–7" builds.',
@@ -445,7 +445,7 @@ export const PART_CATEGORIES = [
     id: 'flight-controller',
     label: 'Flight Controller',
     icon: <Brain size={20} />,
-    image: '/images/FC.png',
+    image: '/images/opt/FC-960.webp',
     color: '#8a5a9e',
     tagline: 'The brain of your drone',
     intro:
@@ -454,7 +454,7 @@ export const PART_CATEGORIES = [
       {
         title: 'FC Processor Classes',
         type: 'cards',
-        image: '/images/FC.png',
+        image: '/images/opt/FC-960.webp',
         items: [
           { name: 'F4 (STM32F4)', badge: 'Entry', badgeColor: '#b8862b', icon: <Circle size={20} />, desc: 'Older but reliable 168MHz processor. Enough for most freestyle builds. Limited UARTs and peripheral counts. Still popular due to cost.', specs: ['168MHz', '3–4 UARTs', 'DSHOT300 max', 'Budget friendly'], use: 'Budget / beginner builds where cost matters.' },
           { name: 'F7 (STM32F7)', badge: 'Standard', badgeColor: '#4f8a4b', icon: <Circle size={20} />, desc: 'The current mainstream standard at 216MHz. Supports DSHOT600, bidirectional DSHOT, more UARTs, and better peripheral handling.', specs: ['216MHz', '5–6 UARTs', 'DSHOT600', 'Most builds'], use: '5" freestyle and racing — the sweet spot.' },
@@ -493,7 +493,7 @@ export const PART_CATEGORIES = [
     id: 'propellers',
     label: 'Propellers',
     icon: <Fan size={20} />,
-    image: '/images/propellers.png',
+    image: '/images/opt/propellers-960.webp',
     color: '#06b6d4',
     tagline: 'The interface between motor and air',
     intro:
@@ -502,7 +502,7 @@ export const PART_CATEGORIES = [
       {
         title: 'Propeller Specifications',
         type: 'explainer',
-        image: '/images/propellers.png',
+        image: '/images/opt/propellers-960.webp',
         content:
           'Props are described by two numbers: diameter × pitch. Example: 5148 = 5.1" diameter × 4.8" pitch. Pitch is the distance the prop would travel in one revolution through air.',
         table: {
@@ -542,7 +542,7 @@ export const PART_CATEGORIES = [
     id: 'video-systems',
     label: 'Video Systems',
     icon: <Camera size={20} />,
-    image: '/images/vtx.png',
+    image: '/images/opt/vtx-960.webp',
     color: '#d0692a',
     tagline: 'Your eyes in the sky',
     intro:
@@ -551,7 +551,7 @@ export const PART_CATEGORIES = [
       {
         title: 'Analog vs Digital FPV',
         type: 'cards',
-        image: '/images/vtx.png',
+        image: '/images/opt/vtx-960.webp',
         items: [
           {
             name: 'Analog FPV',
@@ -623,7 +623,7 @@ export const PART_CATEGORIES = [
     id: 'radio',
     label: 'Radio Control',
     icon: <RadioReceiver size={20} />,
-    image: '/images/controller.png',
+    image: '/images/opt/controller-960.webp',
     color: '#8a5a9e',
     tagline: 'How you control the drone',
     intro:
@@ -632,7 +632,7 @@ export const PART_CATEGORIES = [
       {
         title: 'Radio Protocols',
         type: 'explainer',
-        image: '/images/controller.png',
+        image: '/images/opt/controller-960.webp',
         content:
           'Modern FPV uses digital radio links with much better range and reliability than older analog systems. ExpressLRS has become the dominant protocol.',
         table: {

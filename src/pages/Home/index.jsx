@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SketchfabEmbed from '@components/common/SketchfabEmbed'
+import { optimized } from '@lib/img'
 import ReviewsSection from '@components/sections/ReviewsSection'
 import PartnersSection from '@components/sections/PartnersSection'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
@@ -358,14 +359,12 @@ function PrerequisitesSlider() {
       'Solder wick (desoldering braid)': '/images/Solder_sucker.png',
       'Solder sucker': '/images/Solder_sucker.png',
       'Smoke Stopper': '/images/Smoke_stopper.png',
-      'LiPo Battery Charger': '/images/LiPo_Battery_Charger.png',
       'Tweezers': '/images/Tweezers.png',
       'Zip ties': '/images/Zip_ties.png',
       'Digital Caliper': '/images/Digital_caliper.png',
       'Hot glue gun / Conformal Coating': '/images/Hot_glue_gun.png',
       'Double-sided tape': '/images/Double_sided_tape.png',
       'Electrical tape': '/images/Electrical_tape.png',
-      'Heat shrink tubing': '/images/Heat_shrink_tubing.png',
     };
 
     // Try to find a match in the keys
@@ -373,7 +372,16 @@ function PrerequisitesSlider() {
     return assetMap[match] || '/images/Motor.png'; // Fallback to Motor
   };
 
-  const currentImage = getPrereqImage(currentItem.name);
+  const currentImage = optimized(getPrereqImage(currentItem.name))
+
+  // Fetch the next few cards' photos ahead of time so flipping through them is instant.
+  useEffect(() => {
+    const ahead = [1, 2, -1].map((step) => ALL_PREREQS[(currentIndex + step + ALL_PREREQS.length) % ALL_PREREQS.length])
+    ahead.forEach((item) => {
+      new Image().src = optimized(getPrereqImage(item.name)).src
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- getPrereqImage is a pure lookup defined above
+  }, [currentIndex])
 
   return (
     <section className={`section ${styles.prereqSection}`}>
@@ -426,7 +434,20 @@ function PrerequisitesSlider() {
             </div>
             <div className={styles.prereqCardRight}>
               <div className={styles.prereqImageWrapper}>
-                <img src={currentImage} alt={currentItem.name} className={styles.prereqImage} />
+                <img
+                  src={currentImage.src}
+                  srcSet={currentImage.srcSet}
+                  sizes="(max-width: 900px) 90vw, 600px"
+                  alt={currentItem.name}
+                  className={styles.prereqImage}
+                  decoding="async"
+                  onError={(e) => {
+                    // a card without a photo shows the generic one instead of a broken image
+                    e.currentTarget.onerror = null
+                    e.currentTarget.removeAttribute('srcset')
+                    e.currentTarget.src = '/images/opt/Motor-960.webp'
+                  }}
+                />
               </div>
               <div className={styles.prereqControlsRight}>
                 <span className={styles.sliderCountCompact}>{currentIndex + 1} / {ALL_PREREQS.length}</span>
