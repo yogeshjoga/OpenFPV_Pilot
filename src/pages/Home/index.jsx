@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft } from 'lucide-react'
+import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
 import styles from './Home.module.css'
@@ -10,10 +10,38 @@ import styles from './Home.module.css'
 const ALL_PREREQS = PREREQUISITES_DATA.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.category })));
 
 const STATS = [
-  { value: '8', label: 'Drone Part Categories' },
-  { value: '7-Day', label: 'Drone Build Bootcamp' },
-  { value: '100%', label: 'Premium Components' },
-  { value: '14-Day', label: 'FPV Pilot Training' },
+  { value: '10 days', label: 'Hands-on piloting workshop' },
+  { value: 'Sim + real', label: 'Simulator and real FPV flying' },
+  { value: '1st in India', label: 'Workshop of its kind' },
+  { value: '8', label: 'Drone part categories in the catalog' },
+]
+
+const LEARNING_AREAS = [
+  {
+    icon: <Atom size={24} />,
+    title: 'Flight science',
+    items: ['Physics of flight', 'Aerodynamics', 'Everything related to flying'],
+  },
+  {
+    icon: <Map size={24} />,
+    title: 'Sensing and mapping',
+    items: ['GIS and sensor mapping', 'LiDAR and 3D mapping', 'Thermal camera integration'],
+  },
+  {
+    icon: <Brain size={24} />,
+    title: 'AI and vision',
+    items: ['AI integration', 'Computer vision', 'YOLO model integration'],
+  },
+  {
+    icon: <Sprout size={24} />,
+    title: 'Real-world uses',
+    items: ['Agriculture drones', 'Cinematic drone shoots', 'Defence drones'],
+  },
+  {
+    icon: <CircuitBoard size={24} />,
+    title: 'Build and research',
+    items: ['PCB design', 'Drone research', 'And much more'],
+  },
 ]
 
 const ROADMAP_STEPS = [
@@ -78,21 +106,21 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            <p className={styles.eyebrow}>Professional FPV Learning</p>
+            <p className={styles.eyebrow}>India&apos;s first hands-on FPV drone workshop</p>
             <h1 className={styles.headline}>
               Fly Beyond<br />
               <span className="gradient-text">Limits</span>
             </h1>
             <p className={styles.sub}>
-              Build your own FPV drone from scratch. Learn to fly freestyle,
-              cinematic &amp; racing, all in one platform.
+              Fly real FPV drones, not just watch. Learn the engineering behind them in a
+              10-day workshop that starts in the simulator and ends in the air.
             </p>
             <div className={styles.heroActions} style={{ pointerEvents: 'auto' }}>
-              <Link to="/catalog" className={styles.primaryBtn}>
-                Explore Parts
+              <Link to="/workshops" className={styles.primaryBtn}>
+                See workshops
               </Link>
-              <Link to="/about" className={styles.ghostBtn}>
-                Learn More <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
+              <Link to="/catalog" className={styles.ghostBtn}>
+                Explore parts <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
               </Link>
             </div>
           </motion.div>
@@ -126,20 +154,62 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <p className={styles.sectionEyebrow}>Our team</p>
-            <h2 className={styles.teamTitle}>Learn from people who build and fly</h2>
+            <h2 className={styles.teamTitle}>A controller and a drone in every student&apos;s hands</h2>
             <p className={styles.teamCopy}>
-              Every lesson is hands-on: you build a real drone, not a simulation. Our workshops run for
-              universities, colleges and schools.
+              We are the first company in India to put a controller and a drone directly in students&apos;
+              hands for flight practice. No one else runs a workshop like this across the country.
             </p>
+            <ul className={styles.teamPoints}>
+              <li><Check size={18} /> Simulator practice first, then real FPV piloting</li>
+              <li><Check size={18} /> A 10-day piloting workshop, not only theory</li>
+              <li><Check size={18} /> Real engineering skills, not drone explainers</li>
+            </ul>
             <div className={styles.heroActions}>
-              <Link to="/workshops" className={styles.primaryBtn}>
-                See workshops
-              </Link>
               <Link to="/about" className={styles.ghostBtn}>
                 Meet the team <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
               </Link>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ======= WHAT YOU LEARN ======= */}
+      <section className={`section ${styles.learnSection}`}>
+        <div className="container">
+          <motion.div
+            className={styles.sectionHeader}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className={styles.sectionEyebrow}>What you will learn</p>
+            <h2 className={styles.sectionTitle}>Real engineering skills, not just flying</h2>
+            <p className={styles.sectionSub}>
+              We are not here to explain drones. The workshop goes deep into the engineering behind them.
+            </p>
+          </motion.div>
+
+          <div className={styles.learnGrid}>
+            {LEARNING_AREAS.map((area, index) => (
+              <motion.div
+                key={area.title}
+                className={styles.learnCard}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+              >
+                <div className={styles.learnIcon}>{area.icon}</div>
+                <h3 className={styles.learnTitle}>{area.title}</h3>
+                <ul className={styles.learnList}>
+                  {area.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

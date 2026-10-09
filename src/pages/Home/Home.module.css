@@ -625,3 +625,93 @@
     gap: var(--space-8);
   }
 }
+
+.teamPoints {
+  list-style: none;
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  color: var(--color-text-primary);
+}
+
+.teamPoints li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.teamPoints svg {
+  flex-shrink: 0;
+  color: var(--color-accent-secondary);
+}
+
+/* === WHAT YOU LEARN === */
+.learnSection {
+  background: var(--color-bg-primary);
+}
+
+.learnGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.learnCard {
+  padding: var(--space-8);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.learnIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(var(--color-accent-primary-rgb), 0.08);
+  color: var(--color-accent-primary);
+}
+
+.learnTitle {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-xl);
+}
+
+.learnList {
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.learnList li {
+  padding-left: var(--space-4);
+  position: relative;
+}
+
+.learnList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-secondary);
+}
+
+@media (max-width: 1024px) {
+  .learnGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .learnGrid {
+    grid-template-columns: 1fr;
+  }
+}
