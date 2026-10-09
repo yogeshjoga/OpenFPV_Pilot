@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import ReviewsSection from '@components/sections/ReviewsSection'
+import PartnersSection from '@components/sections/PartnersSection'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
 import styles from './Home.module.css'
 
@@ -283,6 +284,9 @@ export default function Home() {
 
       {/* ======= REVIEWS ======= */}
       <ReviewsSection />
+
+      {/* ======= PARTNERS ======= */}
+      <PartnersSection />
 
       <section className={`section ${styles.ctaBanner}`}>
         <div className="container">
