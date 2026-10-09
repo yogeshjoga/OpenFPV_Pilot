@@ -13,12 +13,23 @@ function shorten(text) {
   return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[.,;:!?-]+$/, '')}...`
 }
 
+/** Five stars filled to the exact value, so 4.7 shows four full stars and the fifth filled 70% from the left. */
 function Stars({ value, size = 18 }) {
   return (
     <span className={styles.stars} role="img" aria-label={`${value} out of 5 stars`}>
-      {[1, 2, 3, 4, 5].map((n) => (
-        <Star key={n} size={size} className={n <= Math.round(value) ? styles.starOn : styles.starOff} aria-hidden="true" />
-      ))}
+      {[1, 2, 3, 4, 5].map((n) => {
+        const fill = Math.min(1, Math.max(0, value - (n - 1)))
+        return (
+          <span key={n} className={styles.star} style={{ width: size, height: size }} aria-hidden="true">
+            <Star size={size} className={styles.starOff} />
+            {fill > 0 && (
+              <span className={styles.starFill} style={{ width: `${fill * 100}%` }}>
+                <Star size={size} className={styles.starOn} />
+              </span>
+            )}
+          </span>
+        )
+      })}
     </span>
   )
 }
