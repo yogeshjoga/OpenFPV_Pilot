@@ -310,7 +310,7 @@ export default function Workshops() {
 
               <div className={styles.founderCredit}>
                 <img
-                  src="/images/yogesh-joga.jpg"
+                  src="/gallery/workshop-1/thumb/roph9642.webp"
                   alt="Yogesh Joga"
                   className={styles.founderThumb}
                 />

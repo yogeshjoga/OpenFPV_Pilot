@@ -36,7 +36,7 @@ const TEAM_MEMBERS = [
     name: 'Yogesh Joga',
     role: 'Founder & Creator',
     bio: 'DGCA Certified Drone Pilot and AI Systems Architect with expertise in Agentic AI, Autonomous Systems, and Software Engineering. Founder of Urussys, focused on developing intelligent technologies, practical engineering education, and advanced FPV drone programs.',
-    image: '/images/yogesh-joga.jpg',
+    image: '/gallery/workshop-1/thumb/roph9642.webp',
     badgeText: 'DGCA Certified',
     tags: TAGS,
     glowStyle: {},
