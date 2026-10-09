@@ -111,7 +111,7 @@ export default function Assembly3D() {
                 className={styles.partBtn} 
                 onClick={() => setActivePart('motor')}
                 disabled={!parts.frame || (parts.m1 && parts.m2 && parts.m3 && parts.m4)}
-                style={{ borderColor: activePart === 'motor' ? '#00ffcc' : '' }}
+                style={{ borderColor: activePart === 'motor' ? 'var(--color-accent-primary)' : '' }}
               >
                 2. Motors
               </button>
@@ -119,7 +119,7 @@ export default function Assembly3D() {
                 className={styles.partBtn} 
                 onClick={() => setActivePart('esc')}
                 disabled={!parts.m1 || !parts.m2 || !parts.m3 || !parts.m4 || parts.esc}
-                style={{ borderColor: activePart === 'esc' ? '#00ffcc' : '' }}
+                style={{ borderColor: activePart === 'esc' ? 'var(--color-accent-primary)' : '' }}
               >
                 3. 4-in-1 ESC
               </button>
@@ -127,7 +127,7 @@ export default function Assembly3D() {
                 className={styles.partBtn} 
                 onClick={() => setActivePart('fc')}
                 disabled={!parts.esc || parts.fc}
-                style={{ borderColor: activePart === 'fc' ? '#00ffcc' : '' }}
+                style={{ borderColor: activePart === 'fc' ? 'var(--color-accent-primary)' : '' }}
               >
                 4. Flight Controller
               </button>
@@ -135,7 +135,7 @@ export default function Assembly3D() {
                 className={styles.partBtn} 
                 onClick={() => setActivePart('vtx')}
                 disabled={!parts.fc || parts.vtx}
-                style={{ borderColor: activePart === 'vtx' ? '#00ffcc' : '' }}
+                style={{ borderColor: activePart === 'vtx' ? 'var(--color-accent-primary)' : '' }}
               >
                 5. VTX / Camera
               </button>
@@ -143,7 +143,7 @@ export default function Assembly3D() {
                 className={styles.partBtn} 
                 onClick={() => setActivePart('prop')}
                 disabled={!parts.vtx || (parts.p1 && parts.p2 && parts.p3 && parts.p4)}
-                style={{ borderColor: activePart === 'prop' ? '#00ffcc' : '' }}
+                style={{ borderColor: activePart === 'prop' ? 'var(--color-accent-primary)' : '' }}
               >
                 6. Propellers
               </button>

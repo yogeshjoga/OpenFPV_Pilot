@@ -178,7 +178,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
                 <ul className={styles.topicList}>
                   {day.topics.map((t, i) => (
                     <li key={i} className={styles.topicItem}>
-                      <span className={styles.bullet} style={{ color }}>▸</span>
+                      <span className={styles.bullet} style={{ color: `color-mix(in srgb, ${color} 50%, var(--color-text-primary))` }}>▸</span>
                       {t}
                     </li>
                   ))}
@@ -203,7 +203,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
                 <h4 className={styles.sectionHeading}><Paperclip size={16} /> Resources</h4>
                 <div className={styles.resourceList}>
                   {day.resources.map((r, i) => (
-                    <span key={i} className={styles.resourceTag} style={{ borderColor: color + '55', color }}>
+                    <span key={i} className={styles.resourceTag} style={{ borderColor: color + '55', color: `color-mix(in srgb, ${color} 50%, var(--color-text-primary))` }}>
                       {r}
                     </span>
                   ))}

@@ -571,7 +571,7 @@
   gap: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: #637185;
+  color: #8d9bb0;
   font-weight: var(--font-bold);
   text-transform: uppercase;
   border-bottom: 1px solid #232832;
@@ -625,6 +625,6 @@
   padding: var(--space-2) var(--space-3);
   font-family: var(--font-body);
   font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  color: #8d9bb0;
   text-align: left;
 }

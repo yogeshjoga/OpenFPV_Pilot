@@ -17,7 +17,12 @@ export default function ProductCard({ product, index }) {
       <Link to={`/product/${product.id}`} className={styles.cardLink}>
         <div className={styles.imageWrapper}>
           {product.badge && <span className={styles.badge}>{product.badge}</span>}
-          <img src={product.thumbnail} alt={product.name} className={styles.productImage} />
+          <img
+            src={product.thumbnail}
+            alt={product.name}
+            className={styles.productImage}
+            onError={(e) => e.currentTarget.classList.add(styles.imageMissing)}
+          />
           
           <div className={styles.overlay}>
             <button className={styles.quickView}>Quick View</button>

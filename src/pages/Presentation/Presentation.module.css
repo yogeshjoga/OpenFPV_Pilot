@@ -90,7 +90,7 @@
 .deckBadge {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--deck-color);
+  color: color-mix(in srgb, var(--deck-color) 50%, var(--color-text-primary));
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: var(--space-4);
@@ -184,7 +184,7 @@
   font-family: var(--font-body);
   font-weight: var(--font-semibold);
   font-size: var(--text-sm);
-  color: var(--deck-color);
+  color: color-mix(in srgb, var(--deck-color) 50%, var(--color-text-primary));
 }
 
 .playerSlideCount {
@@ -325,7 +325,7 @@
 }
 
 .bulletDot {
-  color: var(--deck-color);
+  color: color-mix(in srgb, var(--deck-color) 50%, var(--color-text-primary));
   font-weight: var(--font-semibold);
   font-size: var(--text-lg);
   margin-top: 1px;
@@ -370,7 +370,7 @@
   margin-bottom: var(--space-3);
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  color: var(--deck-color);
+  color: color-mix(in srgb, var(--deck-color) 50%, var(--color-text-primary));
   font-weight: var(--font-semibold);
 }
 
@@ -409,7 +409,7 @@
   font-family: var(--font-display);
   font-weight: var(--font-semibold);
   border-bottom: 2px solid var(--color-border);
-  color: var(--deck-color);
+  color: color-mix(in srgb, var(--deck-color) 50%, var(--color-text-primary));
   background: var(--color-bg-secondary);
 }
 

@@ -188,7 +188,7 @@ export default function Workshops() {
               >
                 <div className={styles.levelCardHeader}>
                   <div>
-                    <div className={styles.levelBadgeLarge} style={{ background: level.color }}>
+                    <div className={styles.levelBadgeLarge} style={{ '--level-color': level.color }}>
                       {level.badge}
                     </div>
                     <h3 className={styles.levelCardTitle}>{level.title}</h3>
@@ -253,7 +253,7 @@ export default function Workshops() {
                   <ul className={styles.domainTopics}>
                     {d.topics.map((t, j) => (
                       <li key={j} className={styles.domainTopic}>
-                        <span style={{ color: d.color }}>▸</span> {t}
+                        <span style={{ color: `color-mix(in srgb, ${d.color} 50%, var(--color-text-primary))` }}>▸</span> {t}
                       </li>
                     ))}
                   </ul>

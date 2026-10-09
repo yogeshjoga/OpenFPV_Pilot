@@ -10,7 +10,7 @@
 }
 
 .modal {
-  background: #ffffff;
+  background: var(--color-bg-card);
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: var(--radius-xl);
   width: 100%;
@@ -27,7 +27,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: var(--color-bg-card);
 }
 
 .formHeader {
@@ -98,7 +98,7 @@
 }
 
 .previewTabs button.activeTab {
-  background: white;
+  background: var(--color-bg-card);
   color: var(--brand-orange);
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
@@ -129,7 +129,7 @@
 .input:focus, .textarea:focus, .select:focus, .specsGrid input:focus {
   outline: none;
   border-color: var(--brand-orange);
-  background: white;
+  background: var(--color-bg-card);
   box-shadow: var(--shadow-md);
 }
 
@@ -163,7 +163,7 @@
 
 .uploadBox:hover {
   border-color: var(--brand-orange);
-  background: #fff;
+  background: var(--color-bg-card);
   transform: translateY(-2px);
 }
 
@@ -185,7 +185,7 @@
   gap: var(--space-4);
   margin-top: var(--space-10);
   padding: var(--space-8) var(--space-10);
-  background: white;
+  background: var(--color-bg-card);
   border-top: 1px solid var(--color-bg-secondary);
   position: sticky;
   bottom: 0;
@@ -214,7 +214,7 @@
 
 /* Live Preview Styles */
 .previewContent {
-  background: white;
+  background: var(--color-bg-card);
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   border: 1px solid var(--color-bg-secondary);

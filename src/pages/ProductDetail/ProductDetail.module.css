@@ -1,6 +1,6 @@
 .page {
   padding: var(--space-8) 0 var(--space-24);
-  background: #fff;
+  background: var(--color-bg-card);
   min-height: 100dvh;
 }
 
@@ -73,7 +73,7 @@
   height: 60px;
   border: 1px solid var(--color-border-hover);
   border-radius: var(--radius-sm);
-  background: #fff;
+  background: var(--color-bg-card);
   padding: var(--space-1);
   cursor: pointer;
   transition: all 0.2s;

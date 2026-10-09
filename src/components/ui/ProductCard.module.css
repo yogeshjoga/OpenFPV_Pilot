@@ -32,7 +32,7 @@
 }
 
 .glyph {
-  font-size: 5rem;
+  font-size: var(--text-5xl);
   opacity: 0.7;
   filter: drop-shadow(0 0 16px rgba(var(--color-accent-primary-rgb), 0.3));
   transition: transform var(--transition-base), opacity var(--transition-base);

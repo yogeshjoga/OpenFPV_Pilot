@@ -420,3 +420,7 @@
 .emptyIcon {
   color: var(--color-text-muted);
 }
+
+.imageMissing {
+  visibility: hidden;
+}

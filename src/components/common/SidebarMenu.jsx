@@ -29,7 +29,7 @@ export default function SidebarMenu({
                 className={styles.sidebarBadge} 
                 style={{ 
                   background: item.color + '22', 
-                  color: item.color, 
+                  color: `color-mix(in srgb, ${item.color} 50%, var(--color-text-primary))`, 
                   borderColor: item.color + '44' 
                 }}
               >

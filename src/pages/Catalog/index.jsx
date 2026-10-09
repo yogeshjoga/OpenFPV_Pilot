@@ -54,7 +54,7 @@ export default function Catalog() {
                   <span className={styles.catIcon}>{category.icon}</span>
                 </div>
                 <div>
-                  <p className={styles.catEyebrow} style={{ color: category.color }}>FPV Parts
+                  <p className={styles.catEyebrow} style={{ color: `color-mix(in srgb, ${category.color} 50%, var(--color-text-primary))` }}>FPV Parts
                   </p>
                   <h1 className={styles.catTitle}>{category.label}</h1>
                   <p className={styles.catTagline}>{category.tagline}</p>
@@ -92,7 +92,7 @@ export default function Catalog() {
                             <thead>
                               <tr>
                                 {section.table.headers.map((h) => (
-                                  <th key={h} style={{ color: category.color }}>{h}</th>
+                                  <th key={h} style={{ color: `color-mix(in srgb, ${category.color} 50%, var(--color-text-primary))` }}>{h}</th>
                                 ))}
                               </tr>
                             </thead>
@@ -196,7 +196,7 @@ function TypeCard({ item, color }) {
           <div>
             <div className={styles.typeCardNameRow}>
               <h3 className={styles.typeCardName}>{item.name}</h3>
-              <span className={styles.typeCardBadge} style={{ background: item.badgeColor + '22', color: item.badgeColor, borderColor: item.badgeColor + '44' }}>
+              <span className={styles.typeCardBadge} style={{ background: item.badgeColor + '22', color: `color-mix(in srgb, ${item.badgeColor} 50%, var(--color-text-primary))`, borderColor: item.badgeColor + '44' }}>
                 {item.badge}
               </span>
             </div>
@@ -228,7 +228,7 @@ function TypeCard({ item, color }) {
                 <ul className={styles.specsList}>
                   {item.specs.map((s, i) => (
                     <li key={i} className={styles.specItem}>
-                      <span style={{ color }}>▸</span> {s}
+                      <span style={{ color: `color-mix(in srgb, ${color} 50%, var(--color-text-primary))` }}>▸</span> {s}
                     </li>
                   ))}
                 </ul>

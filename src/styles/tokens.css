@@ -13,16 +13,16 @@
   --color-bg-glass: #ffffff;
 
   --color-accent-primary: #1f3a5f;
-  --color-accent-secondary: #c8551b;
+  --color-accent-secondary: #ac430f;
   --color-on-accent: #ffffff;
   --color-accent-primary-rgb: 31, 58, 95;
-  --color-accent-secondary-rgb: 200, 85, 27;
+  --color-accent-secondary-rgb: 172, 67, 15;
   --color-accent-glow: rgba(31, 58, 95, 0.12);
-  --color-accent-glow-purple: rgba(200, 85, 27, 0.12);
+  --color-accent-glow-purple: rgba(172, 67, 15, 0.12);
 
   --color-text-primary: #1b2430;
   --color-text-secondary: #55606e;
-  --color-text-muted: #6b7683;
+  --color-text-muted: #5e6977;
   --color-text-tertiary: var(--color-text-muted);
   --color-text-accent: var(--color-accent-primary);
 
@@ -31,7 +31,7 @@
   --color-border-hover: #c9bfae;
 
   --color-success: #2f7d4f;
-  --color-warning: #b7791f;
+  --color-warning: #8f5f0f;
   --color-error: #c0392b;
 
   /* Brand aliases used by a few pages */

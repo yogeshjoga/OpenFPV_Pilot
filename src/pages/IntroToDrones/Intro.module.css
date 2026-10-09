@@ -156,7 +156,7 @@
   font-family: var(--font-display);
   font-weight: var(--font-extrabold);
   font-size: var(--text-xl);
-  color: var(--brand-color);
+  color: var(--color-text-secondary);
   box-shadow: 0 0 20px rgba(0,0,0,0.2) inset;
   text-align: center;
   padding: var(--space-2);
@@ -195,7 +195,7 @@
   display: inline-block;
   font-family: var(--font-body);
   font-size: var(--text-xs);
-  color: var(--brand-color);
+  color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: var(--space-3);

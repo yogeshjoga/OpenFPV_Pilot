@@ -165,7 +165,7 @@ export default function AdminDashboard() {
                 <button 
                   type="button"
                   onClick={() => setIsEditingProfile(!isEditingProfile)}
-                  style={{ padding: 'var(--space-2) var(--space-4)', background: isEditingProfile ? '#f1f5f9' : '#eaf1ff', color: isEditingProfile ? 'var(--color-text-secondary)' : '#4F8CFF', border: 'none', borderRadius: 'var(--radius-md)', fontWeight: 'bold', cursor: 'pointer' }}
+                  style={{ padding: 'var(--space-2) var(--space-4)', background: isEditingProfile ? 'var(--color-bg-secondary)' : 'rgba(var(--color-accent-primary-rgb), 0.12)', color: isEditingProfile ? 'var(--color-text-secondary)' : 'var(--color-accent-primary)', border: 'none', borderRadius: 'var(--radius-md)', fontWeight: 'var(--font-semibold)', cursor: 'pointer' }}
                 >
                   {isEditingProfile ? 'Cancel' : 'Edit Profile'}
                 </button>
