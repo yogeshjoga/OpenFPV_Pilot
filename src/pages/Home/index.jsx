@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
+import ReviewsSection from '@components/sections/ReviewsSection'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
 import styles from './Home.module.css'
 
@@ -278,6 +279,9 @@ export default function Home() {
 
       {/* ======= PREREQUISITES SLIDER ======= */}
       <PrerequisitesSlider />
+
+      {/* ======= REVIEWS ======= */}
+      <ReviewsSection />
 
       <section className={`section ${styles.ctaBanner}`}>
         <div className="container">

@@ -22,6 +22,34 @@ async function get(table, query) {
   }
 }
 
+async function rpc(name) {
+  if (!siteApiConfigured) throw new Error('Site content API is not configured')
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS)
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: '{}',
+      signal: ctrl.signal,
+    })
+    if (!res.ok) throw new Error(`${name}: ${res.status}`)
+    return await res.json()
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+/** Overall rating plus the reviews an admin chose to publish. Only name, rating, comment and description are returned. */
+export async function fetchReviews() {
+  const [stats, reviews] = await Promise.all([rpc('get_public_review_stats'), rpc('get_public_reviews')])
+  const s = stats?.[0]
+  return {
+    stats: s && Number(s.review_count) > 0 ? { count: Number(s.review_count), average: Number(s.avg_rating) } : null,
+    reviews: reviews.map((r) => ({ id: r.id, rating: r.rating, comment: r.comment, name: r.display_name, subtitle: r.subtitle })),
+  }
+}
+
 /** Published gallery: categories plus albums (with their published images). Row-level security hides drafts. */
 export async function fetchGallery() {
   const [categories, albums] = await Promise.all([

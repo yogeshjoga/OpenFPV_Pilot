@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
+import ReviewsSection from '@components/sections/ReviewsSection'
 import SidebarMenu from '@components/common/SidebarMenu'
 import styles from './Workshops.module.css'
 
@@ -264,6 +265,8 @@ export default function Workshops() {
         </section>
 
         {/* ── CONTACT / CTA ── */}
+        <ReviewsSection />
+
         <section className={styles.contactSection}>
           <div className="container">
             <motion.div
