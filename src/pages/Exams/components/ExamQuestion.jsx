@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../Exams.module.css';
+import { Check } from 'lucide-react'
 
 export default function ExamQuestion({ question, index, total, answer, onSelect, onNext }) {
   const pts = question.difficulty === 'hard' ? 3 : question.difficulty === 'medium' ? 2 : 1;
@@ -11,7 +12,7 @@ export default function ExamQuestion({ question, index, total, answer, onSelect,
         <div className={styles.qHeader}>
           <div className={styles.qTitle}>Q{index + 1}. {question.question.substring(0, 30)}...</div>
           <div className={isAnswered ? styles.statusSolved : styles.statusUnsolved}>
-            {isAnswered ? '✓ Solved' : 'Unsolved'}
+            {isAnswered ? <><Check size={14} aria-hidden="true" /> Solved</> : 'Unsolved'}
           </div>
         </div>
         

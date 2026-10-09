@@ -513,10 +513,14 @@
 }
 
 .guidelineCard li::before {
-  content: '✦';
+  content: '';
   position: absolute;
-  left: 0;
-  color: var(--color-accent-primary);
+  left: var(--space-1);
+  top: 0.6em;
+  width: var(--space-1);
+  height: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-primary);
 }
 
 .guidelineCard code {

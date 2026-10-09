@@ -1,6 +1,6 @@
 
 import { useState, useRef } from 'react'
-import { Download } from 'lucide-react'
+import { Download, ArrowLeft, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import styles from './Builder.module.css'
@@ -315,7 +315,7 @@ export default function Builder() {
               disabled={activeStep === 0}
               onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
             >
-              ← Back
+              <ArrowLeft size={16} aria-hidden="true" /> Back
             </button>
             {activeStep === steps.length - 1 ? (
               <button
@@ -331,7 +331,7 @@ export default function Builder() {
                 className={styles.primaryBtn}
                 onClick={() => setActiveStep((prev) => Math.min(steps.length - 1, prev + 1))}
               >
-                Next Step →
+                Next Step <ArrowRight size={16} aria-hidden="true" />
               </button>
             )}
           </div>

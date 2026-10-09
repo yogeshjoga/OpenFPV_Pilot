@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Lock } from 'lucide-react'
+import { Lock, ArrowLeft, ChevronRight } from 'lucide-react'
 import { useParams, Link } from 'react-router-dom'
 import PageWrapper from '@components/layout/PageWrapper'
 import { getProductById } from '@data/products'
 import { formatPrice } from '@lib/utils'
 
 import styles from './ProductDetail.module.css'
+import StarRating from '@components/ui/StarRating'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -20,7 +21,7 @@ export default function ProductDetail() {
            <div className={styles.notFound}>
              <h1>Product Not Found</h1>
              <p>The product you are looking for does not exist.</p>
-             <Link to="/shop" className={styles.backBtn}>← Back to Shop</Link>
+             <Link to="/shop" className={styles.backBtn}><ArrowLeft size={16} aria-hidden="true" /> Back to Shop</Link>
            </div>
         </div>
       </PageWrapper>
@@ -37,8 +38,8 @@ export default function ProductDetail() {
       <div className={styles.page}>
         <div className="container">
           <nav className={styles.breadcrumb}>
-            <Link to="/">Home</Link> <span>›</span>
-            <Link to="/shop">Shop</Link> <span>›</span>
+            <Link to="/">Home</Link> <span><ChevronRight size={14} aria-hidden="true" /></span>
+            <Link to="/shop">Shop</Link> <span><ChevronRight size={14} aria-hidden="true" /></span>
             <span>{name}</span>
           </nav>
 
@@ -65,7 +66,7 @@ export default function ProductDetail() {
             <div className={styles.productDetails}>
               <h1 className={styles.title}>{name}</h1>
               <div className={styles.ratingRow}>
-                <span className={styles.stars}>{"★".repeat(Math.floor(rating))}</span>
+                <StarRating value={rating} size={20} />
                 <span className={styles.ratingVal}>{rating.toFixed(1)}</span>
                 <span className={styles.reviewCount}>{reviews} ratings</span>
               </div>
@@ -144,7 +145,7 @@ export default function ProductDetail() {
              <div className={styles.reviewsSection}>
                <h2>Customer Reviews</h2>
                <div className={styles.reviewsSummary}>
-                  <div className={styles.starsSummary}>{"★".repeat(Math.floor(rating))} {rating} out of 5</div>
+                  <div className={styles.starsSummary}><StarRating value={rating} size={20} /> {rating} out of 5</div>
                   <p>{reviews} global ratings</p>
                </div>
                
@@ -157,7 +158,7 @@ export default function ProductDetail() {
                          <span>{review.user}</span>
                        </div>
                        <div className={styles.revTitleRow}>
-                          <span className={styles.revStars}>{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</span>
+                          <StarRating value={review.rating} size={16} />
                           <span className={styles.revTitle}>{review.title}</span>
                        </div>
                        <p className={styles.revDate}>Reviewed on {review.date}</p>

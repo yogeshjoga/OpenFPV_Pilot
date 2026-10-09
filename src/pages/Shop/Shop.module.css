@@ -328,10 +328,6 @@
   margin-bottom: var(--space-5);
 }
 
-.stars {
-  color: var(--color-accent-secondary);
-  font-size: var(--text-base);
-}
 
 .reviews {
   font-size: var(--text-sm);

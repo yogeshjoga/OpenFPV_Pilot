@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom'
 import PageWrapper from '@components/layout/PageWrapper'
 import styles from './Auth.module.css'
+import { X } from 'lucide-react'
 
 export default function Unauthorized() {
   return (
@@ -9,7 +10,7 @@ export default function Unauthorized() {
       <div className={styles.authFeedbackPage}>
         <div className="container">
           <div className={styles.feedbackCard}>
-            <span className={styles.errorIcon}>✕</span>
+            <span className={styles.errorIcon}><X size={56} aria-hidden="true" /></span>
             <h1>Access Denied</h1>
             <p>You do not have the required permissions to view this section. Please upgrade your account level or contact support.</p>
             <Link to="/" className="btn-primary">Return Home</Link>

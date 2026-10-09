@@ -127,3 +127,8 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Inline icons sit on the text line instead of floating above it */
+.lucide {
+  vertical-align: -0.15em;
+}

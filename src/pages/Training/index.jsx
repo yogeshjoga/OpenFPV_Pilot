@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { CalendarDays, Clock, BarChart3, Calendar, BookOpen, Wrench, Paperclip } from 'lucide-react'
+import { CalendarDays, Clock, BarChart3, Calendar, BookOpen, Wrench, Paperclip, ChevronRight, Check } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
@@ -158,7 +158,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
             <p className={styles.dayDuration}>⏱ {day.duration}</p>
           </div>
         </div>
-        <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>›</span>
+        <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}><ChevronRight size={24} aria-hidden="true" /></span>
       </button>
 
       {/* Accordion body */}
@@ -178,7 +178,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
                 <ul className={styles.topicList}>
                   {day.topics.map((t, i) => (
                     <li key={i} className={styles.topicItem}>
-                      <span className={styles.bullet} style={{ color: `color-mix(in srgb, ${color} 50%, var(--color-text-primary))` }}>▸</span>
+                      <span className={styles.bullet} style={{ color: `color-mix(in srgb, ${color} 50%, var(--color-text-primary))` }}><ChevronRight size={14} aria-hidden="true" /></span>
                       {t}
                     </li>
                   ))}
@@ -191,7 +191,7 @@ function DayCard({ day, index, isOpen, onToggle, color }) {
                 <ul className={styles.practicalList}>
                   {day.practicals.map((p, i) => (
                     <li key={i} className={styles.practicalItem}>
-                      <span className={styles.checkIcon}>✓</span>
+                      <span className={styles.checkIcon}><Check size={14} aria-hidden="true" /></span>
                       {p}
                     </li>
                   ))}

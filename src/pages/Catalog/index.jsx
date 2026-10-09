@@ -5,6 +5,7 @@ import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import { PART_CATEGORIES } from '@data/parts.jsx'
 import styles from './Catalog.module.css'
+import { ChevronRight, ChevronDown } from 'lucide-react'
 
 export default function Catalog() {
   const [activeId, setActiveId] = useState(PART_CATEGORIES[0].id)
@@ -145,7 +146,7 @@ export default function Catalog() {
                     >
                       <span>{cat.icon}</span>
                       <span>Learn about {cat.label}</span>
-                      <span className={styles.catNavArrow}>→</span>
+                      <span className={styles.catNavArrow}><ChevronRight size={16} aria-hidden="true" /></span>
                     </button>
                   )
                 ))}
@@ -208,7 +209,7 @@ function TypeCard({ item, color }) {
           onClick={() => setOpen(!open)}
           aria-label={open ? 'Collapse' : 'Expand specs'}
         >
-          <span style={{ transform: open ? 'rotate(180deg)' : 'rotate(0)', display: 'inline-block', transition: 'transform 0.25s' }}>▼</span>
+          <span style={{ transform: open ? 'rotate(180deg)' : 'rotate(0)', display: 'inline-block', transition: 'transform 0.25s' }}><ChevronDown size={18} aria-hidden="true" /></span>
         </button>
       </div>
 
@@ -228,7 +229,7 @@ function TypeCard({ item, color }) {
                 <ul className={styles.specsList}>
                   {item.specs.map((s, i) => (
                     <li key={i} className={styles.specItem}>
-                      <span style={{ color: `color-mix(in srgb, ${color} 50%, var(--color-text-primary))` }}>▸</span> {s}
+                      <span style={{ color: `color-mix(in srgb, ${color} 50%, var(--color-text-primary))` }}><ChevronRight size={14} aria-hidden="true" /></span> {s}
                     </li>
                   ))}
                 </ul>

@@ -30,38 +30,6 @@
   color: var(--color-text-secondary);
 }
 
-.stars {
-  display: inline-flex;
-  gap: var(--space-1);
-}
-
-.star {
-  position: relative;
-  display: inline-block;
-  flex: none;
-}
-
-.starFill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
-.starOn {
-  display: block;
-  max-width: none;
-  fill: var(--color-accent-secondary);
-  color: var(--color-accent-secondary);
-}
-
-.starOff {
-  display: block;
-  fill: var(--color-bg-card);
-  color: var(--color-accent-secondary);
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

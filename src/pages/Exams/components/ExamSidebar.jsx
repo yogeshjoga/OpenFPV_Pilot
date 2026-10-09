@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../Exams.module.css';
+import { Check } from 'lucide-react'
 
 export default function ExamSidebar({ questions, answers, currentView, onChangeView }) {
   return (
@@ -28,7 +29,7 @@ export default function ExamSidebar({ questions, answers, currentView, onChangeV
             <div className={styles.sidebarIcon}>
               <span>Q{idx + 1}</span>
               {isAnswered && (
-                <div className={styles.answeredTick}>✓</div>
+                <div className={styles.answeredTick}><Check size={10} aria-hidden="true" /></div>
               )}
             </div>
           </div>

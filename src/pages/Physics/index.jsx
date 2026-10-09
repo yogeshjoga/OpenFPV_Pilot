@@ -6,6 +6,7 @@ import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import { PHYSICS_SECTIONS } from '@data/physicsData.jsx'
 import styles from './Physics.module.css'
+import { ArrowRight } from 'lucide-react'
 
 export default function Physics() {
   const [activeSectionId, setActiveSectionId] = useState(PHYSICS_SECTIONS[0].id)
@@ -92,7 +93,7 @@ export default function Physics() {
                             <div className={styles.cardContent}>
                               <h3 className={styles.cardTitle}>{topic.title}</h3>
                               <p className={styles.cardText}>{topic.explanation}</p>
-                              <span className={styles.readMore}>Read Full Story →</span>
+                              <span className={styles.readMore}>Read Full Story <ArrowRight size={16} aria-hidden="true" /></span>
                             </div>
                           </Link>
                         </motion.article>

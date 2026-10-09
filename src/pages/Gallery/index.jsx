@@ -4,6 +4,7 @@ import PageWrapper from '@components/layout/PageWrapper'
 import manifest from '@data/galleryWorkshop1.json'
 import { fetchGallery } from '@lib/siteApi'
 import styles from './Gallery.module.css'
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const STATIC_BASE = `/gallery/${manifest.set}`
 const STATIC_CATEGORY = { id: 'static-workshops', name: 'Workshops', slug: 'workshops' }
@@ -96,7 +97,7 @@ export default function Gallery() {
             <>
               <div className={styles.albumHeader}>
                 <button type="button" className={styles.backBtn} onClick={() => openAlbum(null)}>
-                  ← All albums
+                  <ArrowLeft size={16} aria-hidden="true" /> All albums
                 </button>
                 <h2 className={styles.albumHeading}>{album.title}</h2>
                 <p className={styles.albumSub}>
@@ -188,7 +189,7 @@ export default function Gallery() {
                 }}
                 aria-label="Previous photo"
               >
-                ‹
+                <ChevronLeft size={28} aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -199,7 +200,7 @@ export default function Gallery() {
                 }}
                 aria-label="Next photo"
               >
-                ›
+                <ChevronRight size={28} aria-hidden="true" />
               </button>
             </>
           )}

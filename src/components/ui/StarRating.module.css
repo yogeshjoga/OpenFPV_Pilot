@@ -1,0 +1,32 @@
+.stars {
+  display: inline-flex;
+  gap: var(--space-1);
+  vertical-align: middle;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  flex: none;
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.on {
+  display: block;
+  max-width: none;
+  fill: var(--color-accent-secondary);
+  color: var(--color-accent-secondary);
+}
+
+.off {
+  display: block;
+  fill: var(--color-bg-card);
+  color: var(--color-accent-secondary);
+}

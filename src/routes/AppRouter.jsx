@@ -26,6 +26,7 @@ const Workshops = lazy(() => import('@pages/Workshops'))
 
 import ProtectedRoute from '@components/auth/ProtectedRoute'
 import { useAuthStore } from '@store/useAuthStore'
+import { ArrowLeft } from 'lucide-react'
 
 
 function ScrollToTop() {
@@ -103,7 +104,7 @@ export default function AppRouter() {
               <div style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 'var(--space-4)' }}>
                 <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-5xl)', color: 'var(--color-accent-primary)' }}>404</h1>
                 <p style={{ color: 'var(--color-text-secondary)' }}>Page not found</p>
-                <a href="/" style={{ color: 'var(--color-accent-primary)' }}>← Go Home</a>
+                <a href="/" style={{ color: 'var(--color-accent-primary)' }}><ArrowLeft size={16} aria-hidden="true" /> Go Home</a>
               </div>
             }
           />

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone } from 'lucide-react'
+import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import ReviewsSection from '@components/sections/ReviewsSection'
 import SidebarMenu from '@components/common/SidebarMenu'
@@ -254,7 +254,7 @@ export default function Workshops() {
                   <ul className={styles.domainTopics}>
                     {d.topics.map((t, j) => (
                       <li key={j} className={styles.domainTopic}>
-                        <span style={{ color: `color-mix(in srgb, ${d.color} 50%, var(--color-text-primary))` }}>▸</span> {t}
+                        <span style={{ color: `color-mix(in srgb, ${d.color} 50%, var(--color-text-primary))` }}><ChevronRight size={14} aria-hidden="true" /></span> {t}
                       </li>
                     ))}
                   </ul>

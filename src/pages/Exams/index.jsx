@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, Check, ArrowRight } from 'lucide-react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -447,7 +447,7 @@ export default function ExamPage() {
                             display: 'inline-block'
                           }}
                         >
-                          ✓ {topic}
+                          <Check size={14} aria-hidden="true" /> {topic}
                         </span>
                       ))}
                     </div>
@@ -584,7 +584,7 @@ export default function ExamPage() {
                       onClick={() => navigate('/catalog')} 
                       style={{ background: 'var(--color-error)', color: 'white', padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: 'var(--text-sm)' }}
                     >
-                      Go to Catalog →
+                      Go to Catalog <ArrowRight size={16} aria-hidden="true" />
                     </button>
                   </div>
                 )}

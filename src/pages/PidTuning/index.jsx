@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  Sparkles, Sliders, Play, RotateCcw, 
+  ToggleRight, Sliders, Play, RotateCcw, 
   Cpu, Compass, Activity, ShieldAlert, CheckCircle2 
 } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -77,7 +77,7 @@ const WIZARD_STEPS = [
   },
   {
     id: 'modes',
-    icon: Sparkles,
+    icon: ToggleRight,
     title: 'Modes Mapping',
     desc: 'Switches for Arm, Angle, & Beeper',
     content: (

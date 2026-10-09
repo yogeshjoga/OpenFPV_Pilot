@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../Exams.module.css';
+import { Check } from 'lucide-react'
 
 export default function ExamTable({ questions, answers, onSolve }) {
   return (
@@ -28,7 +29,7 @@ export default function ExamTable({ questions, answers, onSolve }) {
                 <td>{pts} {pts === 1 ? 'Point' : 'Points'}</td>
                 <td>
                   {isAnswered ? (
-                    <span className={styles.statusSolved}>✓ Attempted</span>
+                    <span className={styles.statusSolved}><Check size={14} aria-hidden="true" /> Attempted</span>
                   ) : (
                     <span className={styles.statusUnsolved}>Unattempted</span>
                   )}

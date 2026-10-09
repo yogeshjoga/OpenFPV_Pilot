@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Star } from 'lucide-react'
 import { fetchReviews } from '@lib/siteApi'
+import StarRating from '@components/ui/StarRating'
 import styles from './ReviewsSection.module.css'
 
 const MAX_CHARS = 320
@@ -11,27 +11,6 @@ function shorten(text) {
   if (clean.length <= MAX_CHARS) return clean
   const cut = clean.slice(0, MAX_CHARS)
   return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[.,;:!?-]+$/, '')}...`
-}
-
-/** Five stars filled to the exact value, so 4.7 shows four full stars and the fifth filled 70% from the left. */
-function Stars({ value, size = 18 }) {
-  return (
-    <span className={styles.stars} role="img" aria-label={`${value} out of 5 stars`}>
-      {[1, 2, 3, 4, 5].map((n) => {
-        const fill = Math.min(1, Math.max(0, value - (n - 1)))
-        return (
-          <span key={n} className={styles.star} style={{ width: size, height: size }} aria-hidden="true">
-            <Star size={size} className={styles.starOff} />
-            {fill > 0 && (
-              <span className={styles.starFill} style={{ width: `${fill * 100}%` }}>
-                <Star size={size} className={styles.starOn} />
-              </span>
-            )}
-          </span>
-        )
-      })}
-    </span>
-  )
 }
 
 /** Student ratings and the reviews staff chose to publish. Renders nothing if there is nothing to show or the data is unreachable. */
@@ -67,7 +46,7 @@ export default function ReviewsSection() {
           </h2>
           {stats && (
             <div className={styles.summary}>
-              <Stars value={stats.average} size={22} />
+              <StarRating value={stats.average} size={22} />
               <span>Based on {stats.count} student reviews</span>
             </div>
           )}
@@ -84,7 +63,7 @@ export default function ReviewsSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: Math.min(index, 5) * 0.05 }}
               >
-                <Stars value={r.rating} />
+                <StarRating value={r.rating} />
                 <blockquote className={styles.quote}>&ldquo;{shorten(r.comment)}&rdquo;</blockquote>
                 <figcaption className={styles.who}>
                   <strong>{r.name}</strong>

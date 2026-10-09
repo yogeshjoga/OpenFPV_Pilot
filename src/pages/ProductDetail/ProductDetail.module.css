@@ -111,10 +111,6 @@
   font-size: var(--text-sm);
 }
 
-.stars {
-  color: var(--color-accent-secondary);
-  font-size: var(--text-xl);
-}
 
 .ratingVal, .reviewCount {
   color: var(--color-accent-primary);
@@ -310,6 +306,9 @@
 }
 
 .starsSummary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   font-size: var(--text-xl);
   color: var(--color-accent-secondary);
   font-weight: var(--font-medium);
@@ -351,9 +350,6 @@
   margin-bottom: var(--space-1);
 }
 
-.revStars {
-  color: var(--color-accent-secondary);
-}
 
 .revTitle {
   font-weight: var(--font-semibold);

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ShieldCheck, Sparkles, ArrowRight } from 'lucide-react'
+import { ShieldCheck, Box, Gamepad2, ClipboardCheck, ArrowRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import styles from './Login.module.css'
 
@@ -39,7 +39,7 @@ export default function Login() {
             <div className={styles.featureList}>
               <div className={styles.featureItem}>
                 <div className={styles.featureIconWrapper}>
-                  <Sparkles size={18} />
+                  <Box size={18} />
                 </div>
                 <div>
                   <h4 className={styles.featureTitle}>3D Assembly Builder</h4>
@@ -48,7 +48,7 @@ export default function Login() {
               </div>
               <div className={styles.featureItem}>
                 <div className={styles.featureIconWrapper}>
-                  <Sparkles size={18} />
+                  <Gamepad2 size={18} />
                 </div>
                 <div>
                   <h4 className={styles.featureTitle}>Interactive Simulators</h4>
@@ -57,7 +57,7 @@ export default function Login() {
               </div>
               <div className={styles.featureItem}>
                 <div className={styles.featureIconWrapper}>
-                  <Sparkles size={18} />
+                  <ClipboardCheck size={18} />
                 </div>
                 <div>
                   <h4 className={styles.featureTitle}>Certification Exams</h4>

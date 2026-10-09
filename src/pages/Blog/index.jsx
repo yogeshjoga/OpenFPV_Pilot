@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '@components/layout/PageWrapper'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, ArrowLeft } from 'lucide-react'
 import { BLOGS } from '@data/blogs.jsx'
 import { fetchBlogPosts } from '@lib/siteApi'
 import Markdown from 'react-markdown'
@@ -55,7 +55,7 @@ export default function Blog() {
                 className={styles.backButton}
                 onClick={() => setSelectedBlog(null)}
               >
-                ← Back to Articles
+                <ArrowLeft size={16} aria-hidden="true" /> Back to Articles
               </button>
               <div className={styles.articleContent}>
                 {selectedBlog.cover && <img src={selectedBlog.cover} alt="" className={styles.articleCover} />}

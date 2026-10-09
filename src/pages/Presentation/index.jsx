@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  ArrowLeft, ArrowRight, RotateCcw, Play, Compass, Cpu, 
-  Gamepad2, Star, Shield, Award, Sparkles, Sliders, Activity 
-} from 'lucide-react'
+import { ArrowLeft, ArrowRight, RotateCcw, Play, Compass, Cpu, Gamepad2, Star, Shield, Award, Bot, Sliders, Activity, ChevronRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import DroneScene from '../Assembly3D/components/DroneScene'
 import styles from './Presentation.module.css'
@@ -57,9 +54,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 1: Electrical Safety</strong> — LiPo battery storage values, charge multipliers, and multimeter short circuit checks.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 2: Frame Dynamics</strong> — Stretched-X carbon fiber structural physics and Arm motor mounting torque.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 3: ESC Wiring</strong> — High-current dome soldering and DShot communications protocols.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 1: Electrical Safety</strong> — LiPo battery storage values, charge multipliers, and multimeter short circuit checks.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 2: Frame Dynamics</strong> — Stretched-X carbon fiber structural physics and Arm motor mounting torque.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 3: ESC Wiring</strong> — High-current dome soldering and DShot communications protocols.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -79,9 +76,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 4: Stacking & Damping</strong> — Soft-mounting the flight controller stack with silicone grommets to cancel noise.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 5: RX & VTX Links</strong> — Binding serial UART ExpressLRS receivers and analog/digital video channels.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 6: Betaflight Configuration</strong> — CLI resource remapping and OSD system parameters setup.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 4: Stacking & Damping</strong> — Soft-mounting the flight controller stack with silicone grommets to cancel noise.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 5: RX & VTX Links</strong> — Binding serial UART ExpressLRS receivers and analog/digital video channels.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 6: Betaflight Configuration</strong> — CLI resource remapping and OSD system parameters setup.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -101,9 +98,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 7: Bench Safety Checks</strong> — Smoke stopper test and failsafe props-off throttle verification.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 8: Sim Rate Mapping</strong> — Gimbal tension calibration and degrees/second rate curves mapping.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 9-10: Acro Attitude Hover</strong> — Yaw-roll coordination figure-8 flight loops without self-leveling.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 7: Bench Safety Checks</strong> — Smoke stopper test and failsafe props-off throttle verification.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 8: Sim Rate Mapping</strong> — Gimbal tension calibration and degrees/second rate curves mapping.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 9-10: Acro Attitude Hover</strong> — Yaw-roll coordination figure-8 flight loops without self-leveling.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -123,9 +120,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 11-12: Real Flight & Proximity</strong> — Wind shear compensation and avoiding turbulent prop-wash flows.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 13: PID & Dynamic Filtering</strong> — Gyroscopic noise cleanup using dynamic notch filters.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Day 14: Timed Gate Capstone</strong> — Flying the capstone course, troubleshooting board bugs, and graduation.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 11-12: Real Flight & Proximity</strong> — Wind shear compensation and avoiding turbulent prop-wash flows.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 13: PID & Dynamic Filtering</strong> — Gyroscopic noise cleanup using dynamic notch filters.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Day 14: Timed Gate Capstone</strong> — Flying the capstone course, troubleshooting board bugs, and graduation.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -176,9 +173,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Thrust & Lift Vectors</strong> — Applying Newton\'s Third Law and Bernoulli\'s Principle to generate wing lift.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Drag Factors</strong> — Identifying parasitic and induced drag on standard drone profiles.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Airspace Rules</strong> — Understanding local no-fly zones (red/yellow restrictions) and drone classification limits.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Thrust & Lift Vectors</strong> — Applying Newton\'s Third Law and Bernoulli\'s Principle to generate wing lift.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Drag Factors</strong> — Identifying parasitic and induced drag on standard drone profiles.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Airspace Rules</strong> — Understanding local no-fly zones (red/yellow restrictions) and drone classification limits.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -198,9 +195,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Mode 2 Stick Layout</strong> — Left stick yaw/throttle, right stick pitch/roll.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Altitude Maintenance</strong> — Fine-tuning hover stability by coordinating throttle percentages.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Team Rotation</strong> — Shared controllers encourage group reviews and telemetry correction tips.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Mode 2 Stick Layout</strong> — Left stick yaw/throttle, right stick pitch/roll.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Altitude Maintenance</strong> — Fine-tuning hover stability by coordinating throttle percentages.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Team Rotation</strong> — Shared controllers encourage group reviews and telemetry correction tips.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -245,9 +242,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Stationary Acro Hover</strong> — Individual hover tests in full pilot control (no leveling).</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Coordinated Bank Turns</strong> — Blending Yaw and Roll inputs to carve smooth tracks in the wind.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Basic Acrobatics</strong> — Executing Split-S reversals and power loops around virtual obstacles.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Stationary Acro Hover</strong> — Individual hover tests in full pilot control (no leveling).</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Coordinated Bank Turns</strong> — Blending Yaw and Roll inputs to carve smooth tracks in the wind.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Basic Acrobatics</strong> — Executing Split-S reversals and power loops around virtual obstacles.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -267,9 +264,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Ducted Props</strong> — Shrouded propeller physics: safety, lift optimization, and wall proximity.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Analog vs. Digital VTX</strong> — Penetration capabilities and video channel allocations.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Cinematic Camera Tilts</strong> — How camera tilt offset links speed directly with throttle percentage.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Ducted Props</strong> — Shrouded propeller physics: safety, lift optimization, and wall proximity.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Analog vs. Digital VTX</strong> — Penetration capabilities and video channel allocations.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Cinematic Camera Tilts</strong> — How camera tilt offset links speed directly with throttle percentage.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -289,9 +286,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Pre-flight Checks</strong> — Motor screw tightness, battery secure strapping, and failsafe arm tests.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Maiden Hover</strong> — Real-world takeoff and landing drift controls in localized wind conditions.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Target Tracking</strong> — Recording smooth video loops while tracking a target model.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Pre-flight Checks</strong> — Motor screw tightness, battery secure strapping, and failsafe arm tests.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Maiden Hover</strong> — Real-world takeoff and landing drift controls in localized wind conditions.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Target Tracking</strong> — Recording smooth video loops while tracking a target model.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -342,9 +339,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Ohm\'s Law in Drones</strong> — Wire gauge (AWG) thickness matching and massive capacitor soldering.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>FC stack mapping</strong> — Vibration soft-mounting and wiring harness pins allocation.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Solder Joint Standards</strong> — Preparing shiny, dome joints on motor pad solder locations.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Ohm\'s Law in Drones</strong> — Wire gauge (AWG) thickness matching and massive capacitor soldering.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>FC stack mapping</strong> — Vibration soft-mounting and wiring harness pins allocation.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Solder Joint Standards</strong> — Preparing shiny, dome joints on motor pad solder locations.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -364,9 +361,9 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Board Orientation Offset</strong> — Yaw calibrations when flight controllers are mounted sideways.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Resource Remapping</strong> — Using the command line interface (CLI) to remap damaged motor outputs.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Telemetry & Filters</strong> — Bi-directional DShot setup and active RPM filtering.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Board Orientation Offset</strong> — Yaw calibrations when flight controllers are mounted sideways.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Resource Remapping</strong> — Using the command line interface (CLI) to remap damaged motor outputs.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Telemetry & Filters</strong> — Bi-directional DShot setup and active RPM filtering.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
@@ -386,13 +383,13 @@ const DECKS = [
           <div className={styles.slideGrid2}>
             <div>
               <ul className={styles.bulletList}>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Companion Integration</strong> — Connecting Raspberry Pi boards to FC UART ports using MSP/MAVLink protocols.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>OpenCV Video Pipelines</strong> — Coding python scripts to recognize colors/shapes in the camera feed.</li>
-                <li><span className={styles.bulletDot}>▸</span> <strong>Telemetry Override</strong> — Injecting throttle and yaw corrections into the flight loop automatically.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Companion Integration</strong> — Connecting Raspberry Pi boards to FC UART ports using MSP/MAVLink protocols.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>OpenCV Video Pipelines</strong> — Coding python scripts to recognize colors/shapes in the camera feed.</li>
+                <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Telemetry Override</strong> — Injecting throttle and yaw corrections into the flight loop automatically.</li>
               </ul>
             </div>
             <div className={styles.slideCard}>
-              <div className={styles.slideCardHeader}><Sparkles size={16} /> AI Core</div>
+              <div className={styles.slideCardHeader}><Bot size={16} /> AI Core</div>
               <p className={styles.slideCardDesc}>
                 Students code a custom target-following pipeline that allows the quadcopter to maintain a hover lock on a target block autonomously.
               </p>
@@ -616,7 +613,7 @@ export default function Presentation() {
                     </div>
                     <div className={styles.deckMeta}>
                       <span>{deck.subtitle}</span>
-                      <span>{deck.slides.length} slides →</span>
+                      <span>{deck.slides.length} slides <ArrowRight size={16} aria-hidden="true" /></span>
                     </div>
                   </div>
                 ))}
@@ -693,9 +690,9 @@ export default function Presentation() {
                       <div className={styles.slideGrid2}>
                         <div>
                           <ul className={styles.bulletList}>
-                            <li><span className={styles.bulletDot}>▸</span> <strong>Chassis Inspection:</strong> Rotate the carbon fiber base frame to understand motor leverage.</li>
-                            <li><span className={styles.bulletDot}>▸</span> <strong>Electronics Layer:</strong> Review the placement of the 4-in-1 ESC and Flight Controller stack blocks.</li>
-                            <li><span className={styles.bulletDot}>▸</span> <strong>Propeller Spin Directions:</strong> Observe CW and CCW markings mapped on the propellers.</li>
+                            <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Chassis Inspection:</strong> Rotate the carbon fiber base frame to understand motor leverage.</li>
+                            <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Electronics Layer:</strong> Review the placement of the 4-in-1 ESC and Flight Controller stack blocks.</li>
+                            <li><span className={styles.bulletDot}><ChevronRight size={14} aria-hidden="true" /></span> <strong>Propeller Spin Directions:</strong> Observe CW and CCW markings mapped on the propellers.</li>
                           </ul>
                         </div>
                         <div className={styles.slide3DContainer}>

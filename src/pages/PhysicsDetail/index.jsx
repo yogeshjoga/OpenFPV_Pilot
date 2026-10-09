@@ -5,6 +5,7 @@ import PageWrapper from '@components/layout/PageWrapper'
 import { PHYSICS_SECTIONS } from '@data/physicsData.jsx'
 import styles from './PhysicsDetail.module.css'
 import { useEffect } from 'react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 export default function PhysicsDetail() {
   const { sectionId, topicId } = useParams()
@@ -24,7 +25,7 @@ export default function PhysicsDetail() {
       <PageWrapper>
         <div className="container" style={{ padding: 'var(--space-32) 0', textAlign: 'center' }}>
           <h2>Topic not found</h2>
-          <Link to="/physics" className="gradient-text">← Back to Physics</Link>
+          <Link to="/physics" className="gradient-text"><ArrowLeft size={16} aria-hidden="true" /> Back to Physics</Link>
         </div>
       </PageWrapper>
     )
@@ -97,7 +98,7 @@ export default function PhysicsDetail() {
 
                 <div className={styles.actions}>
                   <button onClick={() => navigate(-1)} className={styles.backBtn}>
-                    ← Go Back
+                    <ArrowLeft size={16} aria-hidden="true" /> Go Back
                   </button>
                   <Link to="/physics" className={styles.physicsBtn}>
                     Explore More Physics
@@ -131,7 +132,7 @@ export default function PhysicsDetail() {
                     Mastering these concepts is 90% of the battle in achieving a "locked-in" flight feel. 
                     Refer back to the Academy for practical application.
                   </p>
-                  <Link to="/training" className={styles.academyLink}>Visit Academy →</Link>
+                  <Link to="/training" className={styles.academyLink}>Visit Academy <ArrowRight size={16} aria-hidden="true" /></Link>
                 </div>
               </aside>
             </div>

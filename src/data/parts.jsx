@@ -1,4 +1,5 @@
 import { AlertTriangle, Award, BarChart2, Battery, Brain, Bug, Camera, Check, CheckCircle2, Circle, Construction, DollarSign, Eye, Fan, Film, Flag, Gamepad2, Hash, Hexagon, Leaf, Lightbulb, Link, MoveHorizontal, Plug, Plus, Radio, RadioReceiver, RefreshCw, Ruler, Scale, Settings, Shield, Square, Star, Target, Thermometer, Trash2, TrendingDown, Tv, Wrench, X, Zap } from 'lucide-react'
+import StarRating from '@components/ui/StarRating'
 // FPV Parts Encyclopedia Data
 // Educational reference for students
 
@@ -468,10 +469,10 @@ export const PART_CATEGORIES = [
         table: {
           headers: ['Gyro Chip', 'Quality', 'Notes'],
           rows: [
-            ['MPU6000', '★★★★★', 'Gold standard — low noise, reliable, excellent for tuning'],
-            ['ICM20689', '★★★★☆', 'Good. Slightly higher noise than MPU6000'],
-            ['ICM42688-P', '★★★★★', 'Modern standard — very low noise, fast sampling'],
-            ['BMI270', '★★★★☆', 'Good performance, common in newer budget FCs'],
+            ['MPU6000', <StarRating value={5} size={14} />, 'Gold standard — low noise, reliable, excellent for tuning'],
+            ['ICM20689', <StarRating value={4} size={14} />, 'Good. Slightly higher noise than MPU6000'],
+            ['ICM42688-P', <StarRating value={5} size={14} />, 'Modern standard — very low noise, fast sampling'],
+            ['BMI270', <StarRating value={4} size={14} />, 'Good performance, common in newer budget FCs'],
           ],
         },
       },

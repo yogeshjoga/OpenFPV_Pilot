@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react'
-import { Sun, Moon } from 'lucide-react'
+import { Sun, Moon, ArrowRight } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NAV_LINKS } from '@config/constants'
@@ -156,7 +156,7 @@ export default function Navbar() {
               )
             })}
             <Link to="/catalog" className={styles.mobileCta}>
-              Learn Today →
+              Learn Today <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <button className={styles.mobileThemeToggle} onClick={toggleTheme}>
               {theme === 'dark' ? 'Light mode' : 'Dark mode'}

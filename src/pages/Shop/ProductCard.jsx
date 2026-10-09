@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
 import styles from './Shop.module.css'
+import StarRating from '@components/ui/StarRating'
 
 export default function ProductCard({ product, index }) {
   return (
@@ -34,7 +35,7 @@ export default function ProductCard({ product, index }) {
           <h3 className={styles.cardTitle}>{product.name}</h3>
           
           <div className={styles.rating}>
-            <span className={styles.stars}>{"★".repeat(Math.floor(product.rating))}</span>
+            <StarRating value={product.rating} size={16} />
             <span className={styles.reviews}>({product.reviews})</span>
           </div>
 

@@ -1,7 +1,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Sparkles, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight } from 'lucide-react'
+import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { APP_NAME, APP_DESCRIPTION } from '@config/constants'
 import styles from './About.module.css'

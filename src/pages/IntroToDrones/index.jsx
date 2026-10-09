@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Target, Video, Bird, Flag, Mountain } from 'lucide-react'
+import { Target, Video, Bird, Flag, Mountain, ChevronRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import styles from './Intro.module.css'
 
@@ -144,7 +144,7 @@ export default function IntroToDrones() {
                 <p className={styles.cardDesc}>{type.desc}</p>
                 <ul className={styles.specList}>
                   {type.specs.map((spec, i) => (
-                    <li key={i}><span>▸</span> {spec}</li>
+                    <li key={i}><span><ChevronRight size={14} aria-hidden="true" /></span> {spec}</li>
                   ))}
                 </ul>
               </motion.div>
