@@ -19,7 +19,6 @@ export const NAV_LINKS = [
       { label: 'PID Tuning', path: '/pid-tuning' },
       { label: 'Simulator', path: '/simulator' },
       { label: '3D Assembly', path: '/assembly-3d' },
-      { label: 'Exams', path: '/exams' },
       { label: 'Presentations', path: '/presentation' },
     ],
     minLevel: 1 
