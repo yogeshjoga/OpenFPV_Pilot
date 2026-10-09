@@ -90,7 +90,7 @@ export default function Home() {
           <SketchfabEmbed
             uid="d6d764a022a94736b9f80ccd45cee754"
             title="Game Ready iFlight Nazgul Evoque F6X FPV Drone"
-            poster="/images/hero-drone-poster.webp"
+            poster="/images/hero-drone-poster-2.webp"
             posterClassName={styles.heroPoster}
             eager
           />
