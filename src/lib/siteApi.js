@@ -50,6 +50,12 @@ export async function fetchReviews() {
   }
 }
 
+/** Partners and collaborators to show on the Workshops page, in the order set in the CRM. Only name, link and logo are returned. */
+export async function fetchPartners() {
+  const rows = await get('site_partners', 'select=id,name,website_url,logo_path&is_published=eq.true&order=sort_order.asc,created_at.asc')
+  return rows.map((p) => ({ id: p.id, name: p.name, url: p.website_url, logo: mediaUrl(p.logo_path) }))
+}
+
 /** Published gallery: categories plus albums (with their published images). Row-level security hides drafts. */
 export async function fetchGallery() {
   const [categories, albums] = await Promise.all([

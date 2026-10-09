@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
+import PartnersSection from '@components/sections/PartnersSection'
 import styles from './Workshops.module.css'
 
 // ── Data ──────────────────────────────────────────────────────
@@ -262,6 +263,8 @@ export default function Workshops() {
             </div>
           </div>
         </section>
+
+        <PartnersSection />
 
         {/* ── CONTACT / CTA ── */}
         <section className={styles.contactSection}>
