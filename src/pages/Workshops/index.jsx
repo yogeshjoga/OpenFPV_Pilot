@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
+import { CONTACT_PHONE } from '@config/constants'
 import styles from './Workshops.module.css'
 
 // ── Data ──────────────────────────────────────────────────────
@@ -285,11 +286,11 @@ export default function Workshops() {
 
               <div className={styles.contactInfoRow}>
                 <a
-                  href="tel:+919110566354"
+                  href={CONTACT_PHONE.href}
                   className={styles.phoneBtn}
                   id="workshop-phone-cta"
                 >
-                  <Phone size={16} /> +91 9110566354
+                  <Phone size={16} /> {CONTACT_PHONE.display}
                 </a>
                 <a
                   href="https://www.linkedin.com/in/yogeshjoga/"

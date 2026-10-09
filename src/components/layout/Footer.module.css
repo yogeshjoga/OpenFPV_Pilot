@@ -27,12 +27,26 @@
   margin-bottom: var(--space-2);
 }
 
-.email a {
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contact li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+}
+.contact a {
   color: var(--color-accent-primary);
   font-size: var(--text-sm);
   text-decoration: none;
 }
-.email a:hover { text-decoration: underline; color: var(--color-accent-primary); }
+.contact a:hover { text-decoration: underline; color: var(--color-accent-primary); }
 
 .nav, .socials {
   display: flex;

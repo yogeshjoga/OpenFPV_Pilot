@@ -1,6 +1,7 @@
 
 import { Link } from 'react-router-dom'
-import { APP_NAME, APP_TAGLINE, NAV_LINKS, SOCIAL_LINKS, CONTACT_EMAIL } from '@config/constants'
+import { Mail, LifeBuoy, Phone } from 'lucide-react'
+import { APP_NAME, APP_TAGLINE, NAV_LINKS, SOCIAL_LINKS, CONTACT_EMAIL, SUPPORT_EMAIL, CONTACT_PHONE } from '@config/constants'
 import styles from './Footer.module.css'
 
 export default function Footer() {
@@ -15,9 +16,20 @@ export default function Footer() {
             <img className={styles.logoImg} src="/images/logo-egire-robotics.png" alt="EGIRE Robotics: Explore, Engineer, Excel" width="165" height="56" />
           </Link>
           <p className={styles.tagline}>{APP_TAGLINE}</p>
-          <p className={styles.email}>
-            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-          </p>
+          <ul className={styles.contact}>
+            <li>
+              <Mail size={16} aria-hidden="true" />
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            </li>
+            <li>
+              <LifeBuoy size={16} aria-hidden="true" />
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+            </li>
+            <li>
+              <Phone size={16} aria-hidden="true" />
+              <a href={CONTACT_PHONE.href}>{CONTACT_PHONE.display}</a>
+            </li>
+          </ul>
         </div>
 
         {/* Navigation */}

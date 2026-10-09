@@ -48,7 +48,9 @@ export const SOCIAL_LINKS = {
   discord: 'https://discord.gg',
 }
 
-export const CONTACT_EMAIL = 'hello@EGIREROBOTICSpilot.com'
+export const CONTACT_EMAIL = 'contact@egirerobotics.com'
+export const SUPPORT_EMAIL = 'support@egirerobotics.com'
+export const CONTACT_PHONE = { display: '+91 8500126104', href: 'tel:+918500126104' }
 
 // Three.js / R3F scene defaults
 export const SCENE_DEFAULTS = {
