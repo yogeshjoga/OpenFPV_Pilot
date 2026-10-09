@@ -2,7 +2,7 @@
    EGIREROBOTICS — Global Styles
    ================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 @import './tokens.css';
 @import './animations.css';
@@ -26,7 +26,7 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-body);
   font-weight: var(--font-normal);
-  line-height: 1.6;
+  line-height: var(--leading-normal);
   overflow-x: hidden;
   min-height: 100dvh;
 }
@@ -40,27 +40,40 @@ body {
 /* === TYPOGRAPHY === */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: var(--font-bold);
-  line-height: 1.2;
-  letter-spacing: 0.02em;
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
 }
 
-p { line-height: 1.7; }
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+h5 { font-size: var(--text-base); }
+h6 { font-size: var(--text-sm); }
+
+p { line-height: var(--leading-normal); }
 a { color: var(--color-accent-primary); text-decoration: none; transition: color var(--transition-fast); }
-a:hover { color: var(--color-text-primary); }
+a:hover { color: var(--color-accent-secondary); }
 
 img, video { max-width: 100%; display: block; }
 button { cursor: pointer; font-family: inherit; }
 input, textarea, select { font-family: inherit; }
 
+:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
 /* === SCROLLBAR === */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--color-bg-primary); }
 ::-webkit-scrollbar-thumb { background: var(--color-border-hover); border-radius: var(--radius-full); }
-::-webkit-scrollbar-thumb:hover { background: var(--color-accent-primary); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
 
 /* === SELECTION === */
-::selection { background-color: rgba(0, 212, 255, 0.25); color: var(--color-text-primary); }
+::selection { background-color: rgba(var(--color-accent-primary-rgb), 0.2); color: var(--color-text-primary); }
 
 /* === UTILITIES === */
 .container {
@@ -80,17 +93,13 @@ input, textarea, select { font-family: inherit; }
   padding: var(--space-24) 0;
 }
 
+/* Emphasised word inside a headline: one solid accent colour, no gradient */
 .gradient-text {
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-accent-secondary);
 }
 
 .glass {
-  background: var(--color-bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--color-bg-card);
   border: 1px solid var(--color-border);
 }
 
@@ -108,4 +117,13 @@ input, textarea, select { font-family: inherit; }
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
