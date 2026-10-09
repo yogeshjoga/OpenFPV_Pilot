@@ -18,7 +18,7 @@
   /* Feather only the left edge so it perfectly blends into the white hero section */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%);
   mask-image: linear-gradient(to right, transparent 0%, black 15%);
-  pointer-events: none; /* Let clicks pass through where possible */
+  pointer-events: none;
 }
 
 /* By forcing the iframe to be extremely wide but standard height, 
@@ -30,7 +30,7 @@
   height: 65%; /* perfectly zoomed out 35% */
   top: 10%; /* shifted slightly up to reduce upper space */
   left: -50%;
-  pointer-events: auto;
+  pointer-events: none; /* spins on its own; no drag, zoom or pan */
   border: none;
   outline: none;
   /* Feather the iframe's sharp top and bottom edges internally so they disappear completely, without cutting off the props horizontally! */
@@ -478,6 +478,7 @@
   width: 100%;
   height: 100%;
   border: none;
+  pointer-events: none;
 }
 
 .bannerTitle {

@@ -94,7 +94,8 @@ export default function Home() {
               execution-while-out-of-viewport="true"
               execution-while-not-rendered="true"
               web-share="true"
-              src="https://sketchfab.com/models/d6d764a022a94736b9f80ccd45cee754/embed?autostart=1&transparent=1&ui_theme=light&ui_infos=0&ui_watermark=0&ui_watermark_link=0&ui_hint=0&ui_stop=0&autospin=1"
+              src="https://sketchfab.com/models/d6d764a022a94736b9f80ccd45cee754/embed?autostart=1&transparent=1&ui_theme=light&ui_infos=0&ui_watermark=0&ui_watermark_link=0&ui_hint=0&ui_stop=0&ui_controls=0&ui_inspector=0&ui_help=0&autospin=1"
+              tabIndex={-1}
             ></iframe>
           </div>
         </div>
@@ -315,6 +316,7 @@ export default function Home() {
                   execution-while-not-rendered="true"
                   web-share="true"
                   src="https://sketchfab.com/models/15dd7ffce5724af0afcc62b00545c401/embed?autostart=1&transparent=1&ui_theme=dark&ui_infos=0&ui_watermark=0&ui_watermark_link=0&ui_hint=0&ui_stop=0&ui_controls=0&ui_inspector=0&ui_help=0&autospin=1"
+                  tabIndex={-1}
                 ></iframe>
               </div>
             </div>
