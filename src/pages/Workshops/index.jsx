@@ -185,7 +185,7 @@ export default function Workshops() {
                 </a>
               </div>
 
-              <p className={styles.heroFee}>Fees start from {FEES.workshopFrom}</p>
+              <p className={styles.heroFee}>Fees start from {FEES.workshopFrom} per person</p>
 
               <div className={styles.designedFor}>
                 <span className={styles.designedForLabel}>Designed for</span>

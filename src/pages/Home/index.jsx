@@ -20,7 +20,7 @@ const ALL_PREREQS = PREREQUISITES_DATA.flatMap(cat => cat.items.map(item => ({ .
 const STATS = [
   { value: '7 days', label: 'Hands-on piloting workshop' },
   { value: 'Sim + real', label: 'Simulator and real FPV flying' },
-  { value: '60+', label: 'Satisfied students in FPV piloting' },
+  { value: '60+', label: 'Students enrolled in FPV piloting' },
 ]
 
 // Training programs, for learners from age 5 to 45
@@ -403,6 +403,9 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+          <p className={styles.statsPromise}>
+            Our promise: our best in every session, with no compromise on teaching and training.
+          </p>
         </div>
       </section>
 

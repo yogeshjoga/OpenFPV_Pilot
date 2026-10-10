@@ -118,7 +118,7 @@ export default function Enquire() {
               <li>We suggest the right program, dates and fees.</li>
             </ol>
             <p className={styles.fees}>
-              Fees start from {FEES.workshopFrom}. Demo sessions start from {FEES.demoFrom}.
+              Fees start from {FEES.workshopFrom} per person. Demo sessions start from {FEES.demoFrom}.
             </p>
 
             <h2 className={styles.sideHeading}>Prefer to talk?</h2>

@@ -227,6 +227,14 @@
   gap: var(--space-4);
 }
 
+.statsPromise {
+  margin: var(--space-8) auto 0;
+  max-width: 640px;
+  text-align: center;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+}
+
 .statCard {
   display: flex;
   flex-direction: column;

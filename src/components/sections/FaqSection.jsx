@@ -26,7 +26,7 @@ const FAQS = [
   },
   {
     q: 'What is the fee?',
-    a: `Fees start from ${FEES.workshopFrom} and depend on the program and the number of students. Call ${CONTACT_PHONE.display}, WhatsApp ${WHATSAPP.display} or email ${CONTACT_EMAIL} for the exact fee.`,
+    a: `Fees start from ${FEES.workshopFrom} per person and depend on the program and the number of students. Call ${CONTACT_PHONE.display}, WhatsApp ${WHATSAPP.display} or email ${CONTACT_EMAIL} for the exact fee.`,
   },
   {
     q: 'Can I try a session before joining?',
