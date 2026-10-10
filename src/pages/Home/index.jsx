@@ -6,6 +6,7 @@ import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight,
 import PageWrapper from '@components/layout/PageWrapper'
 import SketchfabEmbed from '@components/common/SketchfabEmbed'
 import FaqSection from '@components/sections/FaqSection'
+import WorkshopVideo from '@components/sections/WorkshopVideo'
 import { fetchReviews } from '@lib/siteApi'
 import { CONTACT_PHONE } from '@config/constants'
 import { optimized } from '@lib/img'
@@ -223,6 +224,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* ======= WORKSHOP VIDEO ======= */}
+      <WorkshopVideo />
 
       {/* ======= TRAINING PROGRAMS ======= */}
       <section className={`section ${styles.programsSection}`} aria-labelledby="programs-title">

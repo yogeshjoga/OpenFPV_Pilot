@@ -20,9 +20,9 @@ const SECTIONS = [
     ],
   },
   {
-    title: 'Photos',
+    title: 'Photos and videos',
     body: [
-      'The gallery shows photos taken at our workshops and events. If you or your child appears in a photo and you would like it removed, email us and we will take it down.',
+      'The gallery and workshop video show photos and footage taken at our workshops and events. If you or your child appears in one and you would like it removed, email us and we will take it down.',
     ],
   },
   {
