@@ -157,8 +157,8 @@ export default function About() {
               <p className={styles.eyebrow}>About Us</p>
               <h1 className={styles.title}>Built for Pilots,<br />by <span className="gradient-text">Pilots</span></h1>
               <p className={styles.sub}>
-                EGIRE Robotics trains engineering students to build, tune and fly FPV drones through
-                hands-on workshops at colleges across India.
+                EGIRE Robotics teaches drones, AI and robotics, from building and flying FPV drones to
+                LLMs, AI agents and the ROS robotics stack, through hands-on training for learners of all ages.
               </p>
             </motion.div>
 

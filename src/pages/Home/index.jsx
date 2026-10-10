@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check, Clapperboard, Box, Radar, ScanLine, Trophy, Settings, ShieldCheck, Tv } from 'lucide-react'
+import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check, Clapperboard, Box, Radar, ScanLine, Trophy, Settings, ShieldCheck, Tv, Bot } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SketchfabEmbed from '@components/common/SketchfabEmbed'
 import { optimized } from '@lib/img'
@@ -59,6 +59,25 @@ const LEARNING_AREAS = [
     icon: <CircuitBoard size={24} />,
     title: 'Build and research',
     items: ['PCB design', 'Drone research', 'And much more'],
+  },
+]
+
+// Beyond drones: the software and hardware behind intelligent machines
+const AI_ROBOTICS = [
+  {
+    icon: <Brain size={24} />,
+    title: 'AI and machine learning',
+    items: ['LLMs', 'AI agents', 'Machine learning', 'Deep learning models'],
+  },
+  {
+    icon: <Bot size={24} />,
+    title: 'Robotics',
+    items: ['Humanoid robots', 'AI-integrated robots', 'ROS and ROS 2 robotic stack'],
+  },
+  {
+    icon: <CircuitBoard size={24} />,
+    title: 'Engineering foundations',
+    items: ['Linux', 'Python', 'C++ and Embedded C', 'PCB design'],
   },
 ]
 
@@ -240,6 +259,46 @@ export default function Home() {
 
           <div className={styles.learnGrid}>
             {LEARNING_AREAS.map((area, index) => (
+              <motion.div
+                key={area.title}
+                className={styles.learnCard}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+              >
+                <div className={styles.learnIcon}>{area.icon}</div>
+                <h3 className={styles.learnTitle}>{area.title}</h3>
+                <ul className={styles.learnList}>
+                  {area.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ======= AI AND ROBOTICS ======= */}
+      <section className={`section ${styles.aiSection}`} aria-labelledby="ai-title">
+        <div className="container">
+          <motion.div
+            className={styles.sectionHeader}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className={styles.sectionEyebrow}>AI and robotics</p>
+            <h2 id="ai-title" className={styles.sectionTitle}>More than drones</h2>
+            <p className={styles.sectionSub}>
+              We go deep into AI and the robotics stack, from language models and agents to humanoid robots and the code and circuits that run them.
+            </p>
+          </motion.div>
+
+          <div className={`${styles.learnGrid} ${styles.aiGrid}`}>
+            {AI_ROBOTICS.map((area, index) => (
               <motion.div
                 key={area.title}
                 className={styles.learnCard}

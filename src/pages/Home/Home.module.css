@@ -718,6 +718,20 @@
   }
 }
 
+.aiSection {
+  background: var(--color-bg-secondary);
+}
+
+.aiGrid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .aiGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .learnSection {
   background: var(--color-bg-primary);
 }
