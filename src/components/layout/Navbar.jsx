@@ -128,7 +128,7 @@ export default function Navbar() {
           {[0, 1, 2, 3].map((copy) => (
             <ul key={copy} className={styles.tickerList} aria-hidden={copy > 0 ? 'true' : undefined}>
               {/* the badge marks where the message starts each time the strip loops round */}
-              <li>
+              <li className={styles.tickerLead}>
                 <span className={styles.tickerBadge}>New</span>
                 {ANNOUNCEMENT_LEAD}
               </li>

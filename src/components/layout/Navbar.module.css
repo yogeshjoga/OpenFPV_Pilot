@@ -423,6 +423,11 @@
   white-space: nowrap;
   font-family: var(--font-body);
   font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+}
+
+/* the opening message is the heaviest text in the strip, after the badge */
+.tickerLead {
   font-weight: var(--font-semibold);
 }
 
@@ -433,7 +438,7 @@
   background: var(--color-on-accent);
   color: var(--color-accent-primary);
   font-size: var(--text-xs);
-  font-weight: var(--font-bold);
+  font-weight: var(--font-semibold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
