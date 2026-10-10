@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /unauthorized
+
+Sitemap: https://www.egirerobotics.com/sitemap.xml

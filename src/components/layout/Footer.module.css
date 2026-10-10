@@ -116,3 +116,13 @@
 [data-theme='dark'] .logoImg {
   filter: invert(1);
 }
+
+.legalLink {
+  margin-left: var(--space-3);
+  color: inherit;
+  text-decoration: underline;
+}
+
+.legalLink:hover {
+  color: var(--color-accent-primary);
+}

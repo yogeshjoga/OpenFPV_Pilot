@@ -498,6 +498,12 @@
   margin-bottom: var(--space-4);
 }
 
+.bannerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
 .bannerSub {
   color: var(--color-text-secondary);
   margin-bottom: var(--space-8);

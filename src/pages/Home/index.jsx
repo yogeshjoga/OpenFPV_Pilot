@@ -5,6 +5,10 @@ import { useState, useEffect } from 'react'
 import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check, Clapperboard, Box, Radar, ScanLine, Trophy, Settings, ShieldCheck, Tv, Bot } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SketchfabEmbed from '@components/common/SketchfabEmbed'
+import FaqSection from '@components/sections/FaqSection'
+import { fetchReviews } from '@lib/siteApi'
+import { enquiryLink } from '@lib/contact'
+import { CONTACT_PHONE } from '@config/constants'
 import { optimized } from '@lib/img'
 import ReviewsSection from '@components/sections/ReviewsSection'
 import PartnersSection from '@components/sections/PartnersSection'
@@ -17,7 +21,6 @@ const STATS = [
   { value: '10 days', label: 'Hands-on piloting workshop' },
   { value: 'Sim + real', label: 'Simulator and real FPV flying' },
   { value: '1st in India', label: 'Workshop of its kind' },
-  { value: '8', label: 'Drone part categories in the catalog' },
 ]
 
 // Training programs, for learners from age 5 to 45
@@ -115,6 +118,23 @@ const ROADMAP_STEPS = [
 ]
 
 export default function Home() {
+  const [rating, setRating] = useState(null)
+
+  useEffect(() => {
+    let live = true
+    fetchReviews()
+      .then((d) => live && d.stats && setRating(d.stats))
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [])
+
+  // The last stat is the real student rating from the CRM, left out if it cannot be reached
+  const stats = rating
+    ? [...STATS, { value: `${rating.average.toFixed(1)} / 5`, label: `Average from ${rating.count} student reviews` }]
+    : STATS
+
   return (
     <PageWrapper fullHeight>
       {/* ======= HERO ======= */}
@@ -151,9 +171,9 @@ export default function Home() {
               <Link to="/workshops" className={styles.primaryBtn}>
                 See workshops
               </Link>
-              <Link to="/catalog" className={styles.ghostBtn}>
-                Explore parts <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
-              </Link>
+              <a href={enquiryLink('Free demo session request', 'A free demo session')} className={styles.ghostBtn}>
+                Book a free demo <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
+              </a>
             </div>
           </motion.div>
         </div>
@@ -366,7 +386,7 @@ export default function Home() {
       <section className={`section ${styles.statsSection}`}>
         <div className="container">
           <div className={styles.statsGrid}>
-            {STATS.map((s, i) => (
+            {stats.map((s, i) => (
               <motion.div
                 key={s.label}
                 className={styles.statCard}
@@ -392,6 +412,8 @@ export default function Home() {
       {/* ======= PARTNERS ======= */}
       <PartnersSection />
 
+      <FaqSection />
+
       <section className={`section ${styles.ctaBanner}`}>
         <div className="container">
           <motion.div
@@ -403,14 +425,22 @@ export default function Home() {
           >
             <div className={styles.bannerContent}>
               <h2 className={styles.bannerTitle}>
-                Ready to <span className="gradient-text">Take Flight?</span>
+                Ready to <span className="gradient-text">get started?</span>
               </h2>
               <p className={styles.bannerSub}>
-                Start your FPV journey today, build, tune, and fly your first freestyle drone. Master the basics before taking to the real skies.
+                Register for a workshop, book a demo session, or talk to a mentor. We will help you choose the right program.
               </p>
-              <Link to="/builder" className={styles.primaryBtn}>
-                Quote Your First Build <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
-              </Link>
+              <div className={styles.bannerActions}>
+                <a href={enquiryLink('Workshop registration', 'Registering for a workshop')} className={styles.primaryBtn}>
+                  Register <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
+                </a>
+                <a href={enquiryLink('Free demo session request', 'A free demo session')} className={styles.ghostBtn}>
+                  Book a free demo
+                </a>
+                <a href={CONTACT_PHONE.href} className={styles.ghostBtn}>
+                  Talk to a mentor
+                </a>
+              </div>
             </div>
 
             <div className={styles.banner3D}>

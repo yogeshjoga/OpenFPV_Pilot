@@ -6,8 +6,10 @@ import { BLOGS } from '@data/blogs.jsx'
 import { fetchBlogPosts } from '@lib/siteApi'
 import Markdown from 'react-markdown'
 import styles from './Blog.module.css'
+import useDocumentMeta from '@lib/useDocumentMeta'
 
 export default function Blog() {
+  useDocumentMeta('Blog | EGIRE Robotics', 'Articles on FPV drones, AI and robotics training from the EGIRE Robotics team.')
   const [selectedBlog, setSelectedBlog] = useState(null)
   const [feed, setFeed] = useState({ status: 'loading', posts: [] })
 

@@ -6,6 +6,7 @@ import PageWrapper from '@components/layout/PageWrapper'
 import { fetchReviews } from '@lib/siteApi'
 import StarRating from '@components/ui/StarRating'
 import styles from './About.module.css'
+import useDocumentMeta from '@lib/useDocumentMeta'
 
 const VALUES = [
   { icon: <BookOpen size={24} />, title: 'Learn by Building', desc: 'Every lesson is hands-on, you build a real drone, not a simulation.' },
@@ -122,6 +123,7 @@ const slideVariants = {
 }
 
 export default function About() {
+  useDocumentMeta('About EGIRE Robotics | Team and mission', 'Meet the team behind EGIRE Robotics: drones, AI and robotics training for learners of all ages.')
   const [[page, direction], setPage] = useState([0, 0])
   const [rating, setRating] = useState(null)
 

@@ -6,6 +6,7 @@ import sivani from '@data/gallerySivani.json'
 import { fetchGallery } from '@lib/siteApi'
 import styles from './Gallery.module.css'
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
+import useDocumentMeta from '@lib/useDocumentMeta'
 
 const STATIC_CATEGORY = { id: 'static-workshops', name: 'Workshops', slug: 'workshops' }
 
@@ -41,6 +42,7 @@ const formatDate = (d) =>
   d ? new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ''
 
 export default function Gallery() {
+  useDocumentMeta('Gallery | EGIRE Robotics', 'Photos from EGIRE Robotics workshops, flying sessions and events.')
   const [remote, setRemote] = useState(null)
   const [categoryId, setCategoryId] = useState('all')
   const [albumId, setAlbumId] = useState(null)

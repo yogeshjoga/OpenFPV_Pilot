@@ -4,6 +4,7 @@ import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, Boo
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import styles from './Workshops.module.css'
+import useDocumentMeta from '@lib/useDocumentMeta'
 
 // ── Data ──────────────────────────────────────────────────────
 const AUDIENCES = [
@@ -146,6 +147,7 @@ const DOMAINS = [
 
 // ── Component ──────────────────────────────────────────────────
 export default function Workshops() {
+  useDocumentMeta('College Drone, AI & Robotics Workshops | EGIRE Robotics', 'Hands-on FPV drone, AI and robotics workshops and a 90-day course for universities, engineering colleges and learners aged 5 to 45.')
   const [activeLevel, setActiveLevel] = useState('special')
   const level = LEVELS.find(l => l.id === activeLevel)
 

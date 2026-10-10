@@ -41,10 +41,11 @@ export const PRODUCT_CATEGORIES = [
   { id: 'goggles', label: 'Goggles' },
 ]
 
+// Real profile links only. A link left empty is not shown, so visitors are never sent to a generic home page.
 export const SOCIAL_LINKS = {
-  youtube: 'https://youtube.com',
-  instagram: 'https://instagram.com',
-  discord: 'https://discord.gg',
+  youtube: '',
+  instagram: '',
+  discord: '',
 }
 
 export const CONTACT_EMAIL = 'contact@egirerobotics.com'

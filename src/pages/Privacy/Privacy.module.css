@@ -1,0 +1,46 @@
+.page {
+  padding: var(--space-16) 0 var(--space-24);
+}
+
+.container {
+  max-width: 760px;
+}
+
+.eyebrow {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-secondary);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: var(--font-extrabold);
+  line-height: 1.1;
+  margin-bottom: var(--space-3);
+}
+
+.updated {
+  margin-bottom: var(--space-12);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.heading {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+}
+
+.text {
+  margin-bottom: var(--space-3);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
