@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight, MapPin, Award } from 'lucide-react'
+import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight, MapPin, Award, Sprout, Cpu, Stethoscope } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { fetchReviews } from '@lib/siteApi'
 import StarRating from '@components/ui/StarRating'
@@ -29,6 +29,14 @@ const SANTHOSH_TAGS = [
   { icon: <Activity size={16} />, label: 'Simulation & Analysis' },
   { icon: <Layers size={16} />, label: 'CATIA & 3DExperience' },
   { icon: <Telescope size={16} />, label: 'Design Researcher' },
+]
+
+const SHILPA_TAGS = [
+  { icon: <Sprout size={16} />, label: 'Smart Agriculture' },
+  { icon: <Cpu size={16} />, label: 'IIoT & Drones' },
+  { icon: <Plane size={16} />, label: 'FPV Pilot' },
+  { icon: <Stethoscope size={16} />, label: 'Plant Doctor' },
+  { icon: <GraduationCap size={16} />, label: 'B.Sc. Agriculture' },
 ]
 
 const TEAM_MEMBERS = [
@@ -59,6 +67,18 @@ const TEAM_MEMBERS = [
     links: [
       { id: 'santhosh-linkedin-link', label: 'LinkedIn', url: 'https://www.linkedin.com/', isLinkedin: true }
     ]
+  },
+  {
+    id: 'shilpa',
+    name: 'Shilpa Ambali',
+    role: 'Smart Agriculture Researcher',
+    bio: 'Smart Agriculture Researcher applying IIoT and drones to farming. B.Sc. Agriculture graduate, expert FPV pilot and a plant doctor who uses smart technology to look after crop health.',
+    image: '/images/opt/shilpa-ambali-960.webp',
+    photoPosition: 'center 62%',
+    badgeText: 'FPV Pilot',
+    tags: SHILPA_TAGS,
+    glowStyle: {},
+    links: []
   }
 ]
 
