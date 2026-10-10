@@ -1,13 +1,69 @@
-.page { padding-bottom: var(--space-24); }
+.page { padding-bottom: var(--space-12); }
 
 /* === HERO === */
 .hero {
-  padding: var(--space-24) 0 var(--space-16);
+  padding: var(--space-12) 0 0;
   background: var(--color-bg-secondary);
   border-bottom: 1px solid var(--color-border);
 }
 
-.heroContent { max-width: 640px; }
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: var(--space-12);
+  align-items: center;
+}
+
+.heroContent { max-width: 600px; }
+
+.heroPhoto {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.heroPhoto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.fact {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.fact strong {
+  display: block;
+  color: var(--color-text-primary);
+  font-weight: var(--font-semibold);
+}
+
+.fact > svg,
+.fact > span:first-child {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-accent-secondary);
+}
 
 .eyebrow {
   margin-bottom: var(--space-4);
@@ -22,7 +78,7 @@
   font-size: var(--text-h1);
   font-weight: var(--font-extrabold);
   line-height: 1.1;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
 }
 
 .sub {
@@ -35,7 +91,7 @@
   font-family: var(--font-display);
   font-size: var(--text-h2);
   font-weight: var(--font-extrabold);
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-6);
 }
 
 /* === VALUES === */
@@ -46,7 +102,7 @@
 }
 
 .valueCard {
-  padding: var(--space-8);
+  padding: var(--space-6);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
@@ -54,7 +110,7 @@
 }
 .valueCard:hover { border-color: var(--color-border-hover); }
 
-.valueIcon { font-size: var(--text-3xl); display: block; margin-bottom: var(--space-4); }
+.valueIcon { font-size: var(--text-3xl); display: block; margin-bottom: var(--space-3); color: var(--color-accent-secondary); }
 
 .valueTitle {
   font-family: var(--font-body);
@@ -326,5 +382,18 @@
   }
   .sliderWindow {
     min-height: auto;
+  }
+}
+
+.valuesSection,
+.teamSection {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
   }
 }

@@ -1,9 +1,10 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight } from 'lucide-react'
+import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight, MapPin, Award } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
-import { APP_NAME, APP_DESCRIPTION } from '@config/constants'
+import { fetchReviews } from '@lib/siteApi'
+import StarRating from '@components/ui/StarRating'
 import styles from './About.module.css'
 
 const VALUES = [
@@ -81,6 +82,17 @@ const slideVariants = {
 
 export default function About() {
   const [[page, direction], setPage] = useState([0, 0])
+  const [rating, setRating] = useState(null)
+
+  useEffect(() => {
+    let live = true
+    fetchReviews()
+      .then((d) => live && d.stats && setRating(d.stats))
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [])
 
   const paginate = (newDirection) => {
     const nextIdx = (page + newDirection + TEAM_MEMBERS.length) % TEAM_MEMBERS.length
@@ -94,7 +106,7 @@ export default function About() {
       <div className={styles.page}>
         {/* Hero */}
         <section className={styles.hero}>
-          <div className="container">
+          <div className={`container ${styles.heroGrid}`}>
             <motion.div
               className={styles.heroContent}
               initial={{ opacity: 0, y: 24 }}
@@ -103,8 +115,50 @@ export default function About() {
             >
               <p className={styles.eyebrow}>About Us</p>
               <h1 className={styles.title}>Built for Pilots,<br />by <span className="gradient-text">Pilots</span></h1>
-              <p className={styles.sub}>{APP_DESCRIPTION}</p>
+              <p className={styles.sub}>
+                EGIRE Robotics trains engineering students to build, tune and fly FPV drones through
+                hands-on workshops at colleges across India.
+              </p>
             </motion.div>
+
+            <motion.figure
+              className={styles.heroPhoto}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+            >
+              <img
+                src="/gallery/workshop-1/thumb/roph9613.webp"
+                alt="The EGIRE Robotics team and students at a drone workshop"
+                width="800"
+                height="533"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </motion.figure>
+          </div>
+
+          <div className={`container ${styles.facts}`}>
+            {rating && (
+              <div className={styles.fact}>
+                <StarRating value={rating.average} size={16} />
+                <span>
+                  <strong>{rating.average.toFixed(1)} out of 5</strong> from {rating.count} student reviews
+                </span>
+              </div>
+            )}
+            <div className={styles.fact}>
+              <Award size={18} aria-hidden="true" />
+              <span><strong>3 certification grades</strong> from simulation to professional</span>
+            </div>
+            <div className={styles.fact}>
+              <Plane size={18} aria-hidden="true" />
+              <span><strong>DGCA certified</strong> drone pilot leading every workshop</span>
+            </div>
+            <div className={styles.fact}>
+              <MapPin size={18} aria-hidden="true" />
+              <span><strong>On campus</strong> at universities and engineering colleges</span>
+            </div>
           </div>
         </section>
 
