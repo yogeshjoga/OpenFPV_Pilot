@@ -57,7 +57,7 @@ const TEAM_MEMBERS = [
   {
     id: 'santhosh',
     name: 'Santhosh Kumar',
-    role: 'Design Researcher & Engineer',
+    role: 'Co-Founder & Design Researcher',
     bio: 'Mechanical Engineer and FPV Drone Pilot specializing in CAD/CAM design, complex simulations, and product validation within the CATIA & 3DExperience ecosystems. Dedicated to advanced design research, structural optimization, and next-generation aerial platform development.',
     image: '/gallery/workshop-1/thumb/roph9636.webp',
     photoPosition: 'center 30%',
