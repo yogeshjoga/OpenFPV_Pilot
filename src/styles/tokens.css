@@ -122,7 +122,9 @@
 
   /* === LAYOUT === */
   --max-width: 1280px;
-  --nav-height: 72px;
+  --nav-core-height: 72px;
+  --ticker-height: 36px;
+  --nav-height: calc(var(--nav-core-height) + var(--ticker-height)); /* navigation bar plus the announcement strip below it */
   --header-height: var(--nav-height);
   --container-padding: var(--space-6);
 }

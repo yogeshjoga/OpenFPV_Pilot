@@ -7,6 +7,20 @@ import { NAV_LINKS } from '@config/constants'
 import useUIStore from '@store/useUIStore'
 import styles from './Navbar.module.css'
 
+// What the announcement strip under the navigation says, repeated as it scrolls
+const ANNOUNCEMENTS = [
+  'New: we are starting sales and service for all robotic spares and robots',
+  'Drones',
+  'Drone spares',
+  '3D printers',
+  '3D printed cases',
+  'AI software',
+  'AI hardware kits',
+  'College project software',
+  'Electronics',
+  'Mechanical projects for students',
+]
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -106,6 +120,20 @@ export default function Navbar() {
             <span className={`${styles.bar} ${mobileOpen ? styles.open2 : ''}`} />
             <span className={`${styles.bar} ${mobileOpen ? styles.open3 : ''}`} />
           </button>
+        </div>
+      </div>
+
+      {/* Announcement strip */}
+      <div className={styles.ticker} role="region" aria-label="Announcement">
+        <div className={styles.tickerTrack}>
+          {/* four copies: the loop moves half the track, so even a very wide screen never shows a gap */}
+          {[0, 1, 2, 3].map((copy) => (
+            <ul key={copy} className={styles.tickerList} aria-hidden={copy > 0 ? 'true' : undefined}>
+              {ANNOUNCEMENTS.map((text) => (
+                <li key={text}>{text}</li>
+              ))}
+            </ul>
+          ))}
         </div>
       </div>
 
