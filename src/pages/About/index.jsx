@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight, MapPin, Award, Sprout, Cpu, Stethoscope } from 'lucide-react'
+import { BookOpen, PenTool, Globe, Building, Bot, GraduationCap, Coffee, Brain, BarChart, Eye, Plane, Telescope, Globe as GlobeIcon, Settings, Wrench, Activity, Layers, ChevronLeft, ChevronRight, MapPin, Award, Sprout, Cpu, Stethoscope, Bug, Gamepad2 } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { fetchReviews } from '@lib/siteApi'
 import StarRating from '@components/ui/StarRating'
@@ -36,6 +36,14 @@ const SHILPA_TAGS = [
   { icon: <Cpu size={16} />, label: 'IIoT & Drones' },
   { icon: <Plane size={16} />, label: 'FPV Pilot' },
   { icon: <Stethoscope size={16} />, label: 'Plant Doctor' },
+  { icon: <GraduationCap size={16} />, label: 'B.Sc. Agriculture' },
+]
+
+const RAMYA_TAGS = [
+  { icon: <Stethoscope size={16} />, label: 'Plant Doctor' },
+  { icon: <Bug size={16} />, label: 'Plant Pest Control' },
+  { icon: <Plane size={16} />, label: 'UAV & Drones' },
+  { icon: <Gamepad2 size={16} />, label: 'Drone Simulator' },
   { icon: <GraduationCap size={16} />, label: 'B.Sc. Agriculture' },
 ]
 
@@ -77,6 +85,18 @@ const TEAM_MEMBERS = [
     photoPosition: 'center 62%',
     badgeText: 'FPV Pilot',
     tags: SHILPA_TAGS,
+    glowStyle: {},
+    links: []
+  },
+  {
+    id: 'ramya',
+    name: 'Ramya Sree',
+    role: 'Agriculture Researcher',
+    bio: 'B.Sc. Agriculture graduate and plant doctor researching UAV drone simulation for plant pest control.',
+    image: '/images/opt/ramya-sree-960.webp',
+    photoPosition: 'center 20%',
+    badgeText: 'Plant Doctor',
+    tags: RAMYA_TAGS,
     glowStyle: {},
     links: []
   }
