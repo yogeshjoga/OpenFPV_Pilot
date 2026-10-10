@@ -51,7 +51,7 @@ const LEVELS = [
     title: 'Simulation Skill Certificate',
     subtitle: 'Team-Based • Group Controllers',
     color: '#4f8a4b',
-    duration: '1 Week',
+    duration: '7 Days',
     cert: 'Simulation Based Skill Certificate',
     includes: [
       { icon: <Gamepad2 size={16} />, text: 'Shared controller, team-wise rotation' },
@@ -69,11 +69,11 @@ const LEVELS = [
     title: 'Moderate Skill Certificate',
     subtitle: 'Individual Controller • Cinewoop Flying',
     color: '#b8862b',
-    duration: '1 Week',
+    duration: '7 Days',
     cert: 'Moderate Skill Certificate',
     includes: [
       { icon: <Gamepad2 size={16} />, text: 'Personal controller for each student' },
-      { icon: <MonitorPlay size={16} />, text: '1-week simulation training' },
+      { icon: <MonitorPlay size={16} />, text: '7-day simulation training' },
       { icon: <Plane size={16} />, text: 'Cinewoop indoor + outdoor practice' },
       { icon: <BookOpen size={16} />, text: 'Theory: Drone systems & components' },
       { icon: <Atom size={16} />, text: 'Physics & flight dynamics' },
@@ -88,12 +88,12 @@ const LEVELS = [
     title: 'Professional Certificate',
     subtitle: 'Full Build • AI Integration • Pro Certificate',
     color: '#b94a3c',
-    duration: '1 Week',
+    duration: '7 Days',
     cert: 'Professional Certificate',
     highlight: 'Certification Included',
     includes: [
       { icon: <Gamepad2 size={16} />, text: 'Personal controller for each student' },
-      { icon: <MonitorPlay size={16} />, text: '1-week simulation training' },
+      { icon: <MonitorPlay size={16} />, text: '7-day simulation training' },
       { icon: <Plane size={16} />, text: 'Cinewoop indoor + outdoor practice' },
       { icon: <BookOpen size={16} />, text: 'Theory, physics & aerodynamics' },
       { icon: <Wrench size={16} />, text: 'In-depth drone component knowledge' },
@@ -221,7 +221,7 @@ export default function Workshops() {
         <section id="grades" className={`section ${styles.levelsSection}`}>
           <div className="container">
             <h2 className={styles.sectionTitle}>Programs and certification grades</h2>
-            <p className={styles.sectionSub}>Choose the right program for your institution. The three certification grades are 1-week intensive workshops, and the special course runs for 90 days.</p>
+            <p className={styles.sectionSub}>Choose the right program for your institution. The three certification grades are 7-day intensive workshops, and the special course runs for 90 days.</p>
 
             {/* Layout Wrapper */}
             <div className={styles.levelsSplitLayout}>

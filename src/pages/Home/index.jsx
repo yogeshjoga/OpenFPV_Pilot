@@ -17,7 +17,7 @@ import styles from './Home.module.css'
 const ALL_PREREQS = PREREQUISITES_DATA.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.category })));
 
 const STATS = [
-  { value: '10 days', label: 'Hands-on piloting workshop' },
+  { value: '7 days', label: 'Hands-on piloting workshop' },
   { value: 'Sim + real', label: 'Simulator and real FPV flying' },
   { value: '1st in India', label: 'Workshop of its kind' },
 ]
@@ -164,7 +164,7 @@ export default function Home() {
             </h1>
             <p className={styles.sub}>
               Fly real FPV drones, not just watch. Learn the engineering behind them in a
-              10-day workshop that starts in the simulator and ends in the air.
+              7-day workshop that starts in the simulator and ends in the air, or go deeper with our 90-day course.
             </p>
             <div className={styles.heroActions} style={{ pointerEvents: 'auto' }}>
               <Link to="/workshops" className={styles.primaryBtn}>
@@ -212,7 +212,7 @@ export default function Home() {
             </p>
             <ul className={styles.teamPoints}>
               <li><Check size={18} /> Simulator practice first, then real FPV piloting</li>
-              <li><Check size={18} /> A 10-day piloting workshop, not only theory</li>
+              <li><Check size={18} /> A 7-day piloting workshop, not only theory</li>
               <li><Check size={18} /> Real engineering skills, not drone explainers</li>
             </ul>
             <div className={styles.heroActions}>

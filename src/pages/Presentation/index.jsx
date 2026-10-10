@@ -160,7 +160,7 @@ const DECKS = [
               <Award size={16} /> Syllabus Overview
             </div>
             <p className={styles.slideCardDesc}>
-              A 1-week group workshop designed for absolute beginners to master drone flight mechanics, basic airspace safety, and yaw-roll coordinates.
+              A 7-day group workshop designed for absolute beginners to master drone flight mechanics, basic airspace safety, and yaw-roll coordinates.
             </p>
           </div>
         )
@@ -229,7 +229,7 @@ const DECKS = [
               <Award size={16} /> Syllabus Overview
             </div>
             <p className={styles.slideCardDesc}>
-              A 1-week course focused on individual radio controller calibration, advanced simulator maneuvers, and real-world indoor/outdoor Cinewhoop piloting.
+              A 7-day course focused on individual radio controller calibration, advanced simulator maneuvers, and real-world indoor/outdoor Cinewhoop piloting.
             </p>
           </div>
         )
@@ -326,7 +326,7 @@ const DECKS = [
               <Award size={16} /> Syllabus Overview
             </div>
             <p className={styles.slideCardDesc}>
-              A 1-week hardware assembly and software integration course. Students build their own drone from bare frame parts and code OpenCV tracking hooks.
+              A 7-day hardware assembly and software integration course. Students build their own drone from bare frame parts and code OpenCV tracking hooks.
             </p>
           </div>
         )
@@ -421,9 +421,9 @@ const DECKS = [
                 </tr>
                 <tr>
                   <td>Duration</td>
-                  <td>1 Week (15 Hours)</td>
-                  <td>1 Week (20 Hours)</td>
-                  <td>1 Week (30 Hours)</td>
+                  <td>7 Days (15 Hours)</td>
+                  <td>7 Days (20 Hours)</td>
+                  <td>7 Days (30 Hours)</td>
                 </tr>
                 <tr>
                   <td>Hardware</td>
