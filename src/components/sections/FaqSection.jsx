@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import { CONTACT_EMAIL, CONTACT_PHONE } from '@config/constants'
+import { CONTACT_EMAIL, CONTACT_PHONE, FEES, WHATSAPP } from '@config/constants'
 import styles from './FaqSection.module.css'
 
 const FAQS = [
@@ -26,7 +26,11 @@ const FAQS = [
   },
   {
     q: 'What is the fee?',
-    a: `The fee depends on the program and the number of students. Call ${CONTACT_PHONE.display} or email ${CONTACT_EMAIL} and we will share the current fees.`,
+    a: `Fees start from ${FEES.workshopFrom} and depend on the program and the number of students. Call ${CONTACT_PHONE.display}, WhatsApp ${WHATSAPP.display} or email ${CONTACT_EMAIL} for the exact fee.`,
+  },
+  {
+    q: 'Can I try a session before joining?',
+    a: `Yes. You can book a demo session, with prices starting from ${FEES.demoFrom}. Send an enquiry and we will arrange it.`,
   },
   {
     q: 'Can you run a workshop at our college?',

@@ -19,7 +19,7 @@ const ALL_PREREQS = PREREQUISITES_DATA.flatMap(cat => cat.items.map(item => ({ .
 const STATS = [
   { value: '7 days', label: 'Hands-on piloting workshop' },
   { value: 'Sim + real', label: 'Simulator and real FPV flying' },
-  { value: '1st in India', label: 'Workshop of its kind' },
+  { value: '60+', label: 'Satisfied students in FPV piloting' },
 ]
 
 // Training programs, for learners from age 5 to 45
@@ -171,7 +171,7 @@ export default function Home() {
                 See workshops
               </Link>
               <Link to="/enquire?type=demo&from=home-hero" className={styles.ghostBtn}>
-                Book a free demo <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
+                Book a demo <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
               </Link>
             </div>
           </motion.div>
@@ -434,7 +434,7 @@ export default function Home() {
                   Register <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
                 </Link>
                 <Link to="/enquire?type=demo&from=home-banner" className={styles.ghostBtn}>
-                  Book a free demo
+                  Book a demo
                 </Link>
                 <a href={CONTACT_PHONE.href} className={styles.ghostBtn}>
                   Talk to a mentor

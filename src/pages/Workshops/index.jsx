@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FEES } from '@config/constants'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin, Users, Code, Cpu, Brain, Eye, Sliders, Download, Map } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -182,6 +183,8 @@ export default function Workshops() {
                   View certification grades
                 </a>
               </div>
+
+              <p className={styles.heroFee}>Fees start from {FEES.workshopFrom}</p>
 
               <div className={styles.designedFor}>
                 <span className={styles.designedForLabel}>Designed for</span>

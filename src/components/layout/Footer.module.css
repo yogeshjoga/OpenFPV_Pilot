@@ -126,3 +126,16 @@
 .legalLink:hover {
   color: var(--color-accent-primary);
 }
+
+.socialSoon {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.socialSoon em {
+  margin-left: var(--space-1);
+  font-style: normal;
+  font-size: var(--text-xs);
+  opacity: 0.8;
+}

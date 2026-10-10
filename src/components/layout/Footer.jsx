@@ -1,14 +1,13 @@
 
 import { Link } from 'react-router-dom'
-import { Mail, LifeBuoy, Phone } from 'lucide-react'
-import { APP_NAME, APP_TAGLINE, NAV_LINKS, SOCIAL_LINKS, CONTACT_EMAIL, SUPPORT_EMAIL, CONTACT_PHONE } from '@config/constants'
+import { Mail, LifeBuoy, Phone, MessageCircle } from 'lucide-react'
+import { APP_NAME, APP_TAGLINE, NAV_LINKS, SOCIAL_LINKS, CONTACT_EMAIL, SUPPORT_EMAIL, CONTACT_PHONE, WHATSAPP } from '@config/constants'
 import styles from './Footer.module.css'
 
-const SOCIAL_LABELS = { youtube: 'YouTube', instagram: 'Instagram', discord: 'Discord' }
+const SOCIAL_LABELS = { youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn', discord: 'Discord' }
 
 export default function Footer() {
   const year = new Date().getFullYear()
-  const socials = Object.entries(SOCIAL_LINKS).filter(([, url]) => url)
 
   return (
     <footer className={styles.footer}>
@@ -32,6 +31,10 @@ export default function Footer() {
               <Phone size={16} aria-hidden="true" />
               <a href={CONTACT_PHONE.href}>{CONTACT_PHONE.display}</a>
             </li>
+            <li>
+              <MessageCircle size={16} aria-hidden="true" />
+              <a href={WHATSAPP.href} target="_blank" rel="noopener noreferrer">WhatsApp {WHATSAPP.display}</a>
+            </li>
           </ul>
         </div>
 
@@ -47,17 +50,21 @@ export default function Footer() {
           </div>
         </nav>
 
-        {/* Socials: shown only once real profile links are set in the config */}
-        {socials.length > 0 && (
-          <div className={styles.socials}>
-            <h3 className={styles.heading}>Community</h3>
-            {socials.map(([key, url]) => (
+        {/* Socials: a profile with no link yet is shown as "soon", never as a link to a generic home page */}
+        <div className={styles.socials}>
+          <h3 className={styles.heading}>Follow us</h3>
+          {Object.entries(SOCIAL_LINKS).map(([key, url]) =>
+            url ? (
               <a key={key} href={url} className={styles.socialLink} target="_blank" rel="noopener noreferrer">
                 {SOCIAL_LABELS[key]}
               </a>
-            ))}
-          </div>
-        )}
+            ) : (
+              <span key={key} className={styles.socialSoon}>
+                {SOCIAL_LABELS[key]} <em>soon</em>
+              </span>
+            ),
+          )}
+        </div>
       </div>
 
       <div className={styles.bottom}>

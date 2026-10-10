@@ -42,12 +42,23 @@ export const PRODUCT_CATEGORIES = [
   { id: 'goggles', label: 'Goggles' },
 ]
 
-// Real profile links only. A link left empty is not shown, so visitors are never sent to a generic home page.
+// Official profile links. An empty one is shown in the footer as "soon" and is not clickable, so visitors are
+// never sent to a generic home page. Paste the real address here to switch it on.
 export const SOCIAL_LINKS = {
   youtube: '',
   instagram: '',
+  facebook: '',
+  linkedin: '',
   discord: '',
 }
+
+export const WHATSAPP = {
+  display: '+91 9110566354',
+  href: `https://wa.me/919110566354?text=${encodeURIComponent('Hello EGIRE Robotics, I would like to know more about your workshops.')}`,
+}
+
+// Starting prices shown on the site
+export const FEES = { workshopFrom: '₹7,999', demoFrom: '₹2,999' }
 
 export const CONTACT_EMAIL = 'contact@egirerobotics.com'
 export const SUPPORT_EMAIL = 'support@egirerobotics.com'

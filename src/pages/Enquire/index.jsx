@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Building2, CheckCircle2, GraduationCap, MessageCircle, Phone, Mail, PlayCircle } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
-import { CONTACT_EMAIL, CONTACT_PHONE } from '@config/constants'
+import { CONTACT_EMAIL, CONTACT_PHONE, FEES, WHATSAPP } from '@config/constants'
 import { submitEnquiry } from '@lib/siteApi'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import styles from './Enquire.module.css'
@@ -10,7 +10,7 @@ import styles from './Enquire.module.css'
 const KINDS = [
   { id: 'student', icon: <GraduationCap size={20} />, label: 'Student or parent' },
   { id: 'college', icon: <Building2 size={20} />, label: 'College or university' },
-  { id: 'demo', icon: <PlayCircle size={20} />, label: 'Free demo session' },
+  { id: 'demo', icon: <PlayCircle size={20} />, label: 'Demo session' },
   { id: 'general', icon: <MessageCircle size={20} />, label: 'Something else' },
 ]
 
@@ -32,7 +32,7 @@ const INTERESTS = [
 const digitsOf = (value) => value.replace(/\D/g, '')
 
 export default function Enquire() {
-  useDocumentMeta('Enquire | EGIRE Robotics', 'Register for a workshop, book a free demo session, or ask about bringing EGIRE Robotics to your college.')
+  useDocumentMeta('Enquire | EGIRE Robotics', 'Register for a workshop, book a demo session, or ask about bringing EGIRE Robotics to your college.')
 
   const [params] = useSearchParams()
   const initialKind = KINDS.some((k) => k.id === params.get('type')) ? params.get('type') : 'student'
@@ -108,7 +108,7 @@ export default function Enquire() {
             <p className={styles.eyebrow}>Enquire</p>
             <h1 className={styles.title}>Tell us what you are looking for</h1>
             <p className={styles.lead}>
-              Register for a workshop, book a free demo session, or ask about bringing EGIRE Robotics to your college. We read every enquiry and get back to you.
+              Register for a workshop, book a demo session, or ask about bringing EGIRE Robotics to your college. We read every enquiry and get back to you.
             </p>
 
             <h2 className={styles.sideHeading}>What happens next</h2>
@@ -117,11 +117,18 @@ export default function Enquire() {
               <li>We call or email you to understand your goal.</li>
               <li>We suggest the right program, dates and fees.</li>
             </ol>
+            <p className={styles.fees}>
+              Fees start from {FEES.workshopFrom}. Demo sessions start from {FEES.demoFrom}.
+            </p>
 
             <h2 className={styles.sideHeading}>Prefer to talk?</h2>
             <ul className={styles.contactList}>
               <li>
                 <Phone size={16} aria-hidden="true" /> <a href={CONTACT_PHONE.href}>{CONTACT_PHONE.display}</a>
+              </li>
+              <li>
+                <MessageCircle size={16} aria-hidden="true" />{' '}
+                <a href={WHATSAPP.href} target="_blank" rel="noopener noreferrer">WhatsApp {WHATSAPP.display}</a>
               </li>
               <li>
                 <Mail size={16} aria-hidden="true" /> <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
