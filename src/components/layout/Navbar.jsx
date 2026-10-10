@@ -8,8 +8,8 @@ import useUIStore from '@store/useUIStore'
 import styles from './Navbar.module.css'
 
 // What the announcement strip under the navigation says, repeated as it scrolls
+const ANNOUNCEMENT_LEAD = 'We are starting sales and service for all robotic spares and robots'
 const ANNOUNCEMENTS = [
-  'New: we are starting sales and service for all robotic spares and robots',
   'Drones',
   'Drone spares',
   '3D printers',
@@ -127,6 +127,11 @@ export default function Navbar() {
           {/* four copies: the loop moves half the track, so even a very wide screen never shows a gap */}
           {[0, 1, 2, 3].map((copy) => (
             <ul key={copy} className={styles.tickerList} aria-hidden={copy > 0 ? 'true' : undefined}>
+              {/* the badge marks where the message starts each time the strip loops round */}
+              <li>
+                <span className={styles.tickerBadge}>New</span>
+                {ANNOUNCEMENT_LEAD}
+              </li>
               {ANNOUNCEMENTS.map((text) => (
                 <li key={text}>{text}</li>
               ))}
