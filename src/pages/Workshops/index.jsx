@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight } from 'lucide-react'
+import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import { CONTACT_PHONE } from '@config/constants'
@@ -8,11 +8,11 @@ import styles from './Workshops.module.css'
 
 // ── Data ──────────────────────────────────────────────────────
 const AUDIENCES = [
-  { icon: <GraduationCap size={24} />, label: 'B.Tech / B.E / B.Sc Students' },
-  { icon: <Plane size={24} />, label: 'Aviation Students' },
-  { icon: <Microscope size={24} />, label: 'Researchers' },
-  { icon: <Gamepad2 size={24} />, label: 'Hobbyists' },
-  { icon: <Building2 size={24} />, label: 'Universities & Colleges' },
+  { icon: <GraduationCap size={18} />, label: 'B.Tech / B.E / B.Sc Students' },
+  { icon: <Plane size={18} />, label: 'Aviation Students' },
+  { icon: <Microscope size={18} />, label: 'Researchers' },
+  { icon: <Gamepad2 size={18} />, label: 'Hobbyists' },
+  { icon: <Building2 size={18} />, label: 'Universities & Colleges' },
 ]
 
 const LEVELS = [
@@ -129,7 +129,7 @@ export default function Workshops() {
 
         {/* ── HERO ── */}
         <section className={styles.hero}>
-          <div className="container">
+          <div className={`container ${styles.heroGrid}`}>
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
@@ -141,25 +141,55 @@ export default function Workshops() {
                 Learn to <span className="gradient-text">Build</span>, Fly &amp; <span className="gradient-text">Innovate</span>
               </h1>
               <p className={styles.heroSub}>
-                Week-based structured drone workshops for universities, engineering colleges,
-                aviation students, researchers &amp; hobbyists. Three certification grades:
-                simulation to professional.
+                Structured, hands-on drone workshops for universities and engineering colleges, with
+                three certification grades that take students from simulation to professional flying.
               </p>
 
-              {/* Audience pills */}
-              <div className={styles.audienceRow}>
-                {AUDIENCES.map(a => (
-                  <span key={a.label} className={styles.audiencePill}>
-                    {a.icon} {a.label}
-                  </span>
-                ))}
+              <div className={styles.heroCtas}>
+                <a href="#contact" className={styles.ctaPrimary}>
+                  Book a workshop <ArrowRight size={16} aria-hidden="true" />
+                </a>
+                <a href="#grades" className={styles.ctaSecondary}>
+                  View certification grades
+                </a>
+              </div>
+
+              <div className={styles.designedFor}>
+                <span className={styles.designedForLabel}>Designed for</span>
+                <ul className={styles.designedForList}>
+                  {AUDIENCES.map(a => (
+                    <li key={a.label}>
+                      {a.icon} {a.label}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </motion.div>
+
+            <motion.figure
+              className={styles.heroPhoto}
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+            >
+              <img
+                src="/gallery/sivani-srikakulam/thumb/sivani-group.webp"
+                alt="Students and the EGIRE Robotics team at a drone workshop"
+                width="800"
+                height="450"
+                fetchPriority="high"
+                decoding="async"
+              />
+              <figcaption>
+                <MapPin size={16} aria-hidden="true" />
+                Workshop at Sivani Engineering College, Srikakulam
+              </figcaption>
+            </motion.figure>
           </div>
         </section>
 
         {/* ── CERTIFICATION LEVELS ── */}
-        <section className={`section ${styles.levelsSection}`}>
+        <section id="grades" className={`section ${styles.levelsSection}`}>
           <div className="container">
             <h2 className={styles.sectionTitle}>Certification grades</h2>
             <p className={styles.sectionSub}>Choose the right grade for your institution. All programs are 1-week intensive workshops.</p>
@@ -265,7 +295,7 @@ export default function Workshops() {
         </section>
 
         {/* ── CONTACT / CTA ── */}
-        <section className={styles.contactSection}>
+        <section id="contact" className={styles.contactSection}>
           <div className="container">
             <motion.div
               className={styles.contactCard}
