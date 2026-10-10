@@ -7,7 +7,6 @@ import PageWrapper from '@components/layout/PageWrapper'
 import SketchfabEmbed from '@components/common/SketchfabEmbed'
 import FaqSection from '@components/sections/FaqSection'
 import { fetchReviews } from '@lib/siteApi'
-import { enquiryLink } from '@lib/contact'
 import { CONTACT_PHONE } from '@config/constants'
 import { optimized } from '@lib/img'
 import ReviewsSection from '@components/sections/ReviewsSection'
@@ -171,9 +170,9 @@ export default function Home() {
               <Link to="/workshops" className={styles.primaryBtn}>
                 See workshops
               </Link>
-              <a href={enquiryLink('Free demo session request', 'A free demo session')} className={styles.ghostBtn}>
+              <Link to="/enquire?type=demo&from=home-hero" className={styles.ghostBtn}>
                 Book a free demo <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -431,12 +430,12 @@ export default function Home() {
                 Register for a workshop, book a demo session, or talk to a mentor. We will help you choose the right program.
               </p>
               <div className={styles.bannerActions}>
-                <a href={enquiryLink('Workshop registration', 'Registering for a workshop')} className={styles.primaryBtn}>
+                <Link to="/enquire?type=student&from=home-banner" className={styles.primaryBtn}>
                   Register <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
-                </a>
-                <a href={enquiryLink('Free demo session request', 'A free demo session')} className={styles.ghostBtn}>
+                </Link>
+                <Link to="/enquire?type=demo&from=home-banner" className={styles.ghostBtn}>
                   Book a free demo
-                </a>
+                </Link>
                 <a href={CONTACT_PHONE.href} className={styles.ghostBtn}>
                   Talk to a mentor
                 </a>

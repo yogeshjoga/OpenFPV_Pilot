@@ -56,6 +56,31 @@ export async function fetchPartners() {
   return rows.map((p) => ({ id: p.id, name: p.name, url: p.website_url, logo: mediaUrl(p.logo_path) }))
 }
 
+/** Sends a website enquiry to the CRM. Throws an Error with a message that is safe to show the visitor. */
+export async function submitEnquiry(payload) {
+  if (!siteApiConfigured) throw new Error('Enquiries are not available right now. Please call us instead.')
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), 15000)
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/site-enquiry`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: ctrl.signal,
+    })
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) throw new Error(data.error || 'We could not send your enquiry. Please try again, or call us.')
+    return data
+  } catch (err) {
+    if (err.name === 'AbortError') throw new Error('That took too long. Please try again, or call us.')
+    // the browser reports an unreachable server as a TypeError such as "Failed to fetch"
+    if (err instanceof TypeError) throw new Error('We could not reach our server. Please check your connection, or call us.')
+    throw err
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 /** Published gallery: categories plus albums (with their published images). Row-level security hides drafts. */
 export async function fetchGallery() {
   const [categories, albums] = await Promise.all([

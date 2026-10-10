@@ -7,7 +7,8 @@ const SECTIONS = [
   {
     title: 'What this website collects',
     body: [
-      'This website does not ask you to create an account or fill in a form, so it does not collect your personal details itself. If you email or call us, we use the details you share only to reply to you and to arrange your workshop or enquiry.',
+      'You can browse this website without giving us any personal details. If you send the enquiry form, we collect the name, phone number, email, college and message you enter, together with the time you sent it. We use them only to reply to you and to arrange your workshop or enquiry.',
+      'Enquiries are stored in the EGIRE Robotics CRM, where only our staff can see them. If you email or call us instead, we use what you share in the same way. Ask us to delete your enquiry at any time.',
       'We measure visits with cookie-free analytics. It records which pages are viewed and in aggregate, without cookies and without building a profile of you.',
     ],
   },

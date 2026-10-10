@@ -11,6 +11,7 @@ const Physics = lazy(() => import('@pages/Physics'))
 const PhysicsDetail = lazy(() => import('@pages/PhysicsDetail'))
 const Shop = lazy(() => import('@pages/Shop'))
 const Privacy = lazy(() => import('@pages/Privacy'))
+const Enquire = lazy(() => import('@pages/Enquire'))
 const Gallery = lazy(() => import('@pages/Gallery'))
 const Simulator = lazy(() => import('@pages/Simulator'))
 const Assembly3D = lazy(() => import('@pages/Assembly3D'))
@@ -96,6 +97,7 @@ export default function AppRouter() {
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/enquire" element={<Enquire />} />
           <Route path="/workshops" element={<Workshops />} />
           <Route
             path="*"

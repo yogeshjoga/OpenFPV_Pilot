@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin, Users, Code, Cpu, Brain, Eye, Sliders, Download, Map } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -174,9 +175,9 @@ export default function Workshops() {
               </p>
 
               <div className={styles.heroCtas}>
-                <a href="#contact" className={styles.ctaPrimary}>
+                <Link to="/enquire?type=college&from=workshops-hero" className={styles.ctaPrimary}>
                   Book a workshop <ArrowRight size={16} aria-hidden="true" />
-                </a>
+                </Link>
                 <a href="#grades" className={styles.ctaSecondary}>
                   View certification grades
                 </a>
@@ -345,6 +346,9 @@ export default function Workshops() {
               </p>
 
               <div className={styles.contactInfoRow}>
+                <Link to="/enquire?type=college&from=workshops-contact" className={styles.phoneBtn} id="workshop-enquire-cta">
+                  Request a proposal <ArrowRight size={16} aria-hidden="true" />
+                </Link>
                 <a
                   href="tel:+919110566354"
                   className={styles.phoneBtn}

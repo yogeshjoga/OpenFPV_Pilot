@@ -186,8 +186,8 @@ export default function Navbar() {
                 </NavLink>
               )
             })}
-            <Link to="/catalog" className={styles.mobileCta}>
-              Learn Today <ArrowRight size={16} aria-hidden="true" />
+            <Link to="/enquire" className={styles.mobileCta}>
+              Enquire now <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <button className={styles.mobileThemeToggle} onClick={toggleTheme}>
               {theme === 'dark' ? 'Light mode' : 'Dark mode'}
