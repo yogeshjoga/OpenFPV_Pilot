@@ -81,6 +81,24 @@ export async function submitEnquiry(payload) {
   }
 }
 
+/** Published videos for the carousel, in the order set in the CRM. */
+export async function fetchVideos() {
+  const rows = await get(
+    'site_videos',
+    'select=id,kind,title,caption,video_url,video_url_low,youtube_id,poster_url&is_published=eq.true&order=sort_order.asc,created_at.asc',
+  )
+  return rows.map((v) => ({
+    id: v.id,
+    kind: v.kind,
+    title: v.title,
+    caption: v.caption,
+    url: v.video_url,
+    urlLow: v.video_url_low,
+    youtubeId: v.youtube_id,
+    poster: v.poster_url,
+  }))
+}
+
 /** Published gallery: categories plus albums (with their published images). Row-level security hides drafts. */
 export async function fetchGallery() {
   const [categories, albums] = await Promise.all([

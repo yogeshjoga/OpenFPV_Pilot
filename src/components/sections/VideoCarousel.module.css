@@ -1,0 +1,306 @@
+.section {
+  background: var(--color-bg-secondary);
+}
+
+.header {
+  max-width: 680px;
+  margin: 0 auto var(--space-10);
+  text-align: center;
+}
+
+.eyebrow {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-secondary);
+}
+
+.title {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-h2);
+}
+
+.lead {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* ── one video: a large player ── */
+.player {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.video,
+.frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--color-text-primary);
+}
+
+.video {
+  display: block;
+  object-fit: contain;
+}
+
+.caption {
+  display: grid;
+  gap: var(--space-1);
+  max-width: 960px;
+  margin: var(--space-4) auto 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.caption strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-semibold);
+}
+
+/* ── the thumbnail with its play button ── */
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.thumb:hover img {
+  transform: scale(1.03);
+}
+
+.thumb:focus-visible {
+  outline: 3px solid var(--color-accent-secondary);
+  outline-offset: calc(var(--space-1) * -1);
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-16);
+  height: var(--space-16);
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-primary);
+  color: var(--color-on-accent);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast);
+}
+
+.thumbLarge .play {
+  width: var(--space-20);
+  height: var(--space-20);
+}
+
+.play svg {
+  margin-left: var(--space-1);
+  fill: currentColor;
+}
+
+.thumb:hover .play {
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+/* ── several videos: a carousel ── */
+.carousel {
+  position: relative;
+}
+
+.track {
+  --gap: var(--space-6);
+  display: flex;
+  gap: var(--gap);
+  padding: var(--space-2);
+  margin: calc(var(--space-2) * -1);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: var(--space-2);
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track:focus-visible {
+  outline: 2px solid var(--color-accent-secondary);
+  outline-offset: var(--space-1);
+  border-radius: var(--radius-md);
+}
+
+.card {
+  flex: 0 0 calc((100% - 2 * var(--gap)) / 3);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.card .thumb {
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+.cardText {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.cardText strong {
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-12);
+  height: var(--space-12);
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.arrow:hover {
+  color: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--color-accent-secondary);
+  outline-offset: var(--space-1);
+}
+
+/* ── the window that plays a carousel video ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.dialog {
+  position: relative;
+  width: min(100%, 1040px);
+}
+
+.dialogPlayer {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-text-primary);
+  border-radius: var(--radius-md);
+}
+
+.dialogTitle {
+  margin: var(--space-3) 0 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.close {
+  position: absolute;
+  top: calc(var(--space-12) * -1);
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--color-accent-secondary);
+  outline-offset: var(--space-1);
+}
+
+@media (max-width: 1024px) {
+  .card {
+    flex-basis: calc((100% - var(--gap)) / 2);
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    flex-basis: 100%;
+  }
+  .play,
+  .thumbLarge .play {
+    width: var(--space-12);
+    height: var(--space-12);
+  }
+  .overlay {
+    padding: var(--space-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb img,
+  .play,
+  .arrow {
+    transition: none;
+  }
+}

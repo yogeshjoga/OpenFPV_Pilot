@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin, Users, Code, Cpu, Brain, Eye, Sliders, Download, Map } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
-import WorkshopVideo from '@components/sections/WorkshopVideo'
+import VideoCarousel from '@components/sections/VideoCarousel'
 import styles from './Workshops.module.css'
 import useDocumentMeta from '@lib/useDocumentMeta'
 
@@ -221,7 +221,7 @@ export default function Workshops() {
           </div>
         </section>
 
-        <WorkshopVideo />
+        <VideoCarousel />
 
         {/* ── CERTIFICATION LEVELS ── */}
         <section id="grades" className={`section ${styles.levelsSection}`}>

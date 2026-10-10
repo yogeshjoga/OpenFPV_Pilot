@@ -28,7 +28,7 @@ const SECTIONS = [
   {
     title: 'Other services this site uses',
     body: [
-      'Some content is provided by other services: 3D drone models from Sketchfab, fonts from Google Fonts, and site content hosted on Supabase and Vercel. When your browser loads their content, they receive technical information such as your IP address, under their own privacy policies.',
+      'Some content is provided by other services: 3D drone models from Sketchfab, videos from YouTube, fonts from Google Fonts, and site content hosted on Supabase and Vercel. YouTube videos load only when you press play, through the privacy-enhanced YouTube player. When your browser loads their content, they receive technical information such as your IP address, under their own privacy policies.',
     ],
   },
   {
