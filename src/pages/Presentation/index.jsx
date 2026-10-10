@@ -25,6 +25,7 @@ const completedParts = {
 const DECKS = [
   {
     id: 'master',
+    hidden: true, // the 14-day program is not offered; the grade decks below match the 7-day workshops
     title: 'FPV Master Syllabus',
     subtitle: '14-Day Comprehensive Program',
     badge: 'Course 1',
@@ -599,7 +600,7 @@ export default function Presentation() {
               </p>
 
               <div className={styles.deckGrid}>
-                {DECKS.map(deck => (
+                {DECKS.filter(deck => !deck.hidden).map(deck => (
                   <div 
                     key={deck.id}
                     className={styles.deckCard}

@@ -9,7 +9,7 @@ const FALLBACK = [
   {
     id: 'sivani-workshop',
     kind: 'file',
-    title: 'Workshop at Sri Sivani College of Engineering',
+    title: 'Workshop at Sri Sivani Engineering College Etcherla',
     caption: 'The inauguration, an introduction to drone engineering and piloting, and students at work.',
     url: '/videos/sivani-workshop-v1-720.mp4',
     urlLow: '/videos/sivani-workshop-v1-480.mp4',

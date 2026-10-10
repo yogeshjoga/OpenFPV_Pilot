@@ -30,11 +30,11 @@ const FAQS = [
   },
   {
     q: 'Can I try a session before joining?',
-    a: `Yes. You can book a demo session, with prices starting from ${FEES.demoFrom}. Send an enquiry and we will arrange it.`,
+    a: `Yes. You can book a demo session for ${FEES.demo}. Send an enquiry and we will arrange it.`,
   },
   {
     q: 'Can you run a workshop at our college?',
-    a: 'Yes. We run workshops at universities and engineering colleges, for example at Sivani Engineering College, Srikakulam. Contact us to discuss the schedule and requirements.',
+    a: 'Yes. We run workshops at universities and engineering colleges, for example at Sri Sivani Engineering College Etcherla. Contact us to discuss the schedule and requirements.',
   },
   {
     q: 'What can I do after the training?',

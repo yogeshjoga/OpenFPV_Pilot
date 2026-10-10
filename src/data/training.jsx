@@ -1,6 +1,7 @@
 import { Gamepad2, RadioReceiver, Star, Wrench } from 'lucide-react'
 
-export const COURSES = [
+// Courses marked `hidden` are kept here but not shown: the programs on offer are the 7-day workshop and the 90-day course.
+const ALL_COURSES = [
   {
     id: 'fpv-build',
     title: 'FPV Drone Build Bootcamp',
@@ -117,6 +118,7 @@ export const COURSES = [
   },
   {
     id: 'pilot-training',
+    hidden: true, // 14 days
     title: 'FPV Pilot Training Program',
     subtitle: 'Learn to fly: from simulator basics to freestyle maneuvers',
     icon: <Star size={20} />,
@@ -585,6 +587,7 @@ export const COURSES = [
   },
   {
     id: 'zero-to-fpv',
+    hidden: true, // 10 days
     title: 'Build FPV From Zero Knowledge',
     subtitle: 'The absolute beginner guide to building your first drone',
     icon: <Star size={20} />,
@@ -721,5 +724,7 @@ export const COURSES = [
     ],
   },
 ]
+
+export const COURSES = ALL_COURSES.filter((c) => !c.hidden)
 
 export const getCourseById = (id) => COURSES.find((c) => c.id === id)

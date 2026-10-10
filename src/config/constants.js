@@ -58,7 +58,7 @@ export const WHATSAPP = {
 }
 
 // Starting prices shown on the site
-export const FEES = { workshopFrom: '₹7,999', demoFrom: '₹2,999' }
+export const FEES = { workshopFrom: '₹7,999', demo: '₹2,999' }
 
 export const CONTACT_EMAIL = 'contact@egirerobotics.com'
 export const SUPPORT_EMAIL = 'support@egirerobotics.com'

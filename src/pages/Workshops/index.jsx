@@ -215,7 +215,7 @@ export default function Workshops() {
               />
               <figcaption>
                 <MapPin size={16} aria-hidden="true" />
-                Workshop at Sivani Engineering College, Srikakulam
+                Workshop at Sri Sivani Engineering College Etcherla
               </figcaption>
             </motion.figure>
           </div>
