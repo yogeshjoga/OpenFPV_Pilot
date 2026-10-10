@@ -51,7 +51,8 @@ const TEAM_MEMBERS = [
     name: 'Santhosh Kumar',
     role: 'Design Researcher & Engineer',
     bio: 'Mechanical Engineer and FPV Drone Pilot specializing in CAD/CAM design, complex simulations, and product validation within the CATIA & 3DExperience ecosystems. Dedicated to advanced design research, structural optimization, and next-generation aerial platform development.',
-    image: '/images/opt/santhosh-kumar-960.webp',
+    image: '/gallery/workshop-1/thumb/roph9636.webp',
+    photoPosition: 'center 30%',
     badgeText: 'FPV Pilot',
     tags: SANTHOSH_TAGS,
     glowStyle: { filter: 'blur(18px) hue-rotate(185deg)' },
@@ -218,6 +219,7 @@ export default function About() {
                         src={currentMember.image}
                         alt={currentMember.name}
                         className={styles.photo}
+                        style={currentMember.photoPosition ? { objectPosition: currentMember.photoPosition } : undefined}
                       />
                       <div className={styles.dgcaBadge}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
