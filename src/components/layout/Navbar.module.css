@@ -427,7 +427,7 @@
 }
 
 /* the opening message is the heaviest text in the strip, after the badge */
-.tickerLead {
+.tickerList .tickerLead {
   font-weight: var(--font-semibold);
 }
 
