@@ -16,9 +16,7 @@ const ANNOUNCEMENTS = [
   '3D printed cases',
   'AI software',
   'AI hardware kits',
-  'College project software',
-  'Electronics',
-  'Mechanical projects for students',
+  'College projects for students in software, electronics and mechanical domains',
 ]
 
 export default function Navbar() {
