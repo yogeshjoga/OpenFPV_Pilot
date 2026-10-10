@@ -73,7 +73,7 @@ const TEAM_MEMBERS = [
     name: 'Shilpa Ambali',
     role: 'Smart Agriculture Researcher',
     bio: 'Smart Agriculture Researcher applying IIoT and drones to farming. B.Sc. Agriculture graduate, expert FPV pilot and a plant doctor who uses smart technology to look after crop health.',
-    image: '/images/opt/shilpa-ambali-960.webp',
+    image: '/images/opt/shilpa-ambali-v2-960.webp',
     photoPosition: 'center 62%',
     badgeText: 'FPV Pilot',
     tags: SHILPA_TAGS,
