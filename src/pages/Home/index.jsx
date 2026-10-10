@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check } from 'lucide-react'
+import { Wrench, MonitorPlay, Gamepad2, PackageCheck, Rocket, Dices, ArrowRight, ArrowLeft, Atom, Map, Brain, Sprout, CircuitBoard, Check, Clapperboard, Box, Radar, ScanLine, Trophy, Settings, ShieldCheck, Tv } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SketchfabEmbed from '@components/common/SketchfabEmbed'
 import { optimized } from '@lib/img'
@@ -18,6 +18,20 @@ const STATS = [
   { value: 'Sim + real', label: 'Simulator and real FPV flying' },
   { value: '1st in India', label: 'Workshop of its kind' },
   { value: '8', label: 'Drone part categories in the catalog' },
+]
+
+// Training programs, for learners from age 5 to 45
+const PROGRAMS = [
+  { icon: <Clapperboard size={24} />, title: 'Cinematography' },
+  { icon: <Sprout size={24} />, title: 'Agriculture' },
+  { icon: <Box size={24} />, title: '3D Mapping' },
+  { icon: <Radar size={24} />, title: 'LiDAR' },
+  { icon: <ScanLine size={24} />, title: 'GIS and Sensor Scanning' },
+  { icon: <Wrench size={24} />, title: 'Full FPV Build' },
+  { icon: <Trophy size={24} />, title: 'Racing Competition Training' },
+  { icon: <Settings size={24} />, title: 'Racing FPV Build and Maintenance' },
+  { icon: <ShieldCheck size={24} />, title: 'Surveillance and Security' },
+  { icon: <Tv size={24} />, title: 'FPV Drone Broadcast for Sports' },
 ]
 
 const LEARNING_AREAS = [
@@ -169,6 +183,41 @@ export default function Home() {
               </Link>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ======= TRAINING PROGRAMS ======= */}
+      <section className={`section ${styles.programsSection}`} aria-labelledby="programs-title">
+        <div className="container">
+          <motion.div
+            className={styles.sectionHeader}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className={styles.sectionEyebrow}>Ages 5 to 45</p>
+            <h2 id="programs-title" className={styles.sectionTitle}>Training programs for every learner</h2>
+            <p className={styles.sectionSub}>
+              From a child's first flight to a professional's new skill, choose the program that fits your goal.
+            </p>
+          </motion.div>
+
+          <ul className={styles.programsGrid}>
+            {PROGRAMS.map((program, index) => (
+              <motion.li
+                key={program.title}
+                className={styles.programCard}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: Math.min(index, 5) * 0.04 }}
+              >
+                <span className={styles.programIcon}>{program.icon}</span>
+                <span className={styles.programTitle}>{program.title}</span>
+              </motion.li>
+            ))}
+          </ul>
         </div>
       </section>
 

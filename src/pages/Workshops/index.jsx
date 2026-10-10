@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin } from 'lucide-react'
+import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin, Users } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import { CONTACT_PHONE } from '@config/constants'
@@ -13,6 +13,7 @@ const AUDIENCES = [
   { icon: <Microscope size={18} />, label: 'Researchers' },
   { icon: <Gamepad2 size={18} />, label: 'Hobbyists' },
   { icon: <Building2 size={18} />, label: 'Universities & Colleges' },
+  { icon: <Users size={18} />, label: 'Learners aged 5 to 45' },
 ]
 
 const LEVELS = [
