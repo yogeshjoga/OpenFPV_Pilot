@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin, Users } from 'lucide-react'
+import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, BookOpen, Atom, Wind, FileText, Wrench, Bot, Settings, Battery, Flame, Award, Lightbulb, PenTool, BatteryCharging, Plug, Zap, Sprout, Calendar, Landmark, Phone, ChevronRight, ArrowRight, MapPin, Users, Code, Cpu, Brain, Eye, Sliders, Download, Map } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import styles from './Workshops.module.css'
@@ -16,6 +16,32 @@ const AUDIENCES = [
 ]
 
 const LEVELS = [
+  {
+    id: 'special',
+    badge: '90 Days',
+    emoji: <Award size={24} />,
+    title: 'EGIRE Robotics Special Course',
+    subtitle: 'Complete 90-Day Course • Drones, AI & Robotics',
+    color: '#3e6aa8',
+    duration: '90 Days',
+    includes: [
+      { icon: <Settings size={16} />, text: 'Basics of engineering' },
+      { icon: <Zap size={16} />, text: 'Basics of electronics' },
+      { icon: <Code size={16} />, text: 'Moderate knowledge of coding in C++ and Python' },
+      { icon: <Bot size={16} />, text: 'ROS 2 and NVIDIA Isaac robotics' },
+      { icon: <Lightbulb size={16} />, text: 'Robotics projects' },
+      { icon: <Cpu size={16} />, text: 'Develop your own FC and ESC for an FPV drone' },
+      { icon: <Brain size={16} />, text: 'AI integration' },
+      { icon: <Eye size={16} />, text: 'Computer vision, YOLO and Roboflow' },
+      { icon: <MonitorPlay size={16} />, text: 'Angle, Acro and 3D mode simulation practice: 60 hours' },
+      { icon: <Plane size={16} />, text: 'Free flying: tiny whoops, cinewoops, freestyle FPV and DJI drones' },
+      { icon: <Map size={16} />, text: 'Advanced cinematography, mapping, surveillance and security, 3D mapping, thermal scanning and GIS scanning' },
+      { icon: <PenTool size={16} />, text: 'Build end-to-end FPV drones' },
+      { icon: <Sliders size={16} />, text: 'PID configuration' },
+      { icon: <Download size={16} />, text: 'Betaflight, INAV and all firmware flashing software' },
+      { icon: <Wrench size={16} />, text: 'Repair of all types of drones and sensors' },
+    ],
+  },
   {
     id: 'level3',
     badge: 'Grade 3',
@@ -120,7 +146,7 @@ const DOMAINS = [
 
 // ── Component ──────────────────────────────────────────────────
 export default function Workshops() {
-  const [activeLevel, setActiveLevel] = useState('level1')
+  const [activeLevel, setActiveLevel] = useState('special')
   const level = LEVELS.find(l => l.id === activeLevel)
 
   return (
@@ -191,8 +217,8 @@ export default function Workshops() {
         {/* ── CERTIFICATION LEVELS ── */}
         <section id="grades" className={`section ${styles.levelsSection}`}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>Certification grades</h2>
-            <p className={styles.sectionSub}>Choose the right grade for your institution. All programs are 1-week intensive workshops.</p>
+            <h2 className={styles.sectionTitle}>Programs and certification grades</h2>
+            <p className={styles.sectionSub}>Choose the right program for your institution. The three certification grades are 1-week intensive workshops, and the special course runs for 90 days.</p>
 
             {/* Layout Wrapper */}
             <div className={styles.levelsSplitLayout}>
@@ -202,7 +228,7 @@ export default function Workshops() {
                   activeId={activeLevel}
                   onSelect={setActiveLevel}
                   layoutIdPrefix="workshops"
-                  label="Grades"
+                  label="Programs"
                 />
               </div>
 
@@ -248,10 +274,12 @@ export default function Workshops() {
                   ))}
                 </div>
 
-                <div className={styles.certBanner}>
-                  <span className={styles.certIcon}><Award size={20} /></span>
-                  <span className={styles.certText}>Certificate: <strong>{level.cert}</strong></span>
-                </div>
+                {level.cert && (
+                  <div className={styles.certBanner}>
+                    <span className={styles.certIcon}><Award size={20} /></span>
+                    <span className={styles.certText}>Certificate: <strong>{level.cert}</strong></span>
+                  </div>
+                )}
               </motion.div>
                 </AnimatePresence>
             </div>
