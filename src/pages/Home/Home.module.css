@@ -507,9 +507,31 @@
 }
 
 .bannerActions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
+  max-width: 480px;
+}
+
+/* every button the same width and height: Register spans the row, the other two share the next one */
+.bannerActions > a {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-border-hover);
+}
+
+.bannerActions > a:first-child {
+  grid-column: 1 / -1;
+  border-color: var(--color-accent-primary);
+}
+
+@media (max-width: 480px) {
+  .bannerActions {
+    grid-template-columns: 1fr;
+  }
 }
 
 .bannerSub {
