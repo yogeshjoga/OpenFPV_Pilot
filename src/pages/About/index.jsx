@@ -171,8 +171,10 @@ export default function About() {
               transition={{ duration: 0.7, delay: 0.1 }}
             >
               <img
-                src="/gallery/workshop-1/thumb/roph9613.webp"
-                alt="The EGIRE Robotics team and students at a drone workshop"
+                src="/images/opt/team-photo-800.webp"
+                srcSet="/images/opt/team-photo-800.webp 800w, /images/opt/team-photo-1200.webp 1200w"
+                sizes="(max-width: 900px) 90vw, 530px"
+                alt="Four members of the EGIRE Robotics team at an FPV drone piloting workshop"
                 width="800"
                 height="533"
                 fetchPriority="high"

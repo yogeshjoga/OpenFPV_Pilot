@@ -191,10 +191,12 @@ export default function Home() {
             transition={{ duration: 0.6 }}
           >
             <img
-              src="/gallery/workshop-1/full/roph9613.webp"
-              alt="The EGIRE Robotics team with FPV goggles and a radio controller"
-              width="3200"
-              height="2133"
+              src="/images/opt/team-photo-1200.webp"
+              srcSet="/images/opt/team-photo-800.webp 800w, /images/opt/team-photo-1200.webp 1200w"
+              sizes="(max-width: 900px) 90vw, 600px"
+              alt="Four members of the EGIRE Robotics team at an FPV drone piloting workshop"
+              width="1200"
+              height="800"
               loading="lazy"
             />
           </motion.div>
