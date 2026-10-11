@@ -8,7 +8,7 @@ import SketchfabEmbed from '@components/common/SketchfabEmbed'
 import FaqSection from '@components/sections/FaqSection'
 import VideoCarousel from '@components/sections/VideoCarousel'
 import { fetchReviews } from '@lib/siteApi'
-import { CONTACT_PHONE } from '@config/constants'
+import { whatsappHref } from '@config/constants'
 import { optimized } from '@lib/img'
 import ReviewsSection from '@components/sections/ReviewsSection'
 import PartnersSection from '@components/sections/PartnersSection'
@@ -443,7 +443,12 @@ export default function Home() {
                 <Link to="/enquire?type=demo&from=home-banner" className={styles.ghostBtn}>
                   Book a demo
                 </Link>
-                <a href={CONTACT_PHONE.href} className={styles.ghostBtn}>
+                <a
+                  href={whatsappHref('Hello EGIRE Robotics, I would like to talk to a mentor.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.ghostBtn}
+                >
                   Talk to a mentor
                 </a>
               </div>

@@ -52,9 +52,12 @@ export const SOCIAL_LINKS = {
   discord: '',
 }
 
+/** A WhatsApp chat link with the message already typed. It works on computers (WhatsApp Web or the app) and phones. */
+export const whatsappHref = (message) => `https://wa.me/919110566354?text=${encodeURIComponent(message)}`
+
 export const WHATSAPP = {
   display: '+91 9110566354',
-  href: `https://wa.me/919110566354?text=${encodeURIComponent('Hello EGIRE Robotics, I would like to know more about your workshops.')}`,
+  href: whatsappHref('Hello EGIRE Robotics, I would like to know more about your workshops.'),
 }
 
 // Starting prices shown on the site
