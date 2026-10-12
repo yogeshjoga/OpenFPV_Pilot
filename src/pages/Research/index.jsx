@@ -27,6 +27,7 @@ import {
 import PageWrapper from '@components/layout/PageWrapper'
 import { CONTACT_EMAIL } from '@config/constants'
 import useDocumentMeta from '@lib/useDocumentMeta'
+import HeroVisual from './HeroVisual'
 import styles from './Research.module.css'
 
 // The five-year plan, in the order we intend to build it, grouped into four phases.
@@ -196,33 +197,36 @@ export default function Research() {
     <PageWrapper>
       <div className={styles.page}>
         <div className="container">
-          <header className={styles.header}>
-            <p className={styles.eyebrow}>
-              <Telescope size={16} aria-hidden="true" /> Research
-            </p>
-            <h1 className={styles.title}>Research roadmap: the next five years</h1>
-            <p className={styles.lead}>
-              In five years we plan to design India’s own FPV drone parts, put artificial intelligence on the drone, and help build the industry around them.
-              This page explains what we will build, in what order, and why.
-            </p>
-            <dl className={styles.facts}>
-              <div>
-                <dt>Duration</dt>
-                <dd>5 years</dd>
-              </div>
-              <div>
-                <dt>Stages</dt>
-                <dd>{STAGE_COUNT}</dd>
-              </div>
-              <div>
-                <dt>Phases</dt>
-                <dd>{PHASES.length}</dd>
-              </div>
-              <div>
-                <dt>Status</dt>
-                <dd>Planned</dd>
-              </div>
-            </dl>
+          <header className={styles.hero}>
+            <div className={styles.heroText}>
+              <p className={styles.eyebrow}>
+                <Telescope size={16} aria-hidden="true" /> Research
+              </p>
+              <h1 className={styles.title}>Research roadmap: the next five years</h1>
+              <p className={styles.lead}>
+                In five years we plan to design India’s own FPV drone parts, put artificial intelligence on the drone, and help build the industry around them.
+                This page explains what we will build, in what order, and why.
+              </p>
+              <dl className={styles.facts}>
+                <div>
+                  <dt>Duration</dt>
+                  <dd>5 years</dd>
+                </div>
+                <div>
+                  <dt>Stages</dt>
+                  <dd>{STAGE_COUNT}</dd>
+                </div>
+                <div>
+                  <dt>Phases</dt>
+                  <dd>{PHASES.length}</dd>
+                </div>
+                <div>
+                  <dt>Status</dt>
+                  <dd>Planned</dd>
+                </div>
+              </dl>
+            </div>
+            <HeroVisual />
           </header>
 
           <section className={styles.block} aria-labelledby="how-title">
