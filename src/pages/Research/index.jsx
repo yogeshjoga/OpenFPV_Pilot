@@ -5,10 +5,14 @@ import {
   CheckCircle2,
   CircuitBoard,
   Cpu,
+  Building2,
   Flag,
+  FlaskConical,
   Gamepad2,
   Globe,
   GraduationCap,
+  Landmark,
+  Mail,
   Network,
   Package,
   Plane,
@@ -403,16 +407,33 @@ export default function Research() {
           <p className={styles.disclaimer}>This is a plan, not a list of finished products. Each stage builds on the one before it, and timings will move as the research does.</p>
 
           <section className={styles.cta} aria-labelledby="research-cta-title">
-            <div>
+            <div className={styles.ctaMain}>
+              <p className={styles.ctaKicker}>Collaborate</p>
               <h2 id="research-cta-title" className={styles.ctaTitle}>Work with us on this</h2>
-              <p className={styles.ctaText}>
-                We welcome students, colleges, researchers, industry and government partners who want to work on any of these stages. Tell us what you can bring, or write to us at{' '}
-                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
-              </p>
+              <p className={styles.ctaText}>Tell us which stage you would like to work on and what you can bring. We reply to every enquiry.</p>
+              <ul className={styles.ctaWho}>
+                <li>
+                  <GraduationCap size={16} aria-hidden="true" /> Students
+                </li>
+                <li>
+                  <Building2 size={16} aria-hidden="true" /> Colleges
+                </li>
+                <li>
+                  <FlaskConical size={16} aria-hidden="true" /> Researchers
+                </li>
+                <li>
+                  <Landmark size={16} aria-hidden="true" /> Industry and government
+                </li>
+              </ul>
             </div>
-            <Link to="/enquire?type=general&from=research" className={styles.ctaButton}>
-              Get in touch <ArrowRight size={18} aria-hidden="true" />
-            </Link>
+            <div className={styles.ctaActions}>
+              <Link to="/enquire?type=general&from=research" className={styles.ctaButton}>
+                Send an enquiry <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+              <a href={`mailto:${CONTACT_EMAIL}`} className={styles.ctaMail}>
+                <Mail size={16} aria-hidden="true" /> {CONTACT_EMAIL}
+              </a>
+            </div>
           </section>
         </div>
       </div>
