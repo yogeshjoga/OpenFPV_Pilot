@@ -26,6 +26,7 @@ export const NAV_LINKS = [
   { label: 'Gallery', path: '/gallery' },
   { label: 'FPV Quote', path: '/builder' },
   { label: 'Blog', path: '/blog' },
+  { label: 'Research', path: '/research' },
   { label: 'About', path: '/about' },
   { label: 'Enquire', path: '/enquire' },
   { label: 'Login', path: '/login' },

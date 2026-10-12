@@ -5,6 +5,7 @@ const Home = lazy(() => import('@pages/Home'))
 const Catalog = lazy(() => import('@pages/Catalog'))
 const ProductDetail = lazy(() => import('@pages/ProductDetail'))
 const About = lazy(() => import('@pages/About'))
+const Research = lazy(() => import('@pages/Research'))
 const Training = lazy(() => import('@pages/Training'))
 const Builder = lazy(() => import('@pages/Builder'))
 const Physics = lazy(() => import('@pages/Physics'))
@@ -96,6 +97,7 @@ export default function AppRouter() {
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/about" element={<About />} />
+          <Route path="/research" element={<Research />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/enquire" element={<Enquire />} />
           <Route path="/workshops" element={<Workshops />} />
