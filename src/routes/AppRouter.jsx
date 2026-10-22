@@ -81,6 +81,8 @@ export default function AppRouter() {
           <Route path="/physics" element={<Physics />} />
           <Route path="/physics/:sectionId/:topicId" element={<PhysicsDetail />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/gallery/:folder" element={<Gallery />} />
+          <Route path="/gallery/:folder/:album" element={<Gallery />} />
           <Route path="/simulator" element={<Simulator />} />
           <Route path="/assembly-3d" element={<Assembly3D />} />
           <Route path="/intro" element={<IntroToDrones />} />

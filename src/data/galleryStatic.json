@@ -1,0 +1,363 @@
+{
+ "folders": [
+  {
+   "id": "static-workshops",
+   "slug": "workshops",
+   "name": "Workshops"
+  }
+ ],
+ "albums": [
+  {
+   "id": "sivani-group-and-certificates",
+   "folder": "workshops",
+   "title": "Group photo and certificates",
+   "description": "Our FPV drone workshop at Sri Sivani Engineering College Etcherla: the participants with the EGIRE Robotics team, and the certificates handed out at the end.",
+   "date": "2026-09-28",
+   "wide": true,
+   "featured": [
+    "sivani-group"
+   ],
+   "images": [
+    {
+     "id": "sivani-group",
+     "w": 2000,
+     "h": 1125,
+     "set": "sivani-srikakulam"
+    },
+    {
+     "id": "sivani-certificates",
+     "w": 2000,
+     "h": 879,
+     "set": "sivani-srikakulam"
+    }
+   ]
+  },
+  {
+   "id": "sivani-participants",
+   "folder": "workshops",
+   "title": "Participants with their controllers",
+   "description": "FPV drone piloting workshop at Sri Sivani Engineering College Etcherla, 28 September to 7 October 2026. Students with the controllers and goggles they flew with.",
+   "date": "2026-09-28",
+   "featured": [
+    "roph7285",
+    "roph7305"
+   ],
+   "images": [
+    {
+     "id": "roph7278",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7279",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7282",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7284",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7285",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7288",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7289",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7291",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7294",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7297",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7303",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7304",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7305",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7307",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    }
+   ]
+  },
+  {
+   "id": "sivani-classroom",
+   "folder": "workshops",
+   "title": "In the classroom and lab",
+   "description": "FPV drone piloting workshop at Sri Sivani Engineering College Etcherla, 28 September to 7 October 2026. Simulator practice and hands-on time with the drones.",
+   "date": "2026-09-28",
+   "featured": [
+    "roph7249",
+    "roph7313"
+   ],
+   "images": [
+    {
+     "id": "roph7240",
+     "w": 3600,
+     "h": 2400,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7242",
+     "w": 3600,
+     "h": 2400,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7243",
+     "w": 3600,
+     "h": 2400,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7249",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7299",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7300",
+     "w": 3600,
+     "h": 2400,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7311",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7313",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7317",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    }
+   ]
+  },
+  {
+   "id": "sivani-flying",
+   "folder": "workshops",
+   "title": "Flying practice outdoors",
+   "description": "FPV drone piloting workshop at Sri Sivani Engineering College Etcherla, 28 September to 7 October 2026. Flying outdoors and the field demonstration.",
+   "date": "2026-09-28",
+   "featured": [
+    "roph7396",
+    "roph9549"
+   ],
+   "images": [
+    {
+     "id": "roph7365",
+     "w": 2300,
+     "h": 1533,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7373",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7375",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7380",
+     "w": 2560,
+     "h": 1707,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7381",
+     "w": 2400,
+     "h": 3600,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7391",
+     "w": 2133,
+     "h": 3200,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7396",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7401",
+     "w": 2880,
+     "h": 1920,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7404",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7407",
+     "w": 3600,
+     "h": 2400,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph7409",
+     "w": 1800,
+     "h": 1200,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9545",
+     "w": 1400,
+     "h": 933,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9549",
+     "w": 1400,
+     "h": 933,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9554",
+     "w": 1400,
+     "h": 933,
+     "set": "workshop-1"
+    }
+   ]
+  },
+  {
+   "id": "sivani-team",
+   "folder": "workshops",
+   "title": "The EGIRE Robotics team",
+   "description": "The EGIRE Robotics team and trainers at the workshop.",
+   "date": "2026-09-28",
+   "featured": [
+    "roph9613"
+   ],
+   "images": [
+    {
+     "id": "roph9608-2",
+     "w": 1533,
+     "h": 2300,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9610",
+     "w": 1920,
+     "h": 2880,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9613",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9614",
+     "w": 2400,
+     "h": 3600,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9616",
+     "w": 2400,
+     "h": 3600,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9621",
+     "w": 2400,
+     "h": 3600,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9630",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9636",
+     "w": 2133,
+     "h": 3200,
+     "set": "workshop-1"
+    },
+    {
+     "id": "roph9639",
+     "w": 3200,
+     "h": 2133,
+     "set": "workshop-1"
+    }
+   ]
+  }
+ ]
+}
