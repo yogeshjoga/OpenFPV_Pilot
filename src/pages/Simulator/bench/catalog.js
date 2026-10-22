@@ -13,7 +13,7 @@ const motorNames = ['M1', 'M2', 'M3', 'M4']
 
 const pad = (id, label, x, y, extra = {}) => ({ id, label, x, y, ...extra })
 // Wires are drawn slim so a busy bench stays readable. The artwork scales its leads by the same amount.
-export const LEAD_SCALE = 0.72
+export const LEAD_SCALE = 0.6
 const lead = (id, label, x, y, color, gauge, extra = {}) => pad(id, label, x, y, { lead: { color, gauge: Math.round(gauge * LEAD_SCALE * 10) / 10 }, ...extra })
 
 // ---------- 4-in-1 ESC, 30.5 x 30.5 mm stack board ----------
@@ -98,9 +98,9 @@ export const MOTOR = {
   w: 150,
   h: 190,
   pads: [
-    lead('w1', 'Wire 1', 40, 184, '#2f6fdd', 3.6),
-    lead('w2', 'Wire 2', 75, 184, '#e5c02a', 3.6),
-    lead('w3', 'Wire 3', 110, 184, '#32a852', 3.6),
+    lead('w1', 'Wire 1', 40, 184, '#4b7bec', 3.6),
+    lead('w2', 'Wire 2', 75, 184, '#e5b82a', 3.6),
+    lead('w3', 'Wire 3', 110, 184, '#38a869', 3.6),
   ],
   internal: [],
   motorLeads: ['w1', 'w2', 'w3'],
@@ -114,8 +114,8 @@ export const BATTERY = {
   w: 150,
   h: 250,
   pads: [
-    lead('pos', '+', 50, 8, '#d92d2d', 5.5, { rail: 'vbat', source: true, role: 'bat+' }),
-    lead('neg', '-', 100, 8, '#15181c', 5.5, { rail: 'gnd', source: true, role: 'bat-' }),
+    lead('pos', '+', 50, 8, '#d6455d', 5.5, { rail: 'vbat', source: true, role: 'bat+' }),
+    lead('neg', '-', 100, 8, '#2a2e35', 5.5, { rail: 'gnd', source: true, role: 'bat-' }),
   ],
   internal: [],
 }
@@ -128,8 +128,8 @@ export const CAPACITOR = {
   w: 90,
   h: 150,
   pads: [
-    lead('cp', '+', 28, 8, '#c9ced6', 2.4, { role: 'cap+' }),
-    lead('cn', '-', 62, 8, '#c9ced6', 2.4, { role: 'cap-' }),
+    lead('cp', '+', 28, 8, '#aab1ba', 2.4, { role: 'cap+' }),
+    lead('cn', '-', 62, 8, '#aab1ba', 2.4, { role: 'cap-' }),
   ],
   internal: [],
 }
@@ -142,10 +142,10 @@ export const RECEIVER = {
   w: 140,
   h: 150,
   pads: [
-    lead('r5', '5V', 20, 144, '#d92d2d', 2.2, { accepts: ['5v'] }),
-    lead('rg', 'G', 47, 144, '#15181c', 2.2, { rail: 'gnd' }),
-    lead('rt', 'TX', 73, 144, '#e5c02a', 2.2, { uartDevice: 'tx' }),
-    lead('rr', 'RX', 100, 144, '#f1f1f1', 2.2, { uartDevice: 'rx' }),
+    lead('r5', '5V', 20, 144, '#d6455d', 2.2, { accepts: ['5v'] }),
+    lead('rg', 'G', 47, 144, '#2a2e35', 2.2, { rail: 'gnd' }),
+    lead('rt', 'TX', 73, 144, '#e5b82a', 2.2, { uartDevice: 'tx' }),
+    lead('rr', 'RX', 100, 144, '#4b7bec', 2.2, { uartDevice: 'rx' }),
   ],
   internal: [],
   needs: { power: 'r5', gnd: 'rg' },
@@ -159,9 +159,9 @@ export const VTX = {
   w: 150,
   h: 150,
   pads: [
-    lead('vp', 'PWR', 30, 144, '#d92d2d', 2.4, { accepts: ['5v', '9v'] }),
-    lead('vg', 'G', 75, 144, '#15181c', 2.4, { rail: 'gnd' }),
-    lead('vv', 'VIDEO', 120, 144, '#e5c02a', 2.0, { video: 'video-in' }),
+    lead('vp', 'PWR', 30, 144, '#d6455d', 2.4, { accepts: ['5v', '9v'] }),
+    lead('vg', 'G', 75, 144, '#2a2e35', 2.4, { rail: 'gnd' }),
+    lead('vv', 'VIDEO', 120, 144, '#e5b82a', 2.0, { video: 'video-in' }),
   ],
   internal: [],
   needs: { power: 'vp', gnd: 'vg' },
@@ -175,9 +175,9 @@ export const CAMERA = {
   w: 120,
   h: 160,
   pads: [
-    lead('cpw', 'PWR', 20, 154, '#d92d2d', 2.2, { accepts: ['5v', '9v', 'vbat'] }),
-    lead('cg', 'G', 60, 154, '#15181c', 2.2, { rail: 'gnd' }),
-    lead('cv', 'VIDEO', 100, 154, '#e5c02a', 2.0, { video: 'video-out' }),
+    lead('cpw', 'PWR', 20, 154, '#d6455d', 2.2, { accepts: ['5v', '9v', 'vbat'] }),
+    lead('cg', 'G', 60, 154, '#2a2e35', 2.2, { rail: 'gnd' }),
+    lead('cv', 'VIDEO', 100, 154, '#e5b82a', 2.0, { video: 'video-out' }),
   ],
   internal: [],
   needs: { power: 'cpw', gnd: 'cg' },
@@ -191,10 +191,10 @@ export const GPS = {
   w: 130,
   h: 150,
   pads: [
-    lead('g5', '5V', 18, 144, '#d92d2d', 2.2, { accepts: ['5v'] }),
-    lead('gg', 'G', 49, 144, '#15181c', 2.2, { rail: 'gnd' }),
-    lead('gt', 'TX', 80, 144, '#32a852', 2.2, { uartDevice: 'tx' }),
-    lead('gr', 'RX', 111, 144, '#f1f1f1', 2.2, { uartDevice: 'rx' }),
+    lead('g5', '5V', 18, 144, '#d6455d', 2.2, { accepts: ['5v'] }),
+    lead('gg', 'G', 49, 144, '#2a2e35', 2.2, { rail: 'gnd' }),
+    lead('gt', 'TX', 80, 144, '#38a869', 2.2, { uartDevice: 'tx' }),
+    lead('gr', 'RX', 111, 144, '#4b7bec', 2.2, { uartDevice: 'rx' }),
   ],
   internal: [],
   needs: { power: 'g5', gnd: 'gg' },

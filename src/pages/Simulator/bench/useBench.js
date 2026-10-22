@@ -1,45 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
-import { PART_BY_ID, exitOf, padOf } from './catalog.js'
+import { PART_BY_ID } from './catalog.js'
+import { fromFlow, lookOf, toFlowEdges, toFlowNodes } from './flowModel.js'
 import { runChecks } from './checks.js'
 import { LESSON_BY_ID, LESSONS, lessonGoals } from './lessons.js'
 import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspace, encodeBuild, newId } from './workspaces.js'
-
-// ---- the bench model (what is saved) <-> what React Flow draws ----
-
-/** Colour and thickness of a wire: that of the lead it starts from, else a plain signal wire. */
-function lookOf(nodesById, a, b, seed = 0) {
-  const route = (key) => {
-    const [nodeId, padId] = key.split(':')
-    const node = nodesById.get(nodeId)
-    return node ? exitOf(node.type, padId) : 'bottom'
-  }
-  const look = { color: '#e5c02a', gauge: 1.8, from: route(a), to: route(b), seed }
-  for (const key of [a, b]) {
-    const [nodeId, padId] = key.split(':')
-    const node = nodesById.get(nodeId)
-    const pad = node && padOf(node.type, padId)
-    if (pad?.lead) return { ...look, color: pad.lead.color, gauge: pad.lead.gauge }
-  }
-  return look
-}
-
-const toFlowNodes = (nodes, deletable) =>
-  nodes.map((n) => ({ id: n.id, type: 'part', position: { x: n.x, y: n.y }, data: { type: n.type }, deletable }))
-
-const toFlowEdges = (nodes, wires) => {
-  const byId = new Map(nodes.map((n) => [n.id, n]))
-  return wires.map((w, i) => {
-    const [source, sourceHandle] = w.a.split(':')
-    const [target, targetHandle] = w.b.split(':')
-    return { id: w.id, source, sourceHandle, target, targetHandle, type: 'wire', data: lookOf(byId, w.a, w.b, i) }
-  })
-}
-
-const fromFlow = (nodes, edges) => ({
-  nodes: nodes.map((n) => ({ id: n.id, type: n.data.type, x: Math.round(n.position.x), y: Math.round(n.position.y) })),
-  wires: edges.map((e) => ({ id: e.id, a: `${e.source}:${e.sourceHandle}`, b: `${e.target}:${e.targetHandle}` })),
-})
 
 const freshLesson = (lesson) => ({
   nodes: lesson.nodes.map((n) => ({ ...n })),

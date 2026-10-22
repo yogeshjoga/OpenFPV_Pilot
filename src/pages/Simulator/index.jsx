@@ -5,6 +5,7 @@ import '@xyflow/react/dist/style.css'
 import PageWrapper from '@components/layout/PageWrapper'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import { PART_BY_ID } from './bench/catalog.js'
+import { freeSpot } from './bench/placement.js'
 import { PartDefs } from './bench/parts/art.jsx'
 import PartNode from './bench/PartNode.jsx'
 import WireEdge, { PendingWire } from './bench/WireEdge.jsx'
@@ -13,27 +14,6 @@ import { useBench } from './bench/useBench.js'
 import styles from './Simulator.module.css'
 
 const nodeTypes = { part: PartNode }
-
-/** The first spot, spiralling out from `centre`, where a part of this size does not sit on top of another. */
-function freeSpot(centre, part, placed) {
-  const gap = 36
-  const clear = (x, y) =>
-    placed.every((n) => {
-      const other = PART_BY_ID[n.data.type]
-      return x + part.w + gap <= n.position.x || n.position.x + other.w + gap <= x || y + part.h + gap <= n.position.y || n.position.y + other.h + gap <= y
-    })
-  const x0 = centre.x - part.w / 2
-  const y0 = centre.y - part.h / 2
-  for (let ring = 0; ring < 40; ring++) {
-    for (let step = 0; step < Math.max(1, ring * 8); step++) {
-      const angle = (step / Math.max(1, ring * 8)) * Math.PI * 2
-      const x = x0 + Math.cos(angle) * ring * 60
-      const y = y0 + Math.sin(angle) * ring * 60
-      if (clear(x, y)) return { x, y }
-    }
-  }
-  return { x: x0, y: y0 }
-}
 const edgeTypes = { wire: WireEdge }
 
 function PendingLine({ fromX, fromY, toX, toY }) {

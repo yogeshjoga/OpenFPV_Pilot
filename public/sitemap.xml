@@ -14,6 +14,7 @@
   <url><loc>https://www.egirerobotics.com/physics</loc><priority>0.5</priority></url>
   <url><loc>https://www.egirerobotics.com/pid-tuning</loc><priority>0.5</priority></url>
   <url><loc>https://www.egirerobotics.com/simulator</loc><priority>0.5</priority></url>
+  <url><loc>https://www.egirerobotics.com/wiring-builder</loc><priority>0.7</priority></url>
   <url><loc>https://www.egirerobotics.com/assembly-3d</loc><priority>0.5</priority></url>
   <url><loc>https://www.egirerobotics.com/presentation</loc><priority>0.5</priority></url>
   <url><loc>https://www.egirerobotics.com/builder</loc><priority>0.5</priority></url>

@@ -105,3 +105,25 @@ test('a damaged share link is refused', () => {
   assert.equal(decodeBuild(''), null)
   assert.equal(decodeBuild(Buffer.from(JSON.stringify({ v: 2, n: [], w: [] })).toString('base64url')), null)
 })
+
+import { tidyLayout } from './placement.js'
+import { PART_BY_ID } from './catalog.js'
+
+test('tidy layout places every part, none on top of another, and each motor beside its own output', () => {
+  const lesson = LESSONS.find((l) => l.id === 'full')
+  const wires = finished(lesson)
+  const at = tidyLayout(lesson.nodes, wires)
+  const boxes = lesson.nodes.map((n) => ({ id: n.id, x: at[n.id].x, y: at[n.id].y, w: PART_BY_ID[n.type].w, h: PART_BY_ID[n.type].h }))
+  assert.equal(boxes.length, lesson.nodes.length)
+  for (let i = 0; i < boxes.length; i++) {
+    for (let j = i + 1; j < boxes.length; j++) {
+      const a = boxes[i]
+      const b = boxes[j]
+      const overlap = a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h
+      assert.equal(overlap, false, `${a.id} overlaps ${b.id}`)
+    }
+  }
+  // m1 is wired to the M1 output, which sits at the bottom right
+  assert.ok(at.m1.x > at.esc.x && at.m1.y > at.esc.y - 20)
+  assert.ok(at.m4.x < at.esc.x && at.m4.y < at.m3.y)
+})

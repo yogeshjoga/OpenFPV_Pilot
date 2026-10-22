@@ -23,7 +23,7 @@ function PartNode({ data, selected }) {
           id={pad.id}
           type="source"
           position={Position.Top}
-          className={`${styles.pad} ${pad.lead ? styles.padTip : ''}`}
+          className={`${styles.pad} ${pad.lead ? styles.padTip : ''} ${data.mates?.includes(pad.id) ? styles.padMate : ''}`}
           style={{ left: pad.x, top: pad.y }}
           title={`${part.name}: ${pad.label}`}
         />

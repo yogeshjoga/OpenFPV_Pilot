@@ -473,6 +473,18 @@
   background: rgba(var(--color-accent-primary-rgb), 0.28);
 }
 
+.padMate {
+  border-color: var(--color-success);
+  background: rgba(47, 125, 79, 0.2);
+  animation: mate 1s ease-in-out infinite;
+}
+
+@keyframes mate {
+  50% {
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
 .smoke {
   position: absolute;
   top: 30%;

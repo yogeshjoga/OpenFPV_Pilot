@@ -34,7 +34,8 @@ export function runChecks(nodes, wires) {
     const name = PART_BY_ID[node.type]?.name ?? node.type
     return same.length > 1 ? `${name} ${same.indexOf(node) + 1}` : name
   }
-  const say = (level, title, detail, ids = []) => items.push({ level, title, detail, nodes: ids })
+  // kind: 'fault' is something done wrong, 'todo' is something not finished yet
+  const say = (level, title, detail, ids = [], kind = level === 'ok' ? 'ok' : 'fault') => items.push({ level, kind, title, detail, nodes: ids })
   const burn = (title, detail, ids) => {
     for (const id of ids) smoke.add(id)
     say('critical', title, detail, ids)
@@ -129,7 +130,7 @@ export function runChecks(nodes, wires) {
       goals.battery = true
       say('ok', 'Battery is connected to the ESC', 'Positive to BAT+ and negative to BAT-.', [bat.id])
     } else if (escs.length) {
-      say('warn', 'Battery is not connected to the ESC yet', 'Solder the red lead to BAT+ and the black lead to BAT- on the ESC.', [bat.id])
+      say('warn', 'Battery is not connected to the ESC yet', 'Solder the red lead to BAT+ and the black lead to BAT- on the ESC.', [bat.id], 'todo')
     }
   }
 
@@ -145,7 +146,7 @@ export function runChecks(nodes, wires) {
       goals.capacitor = true
       say('ok', 'Capacitor is soldered correctly', 'Positive leg on CAP+, negative leg on CAP-, across the battery power.', [cap.id])
     } else {
-      say('warn', 'Capacitor is not finished', 'Solder the long leg to CAP+ and the short, striped leg to CAP-.', [cap.id])
+      say('warn', 'Capacitor is not finished', 'Solder the long leg to CAP+ and the short, striped leg to CAP-.', [cap.id], 'todo')
     }
   }
 
@@ -171,13 +172,13 @@ export function runChecks(nodes, wires) {
     if (sameMotorJoined) {
       burn(`${label(motor)}: two of its wires are joined`, 'Two wires of the same motor touch. That shorts two of its three phases, and the ESC would burn.', [motor.id])
     } else if (otherMotor) {
-      say('warn', `${label(motor)} shares a pad with another motor`, 'Each motor needs its own three pads.', [motor.id])
+      say('warn', `${label(motor)} shares a pad with another motor`, 'Each motor needs its own three pads.', [motor.id], 'fault')
     } else if (manyPads) {
       burn(`${label(motor)}: a wire touches more than one pad`, 'A wire is joined to two ESC pads. Keep each wire on a single pad.', [motor.id])
     } else if (placed.length === 0) {
-      say('info', `${label(motor)} is not wired yet`, 'Solder its three wires to the three pads of one motor output (M1 to M4) on the ESC.', [motor.id])
+      say('info', `${label(motor)} is not wired yet`, 'Solder its three wires to the three pads of one motor output (M1 to M4) on the ESC.', [motor.id], 'todo')
     } else if (placed.length < 3) {
-      say('warn', `${label(motor)} has ${3 - placed.length} loose wire${3 - placed.length > 1 ? 's' : ''}`, 'All three wires must be soldered, one to each pad of the same motor output.', [motor.id])
+      say('warn', `${label(motor)} has ${3 - placed.length} loose wire${3 - placed.length > 1 ? 's' : ''}`, 'All three wires must be soldered, one to each pad of the same motor output.', [motor.id], 'todo')
     } else {
       const groups = new Set(placed.map((i) => i.pads[0].pad.motor.group))
       const order = placed.map((i) => i.pads[0].pad.motor.index)
@@ -231,7 +232,7 @@ export function runChecks(nodes, wires) {
     } else if (crossed.length) {
       say('warn', 'Some signals are crossed', `${crossed.join('. ')}. Each signal must meet the pad with the same name.`, [fc.id, esc.id])
     } else {
-      say('warn', 'Flight controller to ESC is not finished', `Still to connect: ${missing.join(', ')}. The flight controller needs BAT and G for power, and M1 to M4 to tell the motors what to do.`, [fc.id, esc.id])
+      say('warn', 'Flight controller to ESC is not finished', `Still to connect: ${missing.join(', ')}. The flight controller needs BAT and G for power, and M1 to M4 to tell the motors what to do.`, [fc.id, esc.id], 'todo')
     }
   }
 
@@ -272,7 +273,7 @@ export function runChecks(nodes, wires) {
     const rxToRx = fcPads(rxNet, 'rx')
     const common = txToRx.filter((n) => rxToTx.includes(n))
     if (!power.ok) {
-      say('warn', `${label(node)} is not powered`, power.text, [node.id])
+      say('warn', `${label(node)} is not powered`, power.text, [node.id], 'todo')
     } else if (common.length) {
       const n = common[0]
       if (usedUarts.has(n)) {
@@ -287,7 +288,7 @@ export function runChecks(nodes, wires) {
     } else if (txToRx.length && rxToTx.length) {
       say('warn', `${label(node)} uses two different UARTs`, `TX goes to UART${txToRx[0]} but RX goes to UART${rxToTx[0]}. Both must be on the same UART.`, [node.id])
     } else {
-      say('warn', `${label(node)} is powered but its data wires are not finished`, 'Connect its TX to the flight controller’s R pad and its RX to the matching T pad.', [node.id])
+      say('warn', `${label(node)} is powered but its data wires are not finished`, 'Connect its TX to the flight controller’s R pad and its RX to the matching T pad.', [node.id], 'todo')
     }
   }
   if (fcs.length) {
@@ -308,7 +309,7 @@ export function runChecks(nodes, wires) {
         goals[goal] = true
         say('ok', `${label(node)} is powered`, 'Power and ground are connected to live pads.', [node.id])
       } else if (!power.burned) {
-        say('warn', `${label(node)} is not powered`, power.text, [node.id])
+        say('warn', `${label(node)} is not powered`, power.text, [node.id], 'todo')
       }
     }
   }
@@ -326,7 +327,7 @@ export function runChecks(nodes, wires) {
     } else if (backwards) {
       say('warn', 'Video is wired the wrong way round', 'The camera goes to the CAM pad, and the VTX takes its video from the VTX pad.', [cam.id, vtx.id])
     } else {
-      say('warn', 'Video is not connected', 'Camera video goes to the flight controller’s CAM pad, and the flight controller’s VTX pad goes to the VTX video wire.', [cam.id, vtx.id])
+      say('warn', 'Video is not connected', 'Camera video goes to the flight controller’s CAM pad, and the flight controller’s VTX pad goes to the VTX video wire.', [cam.id, vtx.id], 'todo')
     }
   }
 
