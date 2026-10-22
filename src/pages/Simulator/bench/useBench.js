@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
-import { PART_BY_ID, padOf } from './catalog.js'
+import { PART_BY_ID, exitOf, padOf } from './catalog.js'
 import { runChecks } from './checks.js'
 import { LESSON_BY_ID, LESSONS, lessonGoals } from './lessons.js'
 import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspace, encodeBuild, newId } from './workspaces.js'
@@ -8,14 +8,20 @@ import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspac
 // ---- the bench model (what is saved) <-> what React Flow draws ----
 
 /** Colour and thickness of a wire: that of the lead it starts from, else a plain signal wire. */
-function lookOf(nodesById, a, b) {
+function lookOf(nodesById, a, b, seed = 0) {
+  const route = (key) => {
+    const [nodeId, padId] = key.split(':')
+    const node = nodesById.get(nodeId)
+    return node ? exitOf(node.type, padId) : 'bottom'
+  }
+  const look = { color: '#e5c02a', gauge: 1.8, from: route(a), to: route(b), seed }
   for (const key of [a, b]) {
     const [nodeId, padId] = key.split(':')
     const node = nodesById.get(nodeId)
     const pad = node && padOf(node.type, padId)
-    if (pad?.lead) return { color: pad.lead.color, gauge: pad.lead.gauge }
+    if (pad?.lead) return { ...look, color: pad.lead.color, gauge: pad.lead.gauge }
   }
-  return { color: '#e5c02a', gauge: 2.4 }
+  return look
 }
 
 const toFlowNodes = (nodes, deletable) =>
@@ -23,10 +29,10 @@ const toFlowNodes = (nodes, deletable) =>
 
 const toFlowEdges = (nodes, wires) => {
   const byId = new Map(nodes.map((n) => [n.id, n]))
-  return wires.map((w) => {
+  return wires.map((w, i) => {
     const [source, sourceHandle] = w.a.split(':')
     const [target, targetHandle] = w.b.split(':')
-    return { id: w.id, source, sourceHandle, target, targetHandle, type: 'wire', data: lookOf(byId, w.a, w.b) }
+    return { id: w.id, source, sourceHandle, target, targetHandle, type: 'wire', data: lookOf(byId, w.a, w.b, i) }
   })
 }
 
@@ -55,6 +61,7 @@ export function useBench() {
   const [edges, setEdges] = useState([])
   const [report, setReport] = useState(null)
   const [outcome, setOutcome] = useState(null)
+  const [answerShown, setAnswerShown] = useState(false) // a revealed answer is not the student's own work
   const [freeList, setFreeList] = useState(() => store.listFree())
   const [progress, setProgress] = useState(() => store.getProgress())
   const [notice, setNotice] = useState('')
@@ -73,6 +80,7 @@ export function useBench() {
       setReport(null)
       setOutcome(null)
       startedAt.current = null
+      setAnswerShown(false)
       requestAnimationFrame(() => (loaded.current = true))
     },
     [],
@@ -206,7 +214,7 @@ export function useBench() {
       setEdges((es) => {
         if (es.some((e) => (`${e.source}:${e.sourceHandle}` === a && `${e.target}:${e.targetHandle}` === b) || (`${e.source}:${e.sourceHandle}` === b && `${e.target}:${e.targetHandle}` === a))) return es
         const byId = new Map(nodes.map((n) => [n.id, { id: n.id, type: n.data.type }]))
-        return [...es, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', data: lookOf(byId, a, b) }]
+        return [...es, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', data: lookOf(byId, a, b, es.length) }]
       })
       clearEffects()
     },
@@ -244,14 +252,14 @@ export function useBench() {
     setNodes((ns) =>
       ns.map((n) => ({ ...n, data: { ...n.data, smoke: result.smoke.includes(n.id), running: !!result.spins[n.id], dir: result.spins[n.id] } })),
     )
-    if (lesson) {
+    if (lesson && !answerShown) {
       const passed = lessonGoals(lesson).every((g) => result.goals[g])
       const ms = startedAt.current ? Date.now() - startedAt.current : 0
       const p = store.recordAttempt(lesson.id, { passed, ms })
       setProgress(store.getProgress())
       setOutcome(passed ? { passed: true, stars: p.stars, ms, attempts: p.attempts } : { passed: false, attempts: p.attempts })
     }
-  }, [edges, lesson, nodes, store])
+  }, [answerShown, edges, lesson, nodes, store])
 
   // ---- lessons ----
   const restartLesson = useCallback(() => {
@@ -265,6 +273,7 @@ export function useBench() {
   const showAnswer = useCallback(() => {
     if (!lesson) return
     put(solved(lesson), false)
+    setAnswerShown(true)
     setNotice('This is the finished wiring. Restart the lesson to try it yourself.')
   }, [lesson, put])
 

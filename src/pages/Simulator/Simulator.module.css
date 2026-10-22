@@ -357,7 +357,7 @@
   width: 64px;
   height: 64px;
   border-radius: var(--radius-sm);
-  background: #262b31;
+  background: var(--color-bg-secondary);
   overflow: hidden;
 }
 
@@ -392,9 +392,9 @@
   position: relative;
   flex: 1;
   min-height: 0;
-  background:
-    radial-gradient(circle at 30% 20%, #34403a, transparent 60%),
-    #2a322e;
+  background-color: var(--color-bg-secondary);
+  background-image: radial-gradient(circle, var(--color-border-hover) 1px, transparent 1.4px);
+  background-size: 24px 24px;
 }
 
 .benchTools {
@@ -420,12 +420,12 @@
 
 .part {
   position: relative;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 1px 2px rgba(27, 36, 48, 0.28));
 }
 
 .partSelected {
-  outline: 2px dashed rgba(255, 255, 255, 0.8);
-  outline-offset: 6px;
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 5px;
   border-radius: var(--radius-md);
 }
 
@@ -438,14 +438,11 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: var(--space-2);
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-full);
-  background: rgba(0, 0, 0, 0.55);
+  margin-top: var(--space-5);
   font-size: var(--text-xs);
   font-weight: var(--font-semibold);
   white-space: nowrap;
-  color: #fff;
+  color: var(--color-text-secondary);
   pointer-events: none;
 }
 
@@ -461,8 +458,8 @@
 }
 
 .pad:hover {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.22);
+  border-color: var(--color-accent-primary);
+  background: rgba(var(--color-accent-primary-rgb), 0.18);
 }
 
 .padTip {
@@ -472,8 +469,8 @@
 
 .pad:global(.connectingto),
 .pad:global(.connectingfrom) {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.3);
+  border-color: var(--color-accent-primary);
+  background: rgba(var(--color-accent-primary-rgb), 0.28);
 }
 
 .smoke {

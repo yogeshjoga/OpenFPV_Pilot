@@ -12,7 +12,9 @@
 const motorNames = ['M1', 'M2', 'M3', 'M4']
 
 const pad = (id, label, x, y, extra = {}) => ({ id, label, x, y, ...extra })
-const lead = (id, label, x, y, color, gauge, extra = {}) => pad(id, label, x, y, { lead: { color, gauge }, ...extra })
+// Wires are drawn slim so a busy bench stays readable. The artwork scales its leads by the same amount.
+export const LEAD_SCALE = 0.72
+const lead = (id, label, x, y, color, gauge, extra = {}) => pad(id, label, x, y, { lead: { color, gauge: Math.round(gauge * LEAD_SCALE * 10) / 10 }, ...extra })
 
 // ---------- 4-in-1 ESC, 30.5 x 30.5 mm stack board ----------
 const escMotorPads = []
@@ -201,3 +203,16 @@ export const GPS = {
 export const PARTS = [ESC, FC, MOTOR, BATTERY, CAPACITOR, RECEIVER, VTX, CAMERA, GPS]
 export const PART_BY_ID = Object.fromEntries(PARTS.map((p) => [p.id, p]))
 export const padOf = (partId, padId) => PART_BY_ID[partId]?.pads.find((p) => p.id === padId) ?? null
+
+/** The side of the part a wire leaves from, so wires route away from the board instead of across it. */
+export function exitOf(partId, padId) {
+  const part = PART_BY_ID[partId]
+  const p = padOf(partId, padId)
+  if (!part || !p) return 'bottom'
+  if (p.lead) return p.y > part.h / 2 ? 'bottom' : 'top'
+  const edge = 60
+  if (p.x < edge) return 'left'
+  if (p.x > part.w - edge) return 'right'
+  if (p.y < edge) return 'top'
+  return 'bottom'
+}

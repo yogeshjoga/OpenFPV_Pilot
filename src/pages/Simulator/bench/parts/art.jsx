@@ -1,7 +1,7 @@
 // Top-view artwork for each part of the bench. Drawn from common standard layouts (30.5 mm stack boards, XT60,
 // 2306 motors), in the part's own pixel box from catalog.js. Colours are the colours of the real things (PCB
 // soldermask, gold pads, silicone wire), not interface colours.
-import { PART_BY_ID } from '../catalog.js'
+import { LEAD_SCALE, PART_BY_ID } from '../catalog.js'
 
 /** Gradients shared by every part. Render once on the page. */
 export function PartDefs() {
@@ -19,16 +19,16 @@ export function PartDefs() {
           <stop offset="1" stopColor="#8d96a1" />
         </linearGradient>
         <linearGradient id="bn-esc" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#2a2f36" />
-          <stop offset="1" stopColor="#191c21" />
+          <stop offset="0" stopColor="#434a54" />
+          <stop offset="1" stopColor="#2f353d" />
         </linearGradient>
         <linearGradient id="bn-fc" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#1f3550" />
-          <stop offset="1" stopColor="#111c2b" />
+          <stop offset="0" stopColor="#35618f" />
+          <stop offset="1" stopColor="#25446a" />
         </linearGradient>
         <linearGradient id="bn-chip" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#2c3037" />
-          <stop offset="1" stopColor="#0f1114" />
+          <stop offset="0" stopColor="#3b4149" />
+          <stop offset="1" stopColor="#1d2025" />
         </linearGradient>
         <radialGradient id="bn-bell" cx="0.4" cy="0.35" r="0.8">
           <stop offset="0" stopColor="#5d8cf2" />
@@ -80,8 +80,8 @@ const Pad = ({ x, y, w = 24, h = 20, big = false, label, labelAt = 'below', tin 
 
 const Hole = ({ x, y }) => (
   <g>
-    <circle cx={x} cy={y} r="10" fill="url(#bn-gold)" stroke="#7d5a14" strokeWidth="0.8" />
-    <circle cx={x} cy={y} r="5.5" fill="#0b0e12" />
+    <circle cx={x} cy={y} r="8" fill="url(#bn-gold)" stroke="#7d5a14" strokeWidth="0.6" />
+    <circle cx={x} cy={y} r="4.4" fill="#f4f6f8" stroke="#2a2f36" strokeWidth="0.8" />
   </g>
 )
 
@@ -103,14 +103,16 @@ const Chip = ({ x, y, w, h, text, pins = 8 }) => (
   </g>
 )
 
-const Wire = ({ d, color, width, tip }) => (
-  <g>
-    <path d={d} fill="none" stroke="#000" strokeOpacity="0.35" strokeWidth={width + 1.6} strokeLinecap="round" />
-    <path d={d} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" />
-    <path d={d} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth={Math.max(0.8, width * 0.28)} strokeLinecap="round" transform="translate(-0.6,-0.6)" />
-    {tip && <rect x={tip[0] - width * 0.7} y={tip[1] - 9} width={width * 1.4} height="11" rx={width * 0.5} fill="url(#bn-tin)" stroke="#6f7782" strokeWidth="0.5" />}
-  </g>
-)
+const Wire = ({ d, color, width: full, tip }) => {
+  const width = full * LEAD_SCALE
+  return (
+    <g>
+      <path d={d} fill="none" stroke="#fff" strokeOpacity="0.7" strokeWidth={width + 1.2} strokeLinecap="round" />
+      <path d={d} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" />
+      {tip && <rect x={tip[0] - width * 0.7} y={tip[1] - 7} width={width * 1.4} height="8" rx={width * 0.5} fill="url(#bn-tin)" stroke="#6f7782" strokeWidth="0.5" />}
+    </g>
+  )
+}
 
 // ---------------------------------------------------------------------------------------------------------------
 
@@ -129,11 +131,6 @@ export function EscArt() {
       {[[18, 18], [262, 18], [18, 262], [262, 262]].map(([x, y]) => (
         <Hole key={`${x}${y}`} x={x} y={y} />
       ))}
-      {/* copper traces */}
-      <g stroke="#3a424d" strokeWidth="2.2" fill="none" strokeLinecap="round" opacity="0.85">
-        <path d="M112 232 L112 160 M168 232 L168 160 M112 206 L112 172 M168 206 L168 172" />
-        <path d="M40 74 L98 98 M40 176 L98 168 M240 74 L182 98 M240 176 L182 168" />
-      </g>
       {mosfets(58, 78)}
       {mosfets(172, 78)}
       {mosfets(58, 158)}
@@ -200,10 +197,6 @@ export function FcArt() {
       {[[18, 18], [262, 18], [18, 262], [262, 262]].map(([x, y]) => (
         <Hole key={`${x}${y}`} x={x} y={y} />
       ))}
-      <g stroke="#2f4968" strokeWidth="1.8" fill="none" strokeLinecap="round" opacity="0.9">
-        <path d="M60 84 L100 120 M60 176 L100 160 M220 118 L178 130 M220 176 L178 160 M140 60 L140 108" />
-        <path d="M70 110 L100 128 M70 202 L100 172 M210 142 L180 140 M210 224 L180 168" />
-      </g>
       <Chip x={104} y={104} w={72} h={72} text="STM32F405" pins={12} />
       <Chip x={62} y={196} w={30} h={22} text="IMU" pins={4} />
       <Chip x={190} y={196} w={26} h={20} text="OSD" pins={4} />
