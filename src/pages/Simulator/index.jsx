@@ -1,287 +1,159 @@
-import { useState, useCallback, useRef } from 'react'
-import { X, XCircle, CheckCircle2, AlertTriangle } from 'lucide-react'
-import {
-  ReactFlow,
-  ReactFlowProvider,
-  addEdge,
-  Background,
-  Controls,
-  applyNodeChanges,
-  applyEdgeChanges,
-  useReactFlow,
-} from '@xyflow/react'
+import { useCallback, useRef } from 'react'
+import { Maximize2, Share2, Trash2, Zap } from 'lucide-react'
+import { Background, BackgroundVariant, Controls, ConnectionMode, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-
 import PageWrapper from '@components/layout/PageWrapper'
-import { ESCNode, MotorNode, BatteryNode, CapacitorNode, FCNode, GPSNode, VTXNode, CameraNode, FrameNode } from './components/Nodes'
-import Sidebar from './components/Sidebar'
+import useDocumentMeta from '@lib/useDocumentMeta'
+import { PART_BY_ID } from './bench/catalog.js'
+import { PartDefs } from './bench/parts/art.jsx'
+import PartNode from './bench/PartNode.jsx'
+import WireEdge, { PendingWire } from './bench/WireEdge.jsx'
+import { FreePanel, LessonPanel, ReportPanel } from './bench/panels.jsx'
+import { useBench } from './bench/useBench.js'
 import styles from './Simulator.module.css'
 
-const nodeTypes = {
-  esc: ESCNode,
-  motor: MotorNode,
-  battery: BatteryNode,
-  capacitor: CapacitorNode,
-  fc: FCNode,
-  gps: GPSNode,
-  vtx: VTXNode,
-  camera: CameraNode,
-  frame: FrameNode,
-}
+const nodeTypes = { part: PartNode }
 
-const scenarios = {
-  powerLoop: {
-    name: 'Step 1: Power Loop',
-    nodes: [],
-  },
-  flightController: {
-    name: 'Step 2: Flight Controller',
-    nodes: [
-      { id: 'esc', type: 'esc', position: { x: 400, y: 250 }, data: {} },
-      { id: 'm1', type: 'motor', position: { x: 700, y: 100 }, data: { label: 'Motor 1', align: 'left', spinDir: 'ccw', isRunning: false } },
-      { id: 'm2', type: 'motor', position: { x: 700, y: 400 }, data: { label: 'Motor 2', align: 'left', spinDir: 'cw', isRunning: false } },
-      { id: 'm3', type: 'motor', position: { x: 100, y: 400 }, data: { label: 'Motor 3', align: 'right', spinDir: 'ccw', isRunning: false } },
-      { id: 'm4', type: 'motor', position: { x: 100, y: 100 }, data: { label: 'Motor 4', align: 'right', spinDir: 'cw', isRunning: false } },
-      { id: 'bat', type: 'battery', position: { x: 450, y: 550 }, data: {} },
-      { id: 'cap', type: 'capacitor', position: { x: 350, y: 550 }, data: {} },
-    ]
-  },
-  sandbox: {
-    name: 'Full FPV Build Sandbox',
-    nodes: [],
+/** The first spot, spiralling out from `centre`, where a part of this size does not sit on top of another. */
+function freeSpot(centre, part, placed) {
+  const gap = 36
+  const clear = (x, y) =>
+    placed.every((n) => {
+      const other = PART_BY_ID[n.data.type]
+      return x + part.w + gap <= n.position.x || n.position.x + other.w + gap <= x || y + part.h + gap <= n.position.y || n.position.y + other.h + gap <= y
+    })
+  const x0 = centre.x - part.w / 2
+  const y0 = centre.y - part.h / 2
+  for (let ring = 0; ring < 40; ring++) {
+    for (let step = 0; step < Math.max(1, ring * 8); step++) {
+      const angle = (step / Math.max(1, ring * 8)) * Math.PI * 2
+      const x = x0 + Math.cos(angle) * ring * 60
+      const y = y0 + Math.sin(angle) * ring * 60
+      if (clear(x, y)) return { x, y }
+    }
   }
+  return { x: x0, y: y0 }
+}
+const edgeTypes = { wire: WireEdge }
+
+function PendingLine({ fromX, fromY, toX, toY }) {
+  return <PendingWire fromX={fromX} fromY={fromY} toX={toX} toY={toY} />
 }
 
-let idCounter = 0;
-const getId = () => `dndnode_${idCounter++}`;
+function Bench() {
+  const bench = useBench()
+  const { screenToFlowPosition, fitView } = useReactFlow()
+  const wrap = useRef(null)
 
-function SimulatorInner() {
-  const reactFlowWrapper = useRef(null)
-  const [nodes, setNodes] = useState([])
-  const [edges, setEdges] = useState([])
-  const [diagnostics, setDiagnostics] = useState(null)
-  const [scenario, setScenario] = useState('sandbox')
-  const { screenToFlowPosition } = useReactFlow()
-
-  const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  )
-  const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  )
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
-    []
-  )
-
-  const onDragOver = useCallback((event) => {
-    event.preventDefault()
-    event.dataTransfer.dropEffect = 'move'
-  }, [])
-
-  const onDrop = useCallback(
-    (event) => {
-      event.preventDefault()
-      const type = event.dataTransfer.getData('application/reactflow/type')
-      const label = event.dataTransfer.getData('application/reactflow/label')
-
-      if (typeof type === 'undefined' || !type) {
-        return
-      }
-
-      const position = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      })
-      
-      const newNode = {
-        id: getId(),
-        type,
-        position,
-        data: { label: `${label}` },
-      }
-
-      setNodes((nds) => nds.concat(newNode))
+  const place = useCallback(
+    (type, point) => {
+      const part = PART_BY_ID[type]
+      const at = screenToFlowPosition(point)
+      bench.addPart(type, { x: at.x - part.w / 2, y: at.y - part.h / 2 })
     },
-    [screenToFlowPosition]
+    [bench, screenToFlowPosition],
   )
 
-  const handleScenarioChange = (e) => {
-    const key = e.target.value
-    setScenario(key)
-    setNodes(scenarios[key].nodes.map(n => ({...n}))) // Clone array
-    setEdges([])
-    setDiagnostics(null)
+  const addAtCentre = (type) => {
+    const box = wrap.current.getBoundingClientRect()
+    const centre = screenToFlowPosition({ x: box.left + box.width / 2, y: box.top + box.height / 2 })
+    bench.addPart(type, freeSpot(centre, PART_BY_ID[type], bench.nodes))
   }
 
-  const runDiagnostics = () => {
-    const results = []
-    
-    // Check if empty
-    if (nodes.length === 0) {
-      setDiagnostics([{ type: 'warning', msg: 'The canvas is empty. Drag some parts from the library!' }])
-      return
+  const onDrop = (e) => {
+    e.preventDefault()
+    const type = e.dataTransfer.getData('application/x-bench-part')
+    if (type) place(type, { x: e.clientX, y: e.clientY })
+  }
+
+  const share = async () => {
+    const link = bench.shareLink()
+    try {
+      await navigator.clipboard.writeText(link)
+      bench.setNotice('Link copied. Anyone who opens it gets this build as their own copy.')
+    } catch {
+      window.prompt('Copy this link to share your build', link)
     }
+  }
 
-    // Helper to find node by type
-    const escNode = nodes.find(n => n.type === 'esc')
-    const fcNode = nodes.find(n => n.type === 'fc')
-    const motors = nodes.filter(n => n.type === 'motor')
-    const batNode = nodes.find(n => n.type === 'battery')
-    const capNode = nodes.find(n => n.type === 'capacitor')
-    const gpsNode = nodes.find(n => n.type === 'gps')
-    const vtxNode = nodes.find(n => n.type === 'vtx')
-    const camNode = nodes.find(n => n.type === 'camera')
-
-    // Polarity Check
-    if (batNode && escNode) {
-      const batPosEdge = edges.find(e => e.source === batNode.id && e.sourceHandle === 'bat_pos')
-      const batNegEdge = edges.find(e => e.source === batNode.id && e.sourceHandle === 'bat_neg')
-      if (batPosEdge && batNegEdge) {
-        if (batPosEdge.targetHandle === 'bat_pos' && batNegEdge.targetHandle === 'bat_neg') {
-          results.push({ type: 'success', msg: 'Battery polarity correct.' })
-        } else {
-          results.push({ type: 'error', msg: 'CRITICAL: Battery reversed! Magic smoke imminent.' })
-        }
-      } else {
-        results.push({ type: 'warning', msg: 'Battery is not fully wired.' })
-      }
-    }
-
-    if (capNode && escNode) {
-      const capPosEdge = edges.find(e => e.source === capNode.id && e.sourceHandle === 'cap_pos')
-      const capNegEdge = edges.find(e => e.source === capNode.id && e.sourceHandle === 'cap_neg')
-      if (capPosEdge && capNegEdge) {
-        if (capPosEdge.targetHandle === 'cap_pos' && capNegEdge.targetHandle === 'cap_neg') {
-          results.push({ type: 'success', msg: 'Capacitor polarity correct.' })
-        } else if (capPosEdge.targetHandle === 'cap_neg' || capNegEdge.targetHandle === 'cap_pos') {
-          results.push({ type: 'error', msg: 'CRITICAL: Capacitor reversed! It will explode.' })
-        }
-      } else {
-        results.push({ type: 'warning', msg: 'Capacitor missing or not fully wired.' })
-      }
-    }
-
-    // Check Motors
-    if (escNode) {
-      motors.forEach((m, index) => {
-        const motorEdges = edges.filter(e => e.source === m.id)
-        if (motorEdges.length < 3) {
-          results.push({ type: 'error', msg: `${m.data.label || 'A Motor'} is missing wires.` })
-        } else {
-          results.push({ type: 'success', msg: `${m.data.label || 'A Motor'} is fully wired to ESC.` })
-        }
-      })
-    }
-
-    if (fcNode && escNode) {
-      const fcEscChecks = ['vbat', 'gnd', 'm1', 'm2', 'm3', 'm4']
-      let fcEscMissing = false
-      fcEscChecks.forEach(pad => {
-        const isConnected = edges.some(e => 
-          (e.source === fcNode.id && e.sourceHandle === `esc_${pad}` && e.target === escNode.id && e.targetHandle.includes(pad)) ||
-          (e.target === fcNode.id && e.targetHandle === `esc_${pad}` && e.source === escNode.id && e.sourceHandle.includes(pad))
-        )
-        if (!isConnected) fcEscMissing = true
-      })
-      if (fcEscMissing) {
-        results.push({ type: 'error', msg: 'FC to ESC wiring incomplete. Need VBAT, GND, and M1-M4 signals.' })
-      } else {
-        results.push({ type: 'success', msg: 'FC to ESC wiring correct.' })
-      }
-    }
-
-    if (gpsNode && fcNode) {
-      const gps5v = edges.find(e => (e.source === gpsNode.id && e.sourceHandle === 'gps_5v' && e.targetHandle === 'gps_5v') || (e.target === gpsNode.id && e.targetHandle === 'gps_5v' && e.sourceHandle === 'gps_5v'))
-      const gpsGnd = edges.find(e => (e.source === gpsNode.id && e.sourceHandle === 'gps_gnd' && e.targetHandle === 'gps_gnd') || (e.target === gpsNode.id && e.targetHandle === 'gps_gnd' && e.sourceHandle === 'gps_gnd'))
-      const gpsTxToRx = edges.find(e => (e.source === gpsNode.id && e.sourceHandle === 'gps_tx' && e.targetHandle === 'gps_rx') || (e.target === gpsNode.id && e.targetHandle === 'gps_tx' && e.sourceHandle === 'gps_rx'))
-      const gpsRxToTx = edges.find(e => (e.source === gpsNode.id && e.sourceHandle === 'gps_rx' && e.targetHandle === 'gps_tx') || (e.target === gpsNode.id && e.targetHandle === 'gps_rx' && e.sourceHandle === 'gps_tx'))
-      
-      if (gps5v && gpsGnd && gpsTxToRx && gpsRxToTx) {
-        results.push({ type: 'success', msg: 'GPS wired correctly (Cross-over TX->RX).' })
-      } else {
-        results.push({ type: 'error', msg: 'GPS is wired incorrectly. Remember TX goes to RX!' })
-      }
-    }
-
-    let isSuccess = false
-    if (results.every(r => r.type === 'success') && results.length > 0) {
-      results.unshift({ type: 'success', msg: 'Perfect build! Props are spinning.' })
-      isSuccess = true
-    } else {
-      results.unshift({ type: 'error', msg: 'Build Incomplete or Errors found.' })
-    }
-
-    // Update Motor Nodes to spin
-    setNodes(nds => nds.map(n => {
-      if (n.type === 'motor') {
-        // assign alternating spin direction if not set
-        const spinDir = n.data.spinDir || (Math.random() > 0.5 ? 'cw' : 'ccw');
-        return { ...n, data: { ...n.data, spinDir, isRunning: isSuccess } }
-      }
-      return n
-    }))
-
-    setDiagnostics(results)
+  const switchMode = (kind) => {
+    if (kind === bench.mode.kind) return
+    if (kind === 'lesson') bench.openLesson(bench.lastLesson)
+    else if (bench.freeList.length) bench.openFree(bench.freeList[0].id)
+    else bench.newFree('My build')
   }
 
   return (
     <div className={styles.layout}>
+      <PartDefs />
       <header className={styles.header}>
         <div>
-          <h1 className={styles.title}>Wiring <span className="gradient-text">Simulator</span></h1>
-          <p className={styles.subtitle}>Drag wires between components to practice soldering maps.</p>
+          <h1 className={styles.title}>Wiring <span className="gradient-text">Bench</span></h1>
+          <p className={styles.subtitle}>Solder real parts together, power them up, and learn from what burns.</p>
         </div>
-        <div className={styles.controls}>
-          <select className={styles.scenarioSelect} value={scenario} onChange={handleScenarioChange}>
-            {Object.keys(scenarios).map(key => (
-              <option key={key} value={key}>{scenarios[key].name}</option>
-            ))}
-          </select>
-          <button className={styles.btn} onClick={runDiagnostics}>Check Connections</button>
+        <div className={styles.tabs} role="tablist" aria-label="Mode">
+          {[['lesson', 'Lessons'], ['free', 'Free build']].map(([kind, label]) => (
+            <button key={kind} type="button" role="tab" aria-selected={bench.mode.kind === kind} className={`${styles.tab} ${bench.mode.kind === kind ? styles.tabActive : ''}`} onClick={() => switchMode(kind)}>
+              {label}
+            </button>
+          ))}
+        </div>
+        <div className={styles.actions}>
+          <button type="button" className={styles.btnGhost} onClick={share}>
+            <Share2 size={16} aria-hidden="true" /> Share
+          </button>
+          <button type="button" className={styles.btnPrimary} onClick={bench.powerUp} disabled={!bench.nodes.length}>
+            <Zap size={16} aria-hidden="true" /> Power up
+          </button>
         </div>
       </header>
-      
-      <div className={styles.workspace}>
-        <Sidebar />
-        <div className={styles.canvasWrap} ref={reactFlowWrapper}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            nodeTypes={nodeTypes}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            fitView
-            defaultEdgeOptions={{ style: { strokeWidth: 4, stroke: '#8b9ab4' } }}
-          >
-            <Background color="#2a2e38" gap={20} />
-            <Controls />
-          </ReactFlow>
 
-          {diagnostics && (
-            <div className={styles.diagnostics}>
-              <button className={styles.closeBtn} onClick={() => setDiagnostics(null)} aria-label="Close"><X size={16} /></button>
-              <h3 className={styles.diagTitle}>Diagnostics Report</h3>
-              <ul className={styles.diagList}>
-                {diagnostics.map((d, i) => (
-                  <li key={i} className={`${styles.diagItem} ${
-                    d.type === 'error' ? styles.diagError :
-                    d.type === 'success' ? styles.diagSuccess : styles.diagWarning
-                  }`}>
-                    {d.type === 'error' && <XCircle size={16} className={styles.diagIcon} />}
-                    {d.type === 'success' && <CheckCircle2 size={16} className={styles.diagIcon} />}
-                    {d.type === 'warning' && <AlertTriangle size={16} className={styles.diagIcon} />}
-                    {d.msg}
-                  </li>
-                ))}
-              </ul>
+      {(bench.notice || !bench.saving) && (
+        <p className={styles.notice} role="status">
+          {bench.notice || 'Changes are not being saved in this browser. Your build still works, but it will be lost when you close the page.'}
+        </p>
+      )}
+
+      <div className={styles.workspace}>
+        <aside className={styles.sidebar} aria-label={bench.mode.kind === 'lesson' ? 'Lessons' : 'Parts and workspaces'}>
+          {bench.mode.kind === 'lesson' ? <LessonPanel bench={bench} /> : <FreePanel bench={bench} onAdd={addAtCentre} />}
+        </aside>
+
+        <div className={styles.benchCol}>
+          <div className={styles.benchWrap} ref={wrap} onDrop={onDrop} onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy' }}>
+            <ReactFlow
+              key={`${bench.mode.kind}:${bench.mode.id}`}
+              nodes={bench.nodes}
+              edges={bench.edges}
+              nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
+              onNodesChange={bench.onNodesChange}
+              onEdgesChange={bench.onEdgesChange}
+              onConnect={bench.connect}
+              connectionMode={ConnectionMode.Loose}
+              connectionLineComponent={PendingLine}
+              connectionRadius={22}
+              deleteKeyCode={['Backspace', 'Delete']}
+              minZoom={0.2}
+              maxZoom={2}
+              fitView
+              fitViewOptions={{ padding: 0.12 }}
+              proOptions={{ hideAttribution: true }}
+            >
+              <Background variant={BackgroundVariant.Lines} gap={32} lineWidth={1} color="rgba(255,255,255,0.05)" />
+              <Controls showInteractive={false} />
+            </ReactFlow>
+            <div className={styles.benchTools}>
+              <button type="button" className={styles.iconBtn} onClick={() => fitView({ padding: 0.12, duration: 300 })} title="Fit everything in view" aria-label="Fit everything in view">
+                <Maximize2 size={16} aria-hidden="true" />
+              </button>
+              <button type="button" className={styles.iconBtn} onClick={bench.removeSelected} title="Delete the selected wire or part" aria-label="Delete the selected wire or part">
+                <Trash2 size={16} aria-hidden="true" />
+              </button>
             </div>
-          )}
+            {!bench.nodes.length && bench.mode.kind === 'free' && <p className={styles.benchEmpty}>The bench is empty. Add a part from the list on the left.</p>}
+          </div>
+          <ReportPanel bench={bench} />
         </div>
       </div>
     </div>
@@ -289,10 +161,11 @@ function SimulatorInner() {
 }
 
 export default function Simulator() {
+  useDocumentMeta('Wiring Bench | EGIRE Robotics', 'Practise soldering an FPV drone on a realistic bench: ESC, flight controller, motors, receiver, camera and VTX, with lessons and your own workspaces.')
   return (
     <PageWrapper fullHeight>
       <ReactFlowProvider>
-        <SimulatorInner />
+        <Bench />
       </ReactFlowProvider>
     </PageWrapper>
   )

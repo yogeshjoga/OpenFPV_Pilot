@@ -18,7 +18,7 @@ const SRC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'sr
 
 const ALLOW = [
   'Certificate', // printed document with its own typography
-  'Simulator/components/Nodes.jsx', // wiring-sim parts are colour-coded
+  'Simulator/bench/parts/', // the bench parts are drawn in the colours of the real things
   'Assembly3D/components/DroneScene.jsx', // 3D scene
   'Presentation/index.jsx', // slide decks carry their own colours
   'components/three/', // 3D materials
