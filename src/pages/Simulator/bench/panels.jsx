@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AlertTriangle, BookOpen, CheckCircle2, Circle, Copy, Flame, Info, Lightbulb, Pencil, Plus, RotateCcw, Star, Trash2, XCircle, Zap } from 'lucide-react'
+import { brandsOf, categoriesOf, findParts } from './browse.js'
 import { PARTS } from './catalog.js'
 import { LESSONS } from './lessons.js'
-import { ART } from './parts/registry.js'
+import { ART } from './parts/registry.jsx'
 import styles from '../Simulator.module.css'
 
 const Stars = ({ n = 0 }) => (
@@ -98,6 +99,11 @@ function Thumb({ type, w, h }) {
 }
 
 export function FreePanel({ bench, onAdd }) {
+  const [brand, setBrand] = useState('all')
+  const [category, setCategory] = useState('all')
+  const brands = useMemo(() => brandsOf(PARTS), [])
+  const categories = useMemo(() => categoriesOf(PARTS.filter((p) => brand === 'all' || p.brand === brand)), [brand])
+  const list = useMemo(() => findParts(PARTS, { brand, category }), [brand, category])
   return (
     <div className={styles.panelBody}>
       <div className={styles.wsBar}>
@@ -138,9 +144,29 @@ export function FreePanel({ bench, onAdd }) {
         </div>
       </div>
 
-      <p className={styles.panelNote}>Drag a part onto the bench, or tap it to add. Click a wire and press Delete to remove it.</p>
+      <div className={styles.filters}>
+        <label>
+          <span>Brand</span>
+          <select className={styles.select} value={brand} onChange={(e) => { setBrand(e.target.value); setCategory('all') }}>
+            <option value="all">All brands</option>
+            {brands.map((b) => (
+              <option key={b} value={b}>{b}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          <span>Kind</span>
+          <select className={styles.select} value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="all">All kinds</option>
+            {categories.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <p className={styles.panelNote}>Drag a part onto the bench, or tap it to add. Select a part and press F to turn it over. Click a wire and press Delete to remove it.</p>
       <ul className={styles.tray}>
-        {PARTS.map((p) => (
+        {list.map((p) => (
           <li key={p.id}>
             <button
               type="button"
@@ -154,12 +180,13 @@ export function FreePanel({ bench, onAdd }) {
             >
               <Thumb type={p.id} w={p.w} h={p.h} />
               <span className={styles.trayText}>
-                <strong>{p.name}</strong>
+                <strong>{p.brand !== 'Generic' ? `${p.brand} ${p.model}` : p.name}</strong>
                 <small>{p.blurb}</small>
               </span>
             </button>
           </li>
         ))}
+        {!list.length && <li className={styles.panelNote}>No part matches. Try another brand or kind.</li>}
       </ul>
     </div>
   )

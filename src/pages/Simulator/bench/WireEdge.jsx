@@ -19,8 +19,10 @@ export default function WireEdge({ id, sourceX, sourceY, targetX, targetY, data,
   })
   const width = data?.gauge ?? 1.8
   const color = data?.color ?? '#e5c02a'
+  // an end on the side of a part that faces away: the wire goes through the board, so it is faded and dashed
+  const through = data?.hidden
   return (
-    <g>
+    <g opacity={through ? 0.55 : 1} strokeDasharray={through ? '6 5' : undefined}>
       {selected && <path d={path} fill="none" stroke="var(--color-accent-primary)" strokeOpacity="0.35" strokeWidth={width + 7} strokeLinecap="round" style={{ pointerEvents: 'none' }} />}
       <path d={path} fill="none" stroke="#fff" strokeOpacity="0.7" strokeWidth={width + 1.4} strokeLinecap="round" strokeLinejoin="round" style={{ pointerEvents: 'none' }} />
       <BaseEdge id={id} path={path} interactionWidth={16} style={{ stroke: color, strokeWidth: width, strokeLinecap: 'round', strokeLinejoin: 'round' }} />

@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Cable,
   ChevronDown,
   Download,
+  FlipHorizontal2,
   FolderOpen,
   GraduationCap,
   Hand,
@@ -27,9 +28,11 @@ import { Background, BackgroundVariant, ConnectionMode, ReactFlow, ReactFlowProv
 import '@xyflow/react/dist/style.css'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import { PART_BY_ID, PARTS } from '../Simulator/bench/catalog.js'
+import { groupByBrand } from '../Simulator/bench/browse.js'
 import { freeSpot } from '../Simulator/bench/placement.js'
 import { PartDefs } from '../Simulator/bench/parts/art.jsx'
 import PartNode from '../Simulator/bench/PartNode.jsx'
+import { PartActions } from '../Simulator/bench/partActions.js'
 import WireEdge, { PendingWire } from '../Simulator/bench/WireEdge.jsx'
 import { BuildsPanel, PartsPanel, WiringPanel } from './panels.jsx'
 import { useBuilder } from './useBuilder.js'
@@ -124,8 +127,13 @@ function Builder() {
   // Undo and redo from the keyboard
   useEffect(() => {
     const onKey = (e) => {
-      if (!(e.ctrlKey || e.metaKey) || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable) return
       const key = e.key.toLowerCase()
+      if (key === 'f' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        builder.flip()
+        return
+      }
+      if (!(e.ctrlKey || e.metaKey)) return
       if (key === 'z' && !e.shiftKey) {
         e.preventDefault()
         builder.undo()
@@ -139,6 +147,8 @@ function Builder() {
   }, [builder])
 
   const hand = builder.tool === 'hand'
+  const actions = useMemo(() => ({ flip: builder.flip }), [builder.flip])
+  const anySelected = builder.nodes.some((n) => n.selected)
 
   return (
     <div className={styles.app}>
@@ -192,7 +202,8 @@ function Builder() {
           </aside>
         )}
 
-        <div className={`${styles.canvas} ${hand ? styles.canvasHand : ''}`} ref={canvas} onDrop={onDrop} onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy' }}>
+        <div className={`${styles.canvas} ${hand ? styles.canvasHand : ''} ${builder.soldering ? styles.soldering : ''}`} ref={canvas} onDrop={onDrop} onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy' }}>
+          <PartActions.Provider value={actions}>
           <ReactFlow
             nodes={builder.nodes}
             edges={builder.edges}
@@ -219,6 +230,7 @@ function Builder() {
           >
             <Background variant={BackgroundVariant.Dots} gap={22} size={1.2} color="#d5d9df" />
           </ReactFlow>
+          </PartActions.Provider>
 
           {!tab && (
             <button type="button" className={`${styles.openPanel} ${styles.exportHide}`} onClick={() => setTab('wiring')} aria-label="Open the panel">
@@ -249,11 +261,18 @@ function Builder() {
               </button>
               {menu === 'insert' && (
                 <ul className={styles.menu} role="menu">
-                  {PARTS.map((p) => (
-                    <li key={p.id}>
-                      <button type="button" role="menuitem" onClick={() => addAtCentre(p.id)}>
-                        {p.name}
-                      </button>
+                  {groupByBrand(PARTS).map((g) => (
+                    <li key={g.brand} role="none">
+                      <p className={styles.menuHead}>{g.brand}</p>
+                      <ul role="group" aria-label={g.brand}>
+                        {g.parts.map((p) => (
+                          <li key={p.id}>
+                            <button type="button" role="menuitem" onClick={() => addAtCentre(p.id)}>
+                              {p.name}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
                     </li>
                   ))}
                 </ul>
@@ -288,6 +307,9 @@ function Builder() {
             </button>
             <button type="button" className={`${styles.tool} ${hand ? styles.toolOn : ''}`} onClick={() => builder.setTool('hand')} aria-pressed={hand} title="Move around the canvas" aria-label="Move around the canvas">
               <Hand size={18} aria-hidden="true" />
+            </button>
+            <button type="button" className={styles.toolText} onClick={() => builder.flip()} disabled={!anySelected} title="Turn the selected part over to its other side (F)">
+              <FlipHorizontal2 size={16} aria-hidden="true" /> <span className={styles.label}>Turn over</span>
             </button>
             <button
               type="button"

@@ -9,7 +9,7 @@ const MAX_FREE = 30
 
 export const newId = (prefix = 'ws') => `${prefix}_${Math.random().toString(36).slice(2, 8)}${Date.now().toString(36).slice(-4)}`
 
-/** A workspace: { id, name, nodes: [{ id, type, x, y }], wires: [{ id, a: 'node:pad', b: 'node:pad', color? }], updatedAt } */
+/** A workspace: { id, name, nodes: [{ id, type, x, y, flip? }], wires: [{ id, a: 'node:pad', b: 'node:pad', color? }], updatedAt } */
 export const emptyWorkspace = (name = 'My build') => ({ id: newId(), name, nodes: [], wires: [], updatedAt: Date.now() })
 
 /** Drops parts and wires that refer to a part or pad this version of the bench does not know. */
@@ -123,7 +123,7 @@ export function encodeBuild(ws) {
     const [nb, pb] = w.b.split(':')
     if (index.has(na) && index.has(nb)) wires.push([index.get(na), pa, index.get(nb), pb])
   }
-  const data = { v: 1, n: ws.nodes.map((n) => [n.type, Math.round(n.x), Math.round(n.y)]), w: wires }
+  const data = { v: 1, n: ws.nodes.map((n) => (n.flip ? [n.type, Math.round(n.x), Math.round(n.y), 1] : [n.type, Math.round(n.x), Math.round(n.y)])), w: wires }
   return toBase64Url(JSON.stringify(data))
 }
 
@@ -132,7 +132,7 @@ export function decodeBuild(text) {
   try {
     const data = JSON.parse(fromBase64Url(text))
     if (!data || data.v !== 1 || !Array.isArray(data.n) || !Array.isArray(data.w)) return null
-    const nodes = data.n.map(([type, x, y], i) => ({ id: `n${i}`, type, x, y }))
+    const nodes = data.n.map(([type, x, y, flip], i) => ({ id: `n${i}`, type, x, y, ...(flip ? { flip: true } : {}) }))
     const wires = data.w.map(([ia, pa, ib, pb], i) => ({ id: `w${i}`, a: `n${ia}:${pa}`, b: `n${ib}:${pb}` }))
     return cleanWorkspace({ nodes, wires })
   } catch {

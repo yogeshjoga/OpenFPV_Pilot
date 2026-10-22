@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import { PART_BY_ID } from './catalog.js'
-import { fromFlow, lookOf, toFlowEdges, toFlowNodes } from './flowModel.js'
+import { fromFlow, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from './flowModel.js'
 import { runChecks } from './checks.js'
 import { LESSON_BY_ID, LESSONS, lessonGoals } from './lessons.js'
 import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspace, encodeBuild, newId } from './workspaces.js'
@@ -178,7 +178,7 @@ export function useBench() {
       touch()
       setEdges((es) => {
         if (es.some((e) => (`${e.source}:${e.sourceHandle}` === a && `${e.target}:${e.targetHandle}` === b) || (`${e.source}:${e.sourceHandle}` === b && `${e.target}:${e.targetHandle}` === a))) return es
-        const byId = new Map(nodes.map((n) => [n.id, { id: n.id, type: n.data.type }]))
+        const byId = new Map(nodes.map((n) => [n.id, { id: n.id, type: n.data.type, flip: n.data.flip }]))
         return [...es, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', data: lookOf(byId, a, b, es.length) }]
       })
       clearEffects()
@@ -194,6 +194,21 @@ export function useBench() {
       clearEffects()
     },
     [clearEffects, mode.kind],
+  )
+
+  // Turn parts over to reach the pads on their back (the selected parts, or the one given)
+  const flip = useCallback(
+    (id) => {
+      if (mode.kind !== 'free') return
+      const ids = new Set(id ? [id] : nodes.filter((n) => n.selected).map((n) => n.id))
+      if (!ids.size) return
+      touch()
+      const next = nodes.map((n) => (ids.has(n.id) ? { ...n, data: { ...n.data, flip: !n.data.flip, mates: undefined } } : n))
+      setNodes(next)
+      setEdges((es) => redrawEdges(next, es))
+      clearEffects()
+    },
+    [clearEffects, mode.kind, nodes],
   )
 
   const removeSelected = useCallback(() => {
@@ -285,7 +300,7 @@ export function useBench() {
 
   return {
     mode, lesson, lastLesson, nodes: shownNodes, edges, report, outcome, live, taskState, progress, freeList, freeName, notice, saving: store.saving,
-    setNotice, onNodesChange, onEdgesChange, connect, addPart, removeSelected, powerUp, openLesson, openFree, newFree, renameFree, duplicateFree,
+    setNotice, onNodesChange, onEdgesChange, connect, addPart, removeSelected, flip, powerUp, openLesson, openFree, newFree, renameFree, duplicateFree,
     deleteFree, restartLesson, showAnswer, shareLink, setMode,
   }
 }

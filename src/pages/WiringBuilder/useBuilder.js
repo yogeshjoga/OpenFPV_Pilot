@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import { PART_BY_ID } from '../Simulator/bench/catalog.js'
 import { runChecks } from '../Simulator/bench/checks.js'
-import { fromFlow, labelNodes, lookOf, toFlowEdges, toFlowNodes } from '../Simulator/bench/flowModel.js'
+import { fromFlow, labelNodes, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from '../Simulator/bench/flowModel.js'
 import { matesFor } from '../Simulator/bench/mates.js'
 import { tidyLayout } from '../Simulator/bench/placement.js'
 import { summarize } from '../Simulator/bench/summary.js'
@@ -23,6 +23,7 @@ export function useBuilder() {
   const [tool, setTool] = useState('select') // select, or hand to move around without changing anything
   const [checked, setChecked] = useState(null)
   const [notice, setNotice] = useState('')
+  const [soldering, setSoldering] = useState(false) // a wire is being dragged from a pad: the pointer becomes a soldering iron
   const latest = useRef({ nodes: [], edges: [] })
   const ready = useRef(false)
 
@@ -167,7 +168,7 @@ export function useBuilder() {
       const same = (e, x, y) => `${e.source}:${e.sourceHandle}` === x && `${e.target}:${e.targetHandle}` === y
       if (es.some((e) => same(e, a, b) || same(e, b, a))) return
       commit()
-      const byId = new Map(n.map((x) => [x.id, { id: x.id, type: x.data.type }]))
+      const byId = new Map(n.map((x) => [x.id, { id: x.id, type: x.data.type, flip: x.data.flip }]))
       setEdges((list) => [...list, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', data: lookOf(byId, a, b, list.length) }])
       clearEffects()
     },
@@ -204,11 +205,26 @@ export function useBuilder() {
     setNodes((ns) => ns.map((x) => (at[x.id] ? { ...x, position: at[x.id] } : x)))
   }, [commit])
 
+  // Turn parts over to reach the pads on their back. Without ids it turns the selected parts.
+  const flip = useCallback(
+    (id) => {
+      const { nodes: n, edges: es } = latest.current
+      const ids = new Set(id ? [id] : n.filter((x) => x.selected).map((x) => x.id))
+      if (!ids.size) return
+      commit()
+      const next = n.map((x) => (ids.has(x.id) ? { ...x, data: { ...x.data, flip: !x.data.flip, mates: undefined } } : x))
+      setNodes(next)
+      setEdges(redrawEdges(next, es))
+    },
+    [commit],
+  )
+
   const select = useCallback((id) => setNodes((ns) => ns.map((n) => ({ ...n, selected: n.id === id }))), [])
 
   // Assisted mode: while a wire is dragged from a pad, light up the pads that fit it
   const onConnectStart = useCallback(
     (_, { nodeId, handleId }) => {
+      setSoldering(true)
       if (mode !== 'assisted' || !nodeId) return
       const model = fromFlow(latest.current.nodes, latest.current.edges)
       const mates = matesFor(model.nodes, nodeId, handleId)
@@ -216,7 +232,10 @@ export function useBuilder() {
     },
     [mode],
   )
-  const onConnectEnd = useCallback(() => setNodes((ns) => ns.map((n) => (n.data.mates ? { ...n, data: { ...n.data, mates: undefined } } : n))), [])
+  const onConnectEnd = useCallback(() => {
+    setSoldering(false)
+    setNodes((ns) => ns.map((n) => (n.data.mates ? { ...n, data: { ...n.data, mates: undefined } } : n)))
+  }, [])
 
   // ---- checking ----
   const wiringKey = nodes.map((n) => `${n.id}.${n.data.type}`).join() + '|' + edges.map((e) => `${e.source}${e.sourceHandle}${e.target}${e.targetHandle}`).join()
@@ -259,8 +278,8 @@ export function useBuilder() {
   const rowsNamed = useMemo(() => rows.map((r) => ({ ...r, label: nameOf[r.id] ?? r.name })), [rows, nameOf])
 
   return {
-    builds, current, nodes: named, edges, rows: rowsNamed, report, live, mode, tool, notice, saving: store.saving, canUndo: past.length > 0, canRedo: future.length > 0,
-    setMode, setTool, setNotice, onNodesChange, onEdgesChange, onNodeDragStart, onConnectStart, onConnectEnd, connect, addPart, removeSelected, select, tidy, undo, redo, check, powerUp,
+    builds, current, nodes: named, edges, rows: rowsNamed, report, live, mode, tool, notice, soldering, saving: store.saving, canUndo: past.length > 0, canRedo: future.length > 0,
+    setMode, setTool, setNotice, onNodesChange, onEdgesChange, onNodeDragStart, onConnectStart, onConnectEnd, connect, addPart, removeSelected, flip, select, tidy, undo, redo, check, powerUp,
     open, create, rename, duplicate, remove, shareLink,
   }
 }

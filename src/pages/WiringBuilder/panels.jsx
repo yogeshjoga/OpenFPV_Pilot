@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react'
 import { ChevronRight, CircleAlert, CircleCheck, CircleDashed, Circle, Copy, GraduationCap, Pencil, Plus, Search, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { PARTS, PART_BY_ID } from '../Simulator/bench/catalog.js'
-import { ART } from '../Simulator/bench/parts/registry.js'
+import { brandsOf, categoriesOf, findParts } from '../Simulator/bench/browse.js'
+import { ART } from '../Simulator/bench/parts/registry.jsx'
 import styles from './WiringBuilder.module.css'
 
 const STATUS_ICON = { ok: CircleCheck, attention: CircleAlert, open: CircleDashed, unchecked: Circle }
@@ -116,14 +117,32 @@ function Thumb({ type, w, h }) {
 
 export function PartsPanel({ onAdd }) {
   const [query, setQuery] = useState('')
-  const list = useMemo(() => PARTS.filter((p) => `${p.name} ${p.blurb}`.toLowerCase().includes(query.trim().toLowerCase())), [query])
+  const [brand, setBrand] = useState('all')
+  const [category, setCategory] = useState('all')
+  const brands = useMemo(() => brandsOf(PARTS), [])
+  // only the kinds of part that exist for the chosen brand
+  const categories = useMemo(() => categoriesOf(PARTS.filter((p) => brand === 'all' || p.brand === brand)), [brand])
+  const list = useMemo(() => findParts(PARTS, { query, brand, category }), [query, brand, category])
+  const chip = (value, current, set, label) => (
+    <button key={value} type="button" className={`${styles.chip} ${current === value ? styles.chipOn : ''}`} aria-pressed={current === value} onClick={() => set(value)}>
+      {label}
+    </button>
+  )
   return (
     <div className={styles.panelInner}>
       <label className={styles.search}>
         <Search size={15} aria-hidden="true" />
         <input type="search" placeholder="Search parts" value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search parts" />
       </label>
-      <p className={styles.hint}>Click a part to add it to the canvas, or drag it across.</p>
+      <div className={styles.facets}>
+        <span className={styles.facetLabel}>Brand</span>
+        {[chip('all', brand, (v) => { setBrand(v); setCategory('all') }, 'All'), ...brands.map((b) => chip(b, brand, (v) => { setBrand(v); setCategory('all') }, b))]}
+      </div>
+      <div className={styles.facets}>
+        <span className={styles.facetLabel}>Kind</span>
+        {[chip('all', category, setCategory, 'All'), ...categories.map((c) => chip(c, category, setCategory, c))]}
+      </div>
+      <p className={styles.hint}>Click a part to add it to the canvas, or drag it across. Select a part and press F to turn it over.</p>
       <ul className={styles.parts}>
         {list.map((p) => (
           <li key={p.id}>
@@ -139,13 +158,17 @@ export function PartsPanel({ onAdd }) {
             >
               <Thumb type={p.id} w={p.w} h={p.h} />
               <span>
-                <strong>{p.name}</strong>
+                <strong>
+                  {p.brand !== 'Generic' && <em className={styles.brandTag}>{p.brand}</em>}
+                  {p.brand !== 'Generic' ? p.model : p.name}
+                </strong>
                 <small>{p.blurb}</small>
+                {p.specs?.length > 0 && <small className={styles.specs}>{p.specs.slice(0, 3).join(' · ')}</small>}
               </span>
             </button>
           </li>
         ))}
-        {!list.length && <li className={styles.empty}>No part matches “{query}”.</li>}
+        {!list.length && <li className={styles.empty}>No part matches. Try another brand or kind.</li>}
       </ul>
     </div>
   )

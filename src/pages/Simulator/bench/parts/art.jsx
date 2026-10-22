@@ -40,11 +40,21 @@ const Pad = ({ x, y, w = 24, h = 20, big = false, tin = false }) => (
   <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={big ? 6 : 4} fill={tin ? 'url(#bn-tin)' : 'url(#bn-gold)'} stroke="#9a7620" strokeWidth="0.7" />
 )
 
-const Text = ({ x, y, size = 9, anchor = 'middle', weight = 600, fill = SILK, children, rotate }) => (
-  <text x={x} y={y} fontSize={size} fill={fill} textAnchor={anchor} fontFamily={FONT} fontWeight={weight} transform={rotate ? `rotate(${rotate} ${x} ${y})` : undefined}>
-    {children}
-  </text>
-)
+// Turned text sits in a group of its own, so a flipped part can un-mirror the writing the right way (see .mirror)
+const Text = ({ x, y, size = 9, anchor = 'middle', weight = 600, fill = SILK, children, rotate }) => {
+  const text = (
+    <text x={x} y={y} fontSize={size} fill={fill} textAnchor={anchor} fontFamily={FONT} fontWeight={weight}>
+      {children}
+    </text>
+  )
+  return rotate ? (
+    <g className="vtext" transform={`rotate(${rotate} ${x} ${y})`}>
+      {text}
+    </g>
+  ) : (
+    text
+  )
+}
 
 const Hole = ({ x, y }) => (
   <g>

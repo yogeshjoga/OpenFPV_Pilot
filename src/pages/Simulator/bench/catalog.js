@@ -1,3 +1,5 @@
+import { BRAND_PARTS } from './boards/index.js'
+
 // The parts of the wiring bench. Plain data, no React, so the checks can be tested with `node --test`.
 //
 // Every connection point is a `pad`:
@@ -8,6 +10,8 @@
 //   lead              set for a wire that is part of the part (colour and gauge), ending in a tinned tip
 // `internal` lists pads that are the same copper on the real board.
 // Pad names follow common Betaflight-style layouts. They are standard layouts, not any one brand's exact pinout.
+// Parts also say what they are (kind), whose they are (brand) and where they belong in the list (category). Brand boards
+// come from ./boards, with the real pad names and positions of that board.
 
 const motorNames = ['M1', 'M2', 'M3', 'M4']
 
@@ -200,19 +204,51 @@ export const GPS = {
   needs: { power: 'g5', gnd: 'gg' },
 }
 
-export const PARTS = [ESC, FC, MOTOR, BATTERY, CAPACITOR, RECEIVER, VTX, CAMERA, GPS]
+const KIND = {
+  esc: ['esc', 'ESCs'],
+  fc: ['fc', 'Flight controllers'],
+  motor: ['motor', 'Motors'],
+  battery: ['battery', 'Batteries'],
+  capacitor: ['capacitor', 'Capacitors'],
+  receiver: ['receiver', 'Receivers'],
+  vtx: ['vtx', 'Video transmitters'],
+  camera: ['camera', 'Cameras'],
+  gps: ['gps', 'GPS'],
+}
+
+/** The plain, maker-neutral parts the lessons use. */
+export const GENERIC_PARTS = [ESC, FC, MOTOR, BATTERY, CAPACITOR, RECEIVER, VTX, CAMERA, GPS].map((p) => ({
+  ...p,
+  kind: KIND[p.id][0],
+  category: KIND[p.id][1],
+  brand: 'Generic',
+  specs: [],
+}))
+
+/** Every part a student can place: the generic ones, then the boards of each brand. */
+export const PARTS = [...GENERIC_PARTS, ...BRAND_PARTS]
 export const PART_BY_ID = Object.fromEntries(PARTS.map((p) => [p.id, p]))
 export const padOf = (partId, padId) => PART_BY_ID[partId]?.pads.find((p) => p.id === padId) ?? null
 
+/** Parts have a front and a back. A pad is on one of them, or (a lead, a through-hole pad) shows on both. */
+export const onFace = (pad, flip) => !pad.face || pad.face === 'both' || pad.face === (flip ? 'back' : 'front')
+
+/**
+ * Where a pad is drawn. Positions are given as seen from the front. Turn the part over, as you would about a vertical
+ * axis, and everything swings to the other side, so a pad at x is now at width minus x.
+ */
+export const padAt = (part, pad, flip) => ({ x: flip ? part.w - pad.x : pad.x, y: pad.y })
+
 /** The side of the part a wire leaves from, so wires route away from the board instead of across it. */
-export function exitOf(partId, padId) {
+export function exitOf(partId, padId, flip = false) {
   const part = PART_BY_ID[partId]
   const p = padOf(partId, padId)
   if (!part || !p) return 'bottom'
-  if (p.lead) return p.y > part.h / 2 ? 'bottom' : 'top'
+  const { x, y } = padAt(part, p, flip)
+  if (p.lead) return y > part.h / 2 ? 'bottom' : 'top'
   const edge = 60
-  if (p.x < edge) return 'left'
-  if (p.x > part.w - edge) return 'right'
-  if (p.y < edge) return 'top'
+  if (x < edge) return 'left'
+  if (x > part.w - edge) return 'right'
+  if (y < edge) return 'top'
   return 'bottom'
 }

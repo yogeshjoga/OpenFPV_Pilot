@@ -326,6 +326,21 @@
   gap: var(--space-2);
 }
 
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.filters label {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-secondary);
+}
+
 .tray {
   display: grid;
   gap: var(--space-2);
@@ -453,7 +468,7 @@
   border: 2px solid transparent;
   border-radius: 50%;
   background: transparent;
-  cursor: crosshair;
+  cursor: var(--cursor-iron) !important;
   transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
@@ -683,4 +698,75 @@
   .header {
     padding: 0 var(--space-4) var(--space-3);
   }
+}
+
+/* The soldering iron, the pointer for anything that solders (the tip is the hot spot) */
+:global(:root) {
+  --cursor-iron: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Cg%20stroke-linecap%3D%27round%27%20fill%3D%27none%27%3E%3Cpath%20d%3D%27M4%2028%20L10%2022%27%20stroke%3D%27%23fff%27%20stroke-width%3D%276%27%2F%3E%3Cpath%20d%3D%27M10%2022%20L16%2016%27%20stroke%3D%27%23fff%27%20stroke-width%3D%277%27%2F%3E%3Cpath%20d%3D%27M16%2016%20L27%205%27%20stroke%3D%27%23fff%27%20stroke-width%3D%2710%27%2F%3E%3Cpath%20d%3D%27M4%2028%20L9%2023%27%20stroke%3D%27%239aa0a9%27%20stroke-width%3D%273%27%2F%3E%3Cpath%20d%3D%27M9%2023%20L16%2016%27%20stroke%3D%27%234a505a%27%20stroke-width%3D%274%27%2F%3E%3Cpath%20d%3D%27M16%2016%20L27%205%27%20stroke%3D%27%23d6455d%27%20stroke-width%3D%277%27%2F%3E%3Cpath%20d%3D%27M20%2012%20L22%2014%27%20stroke%3D%27%232a2e35%27%20stroke-width%3D%271.6%27%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%273.5%27%20cy%3D%2728.5%27%20r%3D%272%27%20fill%3D%27%23e8ecf1%27%20stroke%3D%27%234a505a%27%20stroke-width%3D%27.8%27%2F%3E%3C%2Fsvg%3E") 3 29, crosshair;
+}
+
+/* While a wire is being soldered the pointer is a soldering iron, everywhere on the canvas */
+:global(.react-flow:has(.react-flow__connectionline)),
+:global(.react-flow:has(.react-flow__connectionline)) * {
+  cursor: var(--cursor-iron) !important;
+}
+
+/* A part has a front and a back. Turning it over mirrors the drawing; the writing is turned back so it still reads. */
+.face {
+  width: 100%;
+  height: 100%;
+}
+
+.mirror {
+  transform: scaleX(-1);
+}
+
+.mirror :global(svg text) {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scaleX(-1);
+}
+
+.mirror :global(.vtext) text {
+  transform: scaleY(-1);
+}
+
+/* A pad on the side facing away: still the end of its wires, but not something to point at */
+.padFar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sideTag {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  padding: 1px var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.flipBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.flipBtn:hover {
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
 }

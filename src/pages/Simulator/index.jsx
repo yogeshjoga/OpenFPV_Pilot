@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Maximize2, Share2, Trash2, Zap } from 'lucide-react'
 import { Background, BackgroundVariant, Controls, ConnectionMode, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
@@ -8,6 +8,7 @@ import { PART_BY_ID } from './bench/catalog.js'
 import { freeSpot } from './bench/placement.js'
 import { PartDefs } from './bench/parts/art.jsx'
 import PartNode from './bench/PartNode.jsx'
+import { PartActions } from './bench/partActions.js'
 import WireEdge, { PendingWire } from './bench/WireEdge.jsx'
 import { FreePanel, LessonPanel, ReportPanel } from './bench/panels.jsx'
 import { useBench } from './bench/useBench.js'
@@ -24,6 +25,19 @@ function Bench() {
   const bench = useBench()
   const { screenToFlowPosition, fitView } = useReactFlow()
   const wrap = useRef(null)
+  const free = bench.mode.kind === 'free'
+  const actions = useMemo(() => (free ? { flip: bench.flip } : null), [free, bench.flip])
+
+  // F turns the selected parts over (free build only)
+  useEffect(() => {
+    if (!free) return undefined
+    const onKey = (e) => {
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable || e.ctrlKey || e.metaKey || e.altKey) return
+      if (e.key.toLowerCase() === 'f') bench.flip()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [bench, free])
 
   const place = useCallback(
     (type, point) => {
@@ -101,6 +115,7 @@ function Bench() {
 
         <div className={styles.benchCol}>
           <div className={styles.benchWrap} ref={wrap} onDrop={onDrop} onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy' }}>
+            <PartActions.Provider value={actions}>
             <ReactFlow
               key={`${bench.mode.kind}:${bench.mode.id}`}
               nodes={bench.nodes}
@@ -123,6 +138,7 @@ function Bench() {
               <Background variant={BackgroundVariant.Lines} gap={32} lineWidth={1} color="rgba(255,255,255,0.05)" />
               <Controls showInteractive={false} />
             </ReactFlow>
+            </PartActions.Provider>
             <div className={styles.benchTools}>
               <button type="button" className={styles.iconBtn} onClick={() => fitView({ padding: 0.12, duration: 300 })} title="Fit everything in view" aria-label="Fit everything in view">
                 <Maximize2 size={16} aria-hidden="true" />

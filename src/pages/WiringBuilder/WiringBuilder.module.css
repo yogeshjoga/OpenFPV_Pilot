@@ -387,6 +387,40 @@
   outline: none;
 }
 
+.facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.facetLabel {
+  width: 100%;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bb-muted);
+}
+
+.specs {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--text-xs);
+  color: var(--bb-muted);
+}
+
+.brandTag {
+  display: inline-block;
+  margin-right: var(--space-1);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  background: #e9f2fa;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: #1d5f94;
+}
+
 .hint {
   font-size: var(--text-sm);
   color: var(--bb-muted);
@@ -662,6 +696,23 @@
   background: var(--bb-bg);
   box-shadow: var(--shadow-lg);
   list-style: none;
+  max-height: min(70vh, 460px);
+  overflow-y: auto;
+}
+
+.menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menuHead {
+  margin: var(--space-2) var(--space-3) var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bb-muted);
 }
 
 .menu button {
@@ -740,4 +791,10 @@
   .toolbar {
     bottom: var(--space-3);
   }
+}
+
+/* While a wire is dragged from a pad the pointer is a soldering iron (the cursor itself is defined in Simulator.module.css) */
+.soldering,
+.soldering * {
+  cursor: var(--cursor-iron) !important;
 }
