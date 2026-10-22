@@ -179,7 +179,7 @@ export function useBuilder() {
     (type, position) => {
       if (!PART_BY_ID[type]) return
       commit()
-      setNodes((ns) => [...ns, { id: newId('p'), type: 'part', position, data: { type }, deletable: true }])
+      setNodes((ns) => [...ns.map((n) => (n.selected ? { ...n, selected: false } : n)), { id: newId('p'), type: 'part', position, data: { type }, deletable: true, selected: true }])
       clearEffects()
     },
     [clearEffects, commit],
@@ -209,8 +209,14 @@ export function useBuilder() {
   const flip = useCallback(
     (id) => {
       const { nodes: n, edges: es } = latest.current
-      const ids = new Set(id ? [id] : n.filter((x) => x.selected).map((x) => x.id))
-      if (!ids.size) return
+      const picked = id ? [id] : n.filter((x) => x.selected).map((x) => x.id)
+      // nothing picked: a lone part is the obvious one, otherwise ask
+      if (!picked.length && n.length === 1) picked.push(n[0].id)
+      if (!picked.length) {
+        if (n.length) setNotice('Click a part first, then turn it over.')
+        return
+      }
+      const ids = new Set(picked)
       commit()
       const next = n.map((x) => (ids.has(x.id) ? { ...x, data: { ...x.data, flip: !x.data.flip, mates: undefined } } : x))
       setNodes(next)

@@ -148,7 +148,6 @@ function Builder() {
 
   const hand = builder.tool === 'hand'
   const actions = useMemo(() => ({ flip: builder.flip }), [builder.flip])
-  const anySelected = builder.nodes.some((n) => n.selected)
 
   return (
     <div className={styles.app}>
@@ -308,7 +307,7 @@ function Builder() {
             <button type="button" className={`${styles.tool} ${hand ? styles.toolOn : ''}`} onClick={() => builder.setTool('hand')} aria-pressed={hand} title="Move around the canvas" aria-label="Move around the canvas">
               <Hand size={18} aria-hidden="true" />
             </button>
-            <button type="button" className={styles.toolText} onClick={() => builder.flip()} disabled={!anySelected} title="Turn the selected part over to its other side (F)">
+            <button type="button" className={styles.toolText} onClick={() => builder.flip()} disabled={!builder.nodes.length} title="Turn the selected part over to its other side (F)">
               <FlipHorizontal2 size={16} aria-hidden="true" /> <span className={styles.label}>Turn over</span>
             </button>
             <button
