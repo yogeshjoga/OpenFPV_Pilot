@@ -9,6 +9,9 @@ export const categoriesOf = (parts) => [...new Set(parts.map((p) => p.category))
 /** [{ brand, parts }] with the brands in the order above. */
 export const groupByBrand = (parts) => brandsOf(parts).map((brand) => ({ brand, parts: parts.filter((p) => p.brand === brand) }))
 
+/** [{ category, parts }] in the order the kinds first appear. */
+export const groupByCategory = (parts) => categoriesOf(parts).map((category) => ({ category, parts: parts.filter((p) => p.category === category) }))
+
 /** Parts that match a search text, a brand ('all' for every brand) and a category ('all' for every kind). */
 export function findParts(parts, { query = '', brand = 'all', category = 'all' } = {}) {
   const q = query.trim().toLowerCase()

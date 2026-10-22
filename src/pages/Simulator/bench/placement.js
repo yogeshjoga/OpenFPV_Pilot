@@ -1,4 +1,4 @@
-import { PART_BY_ID } from './catalog.js'
+import { PART_BY_ID, isKind } from './catalog.js'
 
 /** The first spot, spiralling out from `centre`, where a part of this size does not sit on top of another. */
 export function freeSpot(centre, part, placed) {
@@ -30,7 +30,8 @@ export function freeSpot(centre, part, placed) {
  */
 export function tidyLayout(nodes, wires) {
   const at = {}
-  const kindOf = (n) => PART_BY_ID[n.type]?.kind ?? n.type
+  // an AIO sits where the ESC sits
+  const kindOf = (n) => (isKind(n.type, 'esc') ? 'esc' : isKind(n.type, 'fc') ? 'fc' : (PART_BY_ID[n.type]?.kind ?? n.type))
   const sizeOf = (n) => PART_BY_ID[n.type] ?? { w: 150, h: 150 }
   const firstOf = (kind) => nodes.find((n) => kindOf(n) === kind)
   const esc = firstOf('esc') ? sizeOf(firstOf('esc')) : { w: 280, h: 280 }

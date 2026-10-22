@@ -215,11 +215,78 @@ test('wires follow the side a part faces', () => {
 test('parts can be found by brand, kind and words', () => {
   assert.deepEqual(groupByBrand(PARTS).map((g) => g.brand), ['Generic', 'GEPRC'])
   assert.equal(findParts(PARTS, { brand: 'GEPRC' }).length, BRAND_PARTS.length)
-  assert.deepEqual(findParts(PARTS, { brand: 'GEPRC', category: 'ESCs' }).map((p) => p.id), [ESC, 'geprc-taker-h60'])
-  assert.deepEqual(findParts(PARTS, { query: 'bluetooth' }).map((p) => p.id), [FC2])
+  const escs = findParts(PARTS, { brand: 'GEPRC', category: 'ESCs' }).map((p) => p.id)
+  assert.ok(escs.includes(ESC) && escs.includes('geprc-taker-h60'))
+  assert.ok(findParts(PARTS, { brand: 'GEPRC', category: 'AIO boards' }).length >= 10)
+  const bluetooth = findParts(PARTS, { query: 'bluetooth' }).map((p) => p.id)
+  assert.ok(bluetooth.includes(FC2))
+  assert.equal(bluetooth.includes(ESC), false)
   assert.equal(findParts(PARTS, { query: '65 A' }).some((p) => p.id === ESC), true)
   assert.equal(findParts(PARTS, { brand: 'Generic', category: 'Motors' }).length, 1)
   assert.equal(findParts(PARTS, { query: 'zzzz' }).length, 0)
+})
+
+test('every GEPRC board has the facts a student needs', () => {
+  const ids = new Set()
+  for (const p of BRAND_PARTS) {
+    assert.ok(!ids.has(p.id), `duplicate board ${p.id}`)
+    ids.add(p.id)
+    assert.ok(p.specs.length >= 2, p.id)
+    assert.ok(p.name.startsWith('GEPRC '), p.id)
+    if (p.kind === 'fc') {
+      // a flight controller has its power and ground on the ESC link, and the pads a build needs
+      for (const signal of ['bat', 'g', 'm1', 'm2', 'm3', 'm4']) assert.ok(p.pads.some((x) => x.signal === signal), `${p.id} has no ${signal} on its ESC link`)
+      assert.ok(p.pads.some((x) => x.uart?.dir === 'tx') && p.pads.some((x) => x.uart?.dir === 'rx'), `${p.id} has no UART pads`)
+      assert.ok(p.pads.some((x) => x.source && x.rail === '5v'), `${p.id} has no 5 V output`)
+    }
+    if (p.kind === 'aio') {
+      assert.deepEqual(p.kinds, ['fc', 'esc'])
+      for (const g of ['M1', 'M2', 'M3', 'M4']) assert.equal(p.pads.filter((x) => x.motor?.group === g).length, 3, `${p.id} ${g}`)
+      assert.ok(p.pads.some((x) => x.id === 'batp') && p.pads.some((x) => x.id === 'batn'))
+      assert.ok(p.pads.some((x) => x.source && x.rail === '5v'), `${p.id} has no 5 V output`)
+    }
+    if (p.kind === 'esc') for (const g of ['M1', 'M2', 'M3', 'M4']) assert.equal(p.pads.filter((x) => x.motor?.group === g).length, 3, `${p.id} ${g}`)
+  }
+})
+
+// An AIO is a flight controller and an ESC on one board: the battery and four motors are all it needs to fly
+const AIO = 'geprc-taker-f722-35a-aio'
+const aioBuild = () => ({
+  nodes: [node('bat', 'battery'), node('aio', AIO), node('m1', 'motor'), node('m2', 'motor'), node('m3', 'motor'), node('m4', 'motor'), node('rx', 'receiver'), node('cam', 'camera'), node('vtx', 'vtx')],
+  wires: [
+    wire('bat.pos', 'aio.batp'), wire('bat.neg', 'aio.batn'),
+    ...['m1', 'm2', 'm3', 'm4'].flatMap((m) => ['a', 'b', 'c'].map((c, i) => wire(`${m}.w${i + 1}`, `aio.${m}${c}`))),
+    wire('rx.r5', 'aio.5V'), wire('rx.rg', 'aio.G'), wire('rx.rt', 'aio.R2'), wire('rx.rr', 'aio.T2'),
+    wire('cam.cpw', 'aio.5V-2'), wire('cam.cg', 'aio.G-2'), wire('cam.cv', 'aio.VI'),
+    wire('vtx.vp', 'aio.5V-3'), wire('vtx.vg', 'aio.G-3'), wire('vtx.vv', 'aio.VO'),
+  ],
+})
+
+test('an AIO board passes the checks with just a battery, four motors and the devices', () => {
+  const b = aioBuild()
+  const r = runChecks(b.nodes, b.wires)
+  assert.equal(r.faults, false, JSON.stringify(r.items.filter((i) => i.level === 'critical')))
+  assert.deepEqual(titles(r, 'warn'), [])
+  // (this build has no capacitor or GPS, which is fine)
+  for (const [goal, ok] of Object.entries(r.goals)) assert.ok(ok || ['capacitor', 'gps'].includes(goal), `goal ${goal}`)
+  assert.equal(Object.keys(r.spins).length, 4)
+  assert.ok(r.items.some((i) => /one board/.test(i.title)))
+})
+
+test('an AIO board catches the same mistakes', () => {
+  const reversed = aioBuild()
+  reversed.wires = reversed.wires.map((w) => ({ a: w.a === 'bat:pos' ? 'bat:neg' : w.a === 'bat:neg' ? 'bat:pos' : w.a, b: w.b }))
+  assert.ok(runChecks(reversed.nodes, reversed.wires).faults)
+  const burnt = aioBuild()
+  burnt.wires = burnt.wires.map((w) => (w.a === 'rx:r5' ? { ...w, b: 'aio:batp' } : w))
+  assert.ok(runChecks(burnt.nodes, burnt.wires).smoke.includes('rx'))
+  const loose = aioBuild()
+  loose.wires = loose.wires.filter((w) => w.b !== 'aio:m3c')
+  assert.equal(runChecks(loose.nodes, loose.wires).goals.motors, false)
+  // battery voltage reaches the pads of the flight controller side too: BAT is the same copper as BAT+
+  const { netOf } = buildNets([node('aio', 'geprc-f411-35a-aio')], [])
+  assert.equal(netOf('aio', 'batp'), netOf('aio', 'BAT'))
+  assert.equal(netOf('aio', 'batn'), netOf('aio', 'G'))
 })
 
 test('tidy up leaves room for the big boards', () => {
@@ -234,4 +301,11 @@ test('tidy up leaves room for the big boards', () => {
     }
   }
   assert.ok(at.fc.y + PART_BY_ID[FC].h < at.esc.y, 'the flight controller sits above the ESC')
+})
+
+test('tidy up places an AIO board in the middle with the motors around it', () => {
+  const b = aioBuild()
+  const at = tidyLayout(b.nodes, b.wires)
+  assert.ok(at.m1.x > at.aio.x && at.m4.x < at.aio.x)
+  assert.ok(Object.values(at).every((p) => Number.isFinite(p.x) && Number.isFinite(p.y)))
 })

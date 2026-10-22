@@ -715,6 +715,12 @@
   color: var(--bb-muted);
 }
 
+.menuSub {
+  margin: var(--space-2) var(--space-3) 0;
+  font-size: var(--text-xs);
+  color: var(--bb-muted);
+}
+
 .menu button {
   display: flex;
   flex-direction: column;

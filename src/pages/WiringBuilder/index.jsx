@@ -28,7 +28,7 @@ import { Background, BackgroundVariant, ConnectionMode, ReactFlow, ReactFlowProv
 import '@xyflow/react/dist/style.css'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import { PART_BY_ID, PARTS } from '../Simulator/bench/catalog.js'
-import { groupByBrand } from '../Simulator/bench/browse.js'
+import { groupByBrand, groupByCategory } from '../Simulator/bench/browse.js'
 import { freeSpot } from '../Simulator/bench/placement.js'
 import { PartDefs } from '../Simulator/bench/parts/art.jsx'
 import PartNode from '../Simulator/bench/PartNode.jsx'
@@ -263,15 +263,18 @@ function Builder() {
                   {groupByBrand(PARTS).map((g) => (
                     <li key={g.brand} role="none">
                       <p className={styles.menuHead}>{g.brand}</p>
-                      <ul role="group" aria-label={g.brand}>
-                        {g.parts.map((p) => (
-                          <li key={p.id}>
-                            <button type="button" role="menuitem" onClick={() => addAtCentre(p.id)}>
-                              {p.name}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+                      {groupByCategory(g.parts).map((c) => (
+                        <ul key={c.category} role="group" aria-label={`${g.brand} ${c.category}`}>
+                          {g.parts.length > 12 && <li className={styles.menuSub}>{c.category}</li>}
+                          {c.parts.map((p) => (
+                            <li key={p.id}>
+                              <button type="button" role="menuitem" onClick={() => addAtCentre(p.id)}>
+                                {p.brand === 'Generic' ? p.name : p.model}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      ))}
                     </li>
                   ))}
                 </ul>

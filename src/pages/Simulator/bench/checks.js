@@ -1,4 +1,4 @@
-import { PART_BY_ID } from './catalog.js'
+import { PART_BY_ID, isKind } from './catalog.js'
 import { buildNets } from './netlist.js'
 
 const RAIL_NAME = { vbat: 'battery voltage (about 16 V)', gnd: 'ground', '5v': '5 V', '9v': '9 V', '12v': '12 V', '3v3': '3.3 V' }
@@ -29,10 +29,14 @@ export function runChecks(nodes, wires) {
   let powerFault = false
 
   // Parts are told apart by what they are (kind), not by which maker's model they are
-  const kindOf = (type) => PART_BY_ID[type]?.kind ?? type
   const ofType = (type) => nodes.filter((n) => n.type === type)
-  const ofKind = (kind) => nodes.filter((n) => kindOf(n.type) === kind)
+  const ofKind = (kind) => nodes.filter((n) => isKind(n.type, kind))
   const signalPad = (node, signal) => PART_BY_ID[node.type].pads.find((p) => p.signal === signal)?.id
+  // the pads that power a flight controller: its ESC link, or (an AIO) its battery pads
+  const powerPads = (node) => {
+    const power = PART_BY_ID[node.type].power
+    return power ? { bat: power.vbat, gnd: power.gnd } : { bat: signalPad(node, 'bat'), gnd: signalPad(node, 'g') }
+  }
   const label = (node) => {
     const same = ofType(node.type)
     const name = PART_BY_ID[node.type]?.name ?? node.type
@@ -118,8 +122,7 @@ export function runChecks(nodes, wires) {
   const isLive = (net, rail) => !!net && !!liveRails.get(net)?.has(rail)
   const fcPowered = new Set()
   for (const fc of fcs) {
-    const batPad = signalPad(fc, 'bat')
-    const gndPad = signalPad(fc, 'g')
+    const { bat: batPad, gnd: gndPad } = powerPads(fc)
     if (batPad && gndPad && isLive(netOf(fc.id, batPad), 'vbat') && isLive(netOf(fc.id, gndPad), 'gnd')) {
       fcPowered.add(fc.id)
       for (const pad of PART_BY_ID[fc.type].pads) if (pad.source) makeLive(netOf(fc.id, pad.id), pad.rail)
@@ -127,7 +130,7 @@ export function runChecks(nodes, wires) {
   }
 
   // ---- Battery to ESC ----
-  const hasEscPad = (net, rail) => net.terminals.some((t) => kindOf(t.type) === 'esc' && t.pad.rail === rail)
+  const hasEscPad = (net, rail) => net.terminals.some((t) => isKind(t.type, 'esc') && t.pad.rail === rail)
   for (const bat of batteries) {
     const pos = netOf(bat.id, 'pos')
     const neg = netOf(bat.id, 'neg')
@@ -167,7 +170,7 @@ export function runChecks(nodes, wires) {
       return {
         net,
         pads: net.terminals.filter((t) => t.pad.motor),
-        motorLeads: net.terminals.filter((t) => kindOf(t.type) === 'motor'),
+        motorLeads: net.terminals.filter((t) => isKind(t.type, 'motor')),
       }
     })
     const sameMotorJoined = info.some((i) => i.motorLeads.filter((t) => t.nodeId === motor.id).length > 1)
@@ -222,10 +225,15 @@ export function runChecks(nodes, wires) {
   const upper = (s) => (s === 'bat' ? 'BAT' : s === 'g' ? 'G' : s.toUpperCase())
   if (fcs.length && escs.length) {
     const fc = fcs[0]
-    const esc = escs[0]
+    const esc = escs.find((e) => e.id !== fc.id) ?? escs[0]
     const missing = []
     const crossed = []
-    for (const s of SIGNALS) {
+    if (fc.id === esc.id) {
+      // an AIO: the flight controller and the ESC are one board, already joined inside
+      goals['fc-esc'] = true
+      say('ok', 'Flight controller and ESC are one board', 'This all-in-one board has the flight controller and the ESC together, so there is nothing to wire between them.', [fc.id])
+    }
+    for (const s of fc.id === esc.id ? [] : SIGNALS) {
       const fcPad = signalPad(fc, s)
       if (!fcPad) {
         missing.push(upper(s))
@@ -237,7 +245,9 @@ export function runChecks(nodes, wires) {
       if (escSignals.length) crossed.push(`FC ${upper(s)} goes to ESC ${upper(escSignals[0])}`)
       else missing.push(upper(s))
     }
-    if (!missing.length && !crossed.length) {
+    if (fc.id === esc.id) {
+      // nothing to check
+    } else if (!missing.length && !crossed.length) {
       goals['fc-esc'] = true
       say('ok', 'Flight controller is wired to the ESC', 'BAT, G and the four motor signals M1 to M4 are all connected.', [fc.id, esc.id])
     } else if (crossed.length) {
@@ -277,7 +287,7 @@ export function runChecks(nodes, wires) {
     if (power.burned) return
     const txNet = netOf(node.id, txLead)
     const rxNet = netOf(node.id, rxLead)
-    const fcPads = (net, dir) => net.terminals.filter((t) => kindOf(t.type) === 'fc' && t.pad.uart?.dir === dir).map((t) => t.pad.uart.n)
+    const fcPads = (net, dir) => net.terminals.filter((t) => isKind(t.type, 'fc') && t.pad.uart?.dir === dir).map((t) => t.pad.uart.n)
     const txToRx = fcPads(txNet, 'rx')
     const rxToTx = fcPads(rxNet, 'tx')
     const txToTx = fcPads(txNet, 'tx')
@@ -330,8 +340,8 @@ export function runChecks(nodes, wires) {
     const camNet = netOf(cam.id, 'cv')
     const vtxNet = netOf(vtx.id, 'vv')
     const direct = camNet === vtxNet
-    const viaFc = camNet.terminals.some((t) => kindOf(t.type) === 'fc' && t.pad.video === 'cam-in') && vtxNet.terminals.some((t) => kindOf(t.type) === 'fc' && t.pad.video === 'vtx-out')
-    const backwards = camNet.terminals.some((t) => kindOf(t.type) === 'fc' && t.pad.video === 'vtx-out') || vtxNet.terminals.some((t) => kindOf(t.type) === 'fc' && t.pad.video === 'cam-in')
+    const viaFc = camNet.terminals.some((t) => isKind(t.type, 'fc') && t.pad.video === 'cam-in') && vtxNet.terminals.some((t) => isKind(t.type, 'fc') && t.pad.video === 'vtx-out')
+    const backwards = camNet.terminals.some((t) => isKind(t.type, 'fc') && t.pad.video === 'vtx-out') || vtxNet.terminals.some((t) => isKind(t.type, 'fc') && t.pad.video === 'cam-in')
     if (direct || viaFc) {
       goals.video = true
       say('ok', 'Video reaches the VTX', direct ? 'The camera video goes straight to the VTX.' : 'Camera video goes through the flight controller (so the OSD can be added) and out to the VTX.', [cam.id, vtx.id])

@@ -230,6 +230,12 @@ export const PARTS = [...GENERIC_PARTS, ...BRAND_PARTS]
 export const PART_BY_ID = Object.fromEntries(PARTS.map((p) => [p.id, p]))
 export const padOf = (partId, padId) => PART_BY_ID[partId]?.pads.find((p) => p.id === padId) ?? null
 
+/** Is this part a flight controller, an ESC ...? A board that is two things at once (an AIO is both) lists them in `kinds`. */
+export const isKind = (partId, kind) => {
+  const part = PART_BY_ID[partId]
+  return !!part && (part.kinds ?? [part.kind]).includes(kind)
+}
+
 /** Parts have a front and a back. A pad is on one of them, or (a lead, a through-hole pad) shows on both. */
 export const onFace = (pad, flip) => !pad.face || pad.face === 'both' || pad.face === (flip ? 'back' : 'front')
 

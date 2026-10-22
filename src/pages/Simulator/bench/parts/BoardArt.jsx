@@ -66,16 +66,18 @@ function Feature({ f, front, model }) {
           <path d={`M ${f.x - f.r * 0.5} ${f.y - f.r * 0.5} L ${f.x + f.r * 0.5} ${f.y + f.r * 0.5} M ${f.x + f.r * 0.5} ${f.y - f.r * 0.5} L ${f.x - f.r * 0.5} ${f.y + f.r * 0.5}`} stroke="#aab1ba" strokeWidth="1" />
         </g>
       )
-    case 'usb':
+    case 'usb': {
+      // drawn for the bottom edge, then turned for the others
+      const turn = { bottom: 0, top: 180, left: 90, right: -90 }[f.side ?? 'bottom']
       return (
         <g>
-          <rect x={f.x - 33} y={f.y - 12} width="66" height="26" rx="4" fill="url(#bn-tin)" stroke="#8b929c" />
-          <rect x={f.x - 23} y={f.y - 4} width="46" height="9" rx="4.5" fill={INK} />
-          <T x={f.x} y={f.y - 17} size={7} fill={SILK} opacity={0.8}>
-            USB-C
-          </T>
+          <g transform={`rotate(${turn} ${f.x} ${f.y})`}>
+            <rect x={f.x - 33} y={f.y - 12} width="66" height="26" rx="4" fill="url(#bn-tin)" stroke="#8b929c" />
+            <rect x={f.x - 23} y={f.y - 4} width="46" height="9" rx="4.5" fill={INK} />
+          </g>
         </g>
       )
+    }
     case 'button':
       return (
         <g>
@@ -136,7 +138,7 @@ function Housings({ pads, w }) {
     return (
       <g key={name}>
         <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} rx="3" fill="#e6e8ec" stroke="#b9bec6" />
-        {side !== 'down' && (
+        {side !== 'down' && side !== 'up' && (
           <T x={side === 'left' ? 68 : w - 68} y={(y0 + y1) / 2} size={9} weight={700} rotate={-90} opacity={0.75}>
             {name}
           </T>
@@ -167,6 +169,11 @@ function PadArt({ p }) {
             {p.label}
           </T>
         )}
+        {side === 'up' && (
+          <T x={p.x + 3} y={p.y - 12} size={8} anchor="start" rotate={-90}>
+            {p.label}
+          </T>
+        )}
       </g>
     )
   }
@@ -186,7 +193,7 @@ function PadArt({ p }) {
   return (
     <g>
       <rect x={p.x - pw / 2} y={p.y - ph / 2} width={pw} height={ph} rx={p.big ? 7 : 4} fill={p.tin ? 'url(#bn-tin)' : 'url(#bn-gold)'} stroke={p.tin ? '#8b929c' : '#9a7620'} strokeWidth="0.7" />
-      <T x={p.x} y={p.y + (p.big ? 4 : 3)} size={p.big ? 11 : 8} weight={700} fill={p.big && plus ? '#a8281c' : INK}>
+      <T x={p.x} y={p.y + (p.big ? 4 : 3)} size={p.big ? 11 : pw < 26 ? 7 : 8} weight={700} fill={p.big && plus ? '#a8281c' : INK}>
         {p.label}
       </T>
     </g>
