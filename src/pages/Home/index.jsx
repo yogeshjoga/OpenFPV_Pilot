@@ -184,23 +184,6 @@ export default function Home() {
       <section className={`section ${styles.teamSection}`}>
         <div className={`container ${styles.teamGrid}`}>
           <motion.div
-            className={styles.teamPhoto}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <img
-              src="/images/opt/team-photo-1200.webp"
-              srcSet="/images/opt/team-photo-800.webp 800w, /images/opt/team-photo-1200.webp 1200w"
-              sizes="(max-width: 900px) 90vw, 600px"
-              alt="Four members of the EGIRE Robotics team at an FPV drone piloting workshop"
-              width="1200"
-              height="800"
-              loading="lazy"
-            />
-          </motion.div>
-          <motion.div
             className={styles.teamText}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -213,16 +196,25 @@ export default function Home() {
               We are the first company in India to put a controller and a drone directly in students&apos;
               hands for flight practice. No one else runs a workshop like this across the country.
             </p>
-            <ul className={styles.teamPoints}>
-              <li><Check size={18} /> Simulator practice first, then real FPV piloting</li>
-              <li><Check size={18} /> A 7-day piloting workshop, not only theory</li>
-              <li><Check size={18} /> Real engineering skills, not drone explainers</li>
-            </ul>
             <div className={styles.heroActions}>
               <Link to="/about" className={styles.ghostBtn}>
                 Meet the team <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
               </Link>
             </div>
+          </motion.div>
+          <motion.div
+            className={styles.teamCard}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <p className={styles.teamCardTitle}>What makes our workshop different</p>
+            <ul className={styles.teamPoints}>
+              <li><Check size={18} /> Simulator practice first, then real FPV piloting</li>
+              <li><Check size={18} /> A 7-day piloting workshop, not only theory</li>
+              <li><Check size={18} /> Real engineering skills, not drone explainers</li>
+            </ul>
           </motion.div>
         </div>
       </section>
