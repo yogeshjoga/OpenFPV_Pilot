@@ -13,6 +13,7 @@ export const NAV_LINKS = [
     label: 'Academy', 
     subLinks: [
       { label: 'Intro to Drones', path: '/intro' },
+      { label: 'How a Drone Works', path: '/how-a-drone-works' },
       { label: 'Catalog', path: '/catalog' },
       { label: 'Programs', path: '/training' },
       { label: 'Physics', path: '/physics', minLevel: 3 },

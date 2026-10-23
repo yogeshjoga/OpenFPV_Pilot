@@ -21,6 +21,7 @@ const IntroToDrones = lazy(() => import('@pages/IntroToDrones'))
 const Blog = lazy(() => import('@pages/Blog'))
 const PidTuning = lazy(() => import('@pages/PidTuning'))
 const Presentation = lazy(() => import('@pages/Presentation'))
+const DroneLesson = lazy(() => import('@pages/DroneLesson'))
 
 const Login = lazy(() => import('@pages/Auth/Login'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
@@ -92,6 +93,7 @@ export default function AppRouter() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/pid-tuning" element={<PidTuning />} />
           <Route path="/presentation" element={<Presentation />} />
+          <Route path="/how-a-drone-works" element={<DroneLesson />} />
 
           <Route path="/admin" element={
             <ProtectedRoute requiredLevel={4}>

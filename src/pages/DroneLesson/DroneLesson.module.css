@@ -1,0 +1,57 @@
+.hero {
+  padding: var(--space-20) 0 var(--space-8);
+  background: var(--color-bg-secondary);
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.eyebrow {
+  margin-bottom: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-secondary);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: var(--font-extrabold);
+  margin-bottom: var(--space-6);
+  color: var(--color-accent-primary);
+}
+
+.subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.stage {
+  padding: var(--space-8) 0;
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  min-height: 560px;
+  border: 0;
+  background: transparent;
+}
+
+.next {
+  padding: var(--space-12) 0 var(--space-16);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-primary);
+}
