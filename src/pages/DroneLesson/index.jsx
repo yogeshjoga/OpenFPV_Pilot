@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Maximize2, Minimize2 } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import useUIStore from '@store/useUIStore'
 import styles from './DroneLesson.module.css'
@@ -10,15 +10,32 @@ const SRC = {
   light: '/illustrations/fpv-drone-lesson-light.html',
 }
 
+// In full screen the lesson keeps its two-column layout at this size and is scaled to fit the screen,
+// so the drawing, the text, the radio and the motors are all in view at once.
+const FULL_W = 1200
+const FULL_H = 1200
+const FULL_MIN_WIDTH = 1000
+
+function fullScreenSize() {
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  if (vw < FULL_MIN_WIDTH) return { width: vw, height: vh, scale: 1 }
+  const scale = Math.min(vw / FULL_W, vh / FULL_H)
+  return { width: vw / scale, height: vh / scale, scale }
+}
+
 export default function DroneLesson() {
   const theme = useUIStore((s) => s.theme)
+  const wrapRef = useRef(null)
   const frameRef = useRef(null)
   const [height, setHeight] = useState(900)
+  const [full, setFull] = useState(false)
+  const [size, setSize] = useState(fullScreenSize)
 
   // The lesson is a self-contained page. It is same-origin, so the frame can grow to fit it.
   useEffect(() => {
     const frame = frameRef.current
-    if (!frame) return undefined
+    if (!frame || full) return undefined
     let observer
     const fit = () => {
       const doc = frame.contentDocument
@@ -39,7 +56,45 @@ export default function DroneLesson() {
       frame.removeEventListener('load', onLoad)
       observer?.disconnect()
     }
-  }, [theme])
+  }, [theme, full])
+
+  const exitFull = useCallback(() => {
+    setFull(false)
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {})
+  }, [])
+
+  const enterFull = () => {
+    setSize(fullScreenSize())
+    setFull(true)
+    wrapRef.current?.requestFullscreen?.().catch(() => {})
+  }
+
+  // Esc and the browser's own full-screen exit both end up here.
+  useEffect(() => {
+    if (!full) return undefined
+    const onChange = () => {
+      if (!document.fullscreenElement) setFull(false)
+    }
+    const onKey = (event) => {
+      if (event.key === 'Escape') exitFull()
+    }
+    const onResize = () => setSize(fullScreenSize())
+    const scroll = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('fullscreenchange', onChange)
+    document.addEventListener('keydown', onKey)
+    window.addEventListener('resize', onResize)
+    return () => {
+      document.body.style.overflow = scroll
+      document.removeEventListener('fullscreenchange', onChange)
+      document.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [full, exitFull])
+
+  const frameStyle = full
+    ? { width: size.width, height: size.height, transform: `scale(${size.scale})` }
+    : { height }
 
   return (
     <PageWrapper>
@@ -56,15 +111,26 @@ export default function DroneLesson() {
 
       <section className={styles.stage}>
         <div className="container">
-          <iframe
-            key={theme}
-            ref={frameRef}
-            className={styles.frame}
-            style={{ height }}
-            src={SRC[theme === 'dark' ? 'dark' : 'light']}
-            title="Animated FPV drone build and flight lesson"
-            loading="lazy"
-          />
+          <div ref={wrapRef} className={full ? styles.wrapFull : styles.wrap}>
+            <button
+              type="button"
+              className={full ? styles.exitButton : styles.fullButton}
+              onClick={full ? exitFull : enterFull}
+              aria-label={full ? 'Exit full screen' : 'Full screen'}
+            >
+              {full ? <Minimize2 size={16} aria-hidden="true" /> : <Maximize2 size={16} aria-hidden="true" />}
+              {full ? 'Exit full screen' : 'Full screen'}
+            </button>
+            <iframe
+              key={theme}
+              ref={frameRef}
+              className={full ? styles.frameFull : styles.frame}
+              style={frameStyle}
+              src={SRC[theme === 'dark' ? 'dark' : 'light']}
+              title="Animated FPV drone build and flight lesson"
+              loading="lazy"
+            />
+          </div>
         </div>
       </section>
 
