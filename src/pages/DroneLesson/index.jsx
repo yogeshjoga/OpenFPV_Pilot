@@ -10,17 +10,20 @@ const SRC = {
   light: '/illustrations/fpv-drone-lesson-light.html',
 }
 
-// In full screen the lesson keeps its two-column layout at this size and is scaled to fit the screen,
-// so the drawing, the text, the radio and the motors are all in view at once.
-const FULL_W = 1200
-const FULL_H = 1200
+// In full screen the lesson is drawn at a fixed layout size and scaled to fit, so the drawing, the text,
+// the radio and the motors are all in view at once. Landscape screens get the wide three-part layout
+// (the lesson page switches to it from 1500px wide); tall or square screens get the narrower one.
+const WIDE = { w: 1560, h: 1020 }
+const NARROW = { w: 1200, h: 1200 }
+const WIDE_MIN_ASPECT = 1.25
 const FULL_MIN_WIDTH = 1000
 
 function fullScreenSize() {
   const vw = window.innerWidth
   const vh = window.innerHeight
   if (vw < FULL_MIN_WIDTH) return { width: vw, height: vh, scale: 1 }
-  const scale = Math.min(vw / FULL_W, vh / FULL_H)
+  const layout = vw / vh >= WIDE_MIN_ASPECT ? WIDE : NARROW
+  const scale = Math.min(vw / layout.w, vh / layout.h)
   return { width: vw / scale, height: vh / scale, scale }
 }
 

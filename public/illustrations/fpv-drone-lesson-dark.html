@@ -115,6 +115,7 @@ body{margin:0;background:var(--anatomy-page);color:var(--anatomy-text);font:14px
 .lesson{display:grid;grid-template-columns:minmax(0,650px) minmax(0,1fr);gap:28px;align-items:start}
 .lesson-side{display:grid;gap:14px;position:sticky;top:16px}
 @media (max-width:980px){.lesson{grid-template-columns:minmax(0,1fr)}.lesson-side{position:static}}
+@media (min-width:1500px){.iso-page{width:min(1500px,100% - 48px);margin:24px auto}.lesson{grid-template-columns:minmax(0,650px) minmax(0,1fr)}.lesson-side{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}.lesson-side .say{grid-column:1 / -1}}
 .asm{margin-top:14px;display:grid;gap:10px;font-size:13px}
 .asm button{font:inherit;color:var(--anatomy-mid);background:transparent;border:1px solid var(--anatomy-faint);border-radius:8px;padding:6px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;line-height:1.2}
 .asm button:hover{color:var(--anatomy-hi);border-color:var(--anatomy-lo)}
