@@ -297,6 +297,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ======= HOW A DRONE WORKS ======= */}
+      <section className={`section ${styles.lessonSection}`} aria-labelledby="lesson-title">
+        <div className="container">
+          <motion.div
+            className={styles.lessonInner}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className={styles.sectionEyebrow}>Free interactive lesson</p>
+            <h2 id="lesson-title" className={styles.sectionTitle}>See how a drone is built and how it flies</h2>
+            <p className={styles.lessonSub}>
+              Watch twelve parts go on one by one, then learn throttle, yaw, pitch and roll on a virtual radio.
+              Then fly it yourself.
+            </p>
+            <Link to="/how-a-drone-works" className={styles.primaryBtn}>
+              Open the lesson <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ======= AI AND ROBOTICS ======= */}
       <section className={`section ${styles.aiSection}`} aria-labelledby="ai-title">
         <div className="container">
