@@ -3,6 +3,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import { HUB_PROFILE, makeBlade } from './propBlade.js'
 
 const TAU = Math.PI * 2
 const WHEEL = 80 // motor centres are at +-80 along and across: a 225 mm wheelbase
@@ -468,30 +469,24 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       )
       band.position.copy(at0(bellBottom + 6))
       mg.add(band)
-      mg.add(lathe([[0, 0], [2.6, 0], [2.6, 6.6], [0, 6.6]], aluminium(0xb9bec6), at0(top), 12))
+      mg.add(lathe([[0, 0], [2.6, 0], [2.6, 9.8], [0, 9.8]], aluminium(0xb9bec6), at0(top), 12))
 
       const pg = part('prop', v(dir[0] * 16, dir[1] * 16, 56))
-      pg.add(tube(m.at[0], m.at[1], top + 1.6, top + 2.2, 5.4, aluminium(0xcdd1d8), 24)) // washer
-      pg.add(shaped(new THREE.CylinderGeometry(4.5, 4.5, 3.4, 6), mat(0x2a2c31, { rough: 0.35, metal: 0.85 }), v(m.at[0], m.at[1], top + 5.1))) // lock nut
-      pg.add(tube(m.at[0], m.at[1], top + 6.8, top + 7.4, 3.0, mat(0x08080a, { rough: 0.6 }), 16)) // its nylon insert
+      pg.add(shaped(new THREE.CylinderGeometry(4.5, 4.5, 3.4, 6), mat(0x2a2c31, { rough: 0.35, metal: 0.85 }), v(m.at[0], m.at[1], top + 7.7))) // lock nut
+      pg.add(tube(m.at[0], m.at[1], top + 9.4, top + 10, 3.0, mat(0x08080a, { rough: 0.6 }), 16)) // its nylon insert
       const spinG = new THREE.Group()
       spinG.position.copy(v(m.at[0], m.at[1], top + 2.2))
-      const bs = new THREE.Shape()
-      bs.moveTo(3, -2.4)
-      bs.bezierCurveTo(12, -9.5, propR * 0.7, -10, propR, -4)
-      bs.quadraticCurveTo(propR + 3.5, 0, propR, 3.6)
-      bs.bezierCurveTo(propR * 0.73, 5, 18, 3, 3, 2.4)
-      bs.lineTo(3, -2.4)
-      const geo = new THREE.ExtrudeGeometry(bs, { depth: 1.1, bevelEnabled: true, bevelThickness: 0.25, bevelSize: 0.25, bevelSegments: 1, curveSegments: 12 })
-      geo.rotateX(-Math.PI / 2)
-      const bladeMat = mat(accent, { rough: 0.32, metal: 0.05, clear: 0.4 })
+      // a real blade shape: swept, twisted by the pitch, with a cambered airfoil, in smoked translucent plastic
+      const bladeGeo = makeBlade({ radiusMm: propR, pitchIn: prop.pitchIn, dir: m.dir, blades: prop.blades })
+      const bladeMat = mat(accent, { rough: 0.14, metal: 0, clear: 1 })
+      bladeMat.transparent = true
+      bladeMat.opacity = 0.8
       for (let b = 0; b < prop.blades; b++) {
-        const blade = shaped(geo, bladeMat, new THREE.Vector3(0, 0, 0))
+        const blade = shaped(bladeGeo, bladeMat, new THREE.Vector3(0, 0, 0))
         blade.rotation.y = (b / prop.blades) * TAU
-        blade.rotation.x = m.dir * 0.22
         spinG.add(blade)
       }
-      spinG.add(shaped(new THREE.CylinderGeometry(6.4, 7.2, 1.6, 28), mat(0x24262a, { rough: 0.4, metal: 0.6 }), new THREE.Vector3(0, 0.4, 0)))
+      spinG.add(lathe(HUB_PROFILE, mat(0x1a1c20, { rough: 0.35, metal: 0.3, clear: 0.6 }), new THREE.Vector3(0, 0, 0), 36))
       pg.add(spinG)
       const disc = new THREE.Mesh(new THREE.CircleGeometry(propR, 64), track(new THREE.MeshBasicMaterial({ color: 0xcfd6e2, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide })))
       disc.rotation.x = -Math.PI / 2
