@@ -158,7 +158,7 @@ export default function DroneLesson() {
           <h1 className={styles.title}>Build it part by part, then learn to fly it</h1>
           <p className={styles.subtitle}>
             Press play. Twelve parts go on one by one, each with a short explanation. Then the radio sticks show how
-            throttle, yaw, pitch and roll move the drone. At the end it is your turn to fly.
+            throttle, yaw, pitch and roll move the drone. At the end it is your turn to fly. Switch to the 3D model for the physics lab: live charts, forces and air, a PID lab and the laws of physics behind it all.
           </p>
         </div>
       </section>

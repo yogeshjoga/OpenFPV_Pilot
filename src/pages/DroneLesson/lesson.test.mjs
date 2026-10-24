@@ -57,8 +57,21 @@ test('the 3D pages have a 3D radio and markers for each part', () => {
   for (const name of ['3d dark', '3d light']) {
     assert.match(pages[name], /data-pins/)
     assert.match(pages[name], /class="radio-caps"/)
-    assert.equal((pages[name].match(/<canvas/g) || []).length, 2) // the drone and the radio
+    assert.equal((pages[name].match(/<canvas>/g) || []).length, 1) // the drone
+    assert.equal((pages[name].match(/<canvas aria-label/g) || []).length, 1) // the radio
     assert.match(pages[name], /Math.PI*.5|MAX_TILT|.5*Math.PI|.5/) 
+  }
+})
+
+test('the 3D pages have the physics lab: four tabs, charts, PID sliders and the laws', () => {
+  for (const name of ['3d dark', '3d light']) {
+    const html = pages[name]
+    assert.match(html, /data-lab /)
+    for (const tab of ['live', 'air', 'pid', 'laws']) assert.match(html, new RegExp('data-lab-tab="' + tab + '"'))
+    assert.ok((html.match(/data-chart=/g) || []).length >= 12, 'live, air and PID charts')
+    assert.equal((html.match(/data-gain=/g) || []).length, 3)
+    assert.match(html, /data-laws/)
+    assert.match(html, /data-pid-act="gust"/)
   }
 })
 
