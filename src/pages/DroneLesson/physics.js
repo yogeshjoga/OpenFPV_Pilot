@@ -24,35 +24,39 @@ export const motorThrustN = (speed) => THRUST_MAX_N * speed * speed
 export const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
 
 // ---- aerodynamics, steady flight ----
+// Every function takes the drone it is about (mass, prop size, body drag); the lesson's own drone is the default.
+const weightOf = (d) => d.massKg * G
 export const dragN = (v, { cd = DRONE.cd, area = DRONE.frontalAreaM2 } = {}) => 0.5 * AIR * cd * area * v * v
+const dragFor = (v, d) => dragN(v, { cd: d.cd, area: d.frontalAreaM2 })
 // to hold a steady speed the quad leans until the sideways part of thrust equals drag: tan(lean) = drag / weight
-export const leanForSpeed = (v) => Math.atan(dragN(v) / WEIGHT_N)
-export const thrustToFlyN = (v) => Math.hypot(WEIGHT_N, dragN(v))
-export const rotorArea = () => 4 * Math.PI * (DRONE.propDiameterM / 2) ** 2
-export const hoverInducedVelocity = () => Math.sqrt(WEIGHT_N / (2 * AIR * rotorArea()))
+export const leanForSpeed = (v, d = DRONE) => Math.atan(dragFor(v, d) / weightOf(d))
+export const thrustToFlyN = (v, d = DRONE) => Math.hypot(weightOf(d), dragFor(v, d))
+export const rotorArea = (d = DRONE) => 4 * Math.PI * (d.propDiameterM / 2) ** 2
+export const hoverInducedVelocity = (d = DRONE) => Math.sqrt(weightOf(d) / (2 * AIR * rotorArea(d)))
 // induced velocity at forward speed v, from momentum theory (T = 2 rho A vi sqrt(v^2 + vi^2))
-export function inducedVelocity(v, thrust = WEIGHT_N) {
-  const vh = Math.sqrt(thrust / (2 * AIR * rotorArea()))
+export function inducedVelocity(v, thrust, d = DRONE) {
+  const t = thrust ?? weightOf(d)
+  const vh = Math.sqrt(t / (2 * AIR * rotorArea(d)))
   return Math.sqrt((-v * v + Math.sqrt(v ** 4 + 4 * vh ** 4)) / 2)
 }
 // electrical power to fly level at speed v: the air pushed through the props (induced) plus beating the drag (parasitic)
-export function powerW(v) {
-  const t = thrustToFlyN(v)
-  const induced = (t * inducedVelocity(v, t)) / (DRONE.fmHover * DRONE.efficiency)
-  const parasitic = (dragN(v) * v) / DRONE.efficiency
+export function powerW(v, d = DRONE) {
+  const t = thrustToFlyN(v, d)
+  const induced = (t * inducedVelocity(v, t, d)) / (d.fmHover * d.efficiency)
+  const parasitic = (dragFor(v, d) * v) / d.efficiency
   return { induced, parasitic, total: induced + parasitic }
 }
-export function powerCurve(maxV = 40, steps = 80) {
+export function powerCurve(maxV = 40, steps = 80, d = DRONE) {
   const out = []
   for (let k = 0; k <= steps; k++) {
     const v = (maxV * k) / steps
-    out.push({ v, ...powerW(v) })
+    out.push({ v, ...powerW(v, d) })
   }
   return out
 }
 // the speed that uses the least power (longest flight) and the speed that uses the least energy per metre (longest range)
-export function bestSpeeds(maxV = 40) {
-  const curve = powerCurve(maxV, 400)
+export function bestSpeeds(maxV = 40, d = DRONE) {
+  const curve = powerCurve(maxV, 400, d)
   let endurance = curve[0]
   let range = curve[1]
   for (const p of curve) {

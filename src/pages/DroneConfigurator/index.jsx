@@ -3,6 +3,8 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { ArrowRight, Cable, Check, CircleAlert, Fan, Info, Layers, Link2, OctagonAlert, RotateCcw } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { estimate } from './calc'
+import CurveChart, { niceMax } from './CurveChart'
+import { MAX_SPEED, atSpeed, atThrottle, speedCurves, throttleCurves } from './curves'
 import { CATEGORIES, DEFAULT_BUILD, FRAME, resolveBuild } from './catalog'
 import styles from './DroneConfigurator.module.css'
 
@@ -58,6 +60,9 @@ const MOTOR_KEY = [
   { name: 'Motor 3: rear left, clockwise', color: 'var(--wire-rear-left)' },
 ]
 
+// colours for the chart lines
+const C = { thrust: '#30a46c', weight: '#e5484d', current: '#f5a524', induced: '#3e8ef7', drag: '#e5484d', total: '#7a8494', ref: '#9aa3b2', esc: '#c2410c' }
+
 const LEVEL_ICON = { error: OctagonAlert, warn: CircleAlert, info: Info }
 
 export default function DroneConfigurator() {
@@ -70,6 +75,8 @@ export default function DroneConfigurator() {
   const [glow, setGlow] = useState(null)
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
+  const [throttle, setThrottle] = useState(0.6)
+  const [speed, setSpeed] = useState(12)
   const canvasRef = useRef(null)
   const viewRef = useRef(null)
   const stageRef = useRef(null)
@@ -77,6 +84,52 @@ export default function DroneConfigurator() {
 
   const result = useMemo(() => estimate(build), [build])
   const parts = useMemo(() => resolveBuild(build), [build])
+
+  // the charts: this build, with the default build as a faint comparison
+  const reference = useMemo(() => estimate(DEFAULT_BUILD), [])
+  const tc = useMemo(() => throttleCurves(result), [result])
+  const sc = useMemo(() => speedCurves(result), [result])
+  const rtc = useMemo(() => throttleCurves(reference), [reference])
+  const rsc = useMemo(() => speedCurves(reference), [reference])
+  const nowT = atThrottle(result, throttle)
+  const nowS = atSpeed(result, speed)
+  const thrustYMax = niceMax(Math.max(tc.thrustN.at(-1), rtc.thrustN.at(-1)) * 1.05)
+  const currentYMax = niceMax(Math.max(tc.currentA.at(-1), tc.escMaxA, tc.batteryMaxA) * 1.05)
+  const powerYMax = niceMax(Math.max(...sc.total, ...rsc.total) * 0.9)
+  const minutesYMax = niceMax(Math.max(...sc.minutes.slice(2), ...rsc.minutes.slice(2)) * 1.05)
+  const rangeYMax = niceMax(Math.max(...sc.rangeKm, ...rsc.rangeKm) * 1.05)
+  const charts = useMemo(() => ({
+    thrust: [
+      { xs: rtc.xs, ys: rtc.thrustN, color: C.ref, dash: [2, 3], width: 1.5, label: 'default build' },
+      { xs: [0, 1], ys: [tc.weightN, tc.weightN], color: C.weight, dash: [5, 3], width: 1.5, label: 'weight' },
+      { xs: tc.xs, ys: tc.thrustN, color: C.thrust, width: 2.6, label: 'your build (N)' },
+    ],
+    current: [
+      { xs: rtc.xs, ys: rtc.currentA, color: C.ref, dash: [2, 3], width: 1.5, label: 'default build' },
+      { xs: [0, 1], ys: [tc.batteryMaxA, tc.batteryMaxA], color: C.weight, dash: [5, 3], width: 1.5, label: 'battery limit' },
+      { xs: [0, 1], ys: [tc.escMaxA, tc.escMaxA], color: C.esc, dash: [5, 3], width: 1.5, label: 'speed controller limit' },
+      { xs: tc.xs, ys: tc.currentA, color: C.current, width: 2.6, label: 'your build (A)' },
+    ],
+    power: [
+      { xs: rsc.xs, ys: rsc.total, color: C.ref, dash: [2, 3], width: 1.5, label: 'default build' },
+      { xs: sc.xs, ys: sc.induced, color: C.induced, width: 1.5, label: 'air pushed down' },
+      { xs: sc.xs, ys: sc.parasitic, color: C.drag, width: 1.5, label: 'beating drag' },
+      { xs: sc.xs, ys: sc.total, color: C.total, width: 2.8, label: 'total W' },
+    ],
+    minutes: [
+      { xs: rsc.xs.slice(2), ys: rsc.minutes.slice(2), color: C.ref, dash: [2, 3], width: 1.5, label: 'default build' },
+      { xs: sc.xs.slice(2), ys: sc.minutes.slice(2), color: C.thrust, width: 2.6, label: 'your build (min)' },
+    ],
+    range: [
+      { xs: rsc.xs, ys: rsc.rangeKm, color: C.ref, dash: [2, 3], width: 1.5, label: 'default build' },
+      { xs: sc.xs, ys: sc.rangeKm, color: C.induced, width: 2.6, label: 'your build (km)' },
+    ],
+  }), [tc, sc, rtc, rsc])
+  const hoverMarker = useMemo(() => [{ x: tc.hoverThrottle, label: 'lifts off', color: C.weight }], [tc])
+  const bestMarkers = useMemo(() => [
+    { x: sc.best.endurance, label: 'longest flight', color: C.induced, row: 0 },
+    { x: sc.best.range, label: 'longest range', color: C.weight, row: 1 },
+  ], [sc])
   initialBuildRef.current = build // the 3D view starts from whatever is chosen when it finishes loading
 
   // keep the link and the saved build in step with the choices
@@ -333,6 +386,69 @@ export default function DroneConfigurator() {
               </button>
             </div>
           </aside>
+        </div>
+      </section>
+
+      <section className={styles.charts} aria-labelledby="charts-title">
+        <div className="container">
+          <h2 id="charts-title" className={styles.chartsTitle}>How your build behaves</h2>
+          <p className={styles.chartsSub}>
+            These curves are for the parts you picked. Change a part above and they move. The grey dotted line is the default build, so you can see what each change did.
+          </p>
+          <div className={styles.sliders}>
+            <label className={styles.slider}>
+              <span><b>Throttle</b> {Math.round(throttle * 100)}%</span>
+              <input type="range" min="0" max="1" step="0.01" value={throttle} onChange={(e) => setThrottle(Number(e.target.value))} />
+            </label>
+            <label className={styles.slider}>
+              <span><b>Forward speed</b> {fmt(speed, 1)} m/s ({fmt(speed * 3.6, 0)} km/h)</span>
+              <input type="range" min="0" max={MAX_SPEED} step="0.5" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
+            </label>
+          </div>
+          <div className={styles.readGroups}>
+            <dl className={styles.read} aria-label="At this throttle">
+              <div><dt>Thrust</dt><dd>{fmt(nowT.thrustN, 1)} N ({fmt(nowT.thrustKg, 2)} kg)</dd></div>
+              <div><dt>Thrust-to-weight</dt><dd>{fmt(nowT.twr, 1)} : 1</dd></div>
+              <div><dt>Motor speed</dt><dd>{fmt(nowT.rpm, 0)} rpm</dd></div>
+              <div><dt>Current</dt><dd className={nowT.overBattery ? styles.bad : undefined}>{fmt(nowT.currentA, 0)} A{nowT.overBattery ? ' (over the battery limit)' : ''}</dd></div>
+              <div><dt>Power</dt><dd>{fmt(nowT.powerW, 0)} W</dd></div>
+              <div><dt>Prop speed</dt><dd>{fmt(nowT.pitchSpeedKmh, 0)} km/h</dd></div>
+            </dl>
+            <dl className={styles.read} aria-label="At this speed">
+              <div><dt>Drag</dt><dd>{fmt(nowS.dragN, 2)} N</dd></div>
+              <div><dt>Lean needed</dt><dd>{fmt(nowS.leanDeg, 0)}°</dd></div>
+              <div><dt>Thrust needed</dt><dd>{fmt(nowS.thrustN, 2)} N</dd></div>
+              <div><dt>Power</dt><dd>{fmt(nowS.powerW, 0)} W</dd></div>
+              <div><dt>Flight time</dt><dd>{fmt(nowS.minutes, 1)} min</dd></div>
+              <div><dt>Range</dt><dd>{fmt(nowS.rangeKm, 1)} km</dd></div>
+            </dl>
+          </div>
+          <div className={styles.chartGrid}>
+            <figure className={styles.chartCard}>
+              <figcaption><b>Thrust against throttle</b><span>Thrust grows with the throttle squared. Above the weight line the drone lifts off. A stronger motor or prop lifts the curve.</span></figcaption>
+              <CurveChart className={styles.chartCanvas} label="Thrust against throttle" curves={charts.thrust} xMax={1} yMax={thrustYMax} markers={hoverMarker} dot={{ x: throttle, y: nowT.thrustN, color: C.thrust }} xLabel="throttle (0 to 1)" />
+            </figure>
+            <figure className={styles.chartCard}>
+              <figcaption><b>Current against throttle</b><span>Current grows with the throttle cubed. Where it passes the battery limit, the battery sags and heats up.</span></figcaption>
+              <CurveChart className={styles.chartCanvas} label="Current against throttle" curves={charts.current} xMax={1} yMax={currentYMax} dot={{ x: throttle, y: nowT.currentA, color: nowT.overBattery ? C.weight : C.current }} xLabel="throttle (0 to 1)" />
+            </figure>
+            <figure className={styles.chartCard}>
+              <figcaption><b>Power against forward speed</b><span>Hovering wastes power pushing air down. Flying fast wastes it fighting drag. The lowest point is the best speed for a long flight.</span></figcaption>
+              <CurveChart className={styles.chartCanvas} label="Power against forward speed" curves={charts.power} xMax={MAX_SPEED} yMax={powerYMax} markers={bestMarkers} dot={{ x: speed, y: nowS.powerW, color: C.total }} xLabel="speed (m/s)" />
+            </figure>
+            <figure className={styles.chartCard}>
+              <figcaption><b>Flight time against forward speed</b><span>Usable battery energy divided by the power. A bigger battery stretches the curve, and extra weight shrinks it.</span></figcaption>
+              <CurveChart className={styles.chartCanvas} label="Flight time against forward speed" curves={charts.minutes} xMax={MAX_SPEED} yMax={minutesYMax} markers={bestMarkers} dot={{ x: speed, y: nowS.minutes, color: C.thrust }} xLabel="speed (m/s)" />
+            </figure>
+            <figure className={styles.chartCard}>
+              <figcaption><b>Range against forward speed</b><span>Distance on one battery: flight time multiplied by speed. The peak is the best speed for going far.</span></figcaption>
+              <CurveChart className={styles.chartCanvas} label="Range against forward speed" curves={charts.range} xMax={MAX_SPEED} yMax={rangeYMax} markers={bestMarkers} dot={{ x: speed, y: nowS.rangeKm, color: C.induced }} xLabel="speed (m/s)" />
+            </figure>
+          </div>
+          <p className={styles.fine}>
+            Simple physics with typical, rounded numbers, for learning: thrust grows with throttle squared, current with throttle cubed, and the speed curves use momentum theory for the air pushed down plus body drag.
+            Level flight, steady speed, 80% of the battery used.
+          </p>
         </div>
       </section>
 
