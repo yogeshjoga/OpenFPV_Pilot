@@ -84,6 +84,16 @@ const pegTexture = () =>
       }
     }
   }, [7.8, 2.4])
+const labelTexture = (text) =>
+  canvasTexture(512, 128, (g, w, h) => {
+    g.clearRect(0, 0, w, h)
+    g.fillStyle = 'rgba(255,255,255,0.85)'
+    g.textAlign = 'center'
+    g.font = 'bold 30px sans-serif'
+    g.fillText('EGIRE', w / 2, 44)
+    g.font = 'bold 54px sans-serif'
+    g.fillText(text, w / 2, 100)
+  })
 const stickerTexture = (label) =>
   canvasTexture(512, 192, (g, w) => {
     const grad = g.createLinearGradient(0, 0, w, 192)
@@ -358,25 +368,74 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       armGroup.add(stripe)
       arm.add(armGroup)
 
+      // ---- the motor: base with screw ears, exposed stator and coils, anodised bell, shaft ----
       const mg = part('motor', v(dir[0] * 28, dir[1] * 28, 22))
-      const centre = v(m.at[0], m.at[1], 12)
-      mg.add(lathe([[0, 0], [10.5, 0], [11.2, 0.6], [11.2, 2.2], [0, 2.2]], aluminium(0x8d939b), centre))
-      mg.add(lathe([[0, 2.2], [bellR - 3.6, 2.2], [bellR - 3.6, 5.6], [0, 5.6]], mat(0xb4622a, { rough: 0.4, metal: 0.85 }), centre))
+      const S = motor.stator[1]
+      const R = motor.stator[0] / 2 + 3.2 // bell radius
+      const statorR = motor.stator[0] / 2 - 1.4
+      const bellBottom = 18.6
+      const top = 12 + 14 + S // top of the bell
+      const H = top - bellBottom
+      const at0 = (u) => v(m.at[0], m.at[1], u)
+      const cx = at0(0).x
+      const cz = at0(0).z
+      const baseMat = mat(0x1b1d21, { rough: 0.4, metal: 0.7 })
+      mg.add(lathe([[0, 0], [11, 0], [11.6, 0.7], [11.6, 1.8], [10.4, 2.6], [0, 2.6]], baseMat, at0(12), 48))
+      for (const x of [8, -8]) {
+        for (const y of [8, -8]) {
+          mg.add(tube(m.at[0] + x, m.at[1] + y, 12, 14.2, 3.4, baseMat, 16))
+          mg.add(tube(m.at[0] + x, m.at[1] + y, 14.2, 15.2, 1.9, mat(0x0a0a0b, { rough: 0.35, metal: 0.8 }), 6))
+        }
+      }
+      const baseTop = 14.6
+      mg.add(tube(m.at[0], m.at[1], baseTop, baseTop + S + 1, statorR - 3.4, mat(0x4a4f57, { rough: 0.4, metal: 0.85 }), 24))
+      const copper = mat(0xc0702f, { rough: 0.35, metal: 0.85 })
+      const solder = mat(0xe8c24a, { rough: 0.35, metal: 0.9 })
+      for (let t = 0; t < 12; t++) {
+        const ang = (t / 12) * TAU
+        const rr = statorR - 2.2
+        const coil = shaped(new THREE.BoxGeometry(4.4, S + 1.4, 3.0), copper, new THREE.Vector3(cx + Math.cos(ang) * rr, baseTop + (S + 1.4) / 2, cz + Math.sin(ang) * rr))
+        coil.rotation.y = -ang
+        mg.add(coil)
+        if (t % 2 === 0) mg.add(shaped(new THREE.SphereGeometry(0.7, 8, 6), solder, new THREE.Vector3(cx + Math.cos(ang) * (statorR - 0.4), baseTop + S + 1.3, cz + Math.sin(ang) * (statorR - 0.4))))
+      }
+      const bellMat = mat(motor.bellColor, { rough: 0.24, metal: 0.95, clear: 0.5 })
       mg.add(lathe(
-        [[0, 5.6], [bellR - 0.4, 5.6], [bellR, 6.6], [bellR, 5.6 + bellH - 0.8], [bellR - 0.8, 5.6 + bellH], [6.2, 5.6 + bellH], [5.2, 5.6 + bellH - 0.7], [3.4, 5.6 + bellH - 0.7], [3.4, 5.6 + bellH], [0, 5.6 + bellH]],
-        mat(0x2d3036, { rough: 0.28, metal: 0.9 }), centre, 48))
-      mg.add(lathe([[bellR - 1.4, 5.6 + bellH - 0.5], [bellR + 0.1, 5.6 + bellH - 0.8], [bellR + 0.1, 5.6 + bellH - 0.1], [bellR - 1.4, 5.6 + bellH + 0.2]], mat(accent, { rough: 0.3, metal: 0.7 }), centre, 48))
-      for (let h = 0; h < 12; h++) {
-        const ang = (h / 12) * TAU
-        const gr = new THREE.Mesh(new THREE.BoxGeometry(0.5, bellH - 4, 1.2), mat(0x0d0e10, { rough: 0.6 }))
-        gr.position.set(centre.x + Math.cos(ang) * (bellR + 0.05), centre.y + 5.6 + bellH / 2, centre.z + Math.sin(ang) * (bellR + 0.05))
-        gr.rotation.y = -ang
-        mg.add(gr)
+        [[R - 0.9, 0], [R, 0.5], [R, H - 2.6], [R - 0.5, H - 1.4], [R - 1.7, H - 0.4], [R - 3.2, H], [5.6, H], [5.6, H + 0.9], [3.6, H + 0.9], [3.6, H], [0, H]],
+        bellMat, at0(bellBottom), 64))
+      mg.add(lathe([[R + 0.02, 1.0], [R + 0.14, 1.25], [R + 0.14, 2.35], [R + 0.02, 2.6]], mat(accent, { rough: 0.3, metal: 0.7 }), at0(bellBottom), 64))
+      const slotMat = mat(0x070708, { rough: 0.7 })
+      for (let q = 0; q < 8; q++) {
+        const ang = ((q + 0.5) / 8) * TAU
+        const sl = shaped(new THREE.BoxGeometry(3.4, 0.3, 1.6), slotMat, new THREE.Vector3(cx + Math.cos(ang) * (R - 6.4), top + 0.04, cz + Math.sin(ang) * (R - 6.4)))
+        sl.rotation.y = -ang
+        mg.add(sl)
+      }
+      // the label printed on the side of the bell, facing out along the arm
+      const labelTex = labelTexture(`${motor.stator.join('')}  ${motor.kv}KV`)
+      owned.push(labelTex)
+      const arc = Math.PI * 0.62
+      const band = new THREE.Mesh(
+        new THREE.CylinderGeometry(R + 0.08, R + 0.08, 7, 40, 1, true, Math.atan2(dir[1], -dir[0]) - arc / 2, arc),
+        track(new THREE.MeshBasicMaterial({ map: labelTex, transparent: true, depthWrite: false })),
+      )
+      band.position.copy(at0(bellBottom + 6))
+      mg.add(band)
+      mg.add(lathe([[0, 0], [2.6, 0], [2.6, 6.6], [0, 6.6]], aluminium(0xb9bec6), at0(top), 12))
+      // three motor wires run along the arm and tuck under the plate
+      const n = [-dir[1], dir[0]]
+      const wireMat = mat(0x202226, { rough: 0.55 })
+      for (const k of [-1, 0, 1]) {
+        const o = [n[0] * k * 1.5, n[1] * k * 1.5]
+        const at2 = (along, u) => v(m.at[0] - dir[0] * along + o[0], m.at[1] - dir[1] * along + o[1], u)
+        const curve = new THREE.CatmullRomCurve3([at2(10.2, 14.4), at2(12.6, 12.7), at2(len * 0.5, 12.5), at2(len - 4, 12.4)])
+        mg.add(shaped(new THREE.TubeGeometry(curve, 20, 0.65, 6), wireMat, new THREE.Vector3(0, 0, 0)))
       }
 
-      const top = 12 + 5.6 + bellH // top of the motor bell
       const pg = part('prop', v(dir[0] * 16, dir[1] * 16, 56))
-      pg.add(lathe([[0, 0], [5, 0], [5, 2.4], [3.2, 3.6], [1.6, 3.6], [0, 3.6]], aluminium(0xcdd1d8), v(m.at[0], m.at[1], top), 24))
+      pg.add(tube(m.at[0], m.at[1], top + 1.6, top + 2.2, 5.4, aluminium(0xcdd1d8), 24)) // washer
+      pg.add(shaped(new THREE.CylinderGeometry(4.5, 4.5, 3.4, 6), mat(0x2a2c31, { rough: 0.35, metal: 0.85 }), v(m.at[0], m.at[1], top + 5.1))) // lock nut
+      pg.add(tube(m.at[0], m.at[1], top + 6.8, top + 7.4, 3.0, mat(0x08080a, { rough: 0.6 }), 16)) // its nylon insert
       const spinG = new THREE.Group()
       spinG.position.copy(v(m.at[0], m.at[1], top + 2.2))
       const bs = new THREE.Shape()
@@ -582,6 +641,12 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     setSpin(on) { spinning = on },
     setExplode(amount) { explode = amount; applyExplode() },
     highlight(category) { highlighted = category; applyHighlight() },
+    setView(position, target) {
+      camera.position.set(...position)
+      controls.target.set(...target)
+      controls.autoRotate = false
+      controls.update()
+    },
     resetView() { camera.position.copy(HOME.pos); controls.target.copy(HOME.target); controls.update() },
     setActive(on) {
       active = on

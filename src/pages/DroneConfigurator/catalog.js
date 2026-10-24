@@ -23,6 +23,7 @@ export const FIXED = {
 export const MOTORS = [
   {
     id: '2207-1750',
+    bellColor: 0xb3122a,
     name: '2207 · 1750KV',
     stator: [22, 7],
     kv: 1750,
@@ -36,6 +37,7 @@ export const MOTORS = [
   },
   {
     id: '2306-2450',
+    bellColor: 0x7b3fc4,
     name: '2306 · 2450KV',
     stator: [23, 6],
     kv: 2450,
@@ -49,6 +51,7 @@ export const MOTORS = [
   },
   {
     id: '2207-2750',
+    bellColor: 0x8e98a6,
     name: '2207 · 2750KV',
     stator: [22, 7],
     kv: 2750,
