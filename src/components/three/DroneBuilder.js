@@ -159,6 +159,52 @@ function slabOf(shape, h, bevel = 0.35) {
 }
 const slabGeometry = (w, d, radius, h, bevel) => slabOf(rounded(d, w, radius), h, bevel)
 
+
+// ---- the wiring: three wires from each motor run along its arm, over the plate edge and onto the speed controller's pads ----
+function addWiring(parent, { P, shaped, mat }) {
+  const mats = []
+  const pad = mat(0xe6e2d8, { rough: 0.3, metal: 0.9 })
+  const tie = mat(0x0c0d0e, { rough: 0.6 })
+  for (const m of MOTORS) {
+    const wire = mat(0x15171a, { rough: 0.5 })
+    mats.push(wire)
+    const sx = Math.sign(m.at[0])
+    const sy = Math.sign(m.at[1])
+    const from = [sx * 40, sy * 14]
+    const dx = m.at[0] - from[0]
+    const dy = m.at[1] - from[1]
+    const len = Math.hypot(dx, dy)
+    const d = [dx / len, dy / len]
+    const n = [-d[1], d[0]]
+    const along = (a, off) => [m.at[0] - d[0] * a + n[0] * off, m.at[1] - d[1] * a + n[1] * off]
+    const aEdge = len - 8 / Math.abs(d[1]) // the arm leaves the edge of the plate here, measured from the motor
+    for (let k = 0; k < 3; k++) {
+      const off = (k - 1) * 1.6
+      const padR = sy * (5.5 + 4 * k)
+      const padF = sx * 16.2
+      const p3 = along(aEdge - 3.2, off)
+      const pts = [
+        along(10.4, off), along(13, off), along(aEdge * 0.55, off), p3,
+        [p3[0] - sx * 1.2, sy * (23.4 + k * 0.1)],
+      ]
+      const heights = [14.4, 12.9, 12.9, 12.9, 17.6]
+      const path = pts.map((p, i) => P(p[0], p[1], heights[i]))
+      path.push(P(sx * 30, sy * (15 + k * 1.4), 17.1), P(sx * 21.5, padR, 17.5), P(sx * 19.6, padR, 21.9), P(padF, padR, 21.5))
+      const curve = new THREE.CatmullRomCurve3(path, false, 'centripetal')
+      parent.add(shaped(new THREE.TubeGeometry(curve, 60, 0.62, 6), wire, new THREE.Vector3(0, 0, 0)))
+      parent.add(shaped(new THREE.CylinderGeometry(1.5, 1.5, 0.35, 16), pad, P(padF, padR, 21.18)))
+      parent.add(shaped(new THREE.SphereGeometry(0.95, 10, 8), pad, P(padF, padR, 21.55)))
+    }
+    for (const a of [aEdge * 0.3, aEdge * 0.75]) { // zip ties keep the three wires together
+      const t = along(a, 0)
+      const band = shaped(new THREE.BoxGeometry(1, 3.2, 6.4), tie, P(t[0], t[1], 12.9))
+      band.rotation.y = Math.atan2(d[0], d[1])
+      parent.add(band)
+    }
+  }
+  return mats
+}
+
 export function createDroneBuilder(canvas, { onPick } = {}) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
@@ -235,6 +281,9 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
   let blades = []
   let discs = []
   let explode = 0
+  let wireGroup = null
+  let wireMats = []
+  let reveal = false
   let spinning = false
   let highlighted = null
   const byCategory = {}
@@ -294,9 +343,10 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     const lathe = (points, material, position, seg = 40) => shaped(new THREE.LatheGeometry(points.map(([x, y]) => new THREE.Vector2(x, y)), seg), material, position)
     const roundBox = (f, r, u, size, radius, material) => shaped(slabGeometry(size[0], size[1], radius, size[2], Math.min(0.8, radius * 0.4)), material, v(f, r, u - size[2] / 2))
     // a group that moves in the exploded view
-    const part = (cat, explodeVec) => {
+    const part = (cat, explodeVec, cover = false) => {
       category = cat
       const g = new THREE.Group()
+      g.userData.cover = cover
       g.userData.category = cat === 'color' ? 'frame' : cat
       exploders.push({ g, vec: explodeVec })
       drone.add(g)
@@ -363,9 +413,6 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       const slab = new THREE.Mesh(slabOf(shape, 4, 0.3), carbon())
       slab.castShadow = slab.receiveShadow = true
       armGroup.add(slab)
-      const stripe = new THREE.Mesh(new THREE.BoxGeometry(len * 0.5, 0.5, 2), tpu(0.5))
-      stripe.position.set(len * 0.5, 4.2, 0)
-      armGroup.add(stripe)
       arm.add(armGroup)
 
       // ---- the motor: base with screw ears, exposed stator and coils, anodised bell, shaft ----
@@ -422,15 +469,6 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       band.position.copy(at0(bellBottom + 6))
       mg.add(band)
       mg.add(lathe([[0, 0], [2.6, 0], [2.6, 6.6], [0, 6.6]], aluminium(0xb9bec6), at0(top), 12))
-      // three motor wires run along the arm and tuck under the plate
-      const n = [-dir[1], dir[0]]
-      const wireMat = mat(0x202226, { rough: 0.55 })
-      for (const k of [-1, 0, 1]) {
-        const o = [n[0] * k * 1.5, n[1] * k * 1.5]
-        const at2 = (along, u) => v(m.at[0] - dir[0] * along + o[0], m.at[1] - dir[1] * along + o[1], u)
-        const curve = new THREE.CatmullRomCurve3([at2(10.2, 14.4), at2(12.6, 12.7), at2(len * 0.5, 12.5), at2(len - 4, 12.4)])
-        mg.add(shaped(new THREE.TubeGeometry(curve, 20, 0.65, 6), wireMat, new THREE.Vector3(0, 0, 0)))
-      }
 
       const pg = part('prop', v(dir[0] * 16, dir[1] * 16, 56))
       pg.add(tube(m.at[0], m.at[1], top + 1.6, top + 2.2, 5.4, aluminium(0xcdd1d8), 24)) // washer
@@ -464,8 +502,8 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     })
 
     // the stack: speed controller, flight controller, video transmitter
-    const board = (u, color, lift, extra) => {
-      const g = part('frame', v(0, 0, lift))
+    const board = (u, color, lift, extra, cover = false) => {
+      const g = part('frame', v(0, 0, lift), cover)
       const shape = rounded(36, 36, 2.5)
       for (const a of [15.25, -15.25]) for (const b of [15.25, -15.25]) hole(shape, b, a, 1.6)
       g.add(shaped(slabOf(shape, 1.6, 0.2), mat(color, { rough: 0.45, metal: 0.15, clear: 0.3 }), v(0, 0, u - 1.6)))
@@ -483,12 +521,16 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
         g.add(tube(f, r, 28.5, 29.1, 3.1, aluminium(), 16))
       }
     })
-    board(29, 0x1c5a3c, 26, (g) => g.add(box(-4, 0, 30.6, [9, 9, 1.8], mat(0x0f1012, { rough: 0.5 }))))
-    board(37, 0x4d2461, 38, (g) => g.add(roundBox(0, 0, 40.4, [14, 18, 3.4], 1.5, aluminium(0xa8aeb8))))
+    category = 'frame'
+    wireGroup = new THREE.Group()
+    drone.add(wireGroup)
+    wireMats = addWiring(wireGroup, { P: v, shaped, mat })
+    board(29, 0x1c5a3c, 26, (g) => g.add(box(-4, 0, 30.6, [9, 9, 1.8], mat(0x0f1012, { rough: 0.5 }))), true)
+    board(37, 0x4d2461, 38, (g) => g.add(roundBox(0, 0, 40.4, [14, 18, 3.4], 1.5, aluminium(0xa8aeb8))), true)
 
     // top plate with its screws
     {
-      const g = part('frame', v(0, 0, 54))
+      const g = part('frame', v(0, 0, 54), true)
       const shape = rounded(44, 108, 10)
       for (const a of [15.25, -15.25]) for (const b of [15.25, -15.25]) hole(shape, b, a, 1.7)
       for (const s of [-1, 1]) { slot(shape, s * 14, -34, 14, 5); slot(shape, s * 14, 34, 14, 5) }
@@ -545,7 +587,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     // battery: sticker on top, rubber straps
     {
       const [bl, bw, bh] = battery.size
-      const g = part('battery', v(0, 0, 70))
+      const g = part('battery', v(0, 0, 70), true)
       const baseU = 46.4
       g.add(roundBox(0, 0, baseU + bh / 2, [bl, bw, bh], 3, mat(0x16181c, { rough: 0.7, cat: 'battery' })))
       const label = stickerTexture(`${battery.cells}S ${battery.mah}`)
@@ -573,10 +615,18 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     drone.traverse((o) => { if (o.isMesh) o.userData.root = o })
     applyExplode()
     applyHighlight()
+    applyReveal()
   }
 
   function applyExplode() {
+    if (wireGroup) wireGroup.visible = explode < 0.05 // the wires only make sense on an assembled drone
     for (const { g, vec } of exploders) g.position.copy(vec).multiplyScalar(explode)
+  }
+  // "show wiring": lift off the battery, top plate and upper boards, and colour each motor's wires
+  const WIRE_COLORS = [0xf5a524, 0x3e8ef7, 0xe5484d, 0x30a46c] // front right, front left, rear right, rear left
+  function applyReveal() {
+    for (const { g } of exploders) if (g.userData.cover) g.visible = !reveal
+    wireMats.forEach((m, i) => m.color.setHex(reveal ? WIRE_COLORS[i] : 0x15171a))
   }
   function applyHighlight() {
     for (const list of Object.values(byCategory)) {
@@ -639,6 +689,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       build(next)
     },
     setSpin(on) { spinning = on },
+    setReveal(on) { reveal = on; applyReveal() },
     setExplode(amount) { explode = amount; applyExplode() },
     highlight(category) { highlighted = category; applyHighlight() },
     setView(position, target) {

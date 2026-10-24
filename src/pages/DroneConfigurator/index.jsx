@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { ArrowRight, Check, CircleAlert, Fan, Info, Layers, Link2, OctagonAlert, RotateCcw } from 'lucide-react'
+import { ArrowRight, Cable, Check, CircleAlert, Fan, Info, Layers, Link2, OctagonAlert, RotateCcw } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import { estimate } from './calc'
 import { CATEGORIES, DEFAULT_BUILD, FRAME, resolveBuild } from './catalog'
@@ -50,6 +50,14 @@ const WEIGHT_ROWS = [
   ['extras', 'Receiver, antennas, wires, screws'],
 ]
 
+// The wire colours in the 3D view, with the usual motor numbers and spin directions for a quad with props in
+const MOTOR_KEY = [
+  { name: 'Motor 2: front right, clockwise', color: 'var(--wire-front-right)' },
+  { name: 'Motor 4: front left, anticlockwise', color: 'var(--wire-front-left)' },
+  { name: 'Motor 1: rear right, anticlockwise', color: 'var(--wire-rear-right)' },
+  { name: 'Motor 3: rear left, clockwise', color: 'var(--wire-rear-left)' },
+]
+
 const LEVEL_ICON = { error: OctagonAlert, warn: CircleAlert, info: Info }
 
 export default function DroneConfigurator() {
@@ -57,6 +65,7 @@ export default function DroneConfigurator() {
   const [build, setBuild] = useState(() => initialBuild(params))
   const [category, setCategory] = useState('motor')
   const [spin, setSpin] = useState(false)
+  const [wiring, setWiring] = useState(false)
   const [explode, setExplode] = useState(0)
   const [glow, setGlow] = useState(null)
   const [error, setError] = useState('')
@@ -111,6 +120,7 @@ export default function DroneConfigurator() {
 
   useEffect(() => { viewRef.current?.setBuild(parts) }, [parts])
   useEffect(() => { viewRef.current?.setSpin(spin) }, [spin])
+  useEffect(() => { viewRef.current?.setReveal(wiring) }, [wiring, parts])
   useEffect(() => { viewRef.current?.setExplode(explode) }, [explode])
   useEffect(() => { viewRef.current?.highlight(glow) }, [glow])
 
@@ -154,6 +164,10 @@ export default function DroneConfigurator() {
                   <Fan size={16} aria-hidden="true" />
                   Spin props
                 </button>
+                <button type="button" className={styles.tool} aria-pressed={wiring} onClick={() => setWiring((w) => !w)}>
+                  <Cable size={16} aria-hidden="true" />
+                  Show wiring
+                </button>
                 <label className={styles.explode}>
                   <Layers size={16} aria-hidden="true" />
                   Exploded view
@@ -165,6 +179,22 @@ export default function DroneConfigurator() {
                 </button>
               </div>
             </div>
+            {wiring && (
+              <div className={styles.wiring}>
+                <p>
+                  Each motor has three wires. They run from the motor, along the arm, over the edge of the plate and are soldered to that motor's three
+                  pads on the speed controller (ESC). Swap any two of a motor's wires and it spins the other way.
+                </p>
+                <ul className={styles.motorKey}>
+                  {MOTOR_KEY.map((k) => (
+                    <li key={k.name}>
+                      <span className={styles.chip} style={{ background: k.color }} />
+                      {k.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <p className={styles.legend}>
               Drag to look around, scroll to zoom. Orange props spin clockwise and blue props spin anticlockwise, so their twisting forces cancel.
             </p>
