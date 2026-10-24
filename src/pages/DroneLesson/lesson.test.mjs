@@ -19,8 +19,12 @@ for (const [name, html] of Object.entries(pages)) {
     assert.deepEqual(chips(html), STEPS)
   })
   test(`${name}: radio, four motor dials, narration and step buttons are present`, () => {
-    assert.match(html, /data-knob="L"/)
-    assert.match(html, /data-knob="R"/)
+    if (name.startsWith('3d')) {
+      assert.match(html, /class="radio3d"/)
+    } else {
+      assert.match(html, /data-knob="L"/)
+      assert.match(html, /data-knob="R"/)
+    }
     assert.equal((html.match(/data-cell="\d"/g) || []).length, 4)
     assert.match(html, /data-say-title/)
     assert.match(html, /data-act="play"/)
@@ -46,6 +50,15 @@ test('the 2D page keeps the flight numbers the 3D page is built from', () => {
     assert.match(html, /LIFT_MAX = 60/)
     assert.match(html, /TILT = 12/)
     assert.match(html, /KP = 0.1, KR = 0.1, KY = 0.08/)
+  }
+})
+
+test('the 3D pages have a 3D radio and markers for each part', () => {
+  for (const name of ['3d dark', '3d light']) {
+    assert.match(pages[name], /data-pins/)
+    assert.match(pages[name], /class="radio-caps"/)
+    assert.equal((pages[name].match(/<canvas/g) || []).length, 2) // the drone and the radio
+    assert.match(pages[name], /Math.PI*.5|MAX_TILT|.5*Math.PI|.5/) 
   }
 })
 
