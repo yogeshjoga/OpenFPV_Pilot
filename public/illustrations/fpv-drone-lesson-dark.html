@@ -1208,6 +1208,7 @@ function words() {
     chips.forEach((chip, i) => { if (i === chapter - 1) chip.setAttribute("aria-current", "step"); else chip.removeAttribute("aria-current"); chip.dataset.done = i < chapter ? "true" : "false"; });
     side.dataset.phase = chapter > N_BUILD ? "fly" : "build";
     shownChapter = chapter;
+    if (parent !== window) parent.postMessage({ droneLesson: chapter }, location.origin);
   }
 }
 
@@ -1315,6 +1316,17 @@ stage.addEventListener("keydown", (event) => {
 stage.addEventListener("keyup", (event) => { keys.delete(event.key.length === 1 ? event.key.toLowerCase() : event.key); });
 stage.addEventListener("blur", () => keys.clear());
 if (still.matches) { for (const id in PARTS) { p[id] = 1; target[id] = 1; } chapter = N_BUILD; }
+
+// ---- resume where the other view stopped (the page passes #s=step), and tell the page which step this is ----
+function jumpTo(n) {
+  playing = false;
+  setChapter(n, false);
+  for (const item of pending) { target[item.id] = item.value; p[item.id] = item.value; }
+  pending = [];
+}
+const resume = /[#&]s=([0-9]+)/.exec(location.hash);
+if (resume) jumpTo(Math.min(N, Number(resume[1])));
+
 setPlayButton();
 paintAssembly();
 showSay(chapter);

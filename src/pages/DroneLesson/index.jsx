@@ -1,13 +1,29 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Maximize2, Minimize2 } from 'lucide-react'
+import { ArrowRight, Box, Maximize2, Minimize2, PencilRuler } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import useUIStore from '@store/useUIStore'
 import styles from './DroneLesson.module.css'
 
+// The same lesson twice: a 2D drawing and a 3D model. Each is a self-contained page, so either one can be shown in the frame.
 const SRC = {
-  dark: '/illustrations/fpv-drone-lesson-dark.html',
-  light: '/illustrations/fpv-drone-lesson-light.html',
+  '2d': {
+    dark: '/illustrations/fpv-drone-lesson-dark.html',
+    light: '/illustrations/fpv-drone-lesson-light.html',
+  },
+  '3d': {
+    dark: '/illustrations/fpv-drone-lesson-3d-dark.html',
+    light: '/illustrations/fpv-drone-lesson-3d-light.html',
+  },
+}
+const MODE_KEY = 'droneLessonMode'
+
+function savedMode() {
+  try {
+    return localStorage.getItem(MODE_KEY) === '3d' ? '3d' : '2d'
+  } catch {
+    return '2d'
+  }
 }
 
 // In full screen the lesson is drawn at a fixed layout size and scaled to fit, so the drawing, the text,
@@ -31,6 +47,9 @@ export default function DroneLesson() {
   const theme = useUIStore((s) => s.theme)
   const wrapRef = useRef(null)
   const frameRef = useRef(null)
+  const stepRef = useRef(0) // the step the lesson is on, so switching view keeps your place
+  const [mode, setMode] = useState(savedMode)
+  const [notice, setNotice] = useState('')
   const [height, setHeight] = useState(900)
   const [full, setFull] = useState(false)
   const [size, setSize] = useState(fullScreenSize)
@@ -59,7 +78,39 @@ export default function DroneLesson() {
       frame.removeEventListener('load', onLoad)
       observer?.disconnect()
     }
-  }, [theme, full])
+  }, [theme, mode, full])
+
+  // The lesson pages say which step they are on; a page that cannot start 3D says so and the 2D lesson is shown.
+  useEffect(() => {
+    const onMessage = (event) => {
+      if (event.origin !== window.location.origin || event.source !== frameRef.current?.contentWindow) return
+      const data = event.data || {}
+      if (typeof data.droneLesson === 'number') stepRef.current = data.droneLesson
+      if (data.droneLesson3dUnavailable) {
+        setMode('2d')
+        setNotice('Your browser could not start the 3D view, so the 2D lesson is shown.')
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
+
+  const chooseMode = (next) => {
+    if (next === mode) return
+    setNotice('')
+    setMode(next)
+    try {
+      localStorage.setItem(MODE_KEY, next)
+    } catch {
+      // the choice just is not remembered
+    }
+  }
+
+  // read the step only when the view or theme changes, so later renders do not reload the frame
+  const src = useMemo(
+    () => `${SRC[mode][theme === 'dark' ? 'dark' : 'light']}#s=${stepRef.current}`,
+    [mode, theme],
+  )
 
   const exitFull = useCallback(() => {
     setFull(false)
@@ -115,22 +166,45 @@ export default function DroneLesson() {
       <section className={styles.stage}>
         <div className="container">
           <div ref={wrapRef} className={full ? styles.wrapFull : styles.wrap}>
-            <button
-              type="button"
-              className={full ? styles.exitButton : styles.fullButton}
-              onClick={full ? exitFull : enterFull}
-              aria-label={full ? 'Exit full screen' : 'Full screen'}
-            >
-              {full ? <Minimize2 size={16} aria-hidden="true" /> : <Maximize2 size={16} aria-hidden="true" />}
-              {full ? 'Exit full screen' : 'Full screen'}
-            </button>
+            <div className={full ? styles.toolsFull : styles.tools}>
+              <div className={styles.modes} role="group" aria-label="View">
+                <button
+                  type="button"
+                  className={styles.modeButton}
+                  aria-pressed={mode === '2d'}
+                  onClick={() => chooseMode('2d')}
+                >
+                  <PencilRuler size={16} aria-hidden="true" />
+                  2D drawing
+                </button>
+                <button
+                  type="button"
+                  className={styles.modeButton}
+                  aria-pressed={mode === '3d'}
+                  onClick={() => chooseMode('3d')}
+                >
+                  <Box size={16} aria-hidden="true" />
+                  3D model
+                </button>
+              </div>
+              <button
+                type="button"
+                className={styles.toolButton}
+                onClick={full ? exitFull : enterFull}
+                aria-label={full ? 'Exit full screen' : 'Full screen'}
+              >
+                {full ? <Minimize2 size={16} aria-hidden="true" /> : <Maximize2 size={16} aria-hidden="true" />}
+                {full ? 'Exit full screen' : 'Full screen'}
+              </button>
+            </div>
+            {notice && <p className={styles.notice} role="status">{notice}</p>}
             <iframe
-              key={theme}
+              key={mode + theme}
               ref={frameRef}
               className={full ? styles.frameFull : styles.frame}
               style={frameStyle}
-              src={SRC[theme === 'dark' ? 'dark' : 'light']}
-              title="Animated FPV drone build and flight lesson"
+              src={src}
+              title={mode === '3d' ? 'Animated 3D FPV drone build and flight lesson' : 'Animated FPV drone build and flight lesson'}
               loading="lazy"
             />
           </div>
