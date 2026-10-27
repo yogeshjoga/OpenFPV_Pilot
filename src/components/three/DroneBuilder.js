@@ -276,6 +276,12 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
   const carbonMap = carbonTexture()
 
   // ---- the drone, rebuilt whenever the parts change ----
+  // the drone sits in a rig that turns about its centre, so it can pitch, roll and yaw like the real thing
+  const RIG_Y = 36
+  let rigScale = 1
+  const rig = new THREE.Group()
+  rig.position.y = RIG_Y
+  scene.add(rig)
   let drone = null
   let owned = [] // geometries, materials and textures to free on the next rebuild
   let parts = null
@@ -297,7 +303,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       if (o.geometry) o.geometry.dispose()
     })
     for (const m of owned) m.dispose()
-    scene.remove(drone)
+    rig.remove(drone)
     drone = null
     owned = []
   }
@@ -314,7 +320,8 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     blades = []
     discs = []
     drone = new THREE.Group()
-    scene.add(drone)
+    drone.position.y = -RIG_Y
+    rig.add(drone)
     const tpuHex = p.color.hex
     let category = 'frame'
     const track = (m, cat = category) => {
@@ -687,6 +694,18 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     setReveal(on) { reveal = on; applyReveal() },
     setExplode(amount) { explode = amount; applyExplode() },
     highlight(category) { highlighted = category; applyHighlight() },
+    // pitch (nose down is positive), roll (right side down is positive) and yaw in radians; height in millimetres
+    setPose({ pitch = 0, roll = 0, yaw = 0, height = 0 } = {}) {
+      rig.rotation.set(-pitch, -yaw, -roll, 'YXZ')
+      rig.position.y = RIG_Y * rigScale + height
+    },
+    // scale the whole drone about its centre, keeping its feet on the mat
+    setScale(k) {
+      rigScale = k
+      rig.scale.setScalar(k)
+      rig.position.y = RIG_Y * k
+    },
+    setAutoRotate(on) { controls.autoRotate = on },
     setView(position, target) {
       camera.position.set(...position)
       controls.target.set(...target)

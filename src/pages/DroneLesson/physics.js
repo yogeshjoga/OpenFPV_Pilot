@@ -88,11 +88,19 @@ export const gainsFromSliders = ({ p, i, d }) => ({ kp: p * GAIN_SCALE.p, ki: i 
 
 export const MIX = 0.1 // a full PID output moves the motors this far from the base speed
 export const MOTOR_LAG_S = 0.02
-const I_LIMIT = 0.35
+const I_LIMIT = 0.6
 const DAMPING = 0.002 // N m s per rad, from the air
 
+// the numbers the attitude loop needs about a drone; the lesson's 5 inch quad is the default
+export const LOOP_DRONE = { armM: DRONE.armM, inertia: DRONE.inertia, thrustMaxN: THRUST_MAX_N, lagS: MOTOR_LAG_S }
+// a drone of any mass: each motor gives thrustMaxN at full speed so that four motors at HOVER lift the weight
+export function loopDrone({ massKg, armM, inertia, lagS = MOTOR_LAG_S }) {
+  return { armM, inertia, thrustMaxN: (massKg * G) / 4 / (HOVER * HOVER), lagS }
+}
+
 export class AttitudeAxis {
-  constructor() {
+  constructor(drone = LOOP_DRONE) {
+    this.drone = drone
     this.reset()
   }
 
@@ -120,12 +128,13 @@ export class AttitudeAxis {
     if (raw === u || Math.sign(err) !== Math.sign(raw)) this.integral = clamp(this.integral + gains.ki * err * dt, -I_LIMIT, I_LIMIT)
     this.i = this.integral
     this.u = u
-    this.out += (u - this.out) * (1 - Math.exp(-dt / MOTOR_LAG_S))
+    this.out += (u - this.out) * (1 - Math.exp(-dt / this.drone.lagS))
     // a positive output tips the nose down: the front pair slows and the rear pair speeds up
     const front = clamp(base - MIX * this.out, 0, 1)
     const rear = clamp(base + MIX * this.out, 0, 1)
-    this.torque = DRONE.armM * 2 * (motorThrustN(rear) - motorThrustN(front))
-    const accel = (this.torque + disturbance) / DRONE.inertia - (DAMPING / DRONE.inertia) * this.rate
+    const { armM, inertia, thrustMaxN } = this.drone
+    this.torque = armM * 2 * thrustMaxN * (rear * rear - front * front)
+    const accel = (this.torque + disturbance) / inertia - (DAMPING / inertia) * this.rate
     this.rate += accel * dt
     this.angle += this.rate * dt
     return { angle: this.angle, rate: this.rate, u: this.u, p: this.p, i: this.i, d: this.d, torque: this.torque, out: this.out }

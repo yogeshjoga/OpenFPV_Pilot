@@ -21,7 +21,7 @@ export function niceMax(v) {
   return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * mag
 }
 
-export default function CurveChart({ curves, xMax, yMax, markers = [], dot = null, xLabel = '', label, className }) {
+export default function CurveChart({ curves, xMax, yMax, yMin = 0, markers = [], dot = null, cursor = null, xLabel = '', label, className }) {
   const ref = useRef(null)
   const theme = useUIStore((s) => s.theme)
 
@@ -54,14 +54,14 @@ export default function CurveChart({ curves, xMax, yMax, markers = [], dot = nul
       }
       const T = (12 + 16 * (rows + 1)) * dpr
       const X = (x) => L + (x / xMax) * (w - L - R)
-      const Y = (y) => T + (1 - y / yMax) * (h - T - B)
+      const Y = (y) => T + (1 - (y - yMin) / (yMax - yMin)) * (h - T - B)
 
       g.lineWidth = dpr
       g.strokeStyle = faint
       g.fillStyle = ink
       g.textAlign = 'right'
-      const ys = niceStep(yMax)
-      for (let v = 0; v <= yMax + 1e-9; v += ys) {
+      const ys = niceStep(yMax - yMin)
+      for (let v = Math.ceil(yMin / ys - 1e-9) * ys; v <= yMax + 1e-9; v += ys) {
         g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(w - R, Y(v)); g.stroke()
         g.fillText(fmt(v), L - 6 * dpr, Y(v) + 4 * dpr)
       }
@@ -91,12 +91,23 @@ export default function CurveChart({ curves, xMax, yMax, markers = [], dot = nul
         g.beginPath()
         c.xs.forEach((x, i) => {
           const px = X(x)
-          const py = Y(Math.min(c.ys[i], yMax * 1.02))
+          const py = Y(Math.max(yMin, Math.min(c.ys[i], yMax)))
           if (i === 0) g.moveTo(px, py); else g.lineTo(px, py)
         })
         g.stroke()
       }
       g.setLineDash([])
+      if (yMin < 0 && yMax > 0) {
+        g.strokeStyle = ink
+        g.globalAlpha = 0.45
+        g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(w - R, Y(0)); g.stroke()
+        g.globalAlpha = 1
+      }
+      if (cursor !== null) {
+        g.strokeStyle = strong
+        g.lineWidth = 1.5 * dpr
+        g.beginPath(); g.moveTo(X(cursor), T); g.lineTo(X(cursor), h - B); g.stroke()
+      }
       if (dot) {
         g.fillStyle = dot.color || strong
         g.beginPath(); g.arc(X(dot.x), Y(dot.y), 5.5 * dpr, 0, Math.PI * 2); g.fill()
@@ -114,7 +125,7 @@ export default function CurveChart({ curves, xMax, yMax, markers = [], dot = nul
     const observer = new ResizeObserver(draw)
     observer.observe(canvas)
     return () => observer.disconnect()
-  }, [curves, xMax, yMax, markers, dot, xLabel, theme])
+  }, [curves, xMax, yMax, yMin, markers, dot, cursor, xLabel, theme])
 
   return <canvas ref={ref} className={className} role="img" aria-label={label} />
 }
