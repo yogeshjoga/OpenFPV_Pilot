@@ -308,25 +308,80 @@
   box-shadow: var(--shadow-card);
 }
 
+.loopScroll {
+  overflow-x: auto;
+}
+
 .loopSvg {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.loopLine {
+@media (max-width: 720px) {
+  .loopSvg {
+    min-width: 720px;
+  }
+}
+
+.loopKey line {
+  stroke-width: 3;
+}
+
+.loopKey text {
+  font-family: var(--font-body);
+  fill: var(--color-text-secondary);
+}
+
+.keyForward {
+  stroke: var(--color-accent-primary);
+}
+
+.keyBack {
+  stroke: var(--color-accent-secondary);
+  stroke-dasharray: 7 5;
+}
+
+.arrowForward,
+.arrowBack {
   fill: none;
-  stroke: var(--color-text-muted);
-  stroke-width: 2;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-width 0.25s ease;
 }
 
-.loopArrow {
-  fill: var(--color-text-muted);
+.arrowForward {
+  stroke: var(--color-accent-primary);
 }
 
-.loopNote {
+.arrowBack {
+  stroke: var(--color-accent-secondary);
+  stroke-dasharray: 8 6;
+}
+
+.headForward {
+  fill: var(--color-accent-primary);
+}
+
+.headBack {
+  fill: var(--color-accent-secondary);
+}
+
+.arrowLabel {
   font-family: var(--font-mono);
-  fill: var(--color-text-muted);
+  fill: var(--color-text-secondary);
+}
+
+.loopArrowGroup[data-active='true'] .arrowForward,
+.loopArrowGroup[data-active='true'] .arrowBack {
+  stroke: var(--c);
+  stroke-width: 5;
+}
+
+.loopArrowGroup[data-active='true'] .arrowLabel {
+  font-weight: var(--font-semibold);
+  fill: var(--color-text-primary);
 }
 
 .loopNode {
@@ -335,10 +390,10 @@
 }
 
 .loopBox {
-  fill: var(--color-bg-secondary);
-  stroke: var(--color-border);
-  stroke-width: 1.5;
-  transition: fill 0.25s ease, stroke 0.25s ease;
+  fill: var(--color-bg-card);
+  stroke: var(--color-border-hover);
+  stroke-width: 2;
+  transition: stroke 0.25s ease, stroke-width 0.25s ease;
 }
 
 .loopNode:hover .loopBox,
@@ -347,26 +402,35 @@
 }
 
 .loopNode[data-active='true'] .loopBox {
-  fill: var(--color-bg-card);
   stroke: var(--c);
-  stroke-width: 3;
+  stroke-width: 4;
+}
+
+.loopNode[data-active='true'] {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18));
+}
+
+.loopNum {
+  font-family: var(--font-mono);
+  font-weight: var(--font-semibold);
+  fill: #fff;
 }
 
 .loopLabel {
   font-family: var(--font-body);
   font-weight: var(--font-semibold);
-  text-anchor: middle;
   fill: var(--color-text-primary);
 }
 
 .loopSub {
-  font-family: var(--font-mono);
-  text-anchor: middle;
-  fill: var(--color-text-muted);
+  font-family: var(--font-body);
+  fill: var(--color-text-secondary);
 }
 
 .loopDot {
   fill: var(--color-accent-secondary);
+  stroke: var(--color-bg-card);
+  stroke-width: 2;
 }
 
 .loopCaption {
