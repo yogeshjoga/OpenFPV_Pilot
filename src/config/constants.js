@@ -21,8 +21,6 @@ export const NAV_LINKS = [
       { label: 'PID Tuning', path: '/pid-tuning' },
       { label: 'Wiring Builder', path: '/wiring-builder' },
       { label: 'Wiring Lessons', path: '/simulator' },
-      { label: '3D Assembly', path: '/assembly-3d' },
-      { label: 'Presentations', path: '/presentation' },
     ],
     minLevel: 1 
   }] : []),
