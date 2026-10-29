@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, Brain, Flag, Gauge, GraduationCap, Maximize2, Minimize2, Repeat, SlidersHorizontal } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Brain, Flag, Gauge, GraduationCap, Maximize2, Minimize2, Repeat, SlidersHorizontal, X } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import Modes from './sections/Modes.jsx'
@@ -33,6 +33,7 @@ export default function FpvPiloting() {
   const [native, setNative] = useState(false) // the browser's own full screen
   const [pseudo, setPseudo] = useState(false) // a full screen made of the page itself, where the browser has none (iPhone, some embedded views)
   const full = native || pseudo
+  const [hint, setHint] = useState(true) // the full screen notice: shown each time a part is opened, until it is dismissed or full screen is on
 
   // full screen follows the browser: Esc leaves it, and so does the button
   useEffect(() => {
@@ -78,6 +79,8 @@ export default function FpvPiloting() {
     rootRef.current?.scrollTo({ top: 0 }) // in full screen the page is what scrolls
   }, [])
 
+  useEffect(() => { setHint(true) }, [part])
+
   const index = PARTS.findIndex((p) => p.id === part)
   const current = PARTS[index]
   const before = PARTS[index - 1]
@@ -85,7 +88,7 @@ export default function FpvPiloting() {
 
   return (
     <PageWrapper>
-      <div ref={rootRef} className={styles.page} data-full={full} data-pseudo={pseudo}>
+      <div ref={rootRef} className={styles.page} data-full={full} data-pseudo={pseudo} data-hint={Boolean(part !== 'start' && !full && hint)}>
       <nav className={styles.subnav} aria-label="Parts of the course">
         <div className={`container ${styles.subnavInner}`}>
           <a href={window.location.pathname} className={styles.subnavLink} aria-current={part === 'start' ? 'page' : undefined} onClick={(e) => { e.preventDefault(); go('start') }}>Overview</a>
@@ -100,6 +103,15 @@ export default function FpvPiloting() {
           </button>
         </div>
       </nav>
+
+      {current && !full && hint && (
+        <div className={styles.fullHint} role="status">
+          <Maximize2 size={20} aria-hidden="true" />
+          <p><b>Use full screen mode for this page.</b> The 3D drone, the sticks and the charts are made to fill the whole screen, so you can see everything at once.</p>
+          <button type="button" className={styles.fullHintGo} onClick={toggleFull}>Go full screen</button>
+          <button type="button" className={styles.fullHintClose} onClick={() => setHint(false)} aria-label="Dismiss this notice"><X size={16} aria-hidden="true" /></button>
+        </div>
+      )}
 
       {!current && (
         <section className={styles.hero}>
