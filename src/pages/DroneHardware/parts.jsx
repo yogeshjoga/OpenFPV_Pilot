@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Pause, Play } from 'lucide-react'
 import { useFrame } from '../FpvPiloting/shared.jsx'
@@ -33,6 +33,13 @@ export function useClock(startPlaying = true) {
   const [t, setT] = useState(0)
   useFrame((dt) => setT((v) => v + dt), playing)
   return { t, playing, toggle: () => setPlaying((p) => !p) }
+}
+
+// a ref that always holds the latest value, for a 3D scene that reads it every frame
+export function useLive(value) {
+  const ref = useRef(value)
+  useLayoutEffect(() => { ref.current = value })
+  return ref
 }
 
 export function PlayButton({ clock }) {

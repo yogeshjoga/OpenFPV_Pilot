@@ -6,7 +6,8 @@ import styles from './DroneStage.module.css'
 // and optionally `phase`) and this component applies it every frame, so nothing re-renders sixty times a second.
 // With a `track` ({ segments, fit } from sceneTrack) the flight path is drawn in the scene, the camera is fitted to it,
 // and the part of the path the drone is on (`phase`) is drawn solid.
-export default function DroneStage({ poseRef, label, children, className = '', view = [430, 150, -40], target = [0, 60, 0], scale = 1, track = null }) {
+// Optional: `spinRate` (radians a second, default 40), `highlight` (a part to glow: 'motor', 'prop', ...) and `explode` (0 to 1, lifts the parts apart).
+export default function DroneStage({ poseRef, label, children, className = '', view = [430, 150, -40], target = [0, 60, 0], scale = 1, track = null, spinRate = 40, highlight = null, explode = 0 }) {
   const canvasRef = useRef(null)
   const stageRef = useRef(null)
   const builderRef = useRef(null)
@@ -23,6 +24,14 @@ export default function DroneStage({ poseRef, label, children, className = '', v
     builder.fitView(next.fit)
   }
   trackRef.current = track
+  const lookRef = useRef({})
+  lookRef.current = { spinRate, highlight, explode }
+  const applyLook = (builder) => {
+    const look = lookRef.current
+    builder.setSpinRate(look.spinRate)
+    builder.highlight(look.highlight)
+    builder.setExplode(look.explode)
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -39,6 +48,7 @@ export default function DroneStage({ poseRef, label, children, className = '', v
         builder.setBuild(resolveBuild(DEFAULT_BUILD))
         builder.setSpin(true)
         builder.setAutoRotate(false)
+        applyLook(builder)
         builder.setScale(scale)
         builder.setView(view, target)
         applyTrack(builder, trackRef.current)
@@ -73,6 +83,7 @@ export default function DroneStage({ poseRef, label, children, className = '', v
   // a new move means a new path, seen from the whole path first
   useEffect(() => { setFollow(false); applyTrack(builderRef.current, track) }, [track])
   useEffect(() => { builderRef.current?.setFollow(follow) }, [follow])
+  useEffect(() => { if (builderRef.current) applyLook(builderRef.current) }, [spinRate, highlight, explode])
 
   return (
     <div ref={stageRef} className={`${styles.stage} ${className}`}>

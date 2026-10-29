@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { bestOrder, constellation, pathLossDb, rangeKm, receiveChirp, receivedDbm, symbolErrors, wavelengthM } from '../hardware.js'
-import { Chapter, Choices, Lab, Plot, Readout, Slider, polyline, scale, useClock } from '../parts.jsx'
+import { Chapter, Choices, Lab, Plot, Readout, Slider, polyline, scale, useClock, useLive } from '../parts.jsx'
+import Scene3D from '../widgets/Scene3D.jsx'
+import { createBoard, createWave } from '../widgets/scenes.js'
 import styles from '../DroneHardware.module.css'
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -9,11 +11,11 @@ import styles from '../DroneHardware.module.css'
 
 // Typical loss through each wall at 2.4 GHz, in dB. Rough figures: real walls vary a lot with what is inside them and how wet they are.
 const WALLS = [
-  { id: 'glass', label: 'Window glass', radio: 2, light: 0.5 },
-  { id: 'drywall', label: 'Plasterboard', radio: 3, light: 100 },
-  { id: 'brick', label: 'Brick', radio: 8, light: 100 },
-  { id: 'concrete', label: 'Concrete', radio: 13, light: 100 },
-  { id: 'metal', label: 'Metal sheet', radio: 100, light: 100 },
+  { id: 'glass', label: 'Window glass', radio: 2, light: 0.5, color: 0x9fd6e8 },
+  { id: 'drywall', label: 'Plasterboard', radio: 3, light: 100, color: 0xe8e2d6 },
+  { id: 'brick', label: 'Brick', radio: 8, light: 100, color: 0xb5523b },
+  { id: 'concrete', label: 'Concrete', radio: 13, light: 100, color: 0x8d9096 },
+  { id: 'metal', label: 'Metal sheet', radio: 100, light: 100, color: 0xc7ccd4 },
 ]
 const BANDS = [
   { id: 900, label: '900 MHz', mhz: 900 },
@@ -31,29 +33,17 @@ function WaveLab() {
   const loss = kind === 'radio' ? Math.min(100, wall.radio * Math.sqrt(mhz / 2400)) : wall.light
   const through = loss >= 60 ? 0 : 10 ** (-loss / 20)
   const powerLeft = loss >= 60 ? 0 : 10 ** (-loss / 10)
-  const lambda = kind === 'radio' ? 96 * (2400 / mhz) : 12
-  const wave = (x0, x1, amp) => {
-    const out = []
-    for (let x = x0; x <= x1; x += 2) out.push([x, 130 - amp * 62 * Math.sin((2 * Math.PI * (x - 100 * clock.t)) / lambda)])
-    return out
-  }
+  const lambda = kind === 'radio' ? 90 * (2400 / mhz) : 9
+  const stateRef = useLive({ kind, through, lambda, wallColor: wall.color, paused: !clock.playing })
   return (
     <Lab
-      title="Why 2.4 GHz goes through walls and light does not"
+      title="Radio through walls, light stopped by them"
       clock={clock}
       idea={<>Radio and light are the same kind of wave. The difference is size. A 2.4 GHz wave is about <b>{(wavelengthM(2.4e9) * 100).toFixed(1)} cm</b> long. Visible light is about 500 nanometres, roughly <b>250,000 times shorter</b>. A wall is made of atoms that happen to soak up and block light, but they barely interact with the long radio wave, so most of it carries on. Not all of it: every wall costs some strength. And a sheet of <b>metal</b> reflects radio waves, which is why a metal case kills your signal.</>}
       figure={(
-        <svg viewBox="0 0 600 260" className={styles.svg} role="img" aria-label={`A ${kind === 'radio' ? 'radio' : 'light'} wave meeting a wall of ${wall.label} and what comes out the other side`}>
-          <line x1="20" x2="580" y1="130" y2="130" className={styles.grid} />
-          <polyline points={polyline(wave(20, 290, 1))} className={kind === 'radio' ? styles.accentLine : styles.warnLine} />
-          <rect x="290" y="40" width="32" height="180" className={styles.wallFill} />
-          <text x="306" y="34" textAnchor="middle" fontSize="12" className={styles.labelStrong}>{wall.label}</text>
-          {through > 0.01 && <polyline points={polyline(wave(322, 580, through))} className={kind === 'radio' ? styles.accentLine : styles.warnLine} />}
-          {through <= 0.01 && <text x="450" y="136" textAnchor="middle" fontSize="14" className={styles.label}>{kind === 'radio' ? 'reflected, nothing gets through' : 'blocked'}</text>}
-          <text x="20" y="250" fontSize="11" className={styles.label}>{kind === 'radio' ? `wavelength ${(wavelengthM(mhz * 1e6) * 100).toFixed(1)} cm` : 'wavelength about 0.0005 mm (drawn much longer so you can see it)'}</text>
-        </svg>
+        <Scene3D create={createWave} stateRef={stateRef} view={[90, 100, 270]} target={[0, 14, 0]} floorY={-26} minDistance={120} maxDistance={600} label={`A ${kind === 'radio' ? 'radio' : 'light'} wave meeting a wall of ${wall.label}, and what comes out the other side`} />
       )}
-      caption="The wave comes in from the left. The height of the wave on the right is how much is left after the wall."
+      caption={kind === 'radio' ? `The wave comes in from the left and meets the wall. How tall it is on the right is how much is left. A real ${(wavelengthM(mhz * 1e6) * 100).toFixed(1)} cm wave is drawn at its true size.` : 'Light is drawn about 250,000 times longer than real so you can see it. A solid wall absorbs or reflects all of it.'}
       controls={(
         <>
           <Choices label="Wave" value={kind} onChange={setKind} options={[{ id: 'radio', label: 'Radio' }, { id: 'light', label: 'Visible light' }]} />
@@ -100,7 +90,7 @@ function RangeLab() {
   const ok = here >= sens
   return (
     <Lab
-      title="Kilometres away, a forest in the way, still connected"
+      title="How far a radio link reaches"
       clock={clock}
       idea={<>A radio signal spreads out as it travels, so it gets weaker as the distance grows: every time the distance <b>doubles</b>, you lose <b>6 dB</b>. The link works as long as what arrives is stronger than the radio's <b>sensitivity</b>, the faintest signal it can still decode. Each <b>6 dB</b> of extra sensitivity <b>doubles the range</b>. That is the whole trick behind long range radios: not more power, but ears that hear fainter signals.</>}
       figure={(
@@ -167,7 +157,7 @@ function ChirpLab() {
   const max = 1.15
   return (
     <Lab
-      title="How LoRa hears a signal below the noise"
+      title="Hearing a signal below the noise: chirps"
       clock={clock}
       idea={<>A LoRa radio sends its data as a <b>chirp</b>: a tone that sweeps up through the whole band, like a bird call. The data is where the chirp <b>starts</b>. The receiver multiplies what it hears by a chirp sweeping the opposite way. The wanted chirp collapses into one steady tone, and a Fourier transform (FFT) puts all its energy into <b>one bin</b>, while the noise stays spread across all of them. With 256 bins that boosts the signal by about <b>24 dB</b>, so it can be picked out even when the noise is louder than the signal.</>}
       figure={(
@@ -227,7 +217,7 @@ function ModulationLab() {
   const speed = ORDERS.find((o) => o.order === chosen).bits / 2
   return (
     <Lab
-      title="Why your Wi-Fi gets slow far from the router"
+      title="Why a weak link slows down"
       clock={clock}
       idea={<>A radio sends data by choosing between a set of signal shapes. Picture them as dots on a grid. More dots means more bits per symbol (faster), but the dots sit closer together, so a little noise can push one to look like its neighbour. When the signal is strong, the router uses a crowded grid and the link is fast. As you move away, noise starts to win, and it <b>falls back to a sparser grid</b>: slower, but every symbol is still read correctly.</>}
       figure={(
@@ -277,29 +267,16 @@ function ModulationLab() {
 function ReturnLab() {
   const clock = useClock()
   const [cut, setCut] = useState(false)
-  const out = -clock.t * 60
-  const back = clock.t * 60
+  const stateRef = useLive({ cut, paused: !clock.playing })
   return (
     <Lab
-      title="Current flows in circles"
+      title="Return current: it always has to come back"
       clock={clock}
       idea={<>Current cannot just go somewhere and stay there. It has to <b>come back</b>. On a circuit board a fast signal runs along a copper trace, and its return current flows in the ground layer right <b>underneath</b> the trace, taking the shortest path back. That keeps the loop tiny, so little energy escapes as noise. Cut the ground under the trace and the current must detour round the cut, the loop gets large, and the board becomes an antenna.</>}
       figure={(
-        <svg viewBox="0 0 600 250" className={styles.svg} role="img" aria-label="A signal trace seen from above, with the return current running beneath it, or detouring round a cut in the ground">
-          <rect x="40" y="30" width="520" height="190" rx="6" className={styles.softFill} />
-          <text x="48" y="22" fontSize="12" className={styles.label}>ground layer, seen from above</text>
-          {cut && <rect x="250" y="80" width="100" height="110" className={styles.wallFill} opacity="0.6" />}
-          {cut && <text x="300" y="184" textAnchor="middle" fontSize="11" className={styles.labelStrong}>cut in the ground</text>}
-          <line x1="80" x2="520" y1="110" y2="110" className={styles.accentLine} strokeWidth="5" strokeDasharray="12 9" strokeDashoffset={out} />
-          <text x="80" y="98" fontSize="12" className={styles.labelStrong}>signal trace</text>
-          {!cut && <line x1="520" x2="80" y1="124" y2="124" className={styles.warnLine} strokeWidth="4" strokeDasharray="12 9" strokeDashoffset={back} />}
-          {cut && <polyline points="520,124 360,124 360,202 240,202 240,124 80,124" className={styles.warnLine} strokeWidth="4" strokeDasharray="12 9" strokeDashoffset={back} />}
-          <circle cx="76" cy="110" r="7" className={styles.mutedFill} />
-          <circle cx="524" cy="110" r="7" className={styles.mutedFill} />
-          <text x="520" y="240" textAnchor="end" fontSize="12" className={styles.label}>orange: the way back</text>
-        </svg>
+        <Scene3D create={createBoard} stateRef={stateRef} view={[45, 88, 170]} target={[0, 0, 6]} floorY={-14} minDistance={90} maxDistance={420} label="A circuit board with a signal trace on top and the return current flowing in the ground layer beneath, or detouring round a cut in it" />
       )}
-      caption="Blue is the signal going out. Orange is the same current coming back. Press the button to cut the ground under the trace."
+      caption="Blue is the signal going out along the trace. Orange is the same current coming back in the ground layer under the board. Press the button to cut the ground under the trace."
       controls={(
         <>
           <button type="button" className={styles.play} onClick={() => setCut((c) => !c)}>{cut ? 'Mend the ground' : 'Cut the ground under the trace'}</button>
@@ -338,7 +315,7 @@ export default function Radio() {
         </article>
         <article className={styles.card} style={{ '--c': 'var(--color-warning)' }}>
           <h4>An RF design rule worth measuring</h4>
-          <p>A common rule says never put a via, a hole that takes the signal from one layer to the next, in an RF trace, because it adds a small bump the signal can reflect from. OpenDrone's Short on this shows a receiver that breaks the rule, and their measurement found no difference. The lesson is not "ignore the rule". It is that at some frequencies and trace lengths the bump is too small to matter, and the only way to know is to measure.</p>
+          <p>A common rule says never put a via, a hole that takes the signal from one layer to the next, in an RF trace, because it adds a small bump the signal can reflect from. The lesson is not "ignore the rule" and not "the rule is always right". At some frequencies and trace lengths the bump is too small to matter, and the only way to know is to measure.</p>
           <small>Rules of thumb are shortcuts for measurements you have not made yet.</small>
         </article>
       </div>

@@ -1,20 +1,12 @@
-import { useId, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { MATERIALS, beamDeflection, offAxisModulus, stiffnessFromThickness, stressStrain, stripMass } from '../hardware.js'
-import { Chapter, Choices, Lab, Plot, Readout, Slider, polyline, scale, useClock } from '../parts.jsx'
+import { Chapter, Choices, Lab, Plot, Readout, Slider, polyline, scale, useClock, useLive } from '../parts.jsx'
+import Scene3D from '../widgets/Scene3D.jsx'
+import { createBeams, createPlate, createThread } from '../widgets/scenes.js'
 import styles from '../DroneHardware.module.css'
 
-// The outline of a strip fixed at the left and pushed down at the right. `tip` is how far the free end has dropped, in pixels.
-function stripPoints(x0, yCentre, length, thick, tip, steps = 28) {
-  const top = []
-  const bottom = []
-  for (let i = 0; i <= steps; i += 1) {
-    const u = i / steps
-    const drop = (tip * (3 * u * u - u * u * u)) / 2
-    top.push([x0 + u * length, yCentre + drop - thick / 2])
-    bottom.push([x0 + u * length, yCentre + drop + thick / 2])
-  }
-  return [...top, ...bottom.reverse()]
-}
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
+const EXAGGERATE = 5 // the bending is drawn five times larger than it is, so it can be seen
 
 // How far a strip has bent, from 0 to 1, over a loop: push on, it springs down and wobbles, push off, it springs back and settles.
 function bendOverTime(seconds, wobble) {
@@ -24,8 +16,9 @@ function bendOverTime(seconds, wobble) {
   if (tau < 2.5) return 1 - Math.exp(-5 * (tau - 0.4)) * Math.cos(wobble * (tau - 0.4))
   return Math.exp(-5 * (tau - 2.5)) * Math.cos(wobble * (tau - 2.5))
 }
+const pushed = (seconds) => { const tau = seconds % 4.2; return tau >= 0.4 && tau < 2.5 }
 
-const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
+const BEAM_VIEW = { view: [92, 62, 190], target: [50, -4, 0], floorY: -66, minDistance: 90, maxDistance: 420 }
 
 function ThicknessLab() {
   const clock = useClock()
@@ -33,34 +26,21 @@ function ThicknessLab() {
   const [material, setMaterial] = useState('carbon')
   const m = MATERIALS[material]
   const deflection = beamDeflection({ E: m.E, t: mm })
-  const tip = clamp(deflection * 16, 0, 120) * bendOverTime(clock.t, 2 * Math.PI * 1.2 * (mm / 2) ** 1.5)
-  const thick = mm * 7
-  const yTip = 140 + tip
+  const bend = bendOverTime(clock.t, 2 * Math.PI * 1.2 * (mm / 2) ** 1.5)
+  const stateRef = useLive({ beams: [{ name: `${material === 'carbon' ? 'Carbon' : 'Aluminium'}, ${mm.toFixed(1)} mm`, material, thick: mm, tip: clamp(deflection * EXAGGERATE, 0, 40) * bend, load: pushed(clock.t) ? 1 : 0, broken: 0 }] })
   return (
     <Lab
-      title="Double the thickness, eight times stiffer"
+      title="Thickness: why a plate gets stiff so fast"
       clock={clock}
       idea={<>A flat plate resists bending much more than you would guess. Its stiffness grows with the <b>cube</b> of its thickness: twice as thick is 2 × 2 × 2 = <b>8 times</b> stiffer, but only 2 times heavier. That is why a frame arm is a thick plate, not a thin one.</>}
-      figure={(
-        <svg viewBox="0 0 600 280" className={styles.svg} role="img" aria-label={`A ${mm} millimetre strip pushed at its tip, bending and springing back`}>
-          <rect x="28" y="40" width="18" height="200" className={styles.softFill} />
-          <line x1="46" x2="480" y1="140" y2="140" className={styles.grid} />
-          <polygon points={polyline(stripPoints(46, 140, 420, thick, tip))} className={material === 'carbon' ? styles.mutedFill : styles.accentFill} opacity="0.9" />
-          <g transform={`translate(466 ${yTip - thick / 2 - 8})`}>
-            <line x1="0" x2="0" y1="-52" y2="-6" className={styles.badLine} />
-            <polygon points="-8,-8 8,-8 0,4" className={styles.badFill} />
-            <text x="12" y="-30" fontSize="13" className={styles.labelStrong}>10 N push</text>
-          </g>
-          <text x="60" y="262" fontSize="12" className={styles.label}>{m.name}, {mm.toFixed(1)} mm thick, 100 mm long</text>
-        </svg>
-      )}
-      caption="The strip is fixed to the wall at the left, like a frame arm fixed to the body. The dashed line is where it rests."
+      figure={<Scene3D create={createBeams} stateRef={stateRef} label={`A ${mm} millimetre strip fixed to a wall and pushed at its tip`} {...BEAM_VIEW} />}
+      caption="The strip is fixed to the wall like a frame arm to the body, and pushed by 10 N at the tip. The bend is drawn 5 times bigger than real."
       controls={(
         <>
           <Slider label="Thickness" value={mm} min={1.5} max={6} step={0.5} onChange={setMm} format={(v) => `${v.toFixed(1)} mm`} />
           <Choices label="Material" value={material} onChange={setMaterial} options={[{ id: 'carbon', label: 'Carbon plate' }, { id: 'aluminium', label: 'Aluminium' }]} />
           <Readout items={[
-            { label: 'Tip moves', value: `${deflection.toFixed(2)} mm` },
+            { label: 'Tip moves (real)', value: `${deflection.toFixed(2)} mm` },
             { label: 'Stiffness vs 2 mm', value: `${stiffnessFromThickness(mm / 2).toFixed(2)}×`, tone: 'good' },
             { label: 'Weight vs 2 mm', value: `${(mm / 2).toFixed(2)}×`, tone: 'warn' },
           ]} />
@@ -84,29 +64,33 @@ function MaterialLab() {
   const dCf = beamDeflection({ E: cf.E, t: mm })
   const mAl = stripMass({ rho: al.rho, t: mm })
   const mCf = stripMass({ rho: cf.rho, t: mm })
-  const wobble = 2 * Math.PI * 1.2 * (mm / 2) ** 1.5
-  const s = bendOverTime(clock.t, wobble)
-  const row = (y, name, d, mass, cls, maxMass) => (
-    <g>
-      <rect x="28" y={y - 40} width="18" height="80" className={styles.softFill} />
-      <polygon points={polyline(stripPoints(46, y, 330, mm * 5, clamp(d * 14, 0, 40) * s))} className={cls} opacity="0.9" />
-      <text x="46" y={y - 46} fontSize="12" className={styles.labelStrong}>{name}</text>
-      <rect x="420" y={y - 10} width={(mass / maxMass) * 150} height="20" className={cls} rx="3" />
-      <text x="420" y={y - 16} fontSize="11" className={styles.label}>weight {mass.toFixed(1)} g</text>
-    </g>
-  )
+  const bend = bendOverTime(clock.t, 2 * Math.PI * 1.2 * (mm / 2) ** 1.5)
+  const load = pushed(clock.t) ? 1 : 0
+  const stateRef = useLive({
+    beams: [
+      { name: 'Aluminium 6061', material: 'aluminium', thick: mm, tip: clamp(dAl * EXAGGERATE, 0, 40) * bend, load, broken: 0 },
+      { name: 'Carbon plate', material: 'carbon', thick: mm, tip: clamp(dCf * EXAGGERATE, 0, 40) * bend, load, broken: 0 },
+    ],
+  })
   return (
     <Lab
-      title="Carbon and aluminium are equally stiff. So why carbon?"
+      title="Same stiffness, less weight"
       clock={clock}
       idea={<>Surprise: a carbon plate (along its fibres) and an aluminium plate of the same thickness bend almost <b>exactly the same amount</b>. Their stiffness number, Young's modulus, is about <b>70 and 69 GPa</b>. The win is not stiffness. It is that carbon weighs about <b>40 % less</b>, so you get the same rigidity for far less mass on your drone.</>}
       figure={(
-        <svg viewBox="0 0 600 280" className={styles.svg} role="img" aria-label="An aluminium strip and a carbon strip of the same thickness bend the same amount, but the carbon one weighs less">
-          {row(90, 'Aluminium 6061', dAl, mAl, styles.accentFill, mAl)}
-          {row(210, 'Carbon plate', dCf, mCf, styles.mutedFill, mAl)}
-        </svg>
+        <div className={styles.stackTight}>
+          <Scene3D create={createBeams} stateRef={stateRef} label="An aluminium strip and a carbon strip of the same thickness bend the same amount" {...BEAM_VIEW} view={[96, 64, 200]} />
+          <svg viewBox="0 0 400 86" className={styles.svg} role="img" aria-label="The weight of each strip">
+            <text x="8" y="26" fontSize="12" className={styles.label}>Aluminium</text>
+            <rect x="86" y="12" width={(mAl / mAl) * 230} height="18" rx="3" className={styles.accentFill} />
+            <text x={86 + 236} y="26" fontSize="12" className={styles.labelStrong}>{mAl.toFixed(1)} g</text>
+            <text x="8" y="62" fontSize="12" className={styles.label}>Carbon</text>
+            <rect x="86" y="48" width={(mCf / mAl) * 230} height="18" rx="3" className={styles.mutedFill} />
+            <text x={86 + (mCf / mAl) * 230 + 6} y="62" fontSize="12" className={styles.labelStrong}>{mCf.toFixed(1)} g</text>
+          </svg>
+        </div>
       )}
-      caption="Same push, same thickness, same size. The bars on the right are the weight of each strip."
+      caption="Same push, same thickness, same size. The bend is drawn 5 times bigger than real. The bars are the weight of each strip."
       controls={(
         <>
           <Slider label="Thickness of both" value={mm} min={1.5} max={6} step={0.5} onChange={setMm} format={(v) => `${v.toFixed(1)} mm`} />
@@ -127,45 +111,29 @@ function MaterialLab() {
 }
 
 function FibreLab() {
-  const id = useId().replace(/:/g, '')
+  const clock = useClock()
   const [angle, setAngle] = useState(45)
   const E = offAxisModulus(angle)
   const curve = useMemo(() => Array.from({ length: 46 }, (_, i) => [i * 2, offAxisModulus(i * 2)]), [])
-  const px = scale(0, 90, 340, 620)
-  const py = scale(0, 80, 240, 30)
-  const lines = Array.from({ length: 15 }, (_, i) => -105 + i * 15)
+  const stateRef = useLive({ angle, stretch: clamp(0.03 + (70 / E - 1) * 0.12, 0, 0.5), paused: !clock.playing })
+  const x = scale(0, 90, 52, 584)
+  const y = scale(0, 80, 134, 12)
   return (
     <Lab
-      title="Load carbon the wrong way and it loses most of its stiffness"
-      idea={<>Carbon plate is made of fibres, and the fibres do the work. A woven plate has fibres running in two directions, side by side and crossed. Pull <b>along</b> the fibres and it is as stiff as aluminium (70 GPa). Turn the load <b>45°</b> off the fibres and the weak epoxy between them has to carry it, and the stiffness falls to about <b>19 GPa</b>, a loss of roughly 70 %.</>}
+      title="Fibre direction decides how stiff carbon is"
+      clock={clock}
+      idea={<>Carbon plate is made of fibres, and the fibres do the work. A woven plate has fibres running in two directions, side by side and crossed. Pull <b>along</b> the fibres and it is as stiff as aluminium (70 GPa). Turn the plate <b>45°</b> off the pull and the weak epoxy between the fibres has to carry it, and the stiffness falls to about <b>19 GPa</b>, a loss of roughly 70 %.</>}
       figure={(
-        <svg viewBox="0 0 640 280" className={styles.svg} role="img" aria-label="A woven carbon plate turned against the pull, and a chart of its stiffness at each angle">
-          <defs>
-            <clipPath id={`plate${id}`}><rect x="85" y="55" width="170" height="170" rx="4" /></clipPath>
-          </defs>
-          <g clipPath={`url(#plate${id})`}>
-            <rect x="85" y="55" width="170" height="170" className={styles.softFill} />
-            <g style={{ transform: `rotate(${angle}deg)`, transformOrigin: '170px 140px', transition: 'transform 0.35s ease' }}>
-              {lines.map((o) => <line key={`h${o}`} x1="0" x2="340" y1={140 + o} y2={140 + o} className={styles.mutedLine} strokeWidth="5" opacity="0.8" />)}
-              {lines.map((o) => <line key={`v${o}`} y1="0" y2="280" x1={170 + o} x2={170 + o} className={styles.ink} strokeWidth="3" opacity="0.7" />)}
-            </g>
-          </g>
-          <rect x="85" y="55" width="170" height="170" rx="4" className={styles.axis} strokeWidth="2" />
-          <line x1="80" x2="20" y1="140" y2="140" className={styles.badLine} /><polygon points="12,140 26,132 26,148" className={styles.badFill} />
-          <line x1="260" x2="320" y1="140" y2="140" className={styles.badLine} /><polygon points="328,140 314,132 314,148" className={styles.badFill} />
-          <text x="170" y="250" textAnchor="middle" fontSize="12" className={styles.label}>pulling the plate; fibres turned {angle}°</text>
-          <line x1="340" x2="340" y1="30" y2="240" className={styles.axis} />
-          <line x1="340" x2="620" y1="240" y2="240" className={styles.axis} />
-          {[0, 45, 90].map((v) => <text key={v} x={px(v)} y="258" textAnchor="middle" fontSize="11" className={styles.label}>{v}°</text>)}
-          {[0, 35, 70].map((v) => <text key={v} x="332" y={py(v) + 4} textAnchor="end" fontSize="11" className={styles.label}>{v}</text>)}
-          <text x="480" y="276" textAnchor="middle" fontSize="12" className={styles.label}>angle between fibres and pull</text>
-          <text x="350" y="22" fontSize="12" className={styles.label}>stiffness (GPa)</text>
-          <polyline points={polyline(curve.map(([a, e]) => [px(a), py(e)]))} className={styles.accentLine} />
-          <line x1={px(angle)} x2={px(angle)} y1="240" y2={py(E)} className={styles.mutedLine} strokeDasharray="4 4" />
-          <circle cx={px(angle)} cy={py(E)} r="7" className={E < 40 ? styles.badFill : styles.goodFill} />
-        </svg>
+        <div className={styles.stackTight}>
+          <Scene3D create={createPlate} stateRef={stateRef} view={[0, 120, 130]} target={[0, 6, 0]} floorY={0} minDistance={80} maxDistance={420} label={`A woven carbon plate with its fibres turned ${angle} degrees to the pull`} />
+          <Plot width={600} height={170} top={12} bottom={36} x={x} y={y} xTicks={[0, 45, 90]} yTicks={[0, 35, 70]} xLabel="angle between fibres and pull (degrees)" yLabel="GPa" label="Stiffness of the plate at each angle">
+            <polyline points={polyline(curve.map(([a, e]) => [x(a), y(e)]))} className={styles.accentLine} />
+            <line x1={x(angle)} x2={x(angle)} y1="134" y2={y(E)} className={styles.mutedLine} strokeDasharray="4 4" />
+            <circle cx={x(angle)} cy={y(E)} r="7" className={E < 40 ? styles.badFill : styles.goodFill} />
+          </Plot>
+        </div>
       )}
-      caption="The weave is turned against the pull. The dot on the chart is how stiff the plate is at that angle."
+      caption="The red arrows pull the plate. It stretches more when the weave is turned away from the pull, so you can see it is less stiff. The stretch is drawn much bigger than real."
       controls={(
         <>
           <Slider label="Fibre angle to the pull" value={angle} min={0} max={90} step={1} onChange={setAngle} format={(v) => `${v}°`} />
@@ -187,7 +155,7 @@ function FibreLab() {
 function SnapLab() {
   const clock = useClock()
   const x = scale(0, 12, 52, 584)
-  const y = scale(0, 800, 260, 16)
+  const y = scale(0, 800, 210, 12)
   const al = useMemo(() => Array.from({ length: 121 }, (_, i) => [i * 0.1, stressStrain.aluminium(i * 0.1)]), [])
   const cf = useMemo(() => Array.from({ length: 21 }, (_, i) => [i * 0.05, stressStrain.carbon(i * 0.05)]), [])
   const tau = clock.t % 9
@@ -195,28 +163,33 @@ function SnapLab() {
   const alStrain = Math.min(12, strain)
   const snapped = strain >= 1
   const cfStrain = Math.min(1, strain)
+  const tauBreak = 6.5 * Math.sqrt(1 / 12)
+  const stateRef = useLive({
+    beams: [
+      { name: 'Aluminium', material: 'aluminium', thick: 3, tip: (alStrain / 12) * 40, load: 1, broken: 0 },
+      { name: 'Carbon', material: 'carbon', thick: 3, tip: snapped ? 0 : cfStrain * 5, load: snapped ? 0 : 1, broken: snapped ? clamp((tau - tauBreak) / 0.7, 0, 1) : 0 },
+    ],
+  })
   return (
     <Lab
-      title="Aluminium bends. Carbon snaps."
+      title="Bend or break"
       clock={clock}
       idea={<>Stretch both materials slowly and plot how hard they pull back. <b>Aluminium</b> gives, then <b>yields</b>: past a point it stays bent and keeps stretching without breaking, which absorbs a crash. <b>Carbon</b> goes straight up, very stiff, and then <b>snaps</b> with no warning, because the fibres cannot stretch. So we design carbon parts around that: thick enough, with the load along the fibres.</>}
       figure={(
-        <Plot x={x} y={y} xTicks={[0, 2, 4, 6, 8, 10, 12]} yTicks={[0, 200, 400, 600, 800]} xLabel="stretch (%)" yLabel="pull-back (MPa)" label="Stress and strain curves for aluminium and carbon">
-          <polyline points={polyline(al.map(([a, b]) => [x(a), y(b)]))} className={styles.accentLine} />
-          <polyline points={polyline(cf.map(([a, b]) => [x(a), y(b)]))} className={styles.mutedLine} strokeWidth="4" />
-          <circle cx={x(alStrain)} cy={y(stressStrain.aluminium(alStrain))} r="7" className={styles.accentFill} />
-          {!snapped && <circle cx={x(cfStrain)} cy={y(stressStrain.carbon(cfStrain))} r="7" className={styles.mutedFill} />}
-          {snapped && (
-            <g>
-              <text x={x(1) + 12} y={y(700) - 6} fontSize="14" className={styles.labelStrong}>SNAP</text>
-              <path d={`M${x(1) - 9},${y(700) - 9} l18,18 m0,-18 l-18,18`} className={styles.badLine} />
-            </g>
-          )}
-          <text x={x(0.4) + 10} y={y(276) + 22} fontSize="12" className={styles.label}>aluminium yields here</text>
-          <text x={x(1) + 22} y={y(420)} fontSize="12" className={styles.label}>carbon: stiff, then gone</text>
-        </Plot>
+        <div className={styles.stackTight}>
+          <Scene3D create={createBeams} stateRef={stateRef} label="An aluminium strip bending and a carbon strip snapping under a growing push" {...BEAM_VIEW} view={[96, 64, 200]} />
+          <Plot width={600} height={250} top={12} bottom={40} x={x} y={y} xTicks={[0, 2, 4, 6, 8, 10, 12]} yTicks={[0, 400, 800]} xLabel="stretch (%)" yLabel="pull-back (MPa)" label="Stress and strain curves for aluminium and carbon">
+            <polyline points={polyline(al.map(([a, b]) => [x(a), y(b)]))} className={styles.accentLine} />
+            <polyline points={polyline(cf.map(([a, b]) => [x(a), y(b)]))} className={styles.mutedLine} strokeWidth="4" />
+            <circle cx={x(alStrain)} cy={y(stressStrain.aluminium(alStrain))} r="7" className={styles.accentFill} />
+            {!snapped && <circle cx={x(cfStrain)} cy={y(stressStrain.carbon(cfStrain))} r="7" className={styles.mutedFill} />}
+            {snapped && <path d={`M${x(1) - 9},${y(700) - 9} l18,18 m0,-18 l-18,18`} className={styles.badLine} />}
+            <text x={x(0.4) + 10} y={y(276) + 22} fontSize="12" className={styles.label}>aluminium yields here</text>
+            <text x={x(1) + 14} y={y(520)} fontSize="12" className={styles.label}>carbon: stiff, then snaps</text>
+          </Plot>
+        </div>
       )}
-      caption="A teaching sketch, not a lab test. The steepness of each line at the start is the stiffness; both are almost the same."
+      caption="A teaching sketch, not a lab test. Bending is drawn bigger than real. The first, steep part of both curves is almost the same: equal stiffness."
       controls={(
         <Readout items={[
           { label: 'Aluminium', value: alStrain < 0.4 ? 'springy' : 'bent for good', tone: alStrain < 0.4 ? 'good' : 'warn' },
@@ -234,29 +207,14 @@ function SnapLab() {
 
 function MakingLab() {
   const clock = useClock()
-  const glow = 0.25 + 0.15 * Math.sin(clock.t * 2.2)
-  const offset = -clock.t * 70
+  const stateRef = useLive({ paused: !clock.playing })
   return (
     <Lab
-      title="How a plastic thread becomes carbon fibre"
+      title="Making carbon fibre"
       clock={clock}
       idea={<>Carbon fibre starts as a <b>plastic thread</b>. It is heated in an oven past <b>1000 °C with no oxygen</b>, so it cannot burn. Everything except the carbon atoms is driven off, and what is left is a thread of almost pure carbon, about <b>a tenth as thick as a human hair</b>. Thousands of threads are bundled into a tow, woven into cloth, then soaked in epoxy and baked flat into a plate.</>}
-      figure={(
-        <svg viewBox="0 0 600 230" className={styles.svg} role="img" aria-label="A plastic thread moves through an oven and comes out as a black carbon thread, next to a hair a tenth as thick">
-          <line x1="20" x2="225" y1="100" y2="100" className={styles.mutedLine} strokeWidth="5" strokeDasharray="14 8" strokeDashoffset={offset} />
-          <rect x="225" y="48" width="150" height="104" rx="8" className={styles.warnFill} opacity={glow} />
-          <rect x="225" y="48" width="150" height="104" rx="8" className={styles.ink} />
-          <line x1="375" x2="580" y1="100" y2="100" className={styles.ink} strokeWidth="5" strokeDasharray="14 8" strokeDashoffset={offset} style={{ stroke: 'var(--color-text-primary)' }} />
-          <text x="120" y="78" textAnchor="middle" fontSize="12" className={styles.label}>plastic thread</text>
-          <text x="300" y="40" textAnchor="middle" fontSize="12" className={styles.labelStrong}>over 1000 °C, no oxygen</text>
-          <text x="480" y="78" textAnchor="middle" fontSize="12" className={styles.label}>carbon thread</text>
-          <circle cx="360" cy="188" r="28" className={styles.softFill} stroke="var(--color-text-muted)" strokeWidth="1.5" />
-          <circle cx="520" cy="188" r="2.8" className={styles.labelStrong} style={{ fill: 'var(--color-text-primary)' }} />
-          <text x="360" y="226" textAnchor="middle" fontSize="11" className={styles.label}>human hair, about 70 µm</text>
-          <text x="520" y="226" textAnchor="middle" fontSize="11" className={styles.label}>one fibre, about 7 µm</text>
-        </svg>
-      )}
-      caption="Moving dashes show the thread being pulled through the oven. The circles are drawn to the same scale."
+      figure={<Scene3D create={createThread} stateRef={stateRef} view={[40, 70, 190]} target={[0, 8, 20]} floorY={-2} minDistance={90} maxDistance={460} label="A plastic thread goes through an oven and comes out as a black carbon thread, next to a hair ten times thicker" />}
+      caption="The white thread enters the oven and a black one leaves. The hair and the single fibre are drawn to the same scale."
       notice={[
         <><b>1.</b> A polymer thread is stretched and stabilised.</>,
         <><b>2.</b> It is baked with no oxygen, so it turns to carbon instead of burning.</>,

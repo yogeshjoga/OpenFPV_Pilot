@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { amplification, armFrequency, filterDelayMs, rpmToHz, transmissibility } from '../hardware.js'
-import { Chapter, Lab, Plot, Readout, Slider, polyline, scale, useClock } from '../parts.jsx'
+import { Chapter, Lab, Plot, Readout, Slider, polyline, scale, useClock, useLive } from '../parts.jsx'
+import DroneStage from '../../FpvPiloting/widgets/DroneStage.jsx'
 import styles from '../DroneHardware.module.css'
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
@@ -20,22 +21,15 @@ function ResonanceLab() {
   const y = scale(0, 14, 260, 16)
   const curve = useMemo(() => Array.from({ length: 111 }, (_, i) => { const f = 50 + i * 5; return [f, Math.min(14, amplification(f / fn, zeta))] }), [fn])
   const danger = gain > 3
+  const poseRef = useLive({ roll: shake * 0.0012, pitch: shake * 0.0007, height: shake * 0.25 })
   return (
     <Lab
-      title="A drone is a vibration machine"
+      title="Where a drone's shaking comes from"
       clock={clock}
       idea={<>Every motor spins <b>50 to 600 times a second</b> and none is perfectly balanced, so each one gives the frame a tiny push every turn. Every arm also has a favourite shaking speed, its <b>natural frequency</b>. If the push comes at that speed, each push adds to the last, like pushing a swing at the right moment. That is <b>resonance</b>, and the shaking can be ten times bigger than the push.</>}
       figure={(
-        <div>
-          <svg viewBox="0 0 600 130" className={styles.svg} role="img" aria-label="A frame arm with a motor on the end, shaking more when the motor speed matches the arm">
-            <rect x="30" y="35" width="22" height="70" className={styles.softFill} />
-            <polygon points={polyline([[52, 66 + shake * 0.0], [380, 66 + shake * 0.9], [380, 66 + shake * 0.9 + arm * 4], [52, 66 + arm * 4]])} className={styles.mutedFill} opacity="0.85" />
-            <g transform={`translate(380 ${70 + shake * 0.9 + arm * 2})`}>
-              <rect x="-22" y="-22" width="44" height="44" rx="6" className={danger ? styles.badFill : styles.accentFill} />
-              <text y="5" textAnchor="middle" fontSize="12" className={styles.labelStrong} style={{ fill: 'var(--color-on-accent)' }}>motor</text>
-            </g>
-            <text x="440" y="70" fontSize="12" className={styles.label}>shown in slow motion</text>
-          </svg>
+        <div className={styles.stackTight}>
+          <DroneStage poseRef={poseRef} label="Our 3D drone shaking more when the motor speed matches the frame's own speed" spinRate={8 + (hz / 600) * 70} highlight={danger ? 'motor' : null} view={[400, 170, -300]} target={[0, 50, 0]} />
           <Plot x={x} y={y} xTicks={[100, 200, 300, 400, 500, 600]} yTicks={[0, 4, 8, 12]} xLabel="motor speed (turns per second = Hz)" yLabel="shaking ×" label="How much an arm shakes at each motor speed">
             <polygon points={polyline([[x(50), y(0)], ...curve.map(([f, a]) => [x(f), y(a)]), [x(600), y(0)]])} className={styles.shade} />
             <polyline points={polyline(curve.map(([f, a]) => [x(f), y(a)]))} className={styles.accentLine} />
@@ -45,7 +39,7 @@ function ResonanceLab() {
           </Plot>
         </div>
       )}
-      caption="Top: the arm, slowed so you can see it. Bottom: how much it shakes at each motor speed. The dot is where the motor is now."
+      caption="Top: our 3D drone, shaken in slow motion and exaggerated so you can see it. The motors glow when the shaking is dangerous. Bottom: how much the frame shakes at each motor speed. The dot is where the motors are now."
       controls={(
         <>
           <Slider label="Motor speed" value={Math.round(hz)} min={50} max={600} step={5} onChange={(v) => { setAuto(false); setManual(v) }} format={(v) => `${v} Hz (${Math.round(v * 60).toLocaleString()} rpm)`} />
@@ -77,7 +71,7 @@ function MountLab() {
   const lowest = rpmToHz(3000) // a slow idle
   return (
     <Lab
-      title="What rubber grommets are really for"
+      title="Soft mounts, and what they can and cannot do"
       idea={<>Soft rubber mounts do <b>not</b> stop vibration. A soft mount is a spring with its own natural frequency. Shake it <b>slowly</b> and the part follows, and near its own speed it shakes <b>more</b>. Only when the shaking is faster than about <b>1.4 times</b> its natural frequency does the mount start to hold the part still. So a mount only helps if it is much softer than the vibration is fast, and it never helps with slow shaking.</>}
       figure={(
         <Plot x={x} y={y} xTicks={[100, 200, 300, 400, 500, 600]} yTicks={[0, 1, 2, 3, 4]} xLabel="shaking frequency (Hz)" yLabel="how much passes through" label="How much shaking a soft mount lets through at each frequency">
@@ -139,7 +133,7 @@ function FilterLab() {
   const py = scale(-1.6, 1.6, 240, 20)
   return (
     <Lab
-      title="Why Betaflight still wants a stiff frame"
+      title="Filters, delay and a stiff frame"
       clock={clock}
       idea={<>The flight controller reads a gyro, and motor shaking rides on top of the real movement as noise. A <b>filter</b> smooths it out, but every filter makes the answer arrive <b>late</b>. The more noise there is, the harder you must filter, and the later the flight controller hears the truth. A stiff frame makes less noise at the source, so you can filter lightly, with less delay.</>}
       figure={(

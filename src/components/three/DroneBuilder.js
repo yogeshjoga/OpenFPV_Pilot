@@ -323,6 +323,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
   let wireMats = []
   let reveal = false
   let spinning = false
+  let spinRate = 40 // radians a second
   let highlighted = null
   const byCategory = {}
   const exploders = []
@@ -704,7 +705,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     const dt = last ? Math.min((now - last) / 1000, 1 / 20) : 1 / 60
     last = now
     for (let i = 0; i < 4; i++) {
-      const rate = spinning ? 40 : 0
+      const rate = spinning ? spinRate : 0
       spin[i] += MOTORS[i].dir * rate * dt
       if (blades[i]) {
         blades[i].rotation.y = -spin[i]
@@ -722,6 +723,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       build(next)
     },
     setSpin(on) { spinning = on },
+    setSpinRate(rate) { spinRate = rate },
     setReveal(on) { reveal = on; applyReveal() },
     setExplode(amount) { explode = amount; applyExplode() },
     highlight(category) { highlighted = category; applyHighlight() },
