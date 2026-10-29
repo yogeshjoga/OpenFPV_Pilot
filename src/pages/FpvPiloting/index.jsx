@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, Brain, Flag, Gauge, GraduationCap, Maximize2, Minimize2, Repeat, SlidersHorizontal, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Brain, Flag, Gauge, GraduationCap, Maximize2, Minimize2, Repeat, SlidersHorizontal } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import Modes from './sections/Modes.jsx'
@@ -80,6 +80,14 @@ export default function FpvPiloting() {
   }, [])
 
   useEffect(() => { setHint(true) }, [part])
+  // the popup takes the keyboard: the main button is focused, and Esc closes it
+  const popupFocus = useCallback((el) => { el?.focus() }, [])
+  useEffect(() => {
+    if (!(hint && !full && part !== 'start')) return undefined
+    const onKey = (e) => { if (e.key === 'Escape') setHint(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [hint, full, part])
 
   const index = PARTS.findIndex((p) => p.id === part)
   const current = PARTS[index]
@@ -88,7 +96,7 @@ export default function FpvPiloting() {
 
   return (
     <PageWrapper>
-      <div ref={rootRef} className={styles.page} data-full={full} data-pseudo={pseudo} data-hint={Boolean(part !== 'start' && !full && hint)}>
+      <div ref={rootRef} className={styles.page} data-full={full} data-pseudo={pseudo} >
       <nav className={styles.subnav} aria-label="Parts of the course">
         <div className={`container ${styles.subnavInner}`}>
           <a href={window.location.pathname} className={styles.subnavLink} aria-current={part === 'start' ? 'page' : undefined} onClick={(e) => { e.preventDefault(); go('start') }}>Overview</a>
@@ -105,11 +113,17 @@ export default function FpvPiloting() {
       </nav>
 
       {current && !full && hint && (
-        <div className={styles.fullHint} role="status">
-          <Maximize2 size={20} aria-hidden="true" />
-          <p><b>Use full screen mode for this page.</b> The 3D drone, the sticks and the charts are made to fill the whole screen, so you can see everything at once.</p>
-          <button type="button" className={styles.fullHintGo} onClick={toggleFull}>Go full screen</button>
-          <button type="button" className={styles.fullHintClose} onClick={() => setHint(false)} aria-label="Dismiss this notice"><X size={16} aria-hidden="true" /></button>
+        <div className={styles.popupBackdrop} onClick={() => setHint(false)}>
+          <div className={styles.popup} role="alertdialog" aria-modal="true" aria-labelledby="full-title" aria-describedby="full-text" onClick={(e) => e.stopPropagation()}>
+            <span className={styles.popupIcon}><Maximize2 size={28} aria-hidden="true" /></span>
+            <h2 id="full-title">Please use full screen mode</h2>
+            <p id="full-text">This page is made for full screen. The 3D drone, the sticks and the charts fill the whole screen, so you can see everything at once without scrolling.</p>
+            <div className={styles.popupActions}>
+              <button type="button" className={styles.popupGo} onClick={toggleFull} ref={popupFocus}>Go full screen</button>
+              <button type="button" className={styles.popupLater} onClick={() => setHint(false)}>Not now</button>
+            </div>
+            <p className={styles.popupKeys}>Press Esc at any time to leave full screen.</p>
+          </div>
         </div>
       )}
 

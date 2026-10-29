@@ -346,89 +346,96 @@
   clip-path: inset(50%);
 }
 
-/* ---- the full screen notice at the top of each part ---- */
+/* ---- the full screen popup, shown when a part is opened ---- */
 
-.fullHint {
+.popupBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
   display: flex;
   align-items: center;
-  gap: var(--space-4);
-  max-width: 1200px;
-  margin: var(--space-3) auto 0;
-  padding: var(--space-3) var(--space-4);
-  color: var(--color-text-primary);
+  justify-content: center;
+  padding: var(--space-4);
+  background: rgb(10 14 22 / 0.62);
+}
+
+.popup {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+  width: min(480px, 100%);
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  text-align: center;
   background: var(--color-bg-card);
-  border: 1px solid var(--color-accent-primary);
-  border-left: 6px solid var(--color-accent-primary);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  border-top: 6px solid var(--color-accent-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg, 0 20px 60px rgb(0 0 0 / 0.35));
 }
 
-.fullHint svg {
-  flex: none;
-  color: var(--color-accent-primary);
+.popupIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  color: var(--color-on-accent);
+  background: var(--color-accent-primary);
+  border-radius: var(--radius-full);
 }
 
-.fullHint p {
-  flex: 1;
-  font-size: var(--text-sm);
-  line-height: 1.5;
+.popup h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-text-primary);
+}
+
+.popup p {
+  font-size: var(--text-base);
+  line-height: 1.6;
   color: var(--color-text-secondary);
 }
 
-.fullHint b {
-  color: var(--color-text-primary);
+.popupActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
 }
 
-.fullHintGo {
-  flex: none;
-  padding: var(--space-2) var(--space-4);
+.popupGo,
+.popupLater {
+  padding: var(--space-3) var(--space-6);
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: var(--font-semibold);
-  color: var(--color-on-accent);
-  background: var(--color-accent-primary);
-  border: 0;
   border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
-.fullHintGo:hover {
+.popupGo {
+  color: var(--color-on-accent);
+  background: var(--color-accent-primary);
+  border: 1px solid var(--color-accent-primary);
+}
+
+.popupGo:hover {
   background: var(--color-accent-secondary);
 }
 
-.fullHintClose {
-  flex: none;
-  display: inline-flex;
-  padding: var(--space-1);
-  color: var(--color-text-muted);
+.popupLater {
+  color: var(--color-text-secondary);
   background: transparent;
-  border: 0;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+  border: 1px solid var(--color-border);
 }
 
-.fullHintClose svg {
-  color: inherit;
-}
-
-.fullHintClose:hover {
+.popupLater:hover {
   color: var(--color-text-primary);
-  background: var(--color-bg-tertiary);
+  border-color: var(--color-border-hover);
 }
 
-/* the notice takes some of the height a lab could use */
-.page[data-hint='true'] {
-  --head: 205px;
-}
-
-@media (min-height: 861px) {
-  .page[data-hint='true'] {
-    --head: 255px;
-  }
-}
-
-@media (max-width: 700px) {
-  .fullHint {
-    flex-wrap: wrap;
-  }
+.popup .popupKeys {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
 }
