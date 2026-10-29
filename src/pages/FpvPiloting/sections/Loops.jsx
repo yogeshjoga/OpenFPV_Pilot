@@ -143,7 +143,7 @@ function LoopPlayer() {
 
   return (
     // this page also has the row of patterns to choose from, so the player gets a little less height
-    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - 182px), 740px)' }}>
+    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - 186px), 740px)' }}>
       <div className={styles.glyphs} role="radiogroup" aria-label="Choose a pattern">
         {LOOPS.map((l) => (
           <button key={l.id} type="button" role="radio" aria-checked={id === l.id} onClick={() => choose(l.id)}>
@@ -173,7 +173,7 @@ function LoopPlayer() {
           />
         )}
         step={<StepNow index={at} total={steps} title={loop.phases[at].title} text={loop.phases[at].text} />}
-        sticks={<Sticks values={sticks} compact />}
+        sticks={<Sticks values={sticks} compact side />}
         path={(
           <figure className={styles.pathCard}>
             <PathView route={route} loop={shape} time={time} phase={sample.phase} />

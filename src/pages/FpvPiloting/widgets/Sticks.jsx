@@ -76,10 +76,10 @@ function Gimbal({ title, xAxis, yAxis, x, y, spring, interactive, highlight, cen
 }
 
 // values: { throttle (0..1), yaw, pitch, roll (-1..1) }
-export default function Sticks({ values, onChange, interactive = false, mode3d = false, highlight = null, words = true, compact = false }) {
+export default function Sticks({ values, onChange, interactive = false, mode3d = false, highlight = null, words = true, compact = false, big = false, side = false }) {
   const set = (patch) => onChange?.(patch)
   return (
-    <div className={`${styles.wrap} ${compact ? styles.compact : ''}`}>
+    <div className={`${styles.wrap} ${compact ? styles.compact : ''} ${big ? styles.big : ''} ${side ? styles.side : ''}`}>
       <div className={styles.pair}>
         <figure className={styles.unit}>
           <Gimbal

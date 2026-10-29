@@ -131,7 +131,7 @@ function MovePlayer({ move }) {
           />
         )}
         step={<StepNow index={sample.phase} total={steps} title={move.phases[sample.phase].title} text={move.phases[sample.phase].text} />}
-        sticks={<Sticks values={sample.sticks} compact />}
+        sticks={<Sticks values={sample.sticks} compact side />}
         path={(
           <figure className={styles.pathBox}>
             <MovePath samples={samples} view={move.view} time={now} phase={sample.phase} />

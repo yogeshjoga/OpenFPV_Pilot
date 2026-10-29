@@ -138,7 +138,18 @@
 }
 
 .compact .gimbal {
-  max-width: 100px;
+  max-width: 116px;
+}
+
+/* for the mode lab, where the sticks are the thing you play with: as large as the screen allows */
+.big .gimbal {
+  max-width: 168px;
+}
+
+@media (min-height: 860px) {
+  .big .gimbal {
+    max-width: 190px;
+  }
 }
 
 .compact .unit figcaption {
@@ -160,4 +171,36 @@
 
 .compact .words li span {
   grid-column: 2;
+}
+
+/* the two sticks on the left and the names and values in a list on the right: bigger sticks in less height */
+.side {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.side .gimbal {
+  max-width: 122px;
+}
+
+.side .words {
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+}
+
+.side .words li {
+  grid-template-columns: 10px 58px minmax(0, 1fr);
+  grid-template-rows: auto;
+  align-items: baseline;
+  column-gap: var(--space-2);
+  padding: 2px var(--space-1);
+}
+
+.side .words li span {
+  grid-column: auto;
+}
+
+.side .pair {
+  gap: var(--space-3);
 }

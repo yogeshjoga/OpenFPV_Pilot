@@ -37,7 +37,7 @@
 
 .lab {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-6);
   align-items: start;
 }
@@ -103,7 +103,7 @@
 
 .panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
   gap: var(--space-3);
   align-content: start;
   max-height: var(--lab-h, 520px);
@@ -437,5 +437,12 @@
 
   .labStage {
     min-height: 380px;
+  }
+}
+
+/* on a short screen the name of the mode is already on the button, so its heading goes */
+@media (max-height: 860px) {
+  .modeCard h4 {
+    display: none;
   }
 }

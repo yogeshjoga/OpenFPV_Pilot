@@ -154,7 +154,7 @@ function ModeLab() {
         </div>
 
         <div className={styles.sticksCol}>
-        <Sticks values={shown} onChange={userMove} interactive mode3d={mode === '3d'} compact />
+        <Sticks values={shown} onChange={userMove} interactive mode3d={mode === '3d'} compact big />
         {mode === '3d' && <p className={styles.hint}>The dashed line is the middle of the throttle: zero thrust.</p>}
         </div>
 

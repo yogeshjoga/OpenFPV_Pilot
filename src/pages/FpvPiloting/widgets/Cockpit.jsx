@@ -19,9 +19,9 @@ export default function Cockpit({ intro, stage, controls, step, sticks, path, ta
         {controls}
       </div>
       <div className={styles.right}>
-        {intro && <p className={styles.intro}>{intro}</p>}
         <section className={styles.step} style={{ '--c': color }} aria-live="polite">{step}</section>
         <section className={styles.card} aria-label="The sticks">{sticks}</section>
+        {intro && <p className={styles.intro}>{intro}</p>}
       </div>
       <div className={styles.below}>
         <div className={styles.tabs} role="tablist" aria-label="More about this move">
