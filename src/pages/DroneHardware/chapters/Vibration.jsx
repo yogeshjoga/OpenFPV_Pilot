@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
 import { amplification, armFrequency, filterDelayMs, rpmToHz, transmissibility } from '../hardware.js'
 import { Chapter, Lab, Plot, Readout, Slider, polyline, scale, useClock, useLive } from '../parts.jsx'
-import DroneStage from '../../FpvPiloting/widgets/DroneStage.jsx'
+import Scene3D from '../widgets/Scene3D.jsx'
+import { createArm } from '../widgets/scenes.js'
 import styles from '../DroneHardware.module.css'
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
@@ -21,7 +22,7 @@ function ResonanceLab() {
   const y = scale(0, 14, 260, 16)
   const curve = useMemo(() => Array.from({ length: 111 }, (_, i) => { const f = 50 + i * 5; return [f, Math.min(14, amplification(f / fn, zeta))] }), [fn])
   const danger = gain > 3
-  const poseRef = useLive({ roll: shake * 0.0012, pitch: shake * 0.0007, height: shake * 0.25 })
+  const armRef = useLive({ swing: Math.min(30, gain * 1.0), thick: arm, spin: 8 + (hz / 600) * 70, glow: danger ? 1 : 0, paused: !clock.playing })
   return (
     <Lab
       title="Where a drone's shaking comes from"
@@ -29,7 +30,7 @@ function ResonanceLab() {
       idea={<>Every motor spins <b>50 to 600 times a second</b> and none is perfectly balanced, so each one gives the frame a tiny push every turn. Every arm also has a favourite shaking speed, its <b>natural frequency</b>. If the push comes at that speed, each push adds to the last, like pushing a swing at the right moment. That is <b>resonance</b>, and the shaking can be ten times bigger than the push.</>}
       figure={(
         <div className={styles.stackTight}>
-          <DroneStage poseRef={poseRef} label="Our 3D drone shaking more when the motor speed matches the frame's own speed" spinRate={8 + (hz / 600) * 70} highlight={danger ? 'motor' : null} view={[400, 170, -300]} target={[0, 50, 0]} />
+          <Scene3D create={createArm} stateRef={armRef} view={[70, 55, 165]} target={[58, 8, 0]} floorY={-45} minDistance={90} maxDistance={360} label="One frame arm with its motor and propeller, shaking more when the motor speed matches the arm's own speed" />
           <Plot x={x} y={y} xTicks={[100, 200, 300, 400, 500, 600]} yTicks={[0, 4, 8, 12]} xLabel="motor speed (turns per second = Hz)" yLabel="shaking ×" label="How much an arm shakes at each motor speed">
             <polygon points={polyline([[x(50), y(0)], ...curve.map(([f, a]) => [x(f), y(a)]), [x(600), y(0)]])} className={styles.shade} />
             <polyline points={polyline(curve.map(([f, a]) => [x(f), y(a)]))} className={styles.accentLine} />
@@ -39,7 +40,7 @@ function ResonanceLab() {
           </Plot>
         </div>
       )}
-      caption="Top: our 3D drone, shaken in slow motion and exaggerated so you can see it. The motors glow when the shaking is dangerous. Bottom: how much the frame shakes at each motor speed. The dot is where the motors are now."
+      caption="Top: one arm with its motor, shaken in slow motion and exaggerated so you can see it. The motor glows when the shaking is dangerous. Bottom: how much the frame shakes at each motor speed. The dot is where the motors are now."
       controls={(
         <>
           <Slider label="Motor speed" value={Math.round(hz)} min={50} max={600} step={5} onChange={(v) => { setAuto(false); setManual(v) }} format={(v) => `${v} Hz (${Math.round(v * 60).toLocaleString()} rpm)`} />

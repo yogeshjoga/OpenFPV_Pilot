@@ -363,3 +363,225 @@ export function createBoard({ THREE, scene }) {
     },
   }
 }
+
+// a motor with its propeller, standing on the origin: a base, a ring of copper coils, a red bell with a shaft, and two blades
+function makeMotor(THREE) {
+  const steel = new THREE.MeshStandardMaterial({ color: 0xaab1bb, metalness: 0.95, roughness: 0.3 })
+  const motor = new THREE.Group()
+  const baseDisc = new THREE.Mesh(new THREE.CylinderGeometry(11, 12, 3, 32), steel)
+  baseDisc.position.y = 2
+  motor.add(baseDisc)
+  const copper = new THREE.MeshStandardMaterial({ color: 0xc9743a, metalness: 0.8, roughness: 0.35 })
+  for (let i = 0; i < 12; i += 1) {
+    const a = (i / 12) * TAU
+    const coil = new THREE.Mesh(new THREE.BoxGeometry(3.4, 7, 3.4), copper)
+    coil.position.set(Math.cos(a) * 7.5, 7, Math.sin(a) * 7.5)
+    coil.rotation.y = -a
+    motor.add(coil)
+  }
+  const bellMat = new THREE.MeshStandardMaterial({ color: 0xb04a4a, metalness: 0.95, roughness: 0.25, emissive: 0xff3b1a, emissiveIntensity: 0 })
+  const bell = new THREE.Mesh(new THREE.CylinderGeometry(12.5, 12.5, 9, 40), bellMat)
+  bell.position.y = 15
+  motor.add(bell)
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 12, 12), steel)
+  shaft.position.y = 24
+  motor.add(shaft)
+  const prop = new THREE.Group()
+  prop.position.y = 28
+  const bladeMat = new THREE.MeshStandardMaterial({ color: 0xff6a1a, roughness: 0.4 })
+  for (let b = 0; b < 2; b += 1) {
+    const blade = new THREE.Mesh(new THREE.BoxGeometry(30, 0.9, 6.5), bladeMat)
+    blade.position.x = b === 0 ? 17 : -17
+    blade.rotation.x = b === 0 ? 0.3 : -0.3
+    prop.add(blade)
+  }
+  prop.add(new THREE.Mesh(new THREE.CylinderGeometry(3, 3, 3, 16), steel))
+  motor.add(prop)
+  const disc = new THREE.Mesh(new THREE.CircleGeometry(34, 48), new THREE.MeshBasicMaterial({ color: 0xcfd6e2, transparent: true, opacity: 0.14, depthWrite: false, side: THREE.DoubleSide }))
+  disc.rotation.x = -Math.PI / 2
+  disc.position.y = 28
+  motor.add(disc)
+  return { motor, prop, bellMat }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// one frame arm with its motor and propeller, and nothing else. The arm bends and shakes in slow motion, the propeller spins, and the motor glows when it is hot.
+// state: { swing (how far the tip moves, in mm), thick (mm), spin (radians a second), glow (0 to 1), paused }
+// ---------------------------------------------------------------------------------------------------------------
+export function createArm({ THREE, scene }) {
+  const L = 90
+  const weave = weaveTexture(THREE, [5, 1.5])
+  const armMat = new THREE.MeshStandardMaterial({ map: weave, roughness: 0.45, metalness: 0.25 })
+  const body = new THREE.Mesh(new THREE.BoxGeometry(24, 30, 40), new THREE.MeshStandardMaterial({ color: 0x59606b, roughness: 0.7 }))
+  body.position.set(-12, 0, 0)
+  scene.add(body)
+
+  let thickNow = 0
+  let armMesh = null
+  let base = null
+  const buildArm = (thick) => {
+    if (armMesh) { scene.remove(armMesh); armMesh.geometry.dispose() }
+    const geo = new THREE.BoxGeometry(L, thick, 18, 40, 1, 1)
+    geo.translate(L / 2, 0, 0)
+    base = geo.attributes.position.array.slice()
+    armMesh = new THREE.Mesh(geo, armMat)
+    scene.add(armMesh)
+    thickNow = thick
+  }
+
+  const { motor, prop, bellMat } = makeMotor(THREE)
+  scene.add(motor)
+  const tags = [['frame arm', 38, 24, 0], ['motor', L + 4, 62, 0]].map(([text, x, y, z]) => { const s = makeLabel(THREE, text, { width: 30 }); s.position.set(x, y, z); scene.add(s); return s })
+
+  return {
+    update(state, seconds, dt) {
+      if (!armMesh || thickNow !== state.thick) buildArm(state.thick)
+      const tip = state.swing * Math.sin(TAU * 2.2 * seconds)
+      const pos = armMesh.geometry.attributes.position
+      for (let k = 0; k < pos.count; k += 1) {
+        pos.array[k * 3] = base[k * 3]
+        pos.array[k * 3 + 1] = base[k * 3 + 1] - drop(base[k * 3] / L, tip)
+      }
+      pos.needsUpdate = true
+      armMesh.geometry.computeVertexNormals()
+      motor.position.set(L, -tip + state.thick / 2, 0)
+      motor.rotation.z = Math.atan((-1.5 * tip) / L)
+      prop.rotation.y += (state.paused ? 0 : dt) * state.spin
+      bellMat.emissiveIntensity = state.glow * 0.9
+      tags[1].position.y = 62 - tip
+    },
+    dispose() {
+      weave.dispose()
+      tags.forEach((s) => { s.material.map.dispose(); s.material.dispose() })
+      armMat.dispose()
+    },
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// the power chain: battery, ESC and one motor, joined by wires, with current flowing along them.
+// state: { cells, current (1 = a 4S pack's current), glow (0 to 1 heat), spin (radians a second), paused }
+// ---------------------------------------------------------------------------------------------------------------
+export function createPowerChain({ THREE, scene }) {
+  const V = (x, y, z) => new THREE.Vector3(x, y, z)
+  let cellsNow = 0
+  let batteryGroup = null
+  let batteryTag = null
+  const makeBattery = (cells) => {
+    if (batteryGroup) { scene.remove(batteryGroup); batteryGroup.traverse((o) => { o.geometry?.dispose?.(); o.material?.dispose?.() }) }
+    if (batteryTag) { scene.remove(batteryTag); batteryTag.material.map.dispose(); batteryTag.material.dispose() }
+    batteryGroup = new THREE.Group()
+    const w = 13
+    for (let i = 0; i < cells; i += 1) {
+      const cell = new THREE.Mesh(new THREE.BoxGeometry(w, 20, 38), new THREE.MeshStandardMaterial({ color: i % 2 ? 0x2f7bd9 : 0x3e8ef7, roughness: 0.5, metalness: 0.2 }))
+      cell.position.x = -150 + i * (w + 1.5)
+      batteryGroup.add(cell)
+    }
+    const plug = new THREE.Mesh(new THREE.BoxGeometry(8, 10, 14), new THREE.MeshStandardMaterial({ color: 0xf5c518, roughness: 0.5 }))
+    plug.position.set(-150 + cells * (w + 1.5) + 2, 0, 0)
+    batteryGroup.add(plug)
+    scene.add(batteryGroup)
+    batteryTag = makeLabel(THREE, `Battery: ${cells}S, ${(cells * 3.7).toFixed(1)} V`, { width: 58 })
+    batteryTag.position.set(-150 + (cells * (w + 1.5)) / 2, 34, 0)
+    scene.add(batteryTag)
+    cellsNow = cells
+    return -150 + cells * (w + 1.5) + 6
+  }
+  let plugEnd = makeBattery(4)
+
+  // the speed controller: a board with power transistors and a capacitor
+  const escMat = new THREE.MeshStandardMaterial({ color: 0x0f6b45, roughness: 0.5, emissive: 0xff3b1a, emissiveIntensity: 0 })
+  const esc = new THREE.Mesh(new THREE.BoxGeometry(44, 3, 34), escMat)
+  esc.position.set(-6, 0, 0)
+  scene.add(esc)
+  const fetMat = new THREE.MeshStandardMaterial({ color: 0x1a1c20, roughness: 0.4, emissive: 0xff3b1a, emissiveIntensity: 0 })
+  for (let i = 0; i < 6; i += 1) {
+    const fet = new THREE.Mesh(new THREE.BoxGeometry(7, 3, 6), fetMat)
+    fet.position.set(-6 + (i % 3) * 11 - 3, 3, i < 3 ? -8 : 8)
+    scene.add(fet)
+  }
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 14, 20), new THREE.MeshStandardMaterial({ color: 0x23272e, metalness: 0.6, roughness: 0.35 }))
+  cap.position.set(-22, 9, 0)
+  scene.add(cap)
+  const escTag = makeLabel(THREE, 'ESC (speed controller)', { width: 58 })
+  escTag.position.set(-6, 34, 0)
+  scene.add(escTag)
+
+  // the motor on a short arm stub
+  const stub = new THREE.Mesh(new THREE.BoxGeometry(46, 3, 16), new THREE.MeshStandardMaterial({ color: 0x23262b, roughness: 0.5 }))
+  stub.position.set(105, -2, 0)
+  scene.add(stub)
+  const { motor, prop, bellMat } = makeMotor(THREE)
+  motor.position.set(120, 0, 0)
+  scene.add(motor)
+  const motorTag = makeLabel(THREE, 'Motor', { width: 34 })
+  motorTag.position.set(120, 58, 0)
+  scene.add(motorTag)
+
+  // wires: two fat power wires battery to ESC, three thin phase wires ESC to motor
+  const mats = []
+  const wireMat = (hex) => { const m = new THREE.MeshStandardMaterial({ color: hex, roughness: 0.5, emissive: 0xff3b1a, emissiveIntensity: 0 }); mats.push(m); return m }
+  let powerGroup = []
+  const buildPower = (end) => {
+    powerGroup.forEach((w) => { scene.remove(w.mesh); w.mesh.geometry.dispose(); w.mat.dispose(); mats.splice(mats.indexOf(w.mat), 1) })
+    const ends = [[V(end, 4, 7), V((end - 26) / 2, 12, 12), V(-26, 6, 12)], [V(end, 4, -7), V((end - 26) / 2, 12, -12), V(-26, 6, -12)]]
+    powerGroup = ends.map((pts, i) => {
+      const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.3)
+      const mat = wireMat(i === 0 ? 0xd33a3a : 0x1c1e22)
+      const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 2.1, 8, false), mat)
+      scene.add(mesh)
+      return { curve, mat, mesh }
+    })
+  }
+  buildPower(plugEnd)
+  const phase = [0xf5a524, 0x3e8ef7, 0xe5484d].map((hex, i) => {
+    const curve = new THREE.CatmullRomCurve3([V(16, 4, (i - 1) * 9), V(60, 8 + i * 3, (i - 1) * 14), V(114, 8, (i - 1) * 6)], false, 'catmullrom', 0.3)
+    const mat = wireMat(hex)
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 1.2, 8, false), mat))
+    return { curve, mat }
+  })
+
+  const bead = new THREE.SphereGeometry(1.9, 10, 8)
+  const beadMat = new THREE.MeshBasicMaterial({ color: 0xffd36a })
+  const beads = []
+  const addBeads = (curveOf, count, wire = -1) => { for (let i = 0; i < count; i += 1) { const m = new THREE.Mesh(bead, beadMat); scene.add(m); beads.push({ m, curveOf, k: i / count, wire }) } }
+  addBeads(() => powerGroup[0].curve, 8)
+  addBeads(() => powerGroup[1].curve, 8)
+  phase.forEach((w, i) => addBeads(() => w.curve, 7, i))
+  const wireTags = ['A', 'B', 'C'].map((t, i) => { const s = makeLabel(THREE, `wire ${t}`, { width: 20 }); s.position.set(100, 20 + i * 9, (i - 1) * 16); scene.add(s); return s })
+  let flow = 0
+
+  return {
+    update(state, seconds, dt) {
+      if (state.cells !== cellsNow) { plugEnd = makeBattery(state.cells); buildPower(plugEnd) }
+      flow += (state.paused ? 0 : dt) * (0.1 + state.current * 0.16)
+      // with state.phase = { from: 'A', to: 'B' } the current goes in along one motor wire and out along another; the third is left floating
+      beads.forEach((b) => {
+        let u = (b.k + flow) % 1
+        b.m.visible = true
+        if (state.phase && b.wire >= 0) {
+          const role = 'ABC'[b.wire] === state.phase.from ? 'in' : 'ABC'[b.wire] === state.phase.to ? 'out' : 'float'
+          b.m.visible = role !== 'float'
+          if (role === 'out') u = 1 - u
+        }
+        b.m.position.copy(b.curveOf().getPoint(u))
+      })
+      phase.forEach((w, i) => {
+        const role = state.phase ? ('ABC'[i] === state.phase.from ? 'in' : 'ABC'[i] === state.phase.to ? 'out' : 'float') : 'in'
+        w.mat.transparent = true
+        w.mat.opacity = role === 'float' ? 0.2 : 1
+      })
+      wireTags.forEach((t, i) => { t.visible = !!state.phase })
+      const heat = state.glow
+      fetMat.emissiveIntensity = heat * 1.1
+      bellMat.emissiveIntensity = heat * 0.9
+      escMat.emissiveIntensity = heat * 0.25
+      mats.forEach((m) => { m.emissiveIntensity = heat * 0.6 })
+      prop.rotation.y += (state.paused ? 0 : dt) * state.spin
+    },
+    dispose() {
+      ;[escMat, fetMat, beadMat].forEach((m) => m.dispose())
+      bead.dispose()
+    },
+  }
+}
