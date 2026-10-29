@@ -102,7 +102,8 @@ function MovePlayer({ move }) {
   const steps = move.phases.length
 
   return (
-    <div className={loop.player}>
+    // this page also has the row of moves to choose from, so the player gets a little less height
+    <div className={loop.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - var(--head) - 30px), 1100px)' }}>
       <Cockpit
         intro={<>{move.blurb} <span className={styles.levels}><i data-level="Beginner" /> Beginner <i data-level="Intermediate" /> Intermediate <i data-level="Advanced" /> Advanced</span></>}
         color={PHASE_COLORS[sample.phase % PHASE_COLORS.length]}

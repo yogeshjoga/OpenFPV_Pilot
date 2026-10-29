@@ -209,7 +209,7 @@ export default function Modes() {
       ) },
 
       { id: 'how', label: 'How each works', node: (
-        <Block title="How each mode works" intro="Choose a mode and try the same sticks in each. Drag the sticks yourself, or press a test and watch the drone. The 3D drone below is the one from the lesson.">
+        <Block quiet title="How each mode works" intro="Choose a mode and try the same sticks in each. Drag the sticks yourself, or press a test and watch the drone. The 3D drone below is the one from the lesson.">
         <ModeLab />
       </Block>
       ) },

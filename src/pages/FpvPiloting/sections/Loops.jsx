@@ -143,7 +143,7 @@ function LoopPlayer() {
 
   return (
     // this page also has the row of patterns to choose from, so the player gets a little less height
-    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - 186px), 740px)' }}>
+    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - var(--head) - 51px), 1100px)' }}>
       <div className={styles.glyphs} role="radiogroup" aria-label="Choose a pattern">
         {LOOPS.map((l) => (
           <button key={l.id} type="button" role="radio" aria-checked={id === l.id} onClick={() => choose(l.id)}>
@@ -220,12 +220,12 @@ export default function Loops() {
     >
       <Pages label="Sticks and loops" items={[
       { id: 'sticks', label: 'The four sticks', node: (
-        <Block title="The four stick movements" intro="Every move on a drone is one of these four, or a mix. Choose one: the drone and the stick show it slowly, back and forth.">
+        <Block quiet title="The four stick movements" intro="Every move on a drone is one of these four, or a mix. Choose one: the drone and the stick show it slowly, back and forth.">
         <StickGuide />
       </Block>
       ) },
       { id: 'patterns', label: 'Patterns 0, 8, 6, 7', node: (
-        <Block title="Practice patterns: 0, 8, 6 and 7" intro="Press play. The drone flies the pattern from above, the 3D drone leans and turns, and the sticks move as yours should. Pause at any time, or drag the bar to look at one moment.">
+        <Block quiet title="Practice patterns: 0, 8, 6 and 7" intro="Press play. The drone flies the pattern from above, the 3D drone leans and turns, and the sticks move as yours should. Pause at any time, or drag the bar to look at one moment.">
         <LoopPlayer />
       </Block>
       ) },

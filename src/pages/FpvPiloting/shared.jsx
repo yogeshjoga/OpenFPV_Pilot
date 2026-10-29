@@ -25,9 +25,10 @@ export function Section({ id, kicker, title, intro, children }) {
 }
 
 // a heading inside a section
-export function Block({ title, intro, children }) {
+// quiet: the heading and introduction are only for screen readers, because the page tab already says it and the lab needs the room
+export function Block({ title, intro, quiet = false, children }) {
   return (
-    <div className={styles.block}>
+    <div className={`${styles.block} ${quiet ? styles.quiet : ''}`}>
       <h3 className={styles.blockTitle}>{title}</h3>
       {intro && <p className={styles.blockIntro}>{intro}</p>}
       {children}

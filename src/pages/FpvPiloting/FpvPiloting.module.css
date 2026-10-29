@@ -127,8 +127,16 @@
 /* --fit is the height of the screen under the site menu and the part tabs; --lab-h is what a lab or a player can use of it,
    after the part title and its page tabs. So a lab always fits the window, whatever its height. */
 .page {
+  --head: 135px; /* the part title and its page tabs, above a lab */
   --fit: calc(100dvh - var(--nav-height) - 56px);
-  --lab-h: clamp(340px, calc(var(--fit) - 135px), 780px);
+  --lab-h: clamp(340px, calc(var(--fit) - var(--head)), 780px);
+}
+
+/* a tall screen also shows the introductions above the lab, which take more room */
+@media (min-height: 861px) {
+  .page {
+    --head: 185px;
+  }
 }
 
 .section {
@@ -303,6 +311,8 @@
 
 .page[data-full='true'] {
   --nav-height: 0px;
+  --head: 135px;
+  --lab-h: clamp(340px, calc(var(--fit) - var(--head)), 1100px);
   height: 100%;
   overflow: auto;
   background: var(--color-bg-primary);
@@ -317,4 +327,21 @@
 .page[data-full='true'] :global(.container) {
   max-width: none;
   padding-inline: var(--space-8);
+}
+
+/* full screen is for the lab: no introductions, the lab takes the rest of the window */
+.page[data-full='true'] .sectionIntro,
+.page[data-full='true'] .blockIntro,
+.page[data-full='true'] .blockTitle {
+  display: none;
+}
+
+.quiet .blockTitle,
+.quiet .blockIntro {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
 }
