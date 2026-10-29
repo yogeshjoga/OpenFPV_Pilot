@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
-import { ArrowLeft, ArrowRight, Brain, Flag, Gauge, GraduationCap, Repeat, SlidersHorizontal } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight, Brain, Flag, Gauge, GraduationCap, Maximize2, Minimize2, Repeat, SlidersHorizontal } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import Modes from './sections/Modes.jsx'
@@ -29,6 +29,36 @@ const readPart = () => {
 export default function FpvPiloting() {
   useDocumentMeta('FPV Piloting | EGIRE Robotics', 'Learn FPV piloting: Angle, Acro and 3D modes on a 3D drone, training tasks for each mode, the 0, 8, 6 and 7 loops with animated sticks, muscle memory, focus, braking and flying at 100+ km/h, and race moves and stunts.')
   const [part, setPart] = useState(readPart)
+  const rootRef = useRef(null)
+  const [native, setNative] = useState(false) // the browser's own full screen
+  const [pseudo, setPseudo] = useState(false) // a full screen made of the page itself, where the browser has none (iPhone, some embedded views)
+  const full = native || pseudo
+
+  // full screen follows the browser: Esc leaves it, and so does the button
+  useEffect(() => {
+    const sync = () => setNative(document.fullscreenElement === rootRef.current)
+    document.addEventListener('fullscreenchange', sync)
+    return () => document.removeEventListener('fullscreenchange', sync)
+  }, [])
+  useEffect(() => {
+    if (!pseudo) return undefined
+    const onKey = (e) => { if (e.key === 'Escape') setPseudo(false) }
+    document.documentElement.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKey)
+    return () => { document.documentElement.style.overflow = ''; window.removeEventListener('keydown', onKey) }
+  }, [pseudo])
+
+  const toggleFull = useCallback(async () => {
+    if (document.fullscreenElement) { await document.exitFullscreen(); return }
+    if (pseudo) { setPseudo(false); return }
+    const el = rootRef.current
+    try {
+      if (!el?.requestFullscreen) throw new Error('no full screen')
+      await el.requestFullscreen()
+    } catch {
+      setPseudo(true)
+    }
+  }, [pseudo])
 
   // the back and forward buttons move between parts
   useEffect(() => {
@@ -45,6 +75,7 @@ export default function FpvPiloting() {
       return id
     })
     window.scrollTo({ top: 0 })
+    rootRef.current?.scrollTo({ top: 0 }) // in full screen the page is what scrolls
   }, [])
 
   const index = PARTS.findIndex((p) => p.id === part)
@@ -54,7 +85,7 @@ export default function FpvPiloting() {
 
   return (
     <PageWrapper>
-      <div className={styles.page}>
+      <div ref={rootRef} className={styles.page} data-full={full} data-pseudo={pseudo}>
       <nav className={styles.subnav} aria-label="Parts of the course">
         <div className={`container ${styles.subnavInner}`}>
           <a href={window.location.pathname} className={styles.subnavLink} aria-current={part === 'start' ? 'page' : undefined} onClick={(e) => { e.preventDefault(); go('start') }}>Overview</a>
@@ -63,6 +94,10 @@ export default function FpvPiloting() {
               {i + 1}. {p.label}
             </a>
           ))}
+          <button type="button" className={styles.fullButton} aria-pressed={full} onClick={toggleFull} title={full ? 'Leave full screen (Esc)' : 'Full screen'}>
+            {full ? <Minimize2 size={16} aria-hidden="true" /> : <Maximize2 size={16} aria-hidden="true" />}
+            {full ? 'Exit full screen' : 'Full screen'}
+          </button>
         </div>
       </nav>
 

@@ -275,3 +275,46 @@
     display: none;
   }
 }
+
+/* ---- full screen: the site menu goes, and the labs get the whole window ---- */
+
+.fullButton {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent-primary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-accent-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.fullButton:hover,
+.fullButton[aria-pressed='true'] {
+  color: var(--color-on-accent);
+  background: var(--color-accent-primary);
+}
+
+.page[data-full='true'] {
+  --nav-height: 0px;
+  height: 100%;
+  overflow: auto;
+  background: var(--color-bg-primary);
+}
+
+.page[data-pseudo='true'] {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+
+.page[data-full='true'] :global(.container) {
+  max-width: none;
+  padding-inline: var(--space-8);
+}
