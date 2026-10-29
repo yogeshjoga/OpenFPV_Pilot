@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { LOOPS, STICKS } from '../data/loops.js'
-import { LOOPS as SHAPES, initialState, poseFor, routeFor, sampleAt, stepMode, sticksFor } from '../sim.js'
+import { COMBOS } from '../data/combos.js'
+import { LOOPS as SHAPES, compass, describeFlight, flyCombo, headingDeg, initialFlight, poseFor, routeFor, sampleAt, speedOf, stepFlight, sticksFor } from '../sim.js'
 import { sceneTrack } from '../maneuvers.js'
 import { Block, Section, useFrame } from '../shared.jsx'
 import Cockpit from '../widgets/Cockpit.jsx'
@@ -9,6 +10,8 @@ import DroneStage from '../widgets/DroneStage.jsx'
 import { PlayerControls, StepNow } from '../widgets/PlayerParts.jsx'
 import Sticks, { AXIS } from '../widgets/Sticks.jsx'
 import Pages from '../widgets/Pages.jsx'
+import { MovePath } from './Moves.jsx'
+import moveStyles from './Moves.module.css'
 import styles from './Loops.module.css'
 
 const RAD = Math.PI / 180
@@ -16,18 +19,35 @@ const PHASE_COLORS = ['#3e8ef7', '#30a46c', '#f5a524', '#e5484d', '#a371f7']
 const PHASE_HEX = PHASE_COLORS.map((c) => parseInt(c.slice(1), 16))
 const DRONE_SCALE = 0.5 // the 3D drone is drawn larger than life on the path, so it can be seen
 
-// ---- the four stick movements, each shown on its own ----
+// ---- the four stick movements, each shown on its own, and then in combination ----
 
-function StickGuide() {
-  const [axis, setAxis] = useState('throttle')
+// the way the drone is going, in words: the first thing a student should see when a stick moves
+function movingWords(state, input = {}) {
+  const parts = []
+  if (input.yaw > 0.05) parts.push('turning right')
+  else if (input.yaw < -0.05) parts.push('turning left')
+  if (state.vz > 0.4) parts.push('going up')
+  else if (state.vz < -0.4) parts.push('going down')
+  if (state.vf > 0.5) parts.push('flying forward')
+  else if (state.vf < -0.5) parts.push('flying backward')
+  if (state.vr > 0.5) parts.push('sliding right')
+  else if (state.vr < -0.5) parts.push('sliding left')
+  return parts.length ? parts.join(' and ') : 'hovering'
+}
+
+const TILT_MM = 25 // millimetres on the mat for each metre flown, when the drone is shown on its own
+
+function SingleStick({ axis }) {
   const [values, setValues] = useState({ throttle: 0.4, yaw: 0, pitch: 0, roll: 0 })
+  const [hud, setHud] = useState({ alt: 2, heading: 0, speed: 0, moving: 'hovering' })
   const poseRef = useRef({})
-  const simRef = useRef(initialState(2))
+  const simRef = useRef(initialFlight(2))
   const clock = useRef(0)
   const tick = useRef(0)
   const calm = useReducedMotion()
 
-  const pick = (id) => { setAxis(id); simRef.current = initialState(2); clock.current = 0 }
+  // a new stick starts again from a hover
+  useEffect(() => { simRef.current = initialFlight(2); clock.current = 0 }, [axis])
 
   useFrame((dt) => {
     clock.current += dt
@@ -35,12 +55,20 @@ function StickGuide() {
     const input = { throttle: 0.4, yaw: 0, pitch: 0, roll: 0 }
     if (axis === 'throttle') input.throttle = 0.4 + 0.12 * wave
     else input[axis] = 0.6 * wave
-    const sim = stepMode(simRef.current, input, 'angle', dt)
-    // keep the drone in view: bring it back to the middle of the mat slowly when it is high or low
+    // a tilted drone holds itself up less, so for pitch and roll the demo adds the throttle a pilot would, to keep the height
+    if (axis === 'pitch' || axis === 'roll') {
+      const was = simRef.current
+      input.throttle = Math.min(0.62, 0.4 / Math.max(0.5, Math.cos(was.pitch * RAD) * Math.cos(was.roll * RAD)))
+    }
+    const sim = stepFlight(simRef.current, input, dt)
     simRef.current = sim
-    poseRef.current = { pitch: sim.pitch * RAD, roll: sim.roll * RAD, yaw: sim.yaw * RAD, height: sim.alt * 40 }
+    // the drone really moves: east to the right of the mat, north away from the viewer
+    poseRef.current = { pitch: sim.pitch * RAD, roll: sim.roll * RAD, yaw: sim.yaw * RAD, height: sim.alt * 40, x: sim.e * TILT_MM, z: -sim.n * TILT_MM }
     tick.current += 1
-    if (tick.current % 3 === 0) setValues(input)
+    if (tick.current % 3 === 0) {
+      setValues(input)
+      setHud({ alt: sim.alt, heading: headingDeg(sim), speed: speedOf(sim), moving: movingWords(sim, input) })
+    }
   }, !calm)
 
   const info = STICKS.find((s) => s.id === axis)
@@ -56,21 +84,154 @@ function StickGuide() {
           <span>{AXIS[axis].label}</span>
           <b>{now === 'centre' ? 'centre' : `stick ${now}`}</b>
         </div>
+        <FlightReadout alt={hud.alt} heading={hud.heading} speed={hud.speed} moving={hud.moving} />
       </DroneStage>
       <div className={styles.guidePanel}>
-        <div className={styles.axisTabs} role="tablist" aria-label="Choose a stick movement">
-          {STICKS.map((s) => (
-            <button key={s.id} type="button" role="tab" aria-selected={axis === s.id} onClick={() => pick(s.id)} style={{ '--c': AXIS[s.id].color }}>{s.name}</button>
-          ))}
-        </div>
         <Sticks values={values} highlight={axis} compact big />
         <div className={styles.axisCard} style={{ '--c': AXIS[axis].color }}>
           <h4>{info.name} <small>{info.stick}</small></h4>
           <p>{info.moves}</p>
           <p className={styles.feel}><b>How it feels:</b> {info.feel}</p>
           <p><b>What it does:</b> {info.effect}</p>
+          {(axis === 'pitch' || axis === 'roll') && <p className={styles.feel}><b>In this demo</b> the throttle rises a little as the drone tilts, to hold the height, as a pilot would.</p>}
         </div>
       </div>
+    </div>
+  )
+}
+
+// the height, the direction and the speed of the drone, over the 3D view
+function FlightReadout({ alt, heading, speed, moving }) {
+  return (
+    <div className={styles.readout} aria-live="off">
+      <span className={styles.readTitle}>{moving}</span>
+      <div><span>Height</span><b>{alt.toFixed(1)} m</b></div>
+      <div><span>Nose points</span><b>{compass(heading)} ({Math.round(heading)}°)</b></div>
+      <div><span>Speed</span><b>{speed.toFixed(1)} m/s</b></div>
+    </div>
+  )
+}
+
+// a combination of stick moves, flown from a hover: the path is drawn in the 3D view, with the height as well as the direction
+function ComboPlayer() {
+  const calm = useReducedMotion()
+  const [id, setId] = useState(COMBOS[0].id)
+  const [playing, setPlaying] = useState(!calm)
+  const [speed, setSpeed] = useState(1)
+  const [time, setTime] = useState(0)
+  const poseRef = useRef({})
+  const combo = COMBOS.find((c) => c.id === id)
+  const samples = useMemo(() => flyCombo(combo.steps), [combo])
+  const duration = samples[samples.length - 1].t
+  const result = useMemo(() => describeFlight(samples), [samples])
+  const track = useMemo(() => sceneTrack(samples, 'free', { rigY: 36 * DRONE_SCALE, colors: PHASE_HEX }), [samples])
+
+  useEffect(() => { setTime(0); setPlaying(!calm) }, [combo, calm])
+  useFrame((dt) => {
+    setTime((t) => {
+      const next = t + dt * speed
+      return next > duration + 1 ? 0 : next
+    })
+  }, playing)
+
+  const now = Math.min(time, duration)
+  const sample = samples.reduce((best, p) => (p.t <= now ? p : best), samples[0])
+  useEffect(() => {
+    poseRef.current = { pitch: -sample.pitchUp * RAD, roll: sample.roll * RAD, yaw: sample.yaw * RAD, ...track.place(sample), phase: sample.phase }
+  }, [sample, track])
+
+  const goStep = (k) => { setPlaying(false); setTime((samples.find((p) => p.phase === k) ?? samples[0]).t) }
+  const steps = combo.steps.length
+  const step = combo.steps[sample.phase]
+  const climb = sample.alt - result.altStart
+  const moving = sample.speed < 0.3 ? 'hovering' : `flying ${compass(sample.bearing)}`
+
+  return (
+    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - var(--head) - 120px), 1100px)' }}>
+      <div className={moveStyles.moves} role="radiogroup" aria-label="Choose a combination">
+        {COMBOS.map((c) => (
+          <button key={c.id} type="button" role="radio" aria-checked={id === c.id} onClick={() => setId(c.id)}><b>{c.name}</b></button>
+        ))}
+      </div>
+      <Cockpit
+        color={PHASE_COLORS[sample.phase % PHASE_COLORS.length]}
+        intro={<><b>{combo.uses}.</b> {combo.why}</>}
+        stage={(
+          <DroneStage poseRef={poseRef} label={`The 3D drone flying: ${combo.name}`} scale={DRONE_SCALE} track={track}>
+            <FlightReadout alt={sample.alt} heading={sample.bearing} speed={sample.speed} moving={moving} />
+          </DroneStage>
+        )}
+        controls={(
+          <PlayerControls
+            playing={playing}
+            onToggle={() => setPlaying((p) => !p)}
+            onAgain={() => { setTime(0); setPlaying(true) }}
+            onPrev={() => goStep(Math.max(0, sample.phase - 1))}
+            onNext={() => goStep(Math.min(steps - 1, sample.phase + 1))}
+            time={now}
+            duration={duration}
+            onScrub={(t) => { setPlaying(false); setTime(t) }}
+            speed={speed}
+            onSpeed={setSpeed}
+            label="Move along the combination"
+          />
+        )}
+        step={<StepNow index={sample.phase} total={steps} title={step.title} text={step.text} />}
+        sticks={<Sticks values={sample.sticks} compact side />}
+        path={(
+          <figure className={moveStyles.pathBox}>
+            <MovePath samples={samples} view="top" time={now} phase={sample.phase} />
+            <figcaption>Seen from above, north at the top. The arrow is the drone and its nose.</figcaption>
+          </figure>
+        )}
+        tabs={[
+          {
+            id: 'result',
+            label: 'What happened',
+            node: (
+              <ul className={styles.plainList}>
+                <li>The drone started at <b>{result.altStart.toFixed(1)} m</b> high and finished at <b>{result.altEnd.toFixed(1)} m</b>. Its highest point was <b>{result.altMax.toFixed(1)} m</b>.</li>
+                <li>{result.direction ? <>It ended <b>{result.distance.toFixed(0)} metres {result.direction}</b> of where it began.</> : <>It ended back near where it began.</>}</li>
+                <li>Right now ({now.toFixed(1)} s in): {climb > 0.3 ? 'it is ' + climb.toFixed(1) + ' m higher' : climb < -0.3 ? 'it is ' + (-climb).toFixed(1) + ' m lower' : 'it is at about the starting height'}, and {moving}.</li>
+              </ul>
+            ),
+          },
+          {
+            id: 'steps',
+            label: 'All the steps',
+            node: (
+              <ol className={styles.phases}>
+                {combo.steps.map((p, k) => (
+                  <li key={p.title} className={k === sample.phase ? styles.activePhase : ''} style={{ '--c': PHASE_COLORS[k % PHASE_COLORS.length] }}>
+                    <button type="button" onClick={() => goStep(k)}>
+                      <span className={styles.phaseNum}>{k + 1}</span>
+                      <span>
+                        <b>{p.title}</b>
+                        <span className={styles.phaseText}>{p.text}</span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            ),
+          },
+        ]}
+      />
+    </div>
+  )
+}
+
+function StickGuide() {
+  const [axis, setAxis] = useState('throttle')
+  return (
+    <div className={styles.guideShell} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - var(--head) - 50px), 1100px)' }}>
+      <div className={styles.axisTabs} role="tablist" aria-label="Choose a stick movement">
+        {STICKS.map((s) => (
+          <button key={s.id} type="button" role="tab" aria-selected={axis === s.id} onClick={() => setAxis(s.id)} style={{ '--c': AXIS[s.id].color }}>{s.name}</button>
+        ))}
+        <button type="button" role="tab" aria-selected={axis === 'combos'} onClick={() => setAxis('combos')} className={styles.comboTab}>Combinations</button>
+      </div>
+      {axis === 'combos' ? <ComboPlayer /> : <SingleStick axis={axis} />}
     </div>
   )
 }

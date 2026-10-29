@@ -209,3 +209,68 @@ export function stopping(kmh, reactionS, brakeDeg) {
   const braking = (v * v) / (2 * decel)
   return { v, decel, reaction, braking, total: reaction + braking, seconds: reactionS + v / decel }
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// Flying around: Angle mode with the drone's position. The tilt pushes it sideways, the yaw says which way "forward" is,
+// and the throttle sets the height. A simple model for teaching which way each stick sends the drone.
+// ---------------------------------------------------------------------------------------------------------------
+
+const DRAG = 0.8 // per second: the air slows the drone, so a steady tilt gives a steady speed rather than ever-faster
+export const initialFlight = (alt = 2) => ({ ...initialState(alt), e: 0, n: 0, vf: 0, vr: 0 })
+
+// Like stepMode in Angle mode, plus position. e is metres east and n is metres north, with the drone starting at the origin facing north.
+// vf and vr are the speeds forward and to the right, in the drone's own directions.
+export function stepFlight(state, input, dt) {
+  const base = stepMode(state, input, 'angle', dt)
+  const grounded = base.alt <= 0.02
+  // holding height while tilted takes g tan(angle) of sideways pull
+  const af = grounded ? 0 : G * Math.tan(clamp(base.pitch, -MAX_ANGLE, MAX_ANGLE) * RAD)
+  const ar = grounded ? 0 : G * Math.tan(clamp(base.roll, -MAX_ANGLE, MAX_ANGLE) * RAD)
+  const vf = grounded ? 0 : state.vf + (af - DRAG * state.vf) * dt
+  const vr = grounded ? 0 : state.vr + (ar - DRAG * state.vr) * dt
+  const y = base.yaw * RAD
+  const east = vf * Math.sin(y) + vr * Math.cos(y)
+  const north = vf * Math.cos(y) - vr * Math.sin(y)
+  return { ...base, vf, vr, e: state.e + east * dt, n: state.n + north * dt }
+}
+
+export const speedOf = (state) => Math.hypot(state.vf, state.vr)
+export const headingDeg = (state) => ((state.yaw % 360) + 360) % 360
+export const compass = (deg) => ['north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west', 'north-west'][Math.round(deg / 45) % 8]
+
+// Flying a combination: steps of stick moves from a hover, sampled every 1/60 s. Each step: { dur, sticks: { throttle, yaw, pitch, roll } }.
+// The samples are shaped like a move from maneuvers.js (x east, y north, heading as an angle from east) so the same path drawing works.
+export function flyCombo(steps, { alt = 2 } = {}) {
+  const hover = { throttle: HOVER_STICK, yaw: 0, pitch: 0, roll: 0 }
+  let state = initialFlight(alt)
+  let t = 0
+  const samples = []
+  steps.forEach((step, phase) => {
+    const input = { ...hover, ...step.sticks }
+    const n = Math.max(1, Math.round(step.dur * 60))
+    for (let k = 0; k < n; k += 1) {
+      samples.push({
+        t, x: state.e, y: state.n, alt: state.alt, phase,
+        heading: 90 - headingDeg(state), nose: 90 - headingDeg(state), yaw: headingDeg(state), pitchUp: -state.pitch, roll: state.roll,
+        speed: speedOf(state), sticks: input, bearing: headingDeg(state),
+      })
+      state = stepFlight(state, input, 1 / 60)
+      t += 1 / 60
+    }
+  })
+  const last = samples[samples.length - 1]
+  samples.push({ ...last, t, x: state.e, y: state.n, alt: state.alt })
+  return samples
+}
+
+
+// what a flown combination did, in numbers: how far it went, which way, and its heights
+export function describeFlight(samples) {
+  const first = samples[0]
+  const last = samples[samples.length - 1]
+  const de = last.x - first.x
+  const dn = last.y - first.y
+  const distance = Math.hypot(de, dn)
+  const bearing = ((Math.atan2(de, dn) / RAD) + 360) % 360
+  return { distance, direction: distance < 0.5 ? null : compass(bearing), altStart: first.alt, altEnd: last.alt, altMax: Math.max(...samples.map((p) => p.alt)), altMin: Math.min(...samples.map((p) => p.alt)) }
+}

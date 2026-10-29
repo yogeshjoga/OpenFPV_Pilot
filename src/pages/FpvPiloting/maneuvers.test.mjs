@@ -314,3 +314,20 @@ test('the drone faces east in a side view, and along its heading from above', ()
   const top = maneuverPose(fly('racecircle')[0], 'top')
   assert.ok(Math.abs(top.yaw) < 1e-6, 'heading north is a yaw of zero')
 })
+
+
+import { flyCombo } from './sim.js'
+import { COMBOS } from './data/combos.js'
+
+test('a flight in space is laid out with its real height, and fits the mat', () => {
+  for (const c of COMBOS) {
+    const samples = flyCombo(c.steps)
+    const track = sceneTrack(samples, 'free')
+    for (const p of samples) {
+      const at = track.place(p)
+      assert.ok(Math.abs(at.x) <= 700 && Math.abs(at.z) <= 700, c.id)
+      assert.ok(Math.abs(at.height - p.alt * track.k) < 1e-6, c.id)
+    }
+    assert.equal(track.segments.length, c.steps.length, c.id)
+  }
+})

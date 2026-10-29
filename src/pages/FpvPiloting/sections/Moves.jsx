@@ -17,7 +17,7 @@ const PHASE_HEX = PHASE_COLORS.map((c) => parseInt(c.slice(1), 16))
 const DRONE_SCALE = 0.5 // the 3D drone is drawn larger than life on the path, so it can be seen
 
 // the path of the move, with the drone on it. Side view: along the ground and up. Top view: from above.
-function MovePath({ samples, view, time, phase }) {
+export function MovePath({ samples, view, time, phase }) {
   const box = useMemo(() => {
     const xs = samples.map((p) => p.x)
     const ys = samples.map((p) => p.y)

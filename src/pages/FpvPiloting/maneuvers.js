@@ -98,12 +98,15 @@ export function sceneTrack(samples, view, { rigY = 12, colors = [0x3e8ef7], widt
   const h = y1 - y0
   const cx = (x0 + x1) / 2
   const cy = (y0 + y1) / 2
-  const k = clamp(width / Math.max(view === 'top' ? Math.max(w, h) : w, 6), 8, 44)
+  const k = clamp(width / Math.max(view === 'side' ? w : Math.max(w, h), 6), 8, 44)
+  const altMax = view === 'free' ? Math.max(...samples.map((p) => p.alt)) : 0
 
   // where the drone is: x, z and its height above the mat, all in mm (the height is measured from the mat, as the 3D drone expects)
   const place = (p) => view === 'side'
     ? { x: (p.x - cx) * k, z: 0, height: (p.y - y0) * k }
-    : { x: (p.x - cx) * k, z: -(p.y - cy) * k, height: FLIGHT_HEIGHT }
+    : view === 'free'
+      ? { x: (p.x - cx) * k, z: -(p.y - cy) * k, height: p.alt * k } // a flight in space: the real height as well as the position
+      : { x: (p.x - cx) * k, z: -(p.y - cy) * k, height: FLIGHT_HEIGHT }
 
   const phases = Math.max(...samples.map((p) => p.phase)) + 1
   const segments = Array.from({ length: phases }, (_, i) => ({
@@ -121,6 +124,8 @@ export function sceneTrack(samples, view, { rigY = 12, colors = [0x3e8ef7], widt
 
   const fit = view === 'side'
     ? { center: [0, rigY + (h * k) / 2, 0], width: w * k + 260, height: h * k + 260, elevation: 12 }
-    : { center: [0, rigY + FLIGHT_HEIGHT, 0], width: w * k + 220, height: h * k + 220, elevation: 58 }
+    : view === 'free'
+      ? { center: [0, rigY + (altMax * k) / 2, 0], width: w * k + 260, height: h * k * 0.6 + altMax * k + 240, elevation: 38 }
+      : { center: [0, rigY + FLIGHT_HEIGHT, 0], width: w * k + 220, height: h * k + 220, elevation: 58 }
   return { k, place, segments, fit }
 }

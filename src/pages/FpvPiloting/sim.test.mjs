@@ -160,3 +160,88 @@ test('stopping from 100 km/h: reaction and braking add up, and a faster drone ne
 test('leaning back harder stops the drone in less room', () => {
   assert.ok(stopping(100, 0.4, 65).braking < stopping(100, 0.4, 35).braking)
 })
+
+import { compass, flyCombo, headingDeg, initialFlight, speedOf, stepFlight } from './sim.js'
+
+const fly = (input, seconds, state = initialFlight(), dt = 1 / 60) => {
+  let s = state
+  for (let t = 0; t < seconds; t += dt) s = stepFlight(s, typeof input === 'function' ? input(t) : input, dt)
+  return s
+}
+const hoverIn = { throttle: 0.4, yaw: 0, pitch: 0, roll: 0 }
+
+test('flight: hovering stays put, pitch forward goes north, roll right goes east, and letting go slows to a stop', () => {
+  const still = fly(hoverIn, 3)
+  assert.ok(Math.hypot(still.e, still.n) < 0.05)
+  const north = fly({ ...hoverIn, pitch: 0.5 }, 3)
+  assert.ok(north.n > 5 && Math.abs(north.e) < 0.1, `north ${north.n} east ${north.e}`)
+  const east = fly({ ...hoverIn, roll: 0.5 }, 3)
+  assert.ok(east.e > 5 && Math.abs(east.n) < 0.1)
+  const stopped = fly(hoverIn, 6, north)
+  assert.ok(speedOf(stopped) < 0.3, `speed ${speedOf(stopped)}`)
+})
+
+test('flight: forward means the way the nose points, so after a quarter turn to the right, forward goes east', () => {
+  let s = fly({ ...hoverIn, yaw: 0.25 }, 1, initialFlight()) // 90 degrees to the right
+  assert.ok(Math.abs(headingDeg(s) - 90) < 2, `heading ${headingDeg(s)}`)
+  s = fly({ ...hoverIn, pitch: 0.5 }, 3, { ...s, yaw: 90 })
+  assert.ok(s.e > 5 && Math.abs(s.n) < 1)
+  assert.equal(compass(90), 'east')
+  assert.equal(compass(350), 'north')
+})
+
+test('flight: a tilted drone sinks unless the throttle is raised, and throttle up climbs, throttle down descends', () => {
+  const sinks = fly({ ...hoverIn, pitch: 0.7 }, 3)
+  assert.ok(sinks.alt < 1.7, `alt ${sinks.alt}`)
+  const holds = fly({ ...hoverIn, pitch: 0.7, throttle: 0.52 }, 3)
+  assert.ok(holds.alt > sinks.alt + 0.5)
+  assert.ok(fly({ ...hoverIn, throttle: 0.6 }, 2).alt > 3)
+  assert.ok(fly({ ...hoverIn, throttle: 0.3 }, 2).alt < 1.5)
+})
+
+test('flight: on the ground the drone does not slide', () => {
+  const s = fly({ ...hoverIn, throttle: 0, pitch: 0.6 }, 3, initialFlight(0))
+  assert.ok(Math.hypot(s.e, s.n) < 0.01)
+})
+
+test('flight: a banked turn (forward, roll and yaw to the right) curves to the right', () => {
+  const s = fly({ ...hoverIn, throttle: 0.5, pitch: 0.4, roll: 0.2, yaw: 0.15 }, 2)
+  assert.ok(s.e > 2, `east ${s.e}`)
+  assert.ok(headingDeg(s) > 40 && headingDeg(s) < 140, `heading ${headingDeg(s)}`)
+})
+
+test('a combination flies the steps in order and samples like a move', () => {
+  const samples = flyCombo([{ dur: 1, sticks: {} }, { dur: 2, sticks: { pitch: 0.5, throttle: 0.5 } }])
+  assert.equal(new Set(samples.map((p) => p.phase)).size, 2)
+  assert.ok(samples.at(-1).y > 3, 'it went north')
+  for (const p of samples) assert.ok(Number.isFinite(p.x) && Number.isFinite(p.alt) && Number.isFinite(p.heading))
+  assert.ok(Math.abs(samples[0].heading - 90) < 0.01, 'facing north is 90 degrees from east')
+})
+
+import { COMBOS } from './data/combos.js'
+import { describeFlight } from './sim.js'
+
+test('combinations: every step has words, and each flight does what it says', () => {
+  for (const c of COMBOS) {
+    assert.ok(c.name && c.uses && c.why && c.steps.length >= 3, c.id)
+    for (const s of c.steps) assert.ok(s.title && s.text && s.dur > 0, `${c.id} ${s.title}`)
+  }
+  const flight = (id) => describeFlight(flyCombo(COMBOS.find((c) => c.id === id).steps))
+  const forward = flight('forward')
+  assert.equal(forward.direction, 'north')
+  assert.ok(forward.distance > 8, `forward ${forward.distance}`)
+  assert.ok(forward.altMin > 1.4 && forward.altMax < 2.8, `height held: ${forward.altMin} to ${forward.altMax}`)
+  const climb = flight('climbforward')
+  assert.equal(climb.direction, 'north')
+  assert.ok(climb.altMax > climb.altStart + 1.5, `climb ${climb.altMax}`)
+  const slide = flight('slide')
+  assert.equal(slide.direction, 'east')
+  const bank = flight('bank')
+  assert.ok(bank.distance > 5)
+  const spiral = flight('spiral')
+  assert.ok(spiral.altMax > spiral.altStart + 1.5)
+  // the square: it ends near where it began, still at about the same height
+  const square = flight('square')
+  assert.ok(square.distance < 6, `square ends ${square.distance} m from the start`)
+  assert.ok(square.altMin > 1.2 && square.altMax < 3, `square height ${square.altMin} to ${square.altMax}`)
+})
