@@ -38,8 +38,9 @@ function MovePath({ samples, view, time, phase }) {
   const Y = (p) => (box.h - (p.y - box.y0)).toFixed(2)
   const points = (list) => list.map((p) => `${X(p)},${Y(p)}`).join(' ')
   const size = Math.max(box.w, box.h * 1.6) / 22
-  const angle = view === 'side' ? here.pitchUp : here.heading
-  const upright = Math.cos((here.roll * Math.PI) / 180) >= 0
+  const angle = here.nose
+  // which side of the arrow the top of the drone is on: upside down puts it on the other side, and so does having turned round
+  const topSide = (Math.cos((here.roll * Math.PI) / 180) >= 0 ? -1 : 1) * (Math.cos((here.yaw * Math.PI) / 180) >= 0 ? 1 : -1)
   return (
     <svg viewBox={`0 0 ${box.w} ${box.h}`} className={loop.path} role="img" aria-label={view === 'side' ? 'The path of the move, seen from the side, with the drone on it' : 'The path of the move, seen from above, with the drone on it'}>
       <rect width={box.w} height={box.h} className={loop.grid} />
@@ -51,7 +52,7 @@ function MovePath({ samples, view, time, phase }) {
       <g transform={`translate(${X(here)} ${Y(here)}) rotate(${90 - angle}) scale(${size / 2})`}>
         <circle r="1.9" className={loop.droneHalo} />
         <path d="M0 -2.1 L1.4 1.5 L0 0.8 L-1.4 1.5 Z" className={loop.droneArrow} />
-        {view === 'side' && <circle cx={upright ? -1.7 : 1.7} cy="0.2" r="0.55" className={styles.topMark} />}
+        {view === 'side' && <circle cx={topSide * 1.7} cy="0.2" r="0.55" className={styles.topMark} />}
       </g>
     </svg>
   )
@@ -63,7 +64,7 @@ function MovePlayer({ move }) {
   const [speed, setSpeed] = useState(1)
   const [time, setTime] = useState(0)
   const poseRef = useRef({})
-  const samples = useMemo(() => flyManeuver(move.phases, { view: move.view, speed: move.speed }), [move])
+  const samples = useMemo(() => flyManeuver(move.phases, { view: move.view, speed: move.speed, lean: move.lean ?? 15 }), [move])
   const duration = samples[samples.length - 1].t
 
   useEffect(() => { setTime(0); setPlaying(!calm) }, [move, calm])

@@ -15,14 +15,22 @@ const ease = (k) => k * k * (3 - 2 * k)
 //             Top view: positive is a turn to the left.
 //   dOffset   how much the drone rotates beyond the flight path (side view), in degrees; positive is nose up. A flip is a rotation with no path change.
 //   dRoll     how much the drone rolls, in degrees, positive to the right
+//   dYaw      how much the drone turns about its vertical axis beyond its flight path, in degrees, positive to the right (a pirouette, a stall turn)
 //   speed     the speed at the end of the phase in m/s; it changes smoothly from the speed before
 // options: view 'side' (x forward, y up) or 'top' (x east, y north); lean, the nose-down tilt of a cruising drone in degrees
 export function flyManeuver(phases, { view = 'side', lean = 15, speed = 10, start = { x: 0, y: 0 } } = {}) {
+  // the drone's own pitch, as the 3D model needs it: once the drone has turned round (yaw past 90 degrees) its nose points the other way along x,
+  // so the angle is measured from the other side
+  const bodyPitch = (heading, offset, yaw) => {
+    const nose = view === 'side' ? heading + offset : -lean
+    return Math.cos(yaw * RAD) < 0 && view === 'side' ? 180 - nose : nose
+  }
   const samples = []
   let { x, y } = start
   let heading = view === 'side' ? 0 : 90
   let offset = -lean // the nose points a little below the flight path while cruising
   let roll = 0
+  let yaw = 0
   let v = speed
   let t = 0
   let prev = { ...NEUTRAL }
@@ -36,7 +44,7 @@ export function flyManeuver(phases, { view = 'side', lean = 15, speed = 10, star
       const u = k / steps
       const blend = ease(Math.min(1, (u * phase.dur) / SMOOTH))
       const sticks = { throttle: lerp(prev.throttle, target.throttle, blend), yaw: lerp(prev.yaw, target.yaw, blend), pitch: lerp(prev.pitch, target.pitch, blend), roll: lerp(prev.roll, target.roll, blend) }
-      samples.push({ t, x, y, heading, pitchUp: view === 'side' ? heading + offset : -lean, roll, speed: v, phase: index, sticks })
+      samples.push({ t, x, y, heading, nose: view === 'side' ? heading + offset : heading - yaw, pitchUp: bodyPitch(heading, offset, yaw), roll, yaw, speed: v, phase: index, sticks })
       const nextHeading = heading + ((phase.dHeading ?? 0) / steps)
       const mid = ((heading + nextHeading) / 2) * RAD
       v = lerp(vStart, vEnd, (k + 1) / steps)
@@ -45,12 +53,13 @@ export function flyManeuver(phases, { view = 'side', lean = 15, speed = 10, star
       heading = nextHeading
       offset += (phase.dOffset ?? 0) / steps
       roll += (phase.dRoll ?? 0) / steps
+      yaw += (phase.dYaw ?? 0) / steps
       t += dt
     }
     prev = target
   })
   const last = samples[samples.length - 1]
-  samples.push({ ...last, t, x, y, heading, pitchUp: view === 'side' ? heading + offset : -lean, roll, speed: v })
+  samples.push({ ...last, t, x, y, heading, nose: view === 'side' ? heading + offset : heading - yaw, pitchUp: bodyPitch(heading, offset, yaw), roll, yaw, speed: v })
   return samples
 }
 
@@ -59,7 +68,7 @@ export function maneuverPose(sample, view, y0 = 0) {
   return {
     pitch: -sample.pitchUp * RAD,
     roll: sample.roll * RAD,
-    yaw: view === 'top' ? -(sample.heading - 90) * RAD : 0,
+    yaw: ((view === 'top' ? -(sample.heading - 90) : 0) + sample.yaw) * RAD,
     height: view === 'side' ? Math.min(220, Math.max(0, (sample.y - y0) * 5)) : 40,
   }
 }

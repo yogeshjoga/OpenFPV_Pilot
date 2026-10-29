@@ -5,7 +5,7 @@ import { flyManeuver, maneuverPose, phaseStart } from './maneuvers.js'
 
 const fly = (id) => {
   const move = MOVES.find((m) => m.id === id)
-  return flyManeuver(move.phases, { view: move.view, speed: move.speed })
+  return flyManeuver(move.phases, { view: move.view, speed: move.speed, lean: move.lean ?? 15 })
 }
 const last = (s) => s[s.length - 1]
 
@@ -115,4 +115,90 @@ test('the pose for the 3D drone: nose-down is positive, a side view stays on one
   const turn = fly('racecircle').find((p) => p.phase === 2)
   assert.notEqual(maneuverPose(turn, 'top').yaw, 0)
   assert.ok(maneuverPose(turn, 'top').roll < 0, 'banked to the left')
+})
+
+test('there are twenty moves, sixteen stunts and four race moves, each with a distinct id', () => {
+  assert.ok(MOVES.length >= 20)
+  assert.equal(new Set(MOVES.map((m) => m.id)).size, MOVES.length)
+  assert.ok(MOVES.filter((m) => m.group === 'stunt').length >= 16)
+})
+
+test('a double roll turns twice, a double flip turns the nose twice', () => {
+  assert.ok(Math.abs(last(fly('doubleroll')).roll - 720) < 0.5)
+  assert.ok(Math.abs(last(fly('doubleflip')).pitchUp - (-15 - 720)) < 25)
+})
+
+test('an inverted pass goes upside down and comes back, a whole turn of roll in total, and sinks while inverted', () => {
+  const s = fly('inverted')
+  assert.ok(Math.abs(last(s).roll - 360) < 0.5)
+  assert.ok(s.some((p) => Math.abs(p.roll - 180) < 1))
+  assert.ok(Math.min(...s.map((p) => p.y)) < -1)
+})
+
+test('a punch-out climbs and levels off higher than it began', () => {
+  const s = fly('punchout')
+  assert.ok(last(s).y > 12)
+  assert.ok(Math.abs(last(s).heading) < 0.5)
+})
+
+test('a stall turn climbs vertically, yaws 180 degrees almost on the spot, and leaves flying the other way', () => {
+  const s = fly('stallturn')
+  assert.ok(Math.abs(last(s).yaw - 180) < 0.5)
+  assert.ok(Math.abs(last(s).heading - 180) < 0.5)
+  const pivot = s.filter((p) => p.phase === 3)
+  const moved = Math.hypot(pivot[pivot.length - 1].x - pivot[0].x, pivot[pivot.length - 1].y - pivot[0].y)
+  assert.ok(moved < 2, `moved ${moved}`)
+  // pointing straight up when the climb ends
+  assert.ok(Math.abs(s.find((p) => p.phase === 3).heading - 90) < 0.5)
+  assert.ok(last(s).x < Math.max(...s.map((p) => p.x)) - 5, 'comes back the way it went')
+})
+
+test('once the drone has turned round, its nose angle is measured from the other side', () => {
+  const s = fly('stallturn')
+  const before = s.find((p) => p.phase === 3)
+  const after = last(s)
+  // the pitch the 3D model needs mirrors the path angle after the turn
+  assert.ok(Math.abs(before.pitchUp - 90) < 0.5)
+  assert.ok(Math.abs(after.pitchUp - (180 - after.nose)) < 0.5)
+})
+
+test('a dive bomb goes up, then down below where it began, and ends level', () => {
+  const s = fly('divebomb')
+  assert.ok(Math.max(...s.map((p) => p.y)) > 8)
+  assert.ok(last(s).y < -5)
+  assert.ok(Math.abs(last(s).heading) < 0.5)
+})
+
+test('an outside loop goes round below the start, turning the path the other way from a power loop', () => {
+  const s = fly('outsideloop')
+  assert.ok(Math.abs(last(s).heading + 360) < 0.5)
+  assert.ok(Math.min(...s.map((p) => p.y)) < -6)
+  assert.ok(Math.abs(last(s).y) < 6)
+})
+
+test('a rolling loop does a full loop and a full roll together', () => {
+  const s = fly('rollingloop')
+  assert.ok(Math.abs(last(s).heading - 360) < 0.5)
+  assert.ok(Math.abs(last(s).roll - 360) < 0.5)
+  assert.ok(Math.max(...s.map((p) => p.y)) > 6)
+})
+
+test('a half Cuban eight loops five eighths, rolls half a turn on the diagonal, and pulls out going the other way', () => {
+  const s = fly('cuban')
+  assert.ok(Math.abs(last(s).heading - 180) < 0.5)
+  assert.ok(Math.abs(last(s).roll - 180) < 0.5)
+  assert.ok(Math.abs(Math.max(...s.map((p) => p.heading)) - 225) < 0.5)
+  // the roll happens on the 45 degree line, with the path heading steady
+  const line = s.filter((p) => p.phase === 2)
+  assert.ok(Math.abs(line[0].heading - line[line.length - 1].heading) < 0.5)
+  assert.ok(Math.abs(line[0].heading - 225) < 0.5)
+  assert.ok(last(s).x < Math.max(...s.map((p) => p.x)), 'ends flying back the way it came')
+})
+
+test('a pirouette spins the nose a full turn while the drone stays nearly in place', () => {
+  const s = fly('pirouette')
+  assert.ok(Math.abs(last(s).yaw - 360) < 0.5)
+  const spin = s.filter((p) => p.phase === 1)
+  assert.ok(Math.abs(spin[spin.length - 1].nose - spin[0].nose) > 300)
+  assert.ok(Math.hypot(last(s).x, last(s).y - 0) < 6)
 })

@@ -2,6 +2,8 @@
 // pitch (forward, back) and roll (left, right). Stick values are typical, from -1 to 1 (throttle 0 to 1), to show what the thumbs do.
 // Every move is a list of phases; the words on screen follow the drone from one phase to the next. See maneuvers.js for what a phase means.
 
+import { MORE_STUNTS } from './moreStunts.js'
+
 export const MOVES = [
   // ------------------------------------------------------------------ stunts
   {
@@ -112,6 +114,8 @@ export const MOVES = [
     drill: ['Practise the half loop and the half roll separately.', 'Join them at 15 metres or more.', 'Do the Immelmann, then a Split-S, to fly a figure back to the start.'],
     tip: 'It is a power loop that you leave at the top with a half roll.',
   },
+
+  ...MORE_STUNTS,
 
   // ------------------------------------------------------------------ racing
   {
