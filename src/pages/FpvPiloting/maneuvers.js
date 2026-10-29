@@ -4,7 +4,7 @@
 
 const RAD = Math.PI / 180
 const STEP = 1 / 60
-const SMOOTH = 0.14 // s: a stick takes this long to move from one phase's position to the next, so it never jumps
+const SMOOTH = 0.2 // s: a stick takes this long to move from one phase's position to the next, so it never jumps
 
 export const NEUTRAL = { throttle: 0.45, yaw: 0, pitch: 0, roll: 0 }
 const lerp = (a, b, k) => a + (b - a) * k

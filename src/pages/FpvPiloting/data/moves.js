@@ -3,6 +3,7 @@
 // Every move is a list of phases; the words on screen follow the drone from one phase to the next. See maneuvers.js for what a phase means.
 
 import { MORE_STUNTS } from './moreStunts.js'
+import { MORE_RACE } from './moreRace.js'
 
 export const MOVES = [
   // ------------------------------------------------------------------ stunts
@@ -195,6 +196,7 @@ export const MOVES = [
     drill: ['Dive at 30 degrees first, then steeper.', 'Fly it high first; bring the gate lower each day.', 'Always plan the exit before you start.'],
     tip: 'Plan the pull-out before the dive. The dive is easy; the exit is the skill.',
   },
+  ...MORE_RACE,
 ]
 
 export const MOVE_GROUPS = [

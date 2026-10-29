@@ -202,3 +202,69 @@ test('a pirouette spins the nose a full turn while the drone stays nearly in pla
   assert.ok(Math.abs(spin[spin.length - 1].nose - spin[0].nose) > 300)
   assert.ok(Math.hypot(last(s).x, last(s).y - 0) < 6)
 })
+
+test('there are twelve race moves', () => {
+  assert.equal(MOVES.filter((m) => m.group === 'race').length, 12)
+  assert.equal(new Set(MOVES.map((m) => m.id)).size, MOVES.length)
+})
+
+test('a race start leaves the ground from a standstill and ends at race speed, level, at gate height', () => {
+  const s = fly('racestart')
+  assert.ok(s[0].speed < 0.5)
+  assert.ok(last(s).speed > 15)
+  assert.ok(last(s).y > 2 && last(s).y < 12, `height ${last(s).y}`)
+  assert.ok(Math.abs(last(s).heading) < 0.5)
+})
+
+test('a slalom goes left, right, left, right and ends straight and level, with the bank switching sides each time', () => {
+  const s = fly('slalom')
+  assert.ok(Math.abs(last(s).heading - 90) < 0.5)
+  assert.ok(Math.abs(last(s).roll) < 0.5)
+  const banks = []
+  for (const p of s) {
+    const side = p.roll < -25 ? -1 : p.roll > 25 ? 1 : 0
+    if (side && banks[banks.length - 1] !== side) banks.push(side)
+  }
+  assert.deepEqual(banks, [-1, 1, -1, 1])
+})
+
+test('a sweeping turn is a 90 degree turn to the left at speed', () => {
+  const s = fly('sweeper')
+  assert.ok(Math.abs(last(s).heading - 180) < 0.5)
+  assert.ok(Math.min(...s.map((p) => p.speed)) > 13)
+  assert.ok(Math.min(...s.map((p) => p.roll)) < -55)
+})
+
+test('a square corner is a 90 degree turn to the right that slows right down and uses the yaw stick', () => {
+  const s = fly('squarecorner')
+  assert.ok(Math.abs(last(s).heading - 0) < 0.5)
+  assert.ok(Math.min(...s.map((p) => p.speed)) <= 6.5)
+  assert.ok(Math.max(...s.map((p) => p.sticks.yaw)) > 0.6)
+})
+
+test('a race lap turns the path a full circle, two turns, and the speed holds up', () => {
+  const s = fly('racelap')
+  assert.ok(Math.abs(last(s).heading - 90 - 360) < 0.5)
+  assert.ok(Math.abs(last(s).roll) < 0.5)
+  assert.ok(Math.min(...s.map((p) => p.speed)) > 12)
+})
+
+test('an up-and-over climbs, then dives, and comes back to level', () => {
+  const s = fly('upover')
+  assert.ok(Math.max(...s.map((p) => p.y)) > 3)
+  assert.ok(Math.abs(last(s).heading) < 0.5)
+  assert.ok(Math.abs(last(s).y) < 6)
+})
+
+test('a sprint reaches a very high speed, and the brake brings it right down', () => {
+  const s = fly('sprint')
+  assert.ok(Math.max(...s.map((p) => p.speed)) > 24)
+  assert.ok(last(s).speed < 6)
+  assert.ok(Math.min(...s.map((p) => p.sticks.pitch)) < -0.6)
+})
+
+test('a race Split-S ends going the other way and lower', () => {
+  const s = fly('splitsgate')
+  assert.ok(Math.abs(last(s).heading + 180) < 0.5)
+  assert.ok(last(s).y < -4)
+})
