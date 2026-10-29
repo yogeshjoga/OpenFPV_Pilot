@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Brain, Gauge, GraduationCap, Repeat, SlidersHorizontal } from 'lucide-react'
+import { Brain, Flag, Gauge, GraduationCap, Repeat, SlidersHorizontal } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import Modes from './sections/Modes.jsx'
@@ -7,6 +7,7 @@ import Training from './sections/Training.jsx'
 import Loops from './sections/Loops.jsx'
 import Mind from './sections/Mind.jsx'
 import Fast from './sections/Fast.jsx'
+import Moves from './sections/Moves.jsx'
 import styles from './FpvPiloting.module.css'
 
 const SECTIONS = [
@@ -15,6 +16,7 @@ const SECTIONS = [
   { id: 'loops', label: '3. Sticks and loops' },
   { id: 'mind', label: '4. Hands and head' },
   { id: 'fast', label: '5. Flying fast' },
+  { id: 'moves', label: '6. Race moves and stunts' },
 ]
 
 const PATHS = [
@@ -23,6 +25,7 @@ const PATHS = [
   { id: 'loops', icon: Repeat, title: 'Sticks and the 0, 8, 6, 7', text: 'Every stick move explained, and four practice patterns flown on screen with the sticks moving beside them.' },
   { id: 'mind', icon: Brain, title: 'Muscle memory and focus', text: 'Exercises that build quick, steady hands, and habits that keep your head clear.' },
   { id: 'fast', icon: Gauge, title: 'Braking and speed at 100+ km/h', text: 'How much room a fast drone needs, how to brake, control speed and decide quickly.' },
+  { id: 'moves', icon: Flag, title: 'Race moves and stunts', text: 'Flips, rolls, power loops, race circles, hairpins and dive gates, all animated with the sticks.' },
 ]
 
 export default function FpvPiloting() {
@@ -78,6 +81,7 @@ export default function FpvPiloting() {
       <Loops />
       <Mind />
       <Fast />
+      <Moves />
 
       <p className={styles.foot}>Learn in a simulator first, then fly in a large open area where it is legal and safe, away from people. The numbers on this page are simple models for learning.</p>
     </PageWrapper>
