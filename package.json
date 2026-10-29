@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "test": "node --test src/pages/Simulator/bench/*.test.mjs src/pages/DroneLesson/*.test.mjs src/pages/DroneConfigurator/*.test.mjs src/pages/PidTuning/*.test.mjs src/pages/FpvPiloting/*.test.mjs",
+    "test": "node --test src/pages/Simulator/bench/*.test.mjs src/pages/DroneLesson/*.test.mjs src/pages/DroneConfigurator/*.test.mjs src/pages/PidTuning/*.test.mjs src/pages/FpvPiloting/*.test.mjs src/pages/DroneHardware/*.test.mjs",
     "check:design": "node scripts/check-design.mjs",
     "preview": "vite preview"
   },

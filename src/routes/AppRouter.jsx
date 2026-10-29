@@ -20,6 +20,7 @@ const IntroToDrones = lazy(() => import('@pages/IntroToDrones'))
 const Blog = lazy(() => import('@pages/Blog'))
 const PidTuning = lazy(() => import('@pages/PidTuning'))
 const FpvPiloting = lazy(() => import('@pages/FpvPiloting'))
+const DroneHardware = lazy(() => import('@pages/DroneHardware'))
 const Presentation = lazy(() => import('@pages/Presentation'))
 const DroneLab = lazy(() => import('@pages/DroneLab'))
 
@@ -101,6 +102,7 @@ export default function AppRouter() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/pid-tuning" element={<PidTuning />} />
           <Route path="/fpv-piloting" element={<FpvPiloting />} />
+          <Route path="/drone-hardware" element={<DroneHardware />} />
           <Route path="/presentation" element={<Presentation />} />
           <Route path="/drone-lab" element={<DroneLab />} />
           <Route path="/drone-lab/:tab" element={<DroneLab />} />

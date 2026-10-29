@@ -17,6 +17,7 @@ export const NAV_LINKS = [
       { group: 'Learn', label: 'Physics', path: '/physics', minLevel: 3 },
       { group: 'Learn', label: 'FPV Piloting', path: '/fpv-piloting' },
       { group: 'Learn', label: 'PID Tuning', path: '/pid-tuning' },
+      { group: 'Learn', label: 'Drone Hardware', path: '/drone-hardware', hint: 'Frame, vibration, power, radio' },
       { group: 'Practise', label: 'Drone Lab', path: '/drone-lab', hint: 'How it works, configurator' },
       { group: 'Practise', label: 'Wiring Lab', path: '/wiring-lab', hint: 'Lessons, practice builder' },
       { group: 'Explore', label: 'Catalog', path: '/catalog' },
