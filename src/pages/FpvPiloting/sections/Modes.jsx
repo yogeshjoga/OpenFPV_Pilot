@@ -166,6 +166,11 @@ function ModeLab() {
             <RotateCcw size={14} aria-hidden="true" /> Reset
           </button>
         </div>
+
+        <div className={styles.howNow} style={{ '--c': info.color }}>
+          <h4>How {info.name} works</h4>
+          <ol>{info.how.map((step) => <li key={step}>{step}</li>)}</ol>
+        </div>
       </div>
     </div>
   )
@@ -206,14 +211,6 @@ export default function Modes() {
       { id: 'how', label: 'How each works', node: (
         <Block title="How each mode works" intro="Choose a mode and try the same sticks in each. Drag the sticks yourself, or press a test and watch the drone. The 3D drone below is the one from the lesson.">
         <ModeLab />
-        <div className={styles.how}>
-          {MODES.map((m) => (
-            <article key={m.id} className={styles.howCard} style={{ '--c': m.color }}>
-              <h4>{m.name}</h4>
-              <ol>{m.how.map((step) => <li key={step}>{step}</li>)}</ol>
-            </article>
-          ))}
-        </div>
       </Block>
       ) },
 

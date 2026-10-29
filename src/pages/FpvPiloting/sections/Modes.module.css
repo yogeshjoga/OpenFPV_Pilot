@@ -446,3 +446,28 @@
     display: none;
   }
 }
+
+/* the selected mode, explained in the space under the sticks */
+.howNow {
+  grid-column: 1 / -1;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--c);
+  border-radius: var(--radius-sm);
+}
+
+.howNow h4 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+}
+
+.howNow ol {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: var(--space-5);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
