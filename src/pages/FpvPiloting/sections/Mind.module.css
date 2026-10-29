@@ -1,0 +1,142 @@
+/* ---- Part 4: muscle memory and focus ---- */
+
+.principles,
+.exercises,
+.routine,
+.habits {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.principles {
+  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+}
+
+.exercises {
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+}
+
+.routine {
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+}
+
+.habits {
+  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  margin-top: var(--space-4);
+}
+
+.principles article,
+.exercise,
+.routine article,
+.habits article {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.principles article {
+  border-top: 4px solid var(--color-accent-secondary);
+}
+
+.principles h4,
+.routine h4 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+}
+
+.principles p,
+.exercise p,
+.habits p {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.sub {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-8) 0 var(--space-4);
+  font-size: var(--text-xl);
+  color: var(--color-text-primary);
+}
+
+.exercise header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.exercise h5,
+.habits h5 {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.exercise header span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.for b {
+  color: var(--color-text-primary);
+}
+
+.plan {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan li {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent-primary);
+  border-radius: var(--radius-sm);
+}
+
+.plan b {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-accent-secondary);
+}
+
+.plan strong {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+}
+
+.plan span {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.routine ul {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: var(--space-5);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}

@@ -19,6 +19,7 @@ const Assembly3D = lazy(() => import('@pages/Assembly3D'))
 const IntroToDrones = lazy(() => import('@pages/IntroToDrones'))
 const Blog = lazy(() => import('@pages/Blog'))
 const PidTuning = lazy(() => import('@pages/PidTuning'))
+const FpvPiloting = lazy(() => import('@pages/FpvPiloting'))
 const Presentation = lazy(() => import('@pages/Presentation'))
 const DroneLab = lazy(() => import('@pages/DroneLab'))
 
@@ -99,6 +100,7 @@ export default function AppRouter() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/pid-tuning" element={<PidTuning />} />
+          <Route path="/fpv-piloting" element={<FpvPiloting />} />
           <Route path="/presentation" element={<Presentation />} />
           <Route path="/drone-lab" element={<DroneLab />} />
           <Route path="/drone-lab/:tab" element={<DroneLab />} />

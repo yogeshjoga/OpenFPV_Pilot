@@ -15,6 +15,7 @@ export const NAV_LINKS = [
     subLinks: [
       { group: 'Learn', label: 'Intro to Drones', path: '/intro' },
       { group: 'Learn', label: 'Physics', path: '/physics', minLevel: 3 },
+      { group: 'Learn', label: 'FPV Piloting', path: '/fpv-piloting' },
       { group: 'Learn', label: 'PID Tuning', path: '/pid-tuning' },
       { group: 'Practise', label: 'Drone Lab', path: '/drone-lab', hint: 'How it works, configurator' },
       { group: 'Practise', label: 'Wiring Lab', path: '/wiring-lab', hint: 'Lessons, practice builder' },

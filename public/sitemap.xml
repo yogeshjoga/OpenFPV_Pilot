@@ -18,6 +18,7 @@
   <url><loc>https://www.egirerobotics.com/assembly-3d</loc><priority>0.5</priority></url>
   <url><loc>https://www.egirerobotics.com/presentation</loc><priority>0.5</priority></url>
   <url><loc>https://www.egirerobotics.com/builder</loc><priority>0.5</priority></url>
+  <url><loc>https://www.egirerobotics.com/fpv-piloting</loc><priority>0.7</priority></url>
   <url><loc>https://www.egirerobotics.com/drone-lab/how-it-works</loc><priority>0.6</priority></url>
   <url><loc>https://www.egirerobotics.com/drone-lab/configurator</loc><priority>0.6</priority></url>
 </urlset>
