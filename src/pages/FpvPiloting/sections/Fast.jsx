@@ -4,6 +4,7 @@ import CurveChart, { niceMax } from '@components/charts/CurveChart'
 import { FAST } from '../data/skills.js'
 import { stopping } from '../sim.js'
 import { Block, Section } from '../shared.jsx'
+import Pages from '../widgets/Pages.jsx'
 import styles from './Fast.module.css'
 
 const COLOR = { reaction: '#f5a524', braking: '#3e8ef7', total: '#e5484d' }
@@ -99,11 +100,15 @@ export default function Fast() {
     >
       <p className={styles.safety}><TriangleAlert size={18} aria-hidden="true" /> {FAST.safety}</p>
 
-      <Block title="How much room do you need?" intro="Try it. This is the number that changes how you fly.">
+      <Pages label="Flying fast" items={[
+      { id: 'room', label: 'How much room', node: (
+        <Block title="How much room do you need?" intro="Try it. This is the number that changes how you fly.">
         <Calculator />
       </Block>
+      ) },
 
-      <Block title={decisions.title}>
+      { id: 'decide', label: 'Decisions at speed', node: (
+        <Block title={decisions.title}>
         <ol className={styles.steps}>
           {decisions.steps.map((s) => (
             <li key={s.n}>
@@ -116,10 +121,18 @@ export default function Fast() {
           ))}
         </ol>
       </Block>
+      ) },
 
-      <Block title={braking.title} intro={braking.intro}><Cards items={braking.items} /></Block>
-      <Block title={speedControl.title}><Cards items={speedControl.items} /></Block>
-      <Block title={quick.title}><Cards items={quick.items} /></Block>
+      { id: 'brake', label: 'Braking', node: (
+        <Block title={braking.title} intro={braking.intro}><Cards items={braking.items} /></Block>
+      ) },
+      { id: 'speed', label: 'Speed control', node: (
+        <Block title={speedControl.title}><Cards items={speedControl.items} /></Block>
+      ) },
+      { id: 'quick', label: 'Fast decisions', node: (
+        <Block title={quick.title}><Cards items={quick.items} /></Block>
+      ) },
+      ]} />
     </Section>
   )
 }

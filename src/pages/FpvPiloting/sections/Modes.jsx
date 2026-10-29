@@ -5,6 +5,7 @@ import { initialState, liftNow, stepMode, tiltDeg } from '../sim.js'
 import { Block, Section, useFrame } from '../shared.jsx'
 import DroneStage from '../widgets/DroneStage.jsx'
 import Sticks from '../widgets/Sticks.jsx'
+import Pages from '../widgets/Pages.jsx'
 import styles from './Modes.module.css'
 
 const RAD = Math.PI / 180
@@ -130,6 +131,11 @@ function ModeLab() {
           </div>
         </div>
         {hud.crashed && <p className={styles.crash} role="status">Crash! The drone hit the ground. Press Reset.</p>}
+        {lastTest && (
+          <p className={styles.result} role="status">
+            <b>What you see in {info.name}:</b> {lastTest.says[mode]}
+          </p>
+        )}
       </DroneStage>
 
       <div className={styles.panel}>
@@ -147,7 +153,7 @@ function ModeLab() {
           <p><b>Let go of the sticks:</b> {info.letGo}</p>
         </div>
 
-        <Sticks values={shown} onChange={userMove} interactive mode3d={mode === '3d'} />
+        <Sticks values={shown} onChange={userMove} interactive mode3d={mode === '3d'} compact />
         <p className={styles.hint}>
           Drag the sticks, or click one and use the arrow keys. The left stick is throttle (up, down) and yaw (left, right). The right stick is pitch and roll.
           {mode === '3d' && ' In 3D mode the dashed line is the middle of the throttle: zero thrust. Hover is a little above it.'}
@@ -161,11 +167,6 @@ function ModeLab() {
             <RotateCcw size={14} aria-hidden="true" /> Reset
           </button>
         </div>
-        {lastTest && (
-          <p className={styles.result} role="status">
-            <b>What you see in {info.name}:</b> {lastTest.says[mode]}
-          </p>
-        )}
       </div>
     </div>
   )
@@ -183,7 +184,9 @@ export default function Modes() {
       title="What a flight mode is, and which one to use"
       intro="The sticks on a radio always do the same job: they send a number. A flight mode decides what that number means to the drone. Angle, Acro and 3D are three different meanings."
     >
-      <Block title="1. What is a flight mode?" intro="A flight mode is the way the flight controller reads your sticks. The drone is the same, the sticks are the same, but the meaning changes.">
+      <Pages label="Flight modes" items={[
+      { id: 'what', label: 'What is a mode', node: (
+        <Block title="What is a flight mode?" intro="A flight mode is the way the flight controller reads your sticks. The drone is the same, the sticks are the same, but the meaning changes.">
         <div className={styles.meaning}>
           <article>
             <b className={styles.tag} style={{ '--c': MODE_BY_ID.angle.color }}>Angle</b>
@@ -199,8 +202,10 @@ export default function Modes() {
           </article>
         </div>
       </Block>
+      ) },
 
-      <Block title="2. How each mode works" intro="Choose a mode and try the same sticks in each. Drag the sticks yourself, or press a test and watch the drone. The 3D drone below is the one from the lesson.">
+      { id: 'how', label: 'How each works', node: (
+        <Block title="How each mode works" intro="Choose a mode and try the same sticks in each. Drag the sticks yourself, or press a test and watch the drone. The 3D drone below is the one from the lesson.">
         <ModeLab />
         <div className={styles.how}>
           {MODES.map((m) => (
@@ -211,8 +216,10 @@ export default function Modes() {
           ))}
         </div>
       </Block>
+      ) },
 
-      <Block title="3. Compare all the modes" intro="The same things, side by side.">
+      { id: 'compare', label: 'Compare', node: (
+        <Block title="Compare all the modes" intro="The same things, side by side.">
         <div className={styles.tableWrap}>
           <table className={styles.compare}>
             <thead>
@@ -241,8 +248,10 @@ export default function Modes() {
           ))}
         </div>
       </Block>
+      ) },
 
-      <Block title="4. When to use which" intro="Pick what you are doing, and see the mode that fits.">
+      { id: 'when', label: 'When to use which', node: (
+        <Block title="When to use which" intro="Pick what you are doing, and see the mode that fits.">
         <div className={styles.chooser}>
           <div className={styles.situations} role="radiogroup" aria-label="What are you doing?">
             {WHEN.map((w) => (
@@ -257,6 +266,8 @@ export default function Modes() {
         </div>
         <p className={styles.tip}><b>A habit worth having:</b> put Angle on a switch on your radio. If you ever lose control, flip it, let go of the sticks, and the drone levels itself.</p>
       </Block>
+      ) },
+      ]} />
     </Section>
   )
 }

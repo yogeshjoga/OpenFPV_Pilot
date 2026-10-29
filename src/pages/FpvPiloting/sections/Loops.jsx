@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
-import { Pause, Play, RotateCcw } from 'lucide-react'
 import { LOOPS, STICKS } from '../data/loops.js'
 import { LOOPS as SHAPES, initialState, poseFor, routeFor, sampleAt, stepMode, sticksFor } from '../sim.js'
 import { sceneTrack } from '../maneuvers.js'
 import { Block, Section, useFrame } from '../shared.jsx'
+import Cockpit from '../widgets/Cockpit.jsx'
 import DroneStage from '../widgets/DroneStage.jsx'
+import { PlayerControls, StepNow } from '../widgets/PlayerParts.jsx'
 import Sticks, { AXIS } from '../widgets/Sticks.jsx'
+import Pages from '../widgets/Pages.jsx'
 import styles from './Loops.module.css'
 
 const RAD = Math.PI / 180
@@ -61,7 +63,7 @@ function StickGuide() {
             <button key={s.id} type="button" role="tab" aria-selected={axis === s.id} onClick={() => pick(s.id)} style={{ '--c': AXIS[s.id].color }}>{s.name}</button>
           ))}
         </div>
-        <Sticks values={values} highlight={axis} />
+        <Sticks values={values} highlight={axis} compact />
         <div className={styles.axisCard} style={{ '--c': AXIS[axis].color }}>
           <h4>{info.name} <small>{info.stick}</small></h4>
           <p>{info.moves}</p>
@@ -135,6 +137,10 @@ function LoopPlayer() {
   const track = useMemo(() => sceneTrack(route, 'top', { rigY: 36 * DRONE_SCALE, colors: PHASE_HEX }), [route])
   useEffect(() => { poseRef.current = { ...poseFor(sample), ...track.place(sample), phase: sample.phase } }, [sample, track])
 
+  const goStep = (k) => { const first = route.find((q) => q.phase === k); setPlaying(false); setTime(first ? first.t : 0) }
+  const steps = loop.phases.length
+  const at = Math.min(sample.phase, steps - 1)
+
   return (
     <div className={styles.player}>
       <div className={styles.glyphs} role="radiogroup" aria-label="Choose a pattern">
@@ -148,58 +154,56 @@ function LoopPlayer() {
 
       <p className={styles.teaches}><b>What it teaches:</b> {loop.teaches}</p>
 
-      <div className={styles.views}>
-        <figure className={styles.pathFigure}>
-          <PathView route={route} loop={shape} time={time} phase={sample.phase} />
-          <figcaption>Seen from above. The arrow is the drone and its nose.</figcaption>
-        </figure>
-        <DroneStage poseRef={poseRef} label="The 3D drone flying the pattern" className={styles.loopStage} scale={DRONE_SCALE} track={track} />
-        <div className={styles.sticksCol}>
-          <Sticks values={sticks} />
-        </div>
-      </div>
-
-      <div className={styles.controls}>
-        <button type="button" onClick={() => setPlaying((p) => !p)} aria-label={playing ? 'Pause' : 'Play'}>
-          {playing ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-          {playing ? 'Pause' : 'Play'}
-        </button>
-        <button type="button" onClick={() => { setTime(0); setPlaying(true) }}><RotateCcw size={16} aria-hidden="true" /> Again</button>
-        <input type="range" min="0" max={duration} step="0.02" value={Math.min(time, duration)} onChange={(e) => { setPlaying(false); setTime(Number(e.target.value)) }} aria-label="Move along the pattern" className={styles.scrub} />
-        <label className={styles.speed}>
-          Speed
-          <select value={speed} onChange={(e) => setSpeed(Number(e.target.value))}>
-            <option value={0.25}>0.25x (slow)</option>
-            <option value={0.5}>0.5x</option>
-            <option value={1}>1x</option>
-          </select>
-        </label>
-      </div>
-
-      <ol className={styles.phases}>
-        {loop.phases.map((p, k) => (
-          <li key={p.title} className={k === sample.phase ? styles.activePhase : ''} style={{ '--c': PHASE_COLORS[k % PHASE_COLORS.length] }}>
-            <button type="button" onClick={() => { const first = route.find((q) => q.phase === k); setPlaying(false); setTime(first ? first.t : 0) }}>
-              <span className={styles.phaseNum}>{k + 1}</span>
-              <span>
-                <b>{p.title}</b>
-                <span className={styles.phaseText}>{p.text}</span>
-              </span>
-            </button>
-          </li>
-        ))}
-      </ol>
-
-      <div className={styles.cols}>
-        <section>
-          <h4>Common mistakes</h4>
-          <ul>{loop.mistakes.map((m) => <li key={m}>{m}</li>)}</ul>
-        </section>
-        <section>
-          <h4>Practice it</h4>
-          <ul>{loop.drill.map((d) => <li key={d}>{d}</li>)}</ul>
-        </section>
-      </div>
+      <Cockpit
+        color={PHASE_COLORS[at % PHASE_COLORS.length]}
+        stage={<DroneStage poseRef={poseRef} label="The 3D drone flying the pattern" scale={DRONE_SCALE} track={track} />}
+        controls={(
+          <PlayerControls
+            playing={playing}
+            onToggle={() => setPlaying((p) => !p)}
+            onAgain={() => { setTime(0); setPlaying(true) }}
+            onPrev={() => goStep(Math.max(0, at - 1))}
+            onNext={() => goStep(Math.min(steps - 1, at + 1))}
+            time={Math.min(time, duration)}
+            duration={duration}
+            onScrub={(t) => { setPlaying(false); setTime(t) }}
+            speed={speed}
+            onSpeed={setSpeed}
+            label="Move along the pattern"
+          />
+        )}
+        step={<StepNow index={at} total={steps} title={loop.phases[at].title} text={loop.phases[at].text} />}
+        sticks={<Sticks values={sticks} compact />}
+        path={(
+          <figure className={styles.pathCard}>
+            <PathView route={route} loop={shape} time={time} phase={sample.phase} />
+            <figcaption>Seen from above. The arrow is the drone and its nose.</figcaption>
+          </figure>
+        )}
+        tabs={[
+          {
+            id: 'steps',
+            label: 'All the steps',
+            node: (
+              <ol className={styles.phases}>
+                {loop.phases.map((p, k) => (
+                  <li key={p.title} className={k === sample.phase ? styles.activePhase : ''} style={{ '--c': PHASE_COLORS[k % PHASE_COLORS.length] }}>
+                    <button type="button" onClick={() => goStep(k)}>
+                      <span className={styles.phaseNum}>{k + 1}</span>
+                      <span>
+                        <b>{p.title}</b>
+                        <span className={styles.phaseText}>{p.text}</span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            ),
+          },
+          { id: 'mistakes', label: 'Common mistakes', node: <ul className={styles.plainList}>{loop.mistakes.map((m) => <li key={m}>{m}</li>)}</ul> },
+          { id: 'practice', label: 'Practice it', node: <ul className={styles.plainList}>{loop.drill.map((d) => <li key={d}>{d}</li>)}</ul> },
+        ]}
+      />
     </div>
   )
 }
@@ -214,12 +218,18 @@ export default function Loops() {
       title="Learn every stick move, then fly the 0, 8, 6 and 7"
       intro="First see what each of the four stick movements does on its own. Then watch the drone fly the four practice patterns while the sticks move with it, so you see exactly what to do with your thumbs."
     >
-      <Block title="The four stick movements" intro="Every move on a drone is one of these four, or a mix. Choose one: the drone and the stick show it slowly, back and forth.">
+      <Pages label="Sticks and loops" items={[
+      { id: 'sticks', label: 'The four sticks', node: (
+        <Block title="The four stick movements" intro="Every move on a drone is one of these four, or a mix. Choose one: the drone and the stick show it slowly, back and forth.">
         <StickGuide />
       </Block>
-      <Block title="Practice patterns: 0, 8, 6 and 7" intro="Press play. The drone flies the pattern from above, the 3D drone leans and turns, and the sticks move as yours should. Pause at any time, or drag the bar to look at one moment.">
+      ) },
+      { id: 'patterns', label: 'Patterns 0, 8, 6, 7', node: (
+        <Block title="Practice patterns: 0, 8, 6 and 7" intro="Press play. The drone flies the pattern from above, the 3D drone leans and turns, and the sticks move as yours should. Pause at any time, or drag the bar to look at one moment.">
         <LoopPlayer />
       </Block>
+      ) },
+      ]} />
     </Section>
   )
 }

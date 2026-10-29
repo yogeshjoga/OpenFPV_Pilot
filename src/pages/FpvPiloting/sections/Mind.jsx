@@ -1,6 +1,7 @@
 import { Clock, Eye, Hand } from 'lucide-react'
 import { FOCUS, MUSCLE } from '../data/skills.js'
 import { Block, Section } from '../shared.jsx'
+import Pages from '../widgets/Pages.jsx'
 import styles from './Mind.module.css'
 
 export default function Mind() {
@@ -11,7 +12,9 @@ export default function Mind() {
       title="Build muscle memory fast, and keep your focus"
       intro="Good pilots are not born with quick thumbs. They practise in the right way, and they fly with a calm, clear head. Both can be trained."
     >
-      <Block title="How to build muscle memory fast" intro={MUSCLE.intro}>
+      <Pages label="Hands and head" items={[
+      { id: 'muscle', label: 'Muscle memory', node: (
+        <Block title="How to build muscle memory fast" intro={MUSCLE.intro}>
         <div className={styles.principles}>
           {MUSCLE.principles.map((p) => (
             <article key={p.title}>
@@ -46,8 +49,10 @@ export default function Mind() {
           ))}
         </ol>
       </Block>
+      ) },
 
-      <Block title="How to improve your focus" intro={FOCUS.intro}>
+      { id: 'focus', label: 'Focus', node: (
+        <Block title="How to improve your focus" intro={FOCUS.intro}>
         <div className={styles.routine}>
           {FOCUS.routine.map((r) => (
             <article key={r.title}>
@@ -65,6 +70,8 @@ export default function Mind() {
           ))}
         </div>
       </Block>
+      ) },
+      ]} />
     </Section>
   )
 }

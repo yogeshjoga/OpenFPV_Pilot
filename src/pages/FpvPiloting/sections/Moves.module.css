@@ -1,9 +1,24 @@
 /* ---- Part 6: race moves and stunts (shares the player layout with the Loops section) ---- */
 
+.chooserTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  margin-bottom: var(--space-3);
+}
+
+.chooserText {
+  flex: 1;
+  min-width: 240px;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
 .groups {
   display: inline-flex;
   padding: var(--space-1);
-  margin-bottom: var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
   background: var(--color-bg-card);
@@ -27,32 +42,63 @@
 }
 
 .moves {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 .moves button {
-  display: grid;
-  gap: 2px;
-  padding: var(--space-3) var(--space-4);
-  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
   font-family: var(--font-body);
   color: var(--color-text-primary);
   background: var(--color-bg-card);
   border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
 }
 
-.moves button b {
-  font-size: var(--text-base);
+.moves button::before,
+.levels i {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--lv, var(--color-text-muted));
+  border-radius: var(--radius-full);
 }
 
-.moves button small {
+.moves button[data-level='Beginner'],
+.levels i[data-level='Beginner'] {
+  --lv: var(--color-success);
+}
+
+.moves button[data-level='Intermediate'],
+.levels i[data-level='Intermediate'] {
+  --lv: var(--color-warning);
+}
+
+.moves button[data-level='Advanced'],
+.levels i[data-level='Advanced'] {
+  --lv: var(--color-error);
+}
+
+.moves button b {
+  font-size: var(--text-sm);
+}
+
+.levels {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin-left: var(--space-2);
   font-size: var(--text-xs);
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 .moves button:hover {
@@ -158,4 +204,33 @@
   .sideLayout {
     grid-template-columns: 1fr;
   }
+}
+
+/* the path sits in the narrow column beside the 3D drone */
+.pathBox {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.pathBox svg {
+  max-height: 210px;
+}
+
+.pathBox figcaption {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  padding: var(--space-4) var(--space-5) var(--space-4) var(--space-8);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
 }

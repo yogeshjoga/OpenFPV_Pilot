@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
-import { Lightbulb, Pause, Play, RotateCcw } from 'lucide-react'
+import { Lightbulb } from 'lucide-react'
 import CurveChart from '@components/charts/CurveChart'
 import { MOVES, MOVE_GROUPS } from '../data/moves.js'
 import { flyManeuver, maneuverPose, phaseStart, sceneTrack } from '../maneuvers.js'
 import { Block, Section, useFrame } from '../shared.jsx'
+import Cockpit from '../widgets/Cockpit.jsx'
 import DroneStage from '../widgets/DroneStage.jsx'
+import { PlayerControls, StepNow } from '../widgets/PlayerParts.jsx'
 import Sticks, { AXIS } from '../widgets/Sticks.jsx'
 import loop from './Loops.module.css'
 import styles from './Moves.module.css'
@@ -96,74 +98,89 @@ function MovePlayer({ move }) {
   }, [samples])
 
   const turned = (deg) => `${Math.round(deg)}°`
+  const goStep = (k) => { setPlaying(false); setTime(phaseStart(samples, k).t) }
+  const steps = move.phases.length
+
   return (
     <div className={loop.player}>
       <p className={loop.teaches}>{move.blurb}</p>
-
-      <div className={`${loop.views} ${move.view === 'side' ? styles.sideLayout : ''}`}>
-        <figure className={loop.pathFigure}>
-          <MovePath samples={samples} view={move.view} time={now} phase={sample.phase} />
-          <figcaption>{move.view === 'side' ? 'Seen from the side. The dot marks the top of the drone.' : 'Seen from above. The arrow is the drone and its nose.'}</figcaption>
-        </figure>
-        <DroneStage poseRef={poseRef} label={`The 3D drone flying the ${move.name}`} className={loop.loopStage} scale={DRONE_SCALE} track={track}>
-          <div className={styles.read}>
-            <span>Rolled <b>{turned(sample.roll)}</b></span>
-            {move.view === 'side' && <span>Nose turned <b>{turned(sample.pitchUp + 15)}</b></span>}
-            <span>Speed <b>{sample.speed.toFixed(0)} m/s</b></span>
-          </div>
-        </DroneStage>
-        <div className={loop.sticksCol}>
-          <Sticks values={sample.sticks} />
-        </div>
-      </div>
-
-      <div className={loop.controls}>
-        <button type="button" onClick={() => setPlaying((p) => !p)} aria-label={playing ? 'Pause' : 'Play'}>
-          {playing ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-          {playing ? 'Pause' : 'Play'}
-        </button>
-        <button type="button" onClick={() => { setTime(0); setPlaying(true) }}><RotateCcw size={16} aria-hidden="true" /> Again</button>
-        <input type="range" min="0" max={duration} step="0.02" value={now} onChange={(e) => { setPlaying(false); setTime(Number(e.target.value)) }} aria-label="Move along the stunt" className={loop.scrub} />
-        <label className={loop.speed}>
-          Speed
-          <select value={speed} onChange={(e) => setSpeed(Number(e.target.value))}>
-            <option value={0.25}>0.25x (slow)</option>
-            <option value={0.5}>0.5x</option>
-            <option value={1}>1x</option>
-          </select>
-        </label>
-      </div>
-
-      <figure className={styles.timeline}>
-        <figcaption><b>The sticks through the whole move.</b> Each line is one stick: up on the chart means up or forward or right. The vertical line is where the drone is now.</figcaption>
-        <CurveChart curves={chart} xMax={duration} yMin={-1} yMax={1} cursor={now} xLabel="time (s)" label="How the four sticks move during the stunt" className={styles.chart} />
-      </figure>
-
-      <ol className={loop.phases}>
-        {move.phases.map((p, k) => (
-          <li key={p.title} className={k === sample.phase ? loop.activePhase : ''} style={{ '--c': PHASE_COLORS[k % PHASE_COLORS.length] }}>
-            <button type="button" onClick={() => { setPlaying(false); setTime(phaseStart(samples, k).t) }}>
-              <span className={loop.phaseNum}>{k + 1}</span>
-              <span>
-                <b>{p.title}</b>
-                <span className={loop.phaseText}>{p.text}</span>
-              </span>
-            </button>
-          </li>
-        ))}
-      </ol>
-
-      <div className={loop.cols}>
-        <section>
-          <h4>Common mistakes</h4>
-          <ul>{move.mistakes.map((m) => <li key={m}>{m}</li>)}</ul>
-        </section>
-        <section>
-          <h4>Practice it</h4>
-          <ul>{move.drill.map((d) => <li key={d}>{d}</li>)}</ul>
-        </section>
-      </div>
-      <p className={styles.tip}><Lightbulb size={18} aria-hidden="true" /> <span><b>Tip:</b> {move.tip}</span></p>
+      <Cockpit
+        color={PHASE_COLORS[sample.phase % PHASE_COLORS.length]}
+        stage={(
+          <DroneStage poseRef={poseRef} label={`The 3D drone flying the ${move.name}`} scale={DRONE_SCALE} track={track}>
+            <div className={styles.read}>
+              <span>Rolled <b>{turned(sample.roll)}</b></span>
+              {move.view === 'side' && <span>Nose turned <b>{turned(sample.pitchUp + 15)}</b></span>}
+              <span>Speed <b>{sample.speed.toFixed(0)} m/s</b></span>
+            </div>
+          </DroneStage>
+        )}
+        controls={(
+          <PlayerControls
+            playing={playing}
+            onToggle={() => setPlaying((p) => !p)}
+            onAgain={() => { setTime(0); setPlaying(true) }}
+            onPrev={() => goStep(Math.max(0, sample.phase - 1))}
+            onNext={() => goStep(Math.min(steps - 1, sample.phase + 1))}
+            time={now}
+            duration={duration}
+            onScrub={(t) => { setPlaying(false); setTime(t) }}
+            speed={speed}
+            onSpeed={setSpeed}
+            label="Move along the stunt"
+          />
+        )}
+        step={<StepNow index={sample.phase} total={steps} title={move.phases[sample.phase].title} text={move.phases[sample.phase].text} />}
+        sticks={<Sticks values={sample.sticks} compact />}
+        path={(
+          <figure className={styles.pathBox}>
+            <MovePath samples={samples} view={move.view} time={now} phase={sample.phase} />
+            <figcaption>{move.view === 'side' ? 'Seen from the side. The dot marks the top of the drone.' : 'Seen from above. The arrow is the drone and its nose.'}</figcaption>
+          </figure>
+        )}
+        tabs={[
+          {
+            id: 'steps',
+            label: 'All the steps',
+            node: (
+              <ol className={loop.phases}>
+                {move.phases.map((p, k) => (
+                  <li key={p.title} className={k === sample.phase ? loop.activePhase : ''} style={{ '--c': PHASE_COLORS[k % PHASE_COLORS.length] }}>
+                    <button type="button" onClick={() => goStep(k)}>
+                      <span className={loop.phaseNum}>{k + 1}</span>
+                      <span>
+                        <b>{p.title}</b>
+                        <span className={loop.phaseText}>{p.text}</span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            ),
+          },
+          {
+            id: 'chart',
+            label: 'Stick chart',
+            node: (
+              <figure className={styles.timeline}>
+                <figcaption><b>The sticks through the whole move.</b> Each line is one stick: up on the chart means up or forward or right. The vertical line is where the drone is now.</figcaption>
+                <CurveChart curves={chart} xMax={duration} yMin={-1} yMax={1} cursor={now} xLabel="time (s)" label="How the four sticks move during the stunt" className={styles.chart} />
+              </figure>
+            ),
+          },
+          { id: 'mistakes', label: 'Common mistakes', node: <ul className={styles.list}>{move.mistakes.map((m) => <li key={m}>{m}</li>)}</ul> },
+          {
+            id: 'practice',
+            label: 'Practice it',
+            node: (
+              <>
+                <ul className={styles.list}>{move.drill.map((d) => <li key={d}>{d}</li>)}</ul>
+                <p className={styles.tip}><Lightbulb size={18} aria-hidden="true" /> <span><b>Tip:</b> {move.tip}</span></p>
+              </>
+            ),
+          },
+        ]}
+      />
     </div>
   )
 }
@@ -184,22 +201,24 @@ export default function Moves() {
       title="Flips, rolls, loops and race turns, with the sticks"
       intro="Pick a move and press play. The drone flies it from the side or from above, the 3D drone turns, and the sticks move exactly as your thumbs should. Every move is split into short steps you can click."
     >
-      <Block title="Choose a move" intro={`${info.text} These moves are flown in Acro mode. Learn them in a simulator first, with plenty of height.`}>
-        <div className={styles.groups} role="tablist" aria-label="Stunts or racing">
+      <div>
+        <div className={styles.chooserTop}>
+          <div className={styles.groups} role="tablist" aria-label="Stunts or racing">
           {MOVE_GROUPS.map((g) => (
             <button key={g.id} type="button" role="tab" aria-selected={group === g.id} onClick={() => chooseGroup(g.id)}>{g.label}</button>
           ))}
+          </div>
+          <p className={styles.chooserText}>{info.text} Flown in Acro mode: learn them in a simulator first, with plenty of height. <span className={styles.levels}><i data-level="Beginner" /> Beginner <i data-level="Intermediate" /> Intermediate <i data-level="Advanced" /> Advanced</span></p>
         </div>
         <div className={styles.moves} role="radiogroup" aria-label="Choose a move">
           {inGroup.map((m) => (
-            <button key={m.id} type="button" role="radio" aria-checked={move.id === m.id} onClick={() => setId(m.id)}>
+            <button key={m.id} type="button" role="radio" aria-checked={move.id === m.id} data-level={m.level} title={m.level} onClick={() => setId(m.id)}>
               <b>{m.name}</b>
-              <small>{m.level}</small>
             </button>
           ))}
         </div>
         <MovePlayer move={move} />
-      </Block>
+      </div>
     </Section>
   )
 }
