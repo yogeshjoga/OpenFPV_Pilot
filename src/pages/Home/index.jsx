@@ -313,7 +313,7 @@ export default function Home() {
               Watch twelve parts go on one by one, then learn throttle, yaw, pitch and roll on a virtual radio.
               Then fly it yourself.
             </p>
-            <Link to="/how-a-drone-works" className={styles.primaryBtn}>
+            <Link to="/drone-lab/how-it-works" className={styles.primaryBtn}>
               Open the lesson <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
             </Link>
           </motion.div>

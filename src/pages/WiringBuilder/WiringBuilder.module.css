@@ -17,6 +17,11 @@
   font-family: var(--font-body);
 }
 
+/* inside the Wiring lab: fill what is left under the site navigation and the tab strip */
+.embedded {
+  height: calc(100vh - var(--nav-height) - var(--lab-strip, 0px));
+}
+
 /* Buttons start plain (zero specificity, so every class below still wins) */
 :where(.app) button,
 :where(.app) input {

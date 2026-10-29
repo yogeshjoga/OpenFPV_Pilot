@@ -277,7 +277,7 @@ export function useBuilder() {
     if (rest.length) open(rest[0].id)
     else create('My first build')
   }, [create, current.id, open, store])
-  const shareLink = useCallback(() => `${window.location.origin}/wiring-builder#b=${encodeBuild(fromFlow(nodes, edges))}`, [edges, nodes])
+  const shareLink = useCallback(() => `${window.location.origin}/wiring-lab/practice#b=${encodeBuild(fromFlow(nodes, edges))}`, [edges, nodes])
 
   const named = useMemo(() => labelNodes(nodes, (type) => PART_BY_ID[type]?.name ?? type), [nodes])
   const nameOf = useMemo(() => Object.fromEntries(named.map((n) => [n.id, n.data.label])), [named])

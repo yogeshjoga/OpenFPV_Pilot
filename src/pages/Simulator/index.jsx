@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef } from 'react'
 import { Maximize2, Share2, Trash2, Zap } from 'lucide-react'
 import { Background, BackgroundVariant, Controls, ConnectionMode, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
@@ -156,13 +156,15 @@ function Bench() {
   )
 }
 
-export default function Simulator() {
+// embedded: the bench is shown inside the Wiring lab, which already supplies the navigation
+export default function Simulator({ embedded = false }) {
+  const Shell = embedded ? Fragment : PageWrapper
   useDocumentMeta('Wiring Bench | EGIRE Robotics', 'Practise soldering an FPV drone on a realistic bench: ESC, flight controller, motors, receiver, camera and VTX, with lessons and your own workspaces.')
   return (
-    <PageWrapper fullHeight>
+    <Shell {...(embedded ? {} : { fullHeight: true })}>
       <ReactFlowProvider>
         <Bench />
       </ReactFlowProvider>
-    </PageWrapper>
+    </Shell>
   )
 }

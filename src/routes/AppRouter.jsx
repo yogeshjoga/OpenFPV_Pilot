@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Suspense, lazy, useEffect } from 'react'
 
 const Home = lazy(() => import('@pages/Home'))
@@ -6,7 +6,6 @@ const Catalog = lazy(() => import('@pages/Catalog'))
 const ProductDetail = lazy(() => import('@pages/ProductDetail'))
 const About = lazy(() => import('@pages/About'))
 const Research = lazy(() => import('@pages/Research'))
-const WiringBuilder = lazy(() => import('@pages/WiringBuilder'))
 const Training = lazy(() => import('@pages/Training'))
 const Builder = lazy(() => import('@pages/Builder'))
 const Physics = lazy(() => import('@pages/Physics'))
@@ -15,14 +14,13 @@ const Shop = lazy(() => import('@pages/Shop'))
 const Privacy = lazy(() => import('@pages/Privacy'))
 const Enquire = lazy(() => import('@pages/Enquire'))
 const Gallery = lazy(() => import('@pages/Gallery'))
-const Simulator = lazy(() => import('@pages/Simulator'))
+const WiringLab = lazy(() => import('@pages/WiringLab'))
 const Assembly3D = lazy(() => import('@pages/Assembly3D'))
 const IntroToDrones = lazy(() => import('@pages/IntroToDrones'))
 const Blog = lazy(() => import('@pages/Blog'))
 const PidTuning = lazy(() => import('@pages/PidTuning'))
 const Presentation = lazy(() => import('@pages/Presentation'))
-const DroneLesson = lazy(() => import('@pages/DroneLesson'))
-const DroneConfigurator = lazy(() => import('@pages/DroneConfigurator'))
+const DroneLab = lazy(() => import('@pages/DroneLab'))
 
 const Login = lazy(() => import('@pages/Auth/Login'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
@@ -40,6 +38,12 @@ function ScrollToTop() {
     window.scrollTo(0, 0)
   }, [pathname])
   return null
+}
+
+// Old addresses keep working: they forward to the tab that now holds that page, keeping any ?query and #share link
+function Forward({ to }) {
+  const { search, hash } = useLocation()
+  return <Navigate to={`${to}${search}${hash}`} replace />
 }
 
 function PageLoader() {
@@ -86,16 +90,20 @@ export default function AppRouter() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/gallery/:folder" element={<Gallery />} />
           <Route path="/gallery/:folder/:album" element={<Gallery />} />
-          <Route path="/simulator" element={<Simulator />} />
-          <Route path="/wiring-builder" element={<WiringBuilder />} />
+          <Route path="/wiring-lab" element={<WiringLab />} />
+          <Route path="/wiring-lab/:tab" element={<WiringLab />} />
+          <Route path="/simulator" element={<Forward to="/wiring-lab/lessons" />} />
+          <Route path="/wiring-builder" element={<Forward to="/wiring-lab/practice" />} />
           <Route path="/assembly-3d" element={<Assembly3D />} />
           <Route path="/intro" element={<IntroToDrones />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/pid-tuning" element={<PidTuning />} />
           <Route path="/presentation" element={<Presentation />} />
-          <Route path="/how-a-drone-works" element={<DroneLesson />} />
-          <Route path="/drone-configurator" element={<DroneConfigurator />} />
+          <Route path="/drone-lab" element={<DroneLab />} />
+          <Route path="/drone-lab/:tab" element={<DroneLab />} />
+          <Route path="/how-a-drone-works" element={<Forward to="/drone-lab/how-it-works" />} />
+          <Route path="/drone-configurator" element={<Forward to="/drone-lab/configurator" />} />
 
           <Route path="/admin" element={
             <ProtectedRoute requiredLevel={4}>

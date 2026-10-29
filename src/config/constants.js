@@ -11,16 +11,15 @@ export const NAV_LINKS = [
   { label: 'Workshops', path: '/workshops' },
   ...(navConfig.showAcademyNav ? [{ 
     label: 'Academy', 
+    // grouped, so the menu opens as a few short columns instead of one tall list
     subLinks: [
-      { label: 'Intro to Drones', path: '/intro' },
-      { label: 'How a Drone Works', path: '/how-a-drone-works' },
-      { label: 'Drone Configurator', path: '/drone-configurator' },
-      { label: 'Catalog', path: '/catalog' },
-      { label: 'Programs', path: '/training' },
-      { label: 'Physics', path: '/physics', minLevel: 3 },
-      { label: 'PID Tuning', path: '/pid-tuning' },
-      { label: 'Wiring Builder', path: '/wiring-builder' },
-      { label: 'Wiring Lessons', path: '/simulator' },
+      { group: 'Learn', label: 'Intro to Drones', path: '/intro' },
+      { group: 'Learn', label: 'Physics', path: '/physics', minLevel: 3 },
+      { group: 'Learn', label: 'PID Tuning', path: '/pid-tuning' },
+      { group: 'Practise', label: 'Drone Lab', path: '/drone-lab', hint: 'How it works, configurator' },
+      { group: 'Practise', label: 'Wiring Lab', path: '/wiring-lab', hint: 'Lessons, practice builder' },
+      { group: 'Explore', label: 'Catalog', path: '/catalog' },
+      { group: 'Explore', label: 'Programs', path: '/training' },
     ],
     minLevel: 1 
   }] : []),

@@ -1,5 +1,6 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+
 import { Sun, Moon, ArrowRight, ChevronDown } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -18,6 +19,17 @@ const ANNOUNCEMENTS = [
   'AI hardware kits',
   'College projects for students in software, electronics and mechanical domains',
 ]
+
+// the menu items in the order given, split into their groups
+const groupLinks = (subLinks) => {
+  const groups = []
+  for (const sub of subLinks) {
+    let g = groups.find((x) => x.name === sub.group)
+    if (!g) { g = { name: sub.group, items: [] }; groups.push(g) }
+    g.items.push(sub)
+  }
+  return groups
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -56,16 +68,22 @@ export default function Navbar() {
                     {link.label} <ChevronDown size={14} className={styles.dropdownIcon} aria-hidden="true" />
                   </button>
                   <div className={styles.navDropdown}>
-                    {link.subLinks.map((sub) => (
-                      <NavLink
-                        key={sub.path}
-                        to={sub.path}
-                        className={({ isActive }) =>
-                          `${styles.navDropdownItem} ${isActive ? styles.active : ''}`
-                        }
-                      >
-                        {sub.label}
-                      </NavLink>
+                    {groupLinks(link.subLinks).map((group) => (
+                      <div key={group.name} className={styles.navDropdownColumn}>
+                        <div className={styles.navDropdownHeading}>{group.name}</div>
+                        {group.items.map((sub) => (
+                          <NavLink
+                            key={sub.path}
+                            to={sub.path}
+                            className={({ isActive }) =>
+                              `${styles.navDropdownItem} ${isActive ? styles.active : ''}`
+                            }
+                          >
+                            {sub.label}
+                            {sub.hint && <span className={styles.navDropdownHint}>{sub.hint}</span>}
+                          </NavLink>
+                        ))}
+                      </div>
                     ))}
                   </div>
                 </div>

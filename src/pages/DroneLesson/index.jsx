@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Box, Maximize2, Minimize2, PencilRuler } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -43,7 +43,9 @@ function fullScreenSize() {
   return { width: vw / scale, height: vh / scale, scale }
 }
 
-export default function DroneLesson() {
+// embedded: the page is shown inside the Drone lab, which already supplies the navigation and footer
+export default function DroneLesson({ embedded = false }) {
+  const Shell = embedded ? Fragment : PageWrapper
   const theme = useUIStore((s) => s.theme)
   const wrapRef = useRef(null)
   const frameRef = useRef(null)
@@ -151,7 +153,7 @@ export default function DroneLesson() {
     : { height }
 
   return (
-    <PageWrapper>
+    <Shell>
       <section className={styles.hero}>
         <div className="container">
           <p className={styles.eyebrow}>How a drone works</p>
@@ -219,6 +221,6 @@ export default function DroneLesson() {
           </Link>
         </div>
       </section>
-    </PageWrapper>
+    </Shell>
   )
 }

@@ -213,7 +213,7 @@ export function BuildsPanel({ builder }) {
           </li>
         ))}
       </ul>
-      <Link to="/simulator" className={styles.lessonLink}>
+      <Link to="/wiring-lab/lessons" className={styles.lessonLink}>
         <GraduationCap size={16} aria-hidden="true" /> Practise with guided lessons
       </Link>
     </div>

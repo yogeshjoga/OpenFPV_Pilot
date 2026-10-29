@@ -64,7 +64,7 @@ function useDismiss(open, close) {
   return ref
 }
 
-function Builder() {
+function Builder({ embedded }) {
   const builder = useBuilder()
   const { screenToFlowPosition, fitView, zoomIn, zoomOut, setCenter } = useReactFlow()
   const { zoom } = useViewport()
@@ -150,13 +150,17 @@ function Builder() {
   const actions = useMemo(() => ({ flip: builder.flip }), [builder.flip])
 
   return (
-    <div className={styles.app}>
+    <div className={`${styles.app} ${embedded ? styles.embedded : ''}`}>
       <PartDefs />
       <header className={styles.header}>
-        <Link to="/" className={styles.brand} aria-label="EGIRE Robotics home">
-          <img src="/images/logo-egire-robotics.png" alt="EGIRE Robotics" height="26" />
-        </Link>
-        <span className={styles.product}>Wiring Builder</span>
+        {!embedded && (
+          <>
+            <Link to="/" className={styles.brand} aria-label="EGIRE Robotics home">
+              <img src="/images/logo-egire-robotics.png" alt="EGIRE Robotics" height="26" />
+            </Link>
+            <span className={styles.product}>Wiring Builder</span>
+          </>
+        )}
         <input
           className={styles.nameInput}
           value={builder.current.name}
@@ -165,9 +169,11 @@ function Builder() {
           placeholder="Name your build"
         />
         <div className={styles.headerActions}>
-          <Link to="/simulator" className={styles.ghost}>
-            <GraduationCap size={16} aria-hidden="true" /> <span className={styles.label}>Lessons</span>
-          </Link>
+          {!embedded && (
+            <Link to="/wiring-lab/lessons" className={styles.ghost}>
+              <GraduationCap size={16} aria-hidden="true" /> <span className={styles.label}>Lessons</span>
+            </Link>
+          )}
           <button type="button" className={styles.ghost} onClick={share}>
             <Share2 size={16} aria-hidden="true" /> <span className={styles.label}>Share</span>
           </button>
@@ -354,11 +360,12 @@ function Builder() {
   )
 }
 
-export default function WiringBuilder() {
+// embedded: the builder is shown inside the Wiring lab, which supplies the navigation and the lessons switch
+export default function WiringBuilder({ embedded = false }) {
   useDocumentMeta('Wiring Builder | EGIRE Robotics', 'Build an FPV drone wiring diagram: add real parts, solder wires pad to pad, and see what is connected, what is missing and what would burn.')
   return (
     <ReactFlowProvider>
-      <Builder />
+      <Builder embedded={embedded} />
     </ReactFlowProvider>
   )
 }

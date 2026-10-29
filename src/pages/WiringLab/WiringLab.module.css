@@ -1,0 +1,8 @@
+/* The two wiring tools fill the screen under the site navigation and the tab strip. */
+.lab {
+  --lab-strip: 56px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}

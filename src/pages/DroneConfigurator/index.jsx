@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { ArrowRight, Cable, Check, CircleAlert, Fan, Info, Layers, Link2, OctagonAlert, RotateCcw } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -65,7 +65,9 @@ const C = { thrust: '#30a46c', weight: '#e5484d', current: '#f5a524', induced: '
 
 const LEVEL_ICON = { error: OctagonAlert, warn: CircleAlert, info: Info }
 
-export default function DroneConfigurator() {
+// embedded: the page is shown inside the Drone lab, which already supplies the navigation and footer
+export default function DroneConfigurator({ embedded = false }) {
+  const Shell = embedded ? Fragment : PageWrapper
   const [params, setParams] = useSearchParams()
   const [build, setBuild] = useState(() => initialBuild(params))
   const [category, setCategory] = useState('motor')
@@ -194,7 +196,7 @@ export default function DroneConfigurator() {
   const tabs = [{ id: 'frame', label: 'Frame' }, ...CATEGORIES.map((c) => ({ id: c.id, label: c.label }))]
 
   return (
-    <PageWrapper>
+    <Shell>
       <section className={styles.hero}>
         <div className="container">
           <p className={styles.eyebrow}>Drone configurator</p>
@@ -460,6 +462,6 @@ export default function DroneConfigurator() {
           </Link>
         </div>
       </section>
-    </PageWrapper>
+    </Shell>
   )
 }
