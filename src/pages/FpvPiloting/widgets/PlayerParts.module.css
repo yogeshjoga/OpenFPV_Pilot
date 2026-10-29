@@ -71,21 +71,21 @@
 }
 
 .title {
-  margin-bottom: var(--space-2);
-  font-size: var(--text-xl);
+  margin-bottom: var(--space-1);
+  font-size: var(--text-lg);
   color: var(--color-text-primary);
 }
 
 .text {
-  font-size: var(--text-base);
-  line-height: 1.6;
+  font-size: var(--text-sm);
+  line-height: 1.55;
   color: var(--color-text-secondary);
 }
 
 .dots {
   display: flex;
   gap: var(--space-1);
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .dots i {

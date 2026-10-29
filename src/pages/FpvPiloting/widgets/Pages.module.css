@@ -1,6 +1,6 @@
 .pages {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-3);
 }
 
 .tabsAnchor {

@@ -67,7 +67,7 @@ function StickGuide() {
         <div className={styles.axisCard} style={{ '--c': AXIS[axis].color }}>
           <h4>{info.name} <small>{info.stick}</small></h4>
           <p>{info.moves}</p>
-          <p><b>How it feels:</b> {info.feel}</p>
+          <p className={styles.feel}><b>How it feels:</b> {info.feel}</p>
           <p><b>What it does:</b> {info.effect}</p>
         </div>
       </div>
@@ -142,7 +142,8 @@ function LoopPlayer() {
   const at = Math.min(sample.phase, steps - 1)
 
   return (
-    <div className={styles.player}>
+    // this page also has the row of patterns to choose from, so the player gets a little less height
+    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - 182px), 740px)' }}>
       <div className={styles.glyphs} role="radiogroup" aria-label="Choose a pattern">
         {LOOPS.map((l) => (
           <button key={l.id} type="button" role="radio" aria-checked={id === l.id} onClick={() => choose(l.id)}>
@@ -152,9 +153,8 @@ function LoopPlayer() {
         ))}
       </div>
 
-      <p className={styles.teaches}><b>What it teaches:</b> {loop.teaches}</p>
-
       <Cockpit
+        intro={<><b>What it teaches:</b> {loop.teaches}</>}
         color={PHASE_COLORS[at % PHASE_COLORS.length]}
         stage={<DroneStage poseRef={poseRef} label="The 3D drone flying the pattern" scale={DRONE_SCALE} track={track} />}
         controls={(

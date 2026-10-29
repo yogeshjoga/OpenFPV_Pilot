@@ -6,7 +6,7 @@ import styles from './Cockpit.module.css'
 //   right: the step the drone is on (in words), and the sticks
 //   corner of the 3D view: a small map of the path, seen from above or the side
 //   below: tabs for the things to read afterwards (all the steps, the stick chart, mistakes, practice)
-export default function Cockpit({ stage, controls, step, sticks, path, tabs, color }) {
+export default function Cockpit({ intro, stage, controls, step, sticks, path, tabs, color }) {
   const [current, setCurrent] = useState(tabs[0].id)
   const active = tabs.find((t) => t.id === current) ?? tabs[0]
   return (
@@ -19,6 +19,7 @@ export default function Cockpit({ stage, controls, step, sticks, path, tabs, col
         {controls}
       </div>
       <div className={styles.right}>
+        {intro && <p className={styles.intro}>{intro}</p>}
         <section className={styles.step} style={{ '--c': color }} aria-live="polite">{step}</section>
         <section className={styles.card} aria-label="The sticks">{sticks}</section>
       </div>

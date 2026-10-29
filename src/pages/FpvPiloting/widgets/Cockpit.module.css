@@ -12,13 +12,25 @@
   min-width: 0;
 }
 
+.right {
+  align-content: start;
+  max-height: var(--lab-h, 520px);
+  overflow: auto;
+}
+
+.intro {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
 /* the 3D drone takes most of the screen, but never more than fits with the controls under it */
 .stage {
   position: relative;
 }
 
 .cockpit .stage > :first-child {
-  height: clamp(380px, 64vh, 640px);
+  height: calc(var(--lab-h, 520px) - 52px);
   min-height: 0;
 }
 
@@ -27,7 +39,7 @@
   position: absolute;
   right: var(--space-3);
   bottom: var(--space-3);
-  width: min(44%, 280px);
+  width: min(32%, 220px);
   padding: var(--space-2);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -36,7 +48,7 @@
 }
 
 .minimap svg {
-  max-height: 150px;
+  max-height: 120px;
 }
 
 .minimap figcaption {
@@ -52,7 +64,7 @@
 }
 
 .step {
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-left: 6px solid var(--c, var(--color-accent-primary));
@@ -107,5 +119,9 @@
 
   .cockpit .stage > :first-child {
     height: clamp(300px, 55vh, 460px);
+  }
+
+  .right {
+    max-height: none;
   }
 }

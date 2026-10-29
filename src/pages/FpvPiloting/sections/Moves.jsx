@@ -103,8 +103,8 @@ function MovePlayer({ move }) {
 
   return (
     <div className={loop.player}>
-      <p className={loop.teaches}>{move.blurb}</p>
       <Cockpit
+        intro={<>{move.blurb} <span className={styles.levels}><i data-level="Beginner" /> Beginner <i data-level="Intermediate" /> Intermediate <i data-level="Advanced" /> Advanced</span></>}
         color={PHASE_COLORS[sample.phase % PHASE_COLORS.length]}
         stage={(
           <DroneStage poseRef={poseRef} label={`The 3D drone flying the ${move.name}`} scale={DRONE_SCALE} track={track}>
@@ -190,7 +190,6 @@ export default function Moves() {
   const [id, setId] = useState('roll')
   const inGroup = MOVES.filter((m) => m.group === group)
   const move = MOVES.find((m) => m.id === id) ?? inGroup[0]
-  const info = MOVE_GROUPS.find((g) => g.id === group)
 
   const chooseGroup = (g) => { setGroup(g); setId(MOVES.find((m) => m.group === g).id) }
 
@@ -202,20 +201,19 @@ export default function Moves() {
       intro="Pick a move and press play. The drone flies it from the side or from above, the 3D drone turns, and the sticks move exactly as your thumbs should. Every move is split into short steps you can click."
     >
       <div>
-        <div className={styles.chooserTop}>
+        <div className={styles.chooserRow}>
           <div className={styles.groups} role="tablist" aria-label="Stunts or racing">
-          {MOVE_GROUPS.map((g) => (
-            <button key={g.id} type="button" role="tab" aria-selected={group === g.id} onClick={() => chooseGroup(g.id)}>{g.label}</button>
-          ))}
+            {MOVE_GROUPS.map((g) => (
+              <button key={g.id} type="button" role="tab" aria-selected={group === g.id} onClick={() => chooseGroup(g.id)}>{g.label}</button>
+            ))}
           </div>
-          <p className={styles.chooserText}>{info.text} Flown in Acro mode: learn them in a simulator first, with plenty of height. <span className={styles.levels}><i data-level="Beginner" /> Beginner <i data-level="Intermediate" /> Intermediate <i data-level="Advanced" /> Advanced</span></p>
-        </div>
-        <div className={styles.moves} role="radiogroup" aria-label="Choose a move">
-          {inGroup.map((m) => (
-            <button key={m.id} type="button" role="radio" aria-checked={move.id === m.id} data-level={m.level} title={m.level} onClick={() => setId(m.id)}>
-              <b>{m.name}</b>
-            </button>
-          ))}
+          <div className={styles.moves} role="radiogroup" aria-label="Choose a move">
+            {inGroup.map((m) => (
+              <button key={m.id} type="button" role="radio" aria-checked={move.id === m.id} data-level={m.level} title={m.level} onClick={() => setId(m.id)}>
+                <b>{m.name}</b>
+              </button>
+            ))}
+          </div>
         </div>
         <MovePlayer move={move} />
       </div>

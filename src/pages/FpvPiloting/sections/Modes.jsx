@@ -153,11 +153,10 @@ function ModeLab() {
           <p><b>Let go of the sticks:</b> {info.letGo}</p>
         </div>
 
+        <div className={styles.sticksCol}>
         <Sticks values={shown} onChange={userMove} interactive mode3d={mode === '3d'} compact />
-        <p className={styles.hint}>
-          Drag the sticks, or click one and use the arrow keys. The left stick is throttle (up, down) and yaw (left, right). The right stick is pitch and roll.
-          {mode === '3d' && ' In 3D mode the dashed line is the middle of the throttle: zero thrust. Hover is a little above it.'}
-        </p>
+        {mode === '3d' && <p className={styles.hint}>The dashed line is the middle of the throttle: zero thrust.</p>}
+        </div>
 
         <div className={styles.tests} role="group" aria-label="Try a test">
           {TESTS.map((t) => (

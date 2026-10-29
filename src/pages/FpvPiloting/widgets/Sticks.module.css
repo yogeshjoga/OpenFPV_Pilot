@@ -138,7 +138,11 @@
 }
 
 .compact .gimbal {
-  max-width: 128px;
+  max-width: 100px;
+}
+
+.compact .unit figcaption {
+  display: none;
 }
 
 .compact .words {

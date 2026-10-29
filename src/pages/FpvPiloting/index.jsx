@@ -54,6 +54,7 @@ export default function FpvPiloting() {
 
   return (
     <PageWrapper>
+      <div className={styles.page}>
       <nav className={styles.subnav} aria-label="Parts of the course">
         <div className={`container ${styles.subnavInner}`}>
           <a href={window.location.pathname} className={styles.subnavLink} aria-current={part === 'start' ? 'page' : undefined} onClick={(e) => { e.preventDefault(); go('start') }}>Overview</a>
@@ -109,6 +110,7 @@ export default function FpvPiloting() {
       )}
 
       <p className={styles.foot}>Learn in a simulator first, then fly in a large open area where it is legal and safe, away from people. The numbers on this page are simple models for learning.</p>
+      </div>
     </PageWrapper>
   )
 }
