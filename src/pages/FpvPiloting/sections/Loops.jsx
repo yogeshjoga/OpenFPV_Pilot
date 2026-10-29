@@ -63,7 +63,7 @@ function StickGuide() {
             <button key={s.id} type="button" role="tab" aria-selected={axis === s.id} onClick={() => pick(s.id)} style={{ '--c': AXIS[s.id].color }}>{s.name}</button>
           ))}
         </div>
-        <Sticks values={values} highlight={axis} compact />
+        <Sticks values={values} highlight={axis} compact big />
         <div className={styles.axisCard} style={{ '--c': AXIS[axis].color }}>
           <h4>{info.name} <small>{info.stick}</small></h4>
           <p>{info.moves}</p>
@@ -143,7 +143,7 @@ function LoopPlayer() {
 
   return (
     // this page also has the row of patterns to choose from, so the player gets a little less height
-    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - var(--head) - 51px), 1100px)' }}>
+    <div className={styles.player} style={{ '--lab-h': 'clamp(320px, calc(var(--fit) - var(--head) - 85px), 1100px)' }}>
       <div className={styles.glyphs} role="radiogroup" aria-label="Choose a pattern">
         {LOOPS.map((l) => (
           <button key={l.id} type="button" role="radio" aria-checked={id === l.id} onClick={() => choose(l.id)}>

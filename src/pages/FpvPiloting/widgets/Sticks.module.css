@@ -143,13 +143,8 @@
 
 /* for the mode lab, where the sticks are the thing you play with: as large as the screen allows */
 .big .gimbal {
-  max-width: 168px;
-}
-
-@media (min-height: 860px) {
-  .big .gimbal {
-    max-width: 190px;
-  }
+  /* as large as the height of the lab leaves room for: the rest of the panel needs about 415 px */
+  max-width: clamp(160px, calc(var(--lab-h, 400px) - 415px), 260px);
 }
 
 .compact .unit figcaption {
@@ -181,7 +176,7 @@
 }
 
 .side .gimbal {
-  max-width: 122px;
+  max-width: clamp(122px, calc(var(--lab-h, 400px) - 290px), 156px);
 }
 
 .side .words {
