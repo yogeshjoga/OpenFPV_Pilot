@@ -4,34 +4,50 @@ import styles from './Scene3D.module.css'
 // A small three.js stage for the hardware lessons. `create({ THREE, scene, camera, controls })` builds the objects and returns
 // { update(state, seconds, dt), dispose() }. update runs every frame with the latest `stateRef.current`, so a lesson changes
 // the 3D scene by writing into the ref and nothing re-renders sixty times a second. Drag to turn the view, scroll to zoom.
+//
+// A browser allows only a handful of live 3D contexts, and this page has ten scenes. So a scene only exists while it is on or near
+// the screen: it is built when it scrolls close and its 3D context is released when it scrolls far away.
 export default function Scene3D({ create, stateRef, view, target, label, floorY = 0, minDistance = 50, maxDistance = 700 }) {
   const canvasRef = useRef(null)
   const stageRef = useRef(null)
   const createRef = useRef(create)
   createRef.current = create
   const [error, setError] = useState('')
+  const [near, setNear] = useState(false)
+  const [ready, setReady] = useState(false) // the first picture has been drawn
+  const [epoch, setEpoch] = useState(0) // bumped when the browser takes the 3D context away, so the scene is built again
 
   useEffect(() => {
+    const observer = new IntersectionObserver((entries) => setNear(entries[entries.length - 1].isIntersecting), { rootMargin: '900px' })
+    observer.observe(stageRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!near) { setReady(false); return undefined }
     let cancelled = false
     let frame = 0
-    let observer
     let resize
     let renderer
     let controls
     let api
     let pmrem
     let scene
+    let onLost
+    const canvas = canvasRef.current
     Promise.all([
       import('three'),
       import('three/examples/jsm/controls/OrbitControls.js'),
       import('three/examples/jsm/environments/RoomEnvironment.js'),
     ])
       .then(([THREE, { OrbitControls }, { RoomEnvironment }]) => {
-        if (cancelled || !canvasRef.current) return
-        const canvas = canvasRef.current
+        if (cancelled || !canvas) return
+        setError('')
         renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
         renderer.toneMapping = THREE.ACESFilmicToneMapping
+        onLost = (e) => { e.preventDefault(); if (!cancelled) setEpoch((n) => n + 1) }
+        canvas.addEventListener('webglcontextlost', onLost)
         scene = new THREE.Scene()
         scene.background = new THREE.Color(0x161b22)
         pmrem = new THREE.PMREMGenerator(renderer)
@@ -65,39 +81,35 @@ export default function Scene3D({ create, stateRef, view, target, label, floorY 
           const h = canvas.clientHeight || 360
           renderer.setSize(w, h, false)
           camera.aspect = w / h
+          camera.fov = Math.min(75, 34 * Math.max(1, 1.45 / camera.aspect)) // a narrow screen sees more up and down, so the scene still fits
           camera.updateProjectionMatrix()
         }
         size()
         resize = new ResizeObserver(size)
         resize.observe(canvas)
 
-        let visible = true
+        let ready0 = false
         let seconds = 0 // the lesson's own clock; it stands still while the lesson sets `paused`
         let last = performance.now()
         const loop = (now) => {
-          frame = 0
           if (cancelled) return
-          const dt = Math.min((now - last) / 1000, 0.05)
+          const dt = Math.min(Math.max((now - last) / 1000, 0), 0.05) // a frame can start a hair before the clock was read, which would be a negative step
           last = now
           if (!stateRef.current?.paused) seconds += dt
           api.update(stateRef.current, seconds, dt)
           controls.update()
           renderer.render(scene, camera)
-          if (visible) frame = requestAnimationFrame(loop)
+          if (!ready0) { ready0 = true; setReady(true) }
+          frame = requestAnimationFrame(loop)
         }
-        observer = new IntersectionObserver((entries) => {
-          visible = entries[entries.length - 1].isIntersecting
-          if (visible && !frame) { last = performance.now(); frame = requestAnimationFrame(loop) }
-        }, { rootMargin: '80px' })
-        observer.observe(stageRef.current)
         frame = requestAnimationFrame(loop)
       })
       .catch(() => { if (!cancelled) setError('Your browser could not start the 3D view. The numbers still work.') })
     return () => {
       cancelled = true
       cancelAnimationFrame(frame)
-      observer?.disconnect()
       resize?.disconnect()
+      if (onLost) canvas?.removeEventListener('webglcontextlost', onLost)
       api?.dispose?.()
       scene?.traverse((o) => {
         o.geometry?.dispose?.()
@@ -107,14 +119,16 @@ export default function Scene3D({ create, stateRef, view, target, label, floorY 
       controls?.dispose()
       pmrem?.dispose()
       renderer?.dispose()
+      renderer?.forceContextLoss() // give the 3D context back to the browser straight away
     }
-    // the camera and the scene are fixed for the life of the stage; the lesson changes it through stateRef
+    // the camera and the scene are fixed while the stage is built; the lesson changes it through stateRef
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [near, epoch])
 
   return (
     <div ref={stageRef} className={styles.stage}>
-      <canvas ref={canvasRef} className={styles.canvas} aria-label={label} role="img" />
+      {near && <canvas key={epoch} ref={canvasRef} className={styles.canvas} aria-label={label} role="img" />}
+      {near && !ready && !error && <span className={styles.loading}>Loading the 3D view…</span>}
       <span className={styles.hint}>Drag to turn · scroll to zoom</span>
       {error && <p className={styles.error} role="status">{error}</p>}
     </div>

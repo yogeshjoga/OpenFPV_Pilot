@@ -557,7 +557,7 @@ export function createPowerChain({ THREE, scene }) {
       flow += (state.paused ? 0 : dt) * (0.1 + state.current * 0.16)
       // with state.phase = { from: 'A', to: 'B' } the current goes in along one motor wire and out along another; the third is left floating
       beads.forEach((b) => {
-        let u = (b.k + flow) % 1
+        let u = (((b.k + flow) % 1) + 1) % 1
         b.m.visible = true
         if (state.phase && b.wire >= 0) {
           const role = 'ABC'[b.wire] === state.phase.from ? 'in' : 'ABC'[b.wire] === state.phase.to ? 'out' : 'float'
