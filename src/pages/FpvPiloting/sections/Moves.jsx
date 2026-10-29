@@ -3,7 +3,7 @@ import { useReducedMotion } from 'framer-motion'
 import { Lightbulb, Pause, Play, RotateCcw } from 'lucide-react'
 import CurveChart from '@components/charts/CurveChart'
 import { MOVES, MOVE_GROUPS } from '../data/moves.js'
-import { flyManeuver, maneuverPose, phaseStart } from '../maneuvers.js'
+import { flyManeuver, maneuverPose, phaseStart, sceneTrack } from '../maneuvers.js'
 import { Block, Section, useFrame } from '../shared.jsx'
 import DroneStage from '../widgets/DroneStage.jsx'
 import Sticks, { AXIS } from '../widgets/Sticks.jsx'
@@ -11,6 +11,8 @@ import loop from './Loops.module.css'
 import styles from './Moves.module.css'
 
 const PHASE_COLORS = ['#3e8ef7', '#30a46c', '#f5a524', '#e5484d', '#a371f7', '#14b8a6']
+const PHASE_HEX = PHASE_COLORS.map((c) => parseInt(c.slice(1), 16))
+const DRONE_SCALE = 0.5 // the 3D drone is drawn larger than life on the path, so it can be seen
 
 // the path of the move, with the drone on it. Side view: along the ground and up. Top view: from above.
 function MovePath({ samples, view, time, phase }) {
@@ -78,7 +80,9 @@ function MovePlayer({ move }) {
 
   const now = Math.min(time, duration)
   const sample = samples.reduce((best, p) => (p.t <= now ? p : best), samples[0])
-  useEffect(() => { poseRef.current = maneuverPose(sample, move.view) }, [sample, move.view])
+  // the flight laid out in the 3D scene: the path is drawn there and the drone flies along it
+  const track = useMemo(() => sceneTrack(samples, move.view, { rigY: 36 * DRONE_SCALE, colors: PHASE_HEX }), [samples, move.view])
+  useEffect(() => { poseRef.current = { ...maneuverPose(sample, move.view), ...track.place(sample), phase: sample.phase } }, [sample, move.view, track])
 
   const chart = useMemo(() => {
     const xs = samples.filter((_, i) => i % 3 === 0).map((p) => p.t)
@@ -101,7 +105,7 @@ function MovePlayer({ move }) {
           <MovePath samples={samples} view={move.view} time={now} phase={sample.phase} />
           <figcaption>{move.view === 'side' ? 'Seen from the side. The dot marks the top of the drone.' : 'Seen from above. The arrow is the drone and its nose.'}</figcaption>
         </figure>
-        <DroneStage poseRef={poseRef} label={`The 3D drone flying the ${move.name}`} className={loop.loopStage} view={[520, 220, -100]} target={[0, 110, 0]}>
+        <DroneStage poseRef={poseRef} label={`The 3D drone flying the ${move.name}`} className={loop.loopStage} scale={DRONE_SCALE} track={track}>
           <div className={styles.read}>
             <span>Rolled <b>{turned(sample.roll)}</b></span>
             {move.view === 'side' && <span>Nose turned <b>{turned(sample.pitchUp + 15)}</b></span>}

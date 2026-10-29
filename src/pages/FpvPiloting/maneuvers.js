@@ -68,10 +68,59 @@ export function maneuverPose(sample, view, y0 = 0) {
   return {
     pitch: -sample.pitchUp * RAD,
     roll: sample.roll * RAD,
-    yaw: ((view === 'top' ? -(sample.heading - 90) : 0) + sample.yaw) * RAD,
+    // facing east in a side view (the path runs left to right), and facing along its heading in a top view
+    yaw: ((view === 'top' ? -(sample.heading - 90) : 90) + sample.yaw) * RAD,
     height: view === 'side' ? Math.min(220, Math.max(0, (sample.y - y0) * 5)) : 40,
   }
 }
 
 // the first sample of a phase, for jumping to it
 export const phaseStart = (samples, index) => samples.find((s) => s.phase === index) ?? samples[0]
+
+// ---------------------------------------------------------------------------------------------------------------
+// The same flight, laid out in the 3D scene. The scene is in millimetres, so a path of tens of metres is scaled down (k mm per metre) and
+// the drone is drawn larger than life so it can be seen. Side view: forward is to the right and height is up. Top view: east is to the
+// right and north is away from the viewer. A path is a list of samples (x, y in metres, phase).
+// ---------------------------------------------------------------------------------------------------------------
+
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
+const FLIGHT_HEIGHT = 40 // mm above the mat for a flight seen from above
+
+// colours: an array of numbers (0xrrggbb), one for each phase
+export function sceneTrack(samples, view, { rigY = 12, colors = [0x3e8ef7], width = 1100 } = {}) {
+  const xs = samples.map((p) => p.x)
+  const ys = samples.map((p) => p.y)
+  const x0 = Math.min(...xs)
+  const x1 = Math.max(...xs)
+  const y0 = Math.min(...ys)
+  const y1 = Math.max(...ys)
+  const w = x1 - x0
+  const h = y1 - y0
+  const cx = (x0 + x1) / 2
+  const cy = (y0 + y1) / 2
+  const k = clamp(width / Math.max(view === 'top' ? Math.max(w, h) : w, 6), 8, 44)
+
+  // where the drone is: x, z and its height above the mat, all in mm (the height is measured from the mat, as the 3D drone expects)
+  const place = (p) => view === 'side'
+    ? { x: (p.x - cx) * k, z: 0, height: (p.y - y0) * k }
+    : { x: (p.x - cx) * k, z: -(p.y - cy) * k, height: FLIGHT_HEIGHT }
+
+  const phases = Math.max(...samples.map((p) => p.phase)) + 1
+  const segments = Array.from({ length: phases }, (_, i) => ({
+    color: colors[i % colors.length],
+    points: samples.filter((p) => p.phase === i).filter((_, j, list) => j % 4 === 0 || j === list.length - 1).map((p) => {
+      const at = place(p)
+      return { x: at.x, y: rigY + at.height, z: at.z }
+    }),
+  }))
+  // a segment needs to join the one before it
+  for (let i = 1; i < segments.length; i += 1) {
+    const prev = segments[i - 1].points
+    if (prev.length) segments[i].points.unshift(prev[prev.length - 1])
+  }
+
+  const fit = view === 'side'
+    ? { center: [0, rigY + (h * k) / 2, 0], width: w * k + 260, height: h * k + 260, elevation: 12 }
+    : { center: [0, rigY + FLIGHT_HEIGHT, 0], width: w * k + 220, height: h * k + 220, elevation: 58 }
+  return { k, place, segments, fit }
+}

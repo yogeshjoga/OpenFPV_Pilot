@@ -3,6 +3,7 @@ import { useReducedMotion } from 'framer-motion'
 import { Pause, Play, RotateCcw } from 'lucide-react'
 import { LOOPS, STICKS } from '../data/loops.js'
 import { LOOPS as SHAPES, initialState, poseFor, routeFor, sampleAt, stepMode, sticksFor } from '../sim.js'
+import { sceneTrack } from '../maneuvers.js'
 import { Block, Section, useFrame } from '../shared.jsx'
 import DroneStage from '../widgets/DroneStage.jsx'
 import Sticks, { AXIS } from '../widgets/Sticks.jsx'
@@ -10,6 +11,8 @@ import styles from './Loops.module.css'
 
 const RAD = Math.PI / 180
 const PHASE_COLORS = ['#3e8ef7', '#30a46c', '#f5a524', '#e5484d', '#a371f7']
+const PHASE_HEX = PHASE_COLORS.map((c) => parseInt(c.slice(1), 16))
+const DRONE_SCALE = 0.5 // the 3D drone is drawn larger than life on the path, so it can be seen
 
 // ---- the four stick movements, each shown on its own ----
 
@@ -128,7 +131,9 @@ function LoopPlayer() {
 
   const sample = sampleAt(route, Math.min(time, duration))
   const sticks = sticksFor(sample)
-  useEffect(() => { poseRef.current = { ...poseFor(sample), height: 90 } }, [sample])
+  // the flight laid out in the 3D scene: the path is drawn there and the drone flies along it
+  const track = useMemo(() => sceneTrack(route, 'top', { rigY: 36 * DRONE_SCALE, colors: PHASE_HEX }), [route])
+  useEffect(() => { poseRef.current = { ...poseFor(sample), ...track.place(sample), phase: sample.phase } }, [sample, track])
 
   return (
     <div className={styles.player}>
@@ -148,7 +153,7 @@ function LoopPlayer() {
           <PathView route={route} loop={shape} time={time} phase={sample.phase} />
           <figcaption>Seen from above. The arrow is the drone and its nose.</figcaption>
         </figure>
-        <DroneStage poseRef={poseRef} label="The 3D drone flying the pattern" className={styles.loopStage} view={[520, 220, -100]} target={[0, 100, 0]} />
+        <DroneStage poseRef={poseRef} label="The 3D drone flying the pattern" className={styles.loopStage} scale={DRONE_SCALE} track={track} />
         <div className={styles.sticksCol}>
           <Sticks values={sticks} />
         </div>

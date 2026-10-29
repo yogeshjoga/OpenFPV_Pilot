@@ -106,11 +106,11 @@ test('a dive gate goes down and comes back out level', () => {
   assert.ok(Math.abs(last(s).heading) < 0.5)
 })
 
-test('the pose for the 3D drone: nose-down is positive, a side view stays on one spot, a top view turns with the heading', () => {
+test('the pose for the 3D drone: nose-down is positive, a side view faces east, a top view turns with the heading', () => {
   const s = fly('powerloop')
   const mid = s[Math.floor(s.length / 2)]
   const pose = maneuverPose(mid, 'side')
-  assert.equal(pose.yaw, 0)
+  assert.ok(Math.abs(pose.yaw - Math.PI / 2) < 1e-6, 'a side view faces east')
   assert.ok(Number.isFinite(pose.pitch))
   const turn = fly('racecircle').find((p) => p.phase === 2)
   assert.notEqual(maneuverPose(turn, 'top').yaw, 0)
@@ -267,4 +267,50 @@ test('a race Split-S ends going the other way and lower', () => {
   const s = fly('splitsgate')
   assert.ok(Math.abs(last(s).heading + 180) < 0.5)
   assert.ok(last(s).y < -4)
+})
+
+import { sceneTrack } from './maneuvers.js'
+
+test('the 3D track fits the mat, the drone stays on its drawn path, and the path is split by phase', () => {
+  for (const m of MOVES) {
+    const s = fly(m.id)
+    const track = sceneTrack(s, m.view)
+    assert.ok(track.k >= 8 && track.k <= 44, `${m.id} k ${track.k}`)
+    assert.equal(track.segments.length, m.phases.length, m.id)
+    for (const p of s) {
+      const at = track.place(p)
+      assert.ok(Math.abs(at.x) <= 700, `${m.id} x ${at.x}`)
+      assert.ok(Math.abs(at.z) <= 700, `${m.id} z ${at.z}`)
+      assert.ok(at.height >= 0, `${m.id} height`)
+    }
+    // every drawn point is one the drone really passes through
+    for (const seg of track.segments) assert.ok(seg.points.length >= 2, `${m.id} segment`)
+  }
+})
+
+test('side view: forward is to the right and the path stays in one plane; top view: north is away from the viewer', () => {
+  const side = sceneTrack(fly('powerloop'), 'side')
+  assert.ok(side.place(last(fly('powerloop'))).x > side.place(fly('powerloop')[0]).x)
+  assert.ok(side.segments.every((seg) => seg.points.every((q) => q.z === 0)))
+  const top = sceneTrack(fly('racecircle'), 'top')
+  const circle = fly('racecircle')
+  const north = circle.reduce((best, p) => (p.y > best.y ? p : best))
+  const south = circle.reduce((best, p) => (p.y < best.y ? p : best))
+  assert.ok(top.place(north).z < top.place(south).z, 'north has the smaller z, which is further from the viewer')
+})
+
+test('the lowest point of a side-view flight is on the mat, and a flight from above stays low', () => {
+  const s = fly('splits')
+  const track = sceneTrack(s, 'side')
+  assert.ok(Math.min(...s.map((p) => track.place(p).height)) < 0.001)
+  assert.equal(sceneTrack(fly('slalom'), 'top').place(fly('slalom')[0]).height, 40)
+})
+
+test('the drone faces east in a side view, and along its heading from above', () => {
+  const side = maneuverPose(fly('flip')[0], 'side')
+  assert.ok(Math.abs(side.yaw - Math.PI / 2) < 1e-6)
+  const turned = maneuverPose(fly('stallturn').at(-1), 'side')
+  assert.ok(Math.abs(turned.yaw - (Math.PI / 2 + Math.PI)) < 1e-6, 'after the stall turn it faces west')
+  const top = maneuverPose(fly('racecircle')[0], 'top')
+  assert.ok(Math.abs(top.yaw) < 1e-6, 'heading north is a yaw of zero')
 })

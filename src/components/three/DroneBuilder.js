@@ -239,7 +239,9 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
 
   scene.add(new THREE.HemisphereLight(0xcfd8ff, 0x1a1208, 0.35))
   const sun = new THREE.DirectionalLight(0xfff0dc, 2.1)
-  sun.position.set(280, 560, -190)
+  const SUN_OFFSET = new THREE.Vector3(280, 560, -190)
+  sun.position.copy(SUN_OFFSET)
+  scene.add(sun.target)
   sun.castShadow = true
   sun.shadow.mapSize.set(2048, 2048)
   Object.assign(sun.shadow.camera, { left: -260, right: 260, top: 260, bottom: -260, near: 50, far: 1500 })
@@ -274,6 +276,35 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
   }
 
   const carbonMap = carbonTexture()
+
+  // ---- a flight path drawn in the scene, for the stunt and race lessons: one coloured tube for each part of the move ----
+  const pathGroup = new THREE.Group()
+  scene.add(pathGroup)
+  let pathParts = []
+  const clearPath = () => {
+    for (const part of pathParts) { part.mesh.geometry.dispose(); part.material.dispose(); pathGroup.remove(part.mesh) }
+    pathParts = []
+  }
+  let fitted = null // the last view fitted to a path, so a resize can fit it again
+  let following = false // the camera travels with the drone
+  const fit = ({ center, width, height, elevation = 15 }) => {
+    fitted = { center, width, height, elevation }
+    const vfov = (camera.fov * Math.PI) / 180
+    const tanV = Math.tan(vfov / 2)
+    const tanH = tanV * camera.aspect
+    const dist = Math.max(width / 2 / tanH, height / 2 / tanV) * 1.2 + 120
+    const el = (elevation * Math.PI) / 180
+    camera.position.set(center[0], center[1] + dist * Math.sin(el), center[2] + dist * Math.cos(el))
+    controls.target.set(center[0], center[1], center[2])
+    controls.minDistance = 120
+    controls.maxDistance = dist * 2.4
+    controls.autoRotate = false
+    scene.fog.near = dist + 1200
+    scene.fog.far = dist + 3200
+    camera.far = dist * 4 + 3500
+    camera.updateProjectionMatrix()
+    controls.update()
+  }
 
   // ---- the drone, rebuilt whenever the parts change ----
   // the drone sits in a rig that turns about its centre, so it can pitch, roll and yaw like the real thing
@@ -695,10 +726,51 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
     setExplode(amount) { explode = amount; applyExplode() },
     highlight(category) { highlighted = category; applyHighlight() },
     // pitch (nose down is positive), roll (right side down is positive) and yaw in radians; height in millimetres
-    setPose({ pitch = 0, roll = 0, yaw = 0, height = 0 } = {}) {
+    // x and z (mm) move the drone about the scene: x to the right, z toward the viewer. The shadow goes with it.
+    setPose({ pitch = 0, roll = 0, yaw = 0, height = 0, x = 0, z = 0 } = {}) {
       rig.rotation.set(-pitch, -yaw, -roll, 'YXZ')
-      rig.position.y = RIG_Y * rigScale + height
+      const before = rig.position.clone()
+      rig.position.set(x, RIG_Y * rigScale + height, z)
+      if (following) {
+        const move = rig.position.clone().sub(before)
+        camera.position.add(move)
+        controls.target.add(move)
+      }
+      sun.position.set(x + SUN_OFFSET.x, SUN_OFFSET.y, z + SUN_OFFSET.z)
+      sun.target.position.set(x, 0, z)
     },
+    // segments: [{ points: [{ x, y, z }, ...], color }] in scene units (mm), drawn as tubes
+    setPath(segments, { radius = 4 } = {}) {
+      clearPath()
+      for (const seg of segments) {
+        if (seg.points.length < 2) continue
+        const curve = new THREE.CatmullRomCurve3(seg.points.map((q) => new THREE.Vector3(q.x, q.y, q.z)), false, 'centripetal')
+        const geometry = new THREE.TubeGeometry(curve, Math.min(240, seg.points.length * 2), radius, 6, false)
+        const material = new THREE.MeshBasicMaterial({ color: seg.color, transparent: true, opacity: 0.45 })
+        const mesh = new THREE.Mesh(geometry, material)
+        pathGroup.add(mesh)
+        pathParts.push({ mesh, material })
+      }
+    },
+    // the part of the path the drone is on is drawn solid, the rest faint
+    highlightPath(index) { pathParts.forEach((part, i) => { part.material.opacity = i === index ? 1 : 0.4 }) },
+    clearPath,
+    // true: the camera stays close to the drone and travels with it. false: back to the view of the whole path.
+    setFollow(on) {
+      following = on
+      if (!fitted) return
+      if (on) {
+        const el = (fitted.elevation * Math.PI) / 180
+        const dist = 480
+        controls.target.copy(rig.position)
+        camera.position.set(rig.position.x, rig.position.y + dist * Math.sin(el), rig.position.z + dist * Math.cos(el))
+        controls.minDistance = 120
+        controls.maxDistance = 1400
+        controls.update()
+      } else fit(fitted)
+    },
+    // look at a path from the side or from above: it fits the whole path in view, whatever the size of the canvas
+    fitView(options) { fit(options) },
     // scale the whole drone about its centre, keeping its feet on the mat
     setScale(k) {
       rigScale = k
@@ -723,6 +795,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       renderer.setSize(w, h, false)
       camera.aspect = w / h
       camera.updateProjectionMatrix()
+      if (fitted && !following) fit(fitted)
     },
     render() { controls.update(); renderer.render(scene, camera) },
     get parts() { return parts },
@@ -731,6 +804,7 @@ export function createDroneBuilder(canvas, { onPick } = {}) {
       cancelAnimationFrame(frame)
       canvas.removeEventListener('pointerdown', onDown)
       canvas.removeEventListener('pointerup', onUp)
+      clearPath()
       dispose()
       for (const t of fixed) t.dispose()
       carbonMap.dispose()
