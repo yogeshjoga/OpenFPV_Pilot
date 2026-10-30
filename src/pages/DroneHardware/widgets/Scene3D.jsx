@@ -93,7 +93,7 @@ export default function Scene3D({ create, stateRef, view, target, label, floorY 
         let last = performance.now()
         const loop = (now) => {
           if (cancelled) return
-          const dt = Math.min(Math.max((now - last) / 1000, 0), 0.05) // a frame can start a hair before the clock was read, which would be a negative step
+          const dt = Math.min(Math.max((now - last) / 1000, 0), 0.1) // a frame can start a hair before the clock was read, which would be a negative step. Up to 0.1 s is allowed, so a slow phone (10 frames a second) still runs in real time
           last = now
           if (!stateRef.current?.paused) seconds += dt
           api.update(stateRef.current, seconds, dt)
