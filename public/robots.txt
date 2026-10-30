@@ -1,7 +1,10 @@
+# Everyone, including search engines and AI assistants, may read the public site.
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /login
+Disallow: /auth/
 Disallow: /unauthorized
+Disallow: /api/
 
 Sitemap: https://www.egirerobotics.com/sitemap.xml

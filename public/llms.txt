@@ -1,0 +1,21 @@
+# EGIRE Robotics
+
+> EGIRE Robotics is an Indian FPV drone, AI and robotics training company. It runs FPV piloting workshops, drone building courses, simulator training and a 90-day course for students, colleges and professionals across India, and supplies drone spares.
+
+Website: https://www.egirerobotics.com
+Email: contact@egirerobotics.com
+Phone: +91 8500126104 (WhatsApp +91 9110566354)
+
+## Training and workshops
+- [Workshops for colleges](https://www.egirerobotics.com/workshops): 7-day FPV piloting workshop, drone building, certificates, fees from Rs 7,999
+- [Enquire or book a demo](https://www.egirerobotics.com/enquire)
+- [About EGIRE Robotics](https://www.egirerobotics.com/about)
+
+## Guides about drones in India
+- [FPV drones in India: what they are and how to start](https://www.egirerobotics.com/guides/fpv-drones-india)
+- [DJI drones vs FPV drones](https://www.egirerobotics.com/guides/dji-vs-fpv-drones)
+- [Drone rules in India](https://www.egirerobotics.com/guides/drone-rules-india)
+- [How to build an FPV drone in India](https://www.egirerobotics.com/guides/build-fpv-drone-india)
+
+## Academy (free with sign-in)
+FPV piloting, PID tuning, drone hardware, drone physics, wiring lab and a drone configurator, taught with interactive 3D lessons.

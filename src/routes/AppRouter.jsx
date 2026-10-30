@@ -21,6 +21,7 @@ const Blog = lazy(() => import('@pages/Blog'))
 const PidTuning = lazy(() => import('@pages/PidTuning'))
 const FpvPiloting = lazy(() => import('@pages/FpvPiloting'))
 const DroneHardware = lazy(() => import('@pages/DroneHardware'))
+const Guides = lazy(() => import('@pages/Guides'))
 const Presentation = lazy(() => import('@pages/Presentation'))
 const DroneLab = lazy(() => import('@pages/DroneLab'))
 
@@ -136,6 +137,8 @@ export default function AppRouter() {
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/guides" element={<Guides />} />
+          <Route path="/guides/:slug" element={<Guides />} />
           <Route path="/enquire" element={<Enquire />} />
           <Route path="/workshops" element={<Workshops />} />
           <Route
