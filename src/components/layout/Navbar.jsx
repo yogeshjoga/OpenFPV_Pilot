@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from 'react'
 
-import { Sun, Moon, ArrowRight, ChevronDown } from 'lucide-react'
+import { Sun, Moon, ArrowRight, ChevronDown, LogOut, User } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NAV_LINKS } from '@config/constants'
 import useUIStore from '@store/useUIStore'
+import { useAuthStore } from '@store/useAuthStore'
 import styles from './Navbar.module.css'
 
 // What the announcement strip under the navigation says, repeated as it scrolls
@@ -29,6 +30,24 @@ const groupLinks = (subLinks) => {
     g.items.push(sub)
   }
   return groups
+}
+
+// "Sign in" for a visitor; the person's name and a sign-out button once signed in
+function AccountLink({ mobile = false }) {
+  const status = useAuthStore((s) => s.status)
+  const user = useAuthStore((s) => s.user)
+  const signOut = useAuthStore((s) => s.signOut)
+  const base = mobile ? styles.mobileLink : styles.navLink
+  if (status === 'ready' || status === 'incomplete') {
+    const first = (user?.name || user?.email || 'Account').split(/[\s@]/)[0]
+    return (
+      <>
+        <span className={base} aria-label="Signed in"><User size={14} aria-hidden="true" /> {first}</span>
+        <button type="button" className={base} onClick={() => signOut()}><LogOut size={14} aria-hidden="true" /> Sign out</button>
+      </>
+    )
+  }
+  return <NavLink to="/login" className={({ isActive }) => `${base} ${isActive ? styles.active : ''}`}>Sign in</NavLink>
 }
 
 export default function Navbar() {
@@ -89,6 +108,7 @@ export default function Navbar() {
                 </div>
               )
             }
+            if (link.path === '/login') return <AccountLink key="account" />
             return (
               <NavLink
                 key={link.path}
@@ -191,6 +211,7 @@ export default function Navbar() {
                   </div>
                 )
               }
+              if (link.path === '/login') return <AccountLink key="account" mobile />
               return (
                 <NavLink
                   key={link.path}

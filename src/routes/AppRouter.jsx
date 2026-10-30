@@ -25,12 +25,15 @@ const Presentation = lazy(() => import('@pages/Presentation'))
 const DroneLab = lazy(() => import('@pages/DroneLab'))
 
 const Login = lazy(() => import('@pages/Auth/Login'))
+const AuthCallback = lazy(() => import('@pages/Auth/AuthCallback'))
 const Unauthorized = lazy(() => import('@pages/Auth/Unauthorized'))
 const AdminDashboard = lazy(() => import('@pages/Admin/AdminDashboard'))
 const Workshops = lazy(() => import('@pages/Workshops'))
 
 import ProtectedRoute from '@components/auth/ProtectedRoute'
+import RequireMember from '@components/auth/RequireMember'
 import { useAuthStore } from '@store/useAuthStore'
+import { startAnalytics, trackPage } from '@lib/analytics'
 import { ArrowLeft } from 'lucide-react'
 
 
@@ -38,6 +41,16 @@ function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
+
+// Counts the visit and each page after it. Nothing is stored in the browser and nothing is sent when Do Not Track is on.
+function PageTracker() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    startAnalytics()
+    trackPage(pathname)
   }, [pathname])
   return null
 }
@@ -72,40 +85,43 @@ export default function AppRouter() {
   const fetchUser = useAuthStore(state => state.fetchUser)
   const { user } = useAuthStore()
 
+  // the sign-in client loads after the first screen, so it never slows the home page down
   useEffect(() => {
-    fetchUser()
+    const idle = window.requestIdleCallback ? window.requestIdleCallback(() => fetchUser()) : setTimeout(fetchUser, 600)
+    return () => (window.cancelIdleCallback ? window.cancelIdleCallback(idle) : clearTimeout(idle))
   }, [fetchUser])
 
 
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <PageTracker />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog" element={<RequireMember gate="catalog"><Catalog /></RequireMember>} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/training" element={<Training />} />
+          <Route path="/training" element={<RequireMember gate="training"><Training /></RequireMember>} />
           <Route path="/builder" element={<Builder />} />
-          <Route path="/physics" element={<Physics />} />
-          <Route path="/physics/:sectionId/:topicId" element={<PhysicsDetail />} />
+          <Route path="/physics" element={<RequireMember gate="physics"><Physics /></RequireMember>} />
+          <Route path="/physics/:sectionId/:topicId" element={<RequireMember gate="physics"><PhysicsDetail /></RequireMember>} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/gallery/:folder" element={<Gallery />} />
           <Route path="/gallery/:folder/:album" element={<Gallery />} />
-          <Route path="/wiring-lab" element={<WiringLab />} />
-          <Route path="/wiring-lab/:tab" element={<WiringLab />} />
+          <Route path="/wiring-lab" element={<RequireMember gate="wiringLab"><WiringLab /></RequireMember>} />
+          <Route path="/wiring-lab/:tab" element={<RequireMember gate="wiringLab"><WiringLab /></RequireMember>} />
           <Route path="/simulator" element={<Forward to="/wiring-lab/lessons" />} />
           <Route path="/wiring-builder" element={<Forward to="/wiring-lab/practice" />} />
-          <Route path="/assembly-3d" element={<Assembly3D />} />
-          <Route path="/intro" element={<IntroToDrones />} />
+          <Route path="/assembly-3d" element={<RequireMember gate="assembly"><Assembly3D /></RequireMember>} />
+          <Route path="/intro" element={<RequireMember gate="intro"><IntroToDrones /></RequireMember>} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/pid-tuning" element={<PidTuning />} />
-          <Route path="/fpv-piloting" element={<FpvPiloting />} />
-          <Route path="/drone-hardware" element={<DroneHardware />} />
+          <Route path="/pid-tuning" element={<RequireMember gate="pid"><PidTuning /></RequireMember>} />
+          <Route path="/fpv-piloting" element={<RequireMember gate="piloting"><FpvPiloting /></RequireMember>} />
+          <Route path="/drone-hardware" element={<RequireMember gate="hardware"><DroneHardware /></RequireMember>} />
           <Route path="/presentation" element={<Presentation />} />
-          <Route path="/drone-lab" element={<DroneLab />} />
-          <Route path="/drone-lab/:tab" element={<DroneLab />} />
+          <Route path="/drone-lab" element={<RequireMember gate="droneLab"><DroneLab /></RequireMember>} />
+          <Route path="/drone-lab/:tab" element={<RequireMember gate="droneLab"><DroneLab /></RequireMember>} />
           <Route path="/how-a-drone-works" element={<Forward to="/drone-lab/how-it-works" />} />
           <Route path="/drone-configurator" element={<Forward to="/drone-lab/configurator" />} />
 
@@ -115,6 +131,7 @@ export default function AppRouter() {
             </ProtectedRoute>
           } />
           <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />

@@ -1,27 +1,34 @@
+import { useCallback, useEffect } from 'react'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ShieldCheck, Box, Gamepad2, ClipboardCheck, ArrowRight } from 'lucide-react'
+import { Box, Gamepad2, ClipboardCheck } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
+import MemberAuthCard from '@components/auth/MemberAuthCard'
+import useDocumentMeta from '@lib/useDocumentMeta'
+import { useAuthStore } from '@store/useAuthStore'
 import styles from './Login.module.css'
 
-const CRM_LOGIN_URL = import.meta.env.VITE_CRM_LOGIN_URL
+// Only addresses inside this site are accepted as the place to go next
+const safeNext = (value) => (typeof value === 'string' && value.startsWith('/') && !value.startsWith('//') ? value : '/')
 
 export default function Login() {
-  const crmConfigured = Boolean(CRM_LOGIN_URL)
-
-  const handleCrmLogin = () => {
-    window.location.href = CRM_LOGIN_URL
-  }
+  useDocumentMeta('Sign in | EGIRE Robotics', 'Sign in or register for free to open the EGIRE Robotics Academy: lessons, labs and simulations for FPV drones.')
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [params] = useSearchParams()
+  const init = useAuthStore((s) => s.init)
+  const next = safeNext(params.get('next') || location.state?.from?.pathname)
+  const done = useCallback(() => navigate(next, { replace: true }), [navigate, next])
+  useEffect(() => { void init() }, [init])
 
   return (
     <PageWrapper hideFooter={true}>
       <div className={styles.authContainer}>
-        {/* Glow Effects */}
         <div className={styles.ambientGlow1} />
         <div className={styles.ambientGlow2} />
 
         <div className={`container ${styles.authGrid}`}>
-          {/* Left Column: Academy Info/Description */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -33,76 +40,40 @@ export default function Login() {
               <span className="gradient-text">EGIRE ROBOTICS</span>
             </h1>
             <p className={styles.infoText}>
-              Welcome to the premier portal for FPV pilots. Whether you are learning drone basics, tuning PID loops, practicing on realistic physics-based simulators, or customizing quadcopters using our 3D Assembly Builder, our academy gives you the tools to go from zero to your first freestyle or racing flight.
+              Register for free and the whole Academy opens: lessons on how a drone works, physics, FPV piloting, PID tuning, labs and simulators. Sign in with Google or with a short code we email you.
             </p>
 
             <div className={styles.featureList}>
               <div className={styles.featureItem}>
-                <div className={styles.featureIconWrapper}>
-                  <Box size={18} />
-                </div>
+                <div className={styles.featureIconWrapper}><Box size={18} /></div>
                 <div>
-                  <h4 className={styles.featureTitle}>3D Assembly Builder</h4>
-                  <p className={styles.featureDesc}>Build and customize your virtual drone with real parts catalog specs.</p>
+                  <h4 className={styles.featureTitle}>3D lessons and labs</h4>
+                  <p className={styles.featureDesc}>Frames, motors, radio and flight physics, taught with live 3D animations.</p>
                 </div>
               </div>
               <div className={styles.featureItem}>
-                <div className={styles.featureIconWrapper}>
-                  <Gamepad2 size={18} />
-                </div>
+                <div className={styles.featureIconWrapper}><Gamepad2 size={18} /></div>
                 <div>
-                  <h4 className={styles.featureTitle}>Interactive Simulators</h4>
-                  <p className={styles.featureDesc}>Master flight physics and muscle memory before taking to the real skies.</p>
+                  <h4 className={styles.featureTitle}>Interactive simulators</h4>
+                  <p className={styles.featureDesc}>Master flight and muscle memory before taking to the real skies.</p>
                 </div>
               </div>
               <div className={styles.featureItem}>
-                <div className={styles.featureIconWrapper}>
-                  <ClipboardCheck size={18} />
-                </div>
+                <div className={styles.featureIconWrapper}><ClipboardCheck size={18} /></div>
                 <div>
-                  <h4 className={styles.featureTitle}>Certification Exams</h4>
-                  <p className={styles.featureDesc}>Test your knowledge on electronics, battery safety, and flight rules.</p>
+                  <h4 className={styles.featureTitle}>Workshops and groups</h4>
+                  <p className={styles.featureDesc}>Tell us your college and workshop so your trainers can find you.</p>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Column: Auth Card */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className={styles.authCard}
           >
-            {/* Logo/Branding Header */}
-            <div className={styles.brandingHeader}>
-              <img className={styles.loginLogo} src="/images/logo-egire-robotics.png" alt="EGIRE Robotics" width="197" height="67" />
-              <p className={styles.brandingSubtitle}>
-                Sign in through the FPV CRM to access your student account
-              </p>
-            </div>
-
-            <button
-              type="button"
-              className={styles.primaryAuthSubmit}
-              onClick={handleCrmLogin}
-              disabled={!crmConfigured}
-            >
-              <span>{crmConfigured ? 'Continue to CRM Login' : 'CRM login not configured'}</span>
-              <ArrowRight size={18} className={styles.btnArrow} />
-            </button>
-
-            {!crmConfigured && (
-              <p className={styles.configHint}>
-                Set <code>VITE_CRM_LOGIN_URL</code> in your .env file to enable this button.
-              </p>
-            )}
-
-            {/* Footer terms */}
-            <div className={styles.authCardFooter}>
-              <ShieldCheck size={14} className={styles.footerShield} />
-              <span>Managed by the FPV CRM</span>
-            </div>
+            <MemberAuthCard next={next} onSignedIn={done} />
           </motion.div>
         </div>
       </div>

@@ -9,7 +9,14 @@ const SECTIONS = [
     body: [
       'You can browse this website without giving us any personal details. If you send the enquiry form, we collect the name, phone number, email, college and message you enter, together with the time you sent it. We use them only to reply to you and to arrange your workshop or enquiry.',
       'Enquiries are stored in the EGIRE Robotics CRM, where only our staff can see them. If you email or call us instead, we use what you share in the same way. Ask us to delete your enquiry at any time.',
-      'We measure visits with cookie-free analytics. It records which pages are viewed and in aggregate, without cookies and without building a profile of you.',
+      'We measure visits with cookie-free analytics. It records which pages are viewed, where the visit came from (for example a search engine, social media or an AI assistant), the type of device and browser, your rough location (country, region and city, worked out from your connection), which buttons and links are pressed, and how long a visit lasts. It does not store your IP address, and your visitor code changes every day, so we cannot follow you from one day to the next. If your browser sends a Do Not Track signal, nothing is recorded.',
+    ],
+  },
+  {
+    title: 'Registering and signing in',
+    body: [
+      'The Academy opens when you register, which is free. You sign in with Google or with a code we email you. We keep your name, email, college name and, if you took part in one, the workshop you attended and its date. Our trainers use them to put students into groups for workshops and to contact you about them.',
+      'Registration data is stored in the EGIRE Robotics CRM, which only our staff can see. Ask us to delete your account at any time.',
     ],
   },
   {
