@@ -7,8 +7,8 @@ export const GATES = {
   },
   physics: {
     title: 'Drone Physics',
-    blurb: 'The forces behind every flight, taught with live, interactive demonstrations.',
-    bullets: ['Thrust, weight, drag and lift', 'Why a drone tilts to move', 'Interactive physics you can change'],
+    blurb: 'How a drone really flies, taught with live 3D animations you can change.',
+    bullets: ['Thrust, lift, drag and torque in 3D', 'Frame design, altitude and battery time', 'A CPL ground class and the maths, with worked examples'],
   },
   piloting: {
     title: 'FPV Piloting',

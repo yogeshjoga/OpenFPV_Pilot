@@ -1,124 +1,67 @@
-
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import PageWrapper from '@components/layout/PageWrapper'
-import SidebarMenu from '@components/common/SidebarMenu'
+import useDocumentMeta from '@lib/useDocumentMeta'
 import { PHYSICS_SECTIONS } from '@data/physicsData.jsx'
+import Forces from './chapters/Forces.jsx'
+import Wings from './chapters/Wings.jsx'
+import Rotation from './chapters/Rotation.jsx'
+import Air from './chapters/Air.jsx'
+import Pilot from './chapters/Pilot.jsx'
+import Maths from './chapters/Maths.jsx'
+import dh from '../DroneHardware/DroneHardware.module.css'
 import styles from './Physics.module.css'
-import { ArrowRight } from 'lucide-react'
+
+const CHAPTERS = [
+  { id: 'forces', n: '1', title: 'Forces and thrust', text: 'Weight, thrust, hovering and how a propeller pushes air.' },
+  { id: 'wings', n: '2', title: 'Lift, drag and flying forward', text: 'Wings and blades, the stall, tilted flight and banked turns.' },
+  { id: 'rotation', n: '3', title: 'Rotation and frame design', text: 'Torque, yaw, balance and the moment of inertia.' },
+  { id: 'air', n: '4', title: 'Air, ground and battery', text: 'Altitude, heat, ground effect and flight time.' },
+  { id: 'ground-class', n: '5', title: 'Ground class (CPL)', text: 'What pilots study, and the wind triangle.' },
+  { id: 'maths', n: '6', title: 'The maths you need', text: 'Toolkit, formula sheet and worked examples.' },
+]
 
 export default function Physics() {
-  const [activeSectionId, setActiveSectionId] = useState(PHYSICS_SECTIONS[0].id)
-  const activeSection = PHYSICS_SECTIONS.find(s => s.id === activeSectionId)
-
+  useDocumentMeta('Drone Physics and Aerodynamics: 3D Lessons, Formulas and Maths | EGIRE Robotics', 'Learn the physics and aerodynamics of drones with 3D animations: thrust, lift, drag, torque, frame balance, altitude, ground effect, battery time, a CPL-style ground class and the maths you need.')
   return (
     <PageWrapper>
-      <div className={styles.page}>
-        {/* Hero Section */}
-        <header className={styles.hero}>
-          <div className="container">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <p className={styles.eyebrow}>Educational Guide</p>
-              <h1 className={styles.title}>The Physics of <span className="gradient-text">Flight</span></h1>
-              <p className={styles.sub}>
-                Understanding the aerodynamic and mechanical forces that govern FPV drone performance. 
-                A pin-to-pin guide for students and researchers.
-              </p>
-            </motion.div>
-          </div>
-        </header>
-
-        {/* Content Sections */}
+      <header className={styles.hero}>
         <div className="container">
-          <div className={styles.splitLayout}>
-            <div className={styles.sidebarWrap}>
-              <SidebarMenu
-                items={PHYSICS_SECTIONS.map(s => ({
-                  id: s.id,
-                  icon: s.icon,
-                  label: s.title,
-                  color: '#00d4ff'
-                }))}
-                activeId={activeSectionId}
-                onSelect={setActiveSectionId}
-                layoutIdPrefix="physics"
-                label="Topics"
-              />
-            </div>
-            
-            <div className={styles.contentWrap}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeSection.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <section className={styles.section}>
-                    <div className={styles.sectionHeader}>
-                      <span className={styles.sectionIcon}>{activeSection.icon}</span>
-                      <div>
-                        <h2 className={styles.sectionTitle}>{activeSection.title}</h2>
-                        <p className={styles.sectionDesc}>{activeSection.description}</p>
-                      </div>
-                    </div>
-
-                    <div className={styles.grid}>
-                      {activeSection.topics.map((topic, tIndex) => (
-                        <motion.article
-                          key={topic.id}
-                          className={styles.card}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, margin: '-50px' }}
-                          transition={{ delay: tIndex * 0.1, duration: 0.5 }}
-                        >
-                          <Link to={`/physics/${activeSection.id}/${topic.id}`} className={styles.cardLink}>
-                            <div className={styles.imageWrapper}>
-                              <img 
-                                src={topic.image} 
-                                alt={topic.title} 
-                                className={styles.image}
-                                onError={(e) => {
-                                  e.target.style.display = 'none';
-                                }}
-                              />
-                            </div>
-                            <div className={styles.cardContent}>
-                              <h3 className={styles.cardTitle}>{topic.title}</h3>
-                              <p className={styles.cardText}>{topic.explanation}</p>
-                              <span className={styles.readMore}>Read Full Story <ArrowRight size={16} aria-hidden="true" /></span>
-                            </div>
-                          </Link>
-                        </motion.article>
-                      ))}
-                    </div>
-                  </section>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
+          <p className={styles.eyebrow}>Flight physics for drone pilots and builders</p>
+          <h1 className={styles.title}>How a drone really flies: the physics, the air and the maths</h1>
+          <p className={styles.lead}>Every drone motion comes from a few forces acting on a few kilograms of metal and carbon. Move the sliders, watch the 3D drone respond, and learn the formula behind what you see. Start at the top and read down: each chapter builds on the one before.</p>
+          <ol className={styles.map}>
+            {CHAPTERS.map((c) => (
+              <li key={c.id}>
+                <a href={`#${c.id}`}>
+                  <span className={styles.mapNum}>Chapter {c.n}</span>
+                  <b>{c.title}</b>
+                  <span>{c.text}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
         </div>
-
-        {/* Closing Section */}
-        <section className={styles.footer_note}>
-          <div className="container">
-            <div className={styles.noteBox}>
-              <h3>Scientific rigor</h3>
-              <p>
-                This guide is designed for educational purposes, integrating principles from fluid dynamics, 
-                classical mechanics, and electrical engineering as applied specifically to multirotor UAVs.
-              </p>
-            </div>
-          </div>
-        </section>
+      </header>
+      <nav className={dh.subnav} aria-label="Chapters">
+        <div className={`container ${dh.subnavInner}`}>
+          {CHAPTERS.map((c) => <a key={c.id} className={dh.subnavLink} href={`#${c.id}`}>{c.n} · {c.title}</a>)}
+        </div>
+      </nav>
+      <div>
+        <Forces />
+        <Wings />
+        <Rotation />
+        <Air />
+        <Pilot />
+        <Maths />
       </div>
+      <section className="container">
+        <p className={styles.older}>
+          Looking for the earlier topic notes? {PHYSICS_SECTIONS.flatMap((s) => s.topics.slice(0, 1).map((t) => (
+            <Link key={t.id} to={`/physics/${s.id}/${t.id}`}>{s.title}</Link>
+          ))).reduce((acc, el, i) => (i === 0 ? [el] : [...acc, ' · ', el]), [])}
+        </p>
+      </section>
     </PageWrapper>
   )
 }
