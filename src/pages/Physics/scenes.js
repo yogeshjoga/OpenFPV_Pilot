@@ -316,13 +316,123 @@ export function createAirflow({ THREE, scene }) {
 const CHORD = 150
 const SPAN = 360
 
+// The flying-wing drone of the wing lab: the wing section itself (the shape the flow is worked out for), painted with ailerons and a
+// stripe, with a camera dome, two winglets and a pusher propeller. Everything is drawn in the wing's own frame, so it all tilts together.
+function buildWingDrone(THREE, { S, XQ, span, chord }) {
+  const points = outline(200)
+  const shape = new THREE.Shape(points.map(([x, y]) => new THREE.Vector2((x - XQ) * S, y * S)))
+  const group = new THREE.Group()
+  // the livery, painted on a texture that runs from the nose (left) to the tail, and from the left tip (top) to the right tip
+  const paint = document.createElement('canvas')
+  paint.width = 1024
+  paint.height = 512
+  const g = paint.getContext('2d')
+  g.fillStyle = '#f2f5fa'
+  g.fillRect(0, 0, 1024, 512)
+  g.fillStyle = '#f2b705' // the leading edge
+  g.fillRect(0, 0, 100, 512)
+  g.fillStyle = '#1f3a5f' // the stripe down the middle
+  g.fillRect(0, 216, 1024, 80)
+  for (const [from, to] of [[40, 200], [312, 472]]) { // the ailerons
+    g.fillStyle = '#ff6a1a'
+    g.fillRect(735, from, 289, to - from)
+    g.fillStyle = 'rgba(20,28,40,0.55)'
+    g.fillRect(733, from, 4, to - from)
+  }
+  g.fillStyle = 'rgba(20,28,40,0.14)' // ribs under the skin
+  for (let x = 190; x < 735; x += 96) g.fillRect(x, 0, 3, 512)
+  g.fillStyle = '#1f3a5f'
+  g.font = 'bold 40px sans-serif'
+  g.save()
+  g.translate(430, 90)
+  g.fillText('EGIRE', 0, 0)
+  g.restore()
+  g.save()
+  g.translate(430, 440)
+  g.fillText('ROBOTICS', 0, 0)
+  g.restore()
+  const livery = new THREE.CanvasTexture(paint)
+  livery.colorSpace = THREE.SRGBColorSpace
+  livery.anisotropy = 4
+  // the skin: the outline of the section swept along the span
+  const N = points.length
+  const M = 24
+  const position = []
+  const uv = []
+  const index = []
+  const xs = points.map((q) => q[0])
+  const x0 = Math.min(...xs)
+  const wide = Math.max(...xs) - x0
+  for (let j = 0; j <= M; j += 1) {
+    const z = (j / M - 0.5) * span
+    for (let i = 0; i <= N; i += 1) {
+      const q = points[i % N]
+      position.push((q[0] - XQ) * S, q[1] * S, z)
+      uv.push((q[0] - x0) / wide, 1 - j / M)
+    }
+  }
+  for (let j = 0; j < M; j += 1) {
+    for (let i = 0; i < N; i += 1) {
+      const a = j * (N + 1) + i
+      const b = a + 1
+      const c = a + (N + 1)
+      const d = c + 1
+      index.push(a, c, b, b, c, d)
+    }
+  }
+  const skinGeo = new THREE.BufferGeometry()
+  skinGeo.setAttribute('position', new THREE.Float32BufferAttribute(position, 3))
+  skinGeo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2))
+  skinGeo.setIndex(index)
+  skinGeo.computeVertexNormals()
+  const skin = new THREE.Mesh(skinGeo, new THREE.MeshPhysicalMaterial({ map: livery, roughness: 0.3, metalness: 0.05, clearcoat: 0.6, clearcoatRoughness: 0.25, side: THREE.DoubleSide }))
+  group.add(skin)
+  for (const side of [1, -1]) { // the end of each wing, with a winglet standing on it
+    const cap = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshStandardMaterial({ color: 0xdfe5ee, roughness: 0.5, side: THREE.DoubleSide }))
+    cap.position.z = (side * span) / 2
+    group.add(cap)
+    const fin = new THREE.Shape([new THREE.Vector2(62, 3), new THREE.Vector2(116, 1), new THREE.Vector2(104, 34), new THREE.Vector2(92, 36)])
+    const winglet = new THREE.Mesh(new THREE.ExtrudeGeometry(fin, { depth: 3, bevelEnabled: false }), new THREE.MeshPhysicalMaterial({ color: 0xff6a1a, roughness: 0.3, clearcoat: 0.5 }))
+    winglet.position.z = side * (span / 2 - 3)
+    winglet.rotation.x = side * 0.12 // leaning outwards a little
+    group.add(winglet)
+  }
+  // a camera dome on top, and a motor with a two-blade pusher propeller behind the trailing edge
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(15, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshPhysicalMaterial({ color: 0x0f1520, roughness: 0.08, metalness: 0.4, clearcoat: 1 }))
+  dome.scale.set(1.7, 0.85, 1.1)
+  dome.position.set(-34, 7, 0)
+  group.add(dome)
+  const lens = new THREE.Mesh(new THREE.SphereGeometry(5, 16, 10), new THREE.MeshPhysicalMaterial({ color: 0x1b4f9a, roughness: 0.05, clearcoat: 1 }))
+  lens.position.set(-52, 11, 0)
+  group.add(lens)
+  const motor = new THREE.Mesh(new THREE.CylinderGeometry(8, 8, 30, 32), new THREE.MeshStandardMaterial({ color: 0xb3122a, roughness: 0.24, metalness: 0.95 }))
+  motor.rotation.z = Math.PI / 2
+  motor.position.set(chord * 0.75 + 28, 0, 0)
+  group.add(motor)
+  const mount = new THREE.Mesh(new THREE.BoxGeometry(34, 4, 20), new THREE.MeshStandardMaterial({ color: 0x1f3a5f, roughness: 0.4 }))
+  mount.position.set(chord * 0.75 + 4, 0, 0)
+  group.add(mount)
+  const spinner = new THREE.Group() // the propeller turns about the line the motor points along
+  spinner.position.set(chord * 0.75 + 46, 0, 0)
+  spinner.rotation.z = -Math.PI / 2
+  const turning = new THREE.Group()
+  const bladeGeo = makeBlade({ radiusMm: 50, pitchIn: 3.4, dir: 1, blades: 2 })
+  const bladeMat = new THREE.MeshPhysicalMaterial({ color: 0xff6a1a, roughness: 0.14, clearcoat: 1, transparent: true, opacity: 0.88 })
+  for (let b = 0; b < 2; b += 1) {
+    const blade = new THREE.Mesh(bladeGeo, bladeMat)
+    blade.rotation.y = b * Math.PI
+    turning.add(blade)
+  }
+  turning.add(new THREE.Mesh(new THREE.LatheGeometry(HUB_PROFILE.map(([x, y]) => new THREE.Vector2(x, y)), 28), new THREE.MeshStandardMaterial({ color: 0x1a1c20, roughness: 0.35, metalness: 0.3 })))
+  spinner.add(turning)
+  group.add(spinner)
+  return { group, skinGeo, turning }
+}
+
 export function createAerofoil({ THREE, scene }) {
   const S = CHORD / CHORD_RAW // millimetres for each unit of the formula
   const XQ = X_LEADING + CHORD_RAW / 4 // the quarter-chord point sits at the middle of the scene
-  const shape = new THREE.Shape(outline(200).map(([x, y]) => new THREE.Vector2((x - XQ) * S, y * S)))
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: SPAN, bevelEnabled: false })
-  geo.translate(0, 0, -SPAN / 2)
-  const wing = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xcfd6e2, metalness: 0.5, roughness: 0.35 }))
+  const { group: wing, skinGeo: geo, turning } = buildWingDrone(THREE, { S, XQ, span: SPAN, chord: CHORD })
   scene.add(wing)
   const lift = arrow(THREE, scene, COLORS.lift)
   const drag = arrow(THREE, scene, COLORS.drag)
@@ -417,6 +527,7 @@ export function createAerofoil({ THREE, scene }) {
       const potential = TAU * Math.sin(alpha) // the lift coefficient of the ideal flow
       circulation = Math.abs(potential) < 0.03 ? 1 : Math.min(1.15, Math.max(0, state.cl / potential))
       wing.rotation.z = -alpha
+      turning.rotation.y -= step * (18 + speed * 2.4) // the pusher propeller spins faster as the air speed rises
       const q = 0.5 * AIR_DENSITY * speed * speed
       const key = `${state.alphaDeg}|${speed}|${state.mode}|${state.stalled}`
       if (key !== painted) {

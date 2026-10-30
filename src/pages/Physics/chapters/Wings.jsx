@@ -33,7 +33,7 @@ function AerofoilLab() {
       idea={<>A propeller blade is a small wing. A wing makes lift by turning the air that meets it: the air is bent downward, and the wing is pushed up in reply. The angle between the wing and the oncoming air is the <b>angle of attack</b>. More angle makes more lift, up to about 14°. Past that the air can no longer follow the top surface, it breaks away into a messy wake, lift collapses and drag jumps. That is a <b>stall</b>. The picture is a flow simulation of the air round a real, finite wing, in three dimensions: the coloured lines are streamlines, and the sheet behind them is painted with the air speed or the pressure. Air speeds up over the top, so the pressure there falls; underneath, the pressure rises. The wing is pushed up by that difference.</>}
       figure={(
         <div className={dh.stackTight}>
-          <Scene3D create={createAerofoil} stateRef={state} view={[300, 170, 440]} target={[60, 0, 0]} floorY={-190} minDistance={250} maxDistance={900} label="A wing section in moving air, drawn as streamlines coloured by speed with the pressure or speed painted behind" />
+          <Scene3D create={createAerofoil} stateRef={state} view={[340, 190, 520]} target={[60, 0, 0]} floorY={-190} minDistance={250} maxDistance={1000} label="A wing section in moving air, drawn as streamlines coloured by speed with the pressure or speed painted behind" />
           <FlowLegend mode={view} speedMax={speed * 1.7} pressureMax={q * 1.4} />
           <Plot width={600} height={170} top={12} bottom={38} x={x} y={y} xTicks={[0, 5, 10, 14, 20]} yTicks={[0, 0.8, 1.6]} xLabel="angle of attack (degrees)" yLabel="C_L" label="Lift coefficient against angle of attack">
             <polyline points={polyline(curve.map(([a, c]) => [x(a), y(c)]))} className={dh.accentLine} />
@@ -43,7 +43,7 @@ function AerofoilLab() {
           </Plot>
         </div>
       )}
-      caption="Streamlines show where the air goes, blue when slow and red when fast. Switch to pressure to see suction (blue) over the top and a push (red) at the front and underneath. Above 14° the air tumbles off the top: that is the stall."
+      caption="Streamlines show where the air goes, blue when slow and red when fast. Switch to pressure to see suction (blue) over the top and a push (red) at the front and underneath. Above 14° the air tumbles off the top: that is the stall. The flow is worked out for the wing itself; the dome, winglets and propeller are only there to make it look like a drone."
       controls={(
         <>
           <Choices label="Colour the air by" options={[{ id: 'speed', label: 'Air speed' }, { id: 'pressure', label: 'Pressure' }]} value={view} onChange={setView} />
