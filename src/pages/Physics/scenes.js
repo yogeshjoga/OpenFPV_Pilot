@@ -135,9 +135,9 @@ export function createForces({ THREE, scene }) {
   }
   const lines = makeStreamlines(THREE, {
     count: 560,
-    length: 28,
-    mmPerSecond: 11,
-    life: 4,
+    length: 24,
+    mmPerSecond: 20,
+    life: 2.8,
     floorY: -Infinity,
     field,
     spawn: (i, p) => {
@@ -216,9 +216,9 @@ export function createAirflow({ THREE, scene }) {
   const rotors = [rotor]
   const lines = makeStreamlines(THREE, {
     count: 900,
-    length: 30,
-    mmPerSecond: 12,
-    life: 4.2,
+    length: 26,
+    mmPerSecond: 22,
+    life: 3,
     floorY: -Infinity, // there is no floor in this picture
     field: (out, x, y, z) => flowVelocity(out, x, y, z, rotors),
     spawn: (i, p) => {
@@ -390,9 +390,9 @@ export function createAerofoil({ THREE, scene }) {
   }
   const lines = makeStreamlines(THREE, {
     count: 900,
-    length: 30,
-    mmPerSecond: 8,
-    life: 5,
+    length: 26,
+    mmPerSecond: 15,
+    life: 3.6,
     floorY: -Infinity,
     field,
     spawn: (i, p) => {
@@ -565,9 +565,9 @@ export function createAtmosphere({ THREE, scene }) {
   const rotors = quad.motorPositions.map((m) => ({ x: m.x, y: HEIGHT + m.y, z: m.z, R: quad.rotorR, vi: 7, floor: true }))
   const lines = makeStreamlines(THREE, {
     count: 560,
-    length: 26,
-    mmPerSecond: 11,
-    life: 3.6,
+    length: 22,
+    mmPerSecond: 20,
+    life: 2.6,
     field: (out, x, y, z) => flowVelocity(out, x, y, z, rotors),
     spawn: (i, p) => {
       const r0 = rotors[i % 4]
@@ -638,9 +638,9 @@ export function createGroundEffect({ THREE, scene }) {
   const rotors = quad.motorPositions.map((m) => ({ x: m.x, y: 60, z: m.z, R: 63.5, vi: 7, floor: true }))
   const lines = makeStreamlines(THREE, {
     count: 520,
-    length: 26,
-    mmPerSecond: 18,
-    life: 3.4,
+    length: 22,
+    mmPerSecond: 30,
+    life: 2.4,
     field: (out, x, y, z) => flowVelocity(out, x, y, z, rotors),
     spawn: (i, p) => {
       const r0 = rotors[i % 4]

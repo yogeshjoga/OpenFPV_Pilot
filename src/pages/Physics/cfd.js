@@ -25,7 +25,9 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
   const v = [0, 0, 0]
   const p = [0, 0, 0]
   const rgb = [0, 0, 0]
-  const TICK = 1 / 45
+  const TICK = 1 / 40
+  const step = new Float32Array(count * 3) // how far each particle moved in its last step
+  const drawn = new Float32Array(length * 3)
   let clock = 0
   const fades = Float32Array.from({ length }, (_, k) => (1 - k / (length - 1)) ** 1.3)
 
@@ -38,6 +40,7 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
       trail[base + j * 3 + 2] = p[2]
       speeds[i * length + j] = 0
     }
+    step[i * 3] = step[i * 3 + 1] = step[i * 3 + 2] = 0
   }
   for (let i = 0; i < count; i += 1) { place(i); ages[i] = Math.random() * life }
 
@@ -45,10 +48,12 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
     object: lines,
     /** Moves the particles on by `dt` seconds and redraws the trails. `speedMax` (m/s) is the speed drawn as red. */
     update(dt, speedMax) {
-      // the particles move in small fixed steps, so a trail is the same length however fast the screen draws
-      clock = Math.min(clock + dt, TICK * 4)
+      // The particles are moved in small fixed steps, so a trail is the same length however fast the screen draws. What is drawn is
+      // blended between one step and the next, so the motion is smooth at any frame rate.
+      clock = Math.min(clock + dt, TICK * 8)
       let ticks = 0
       while (clock >= TICK) { clock -= TICK; ticks += 1 }
+      const phase = clock / TICK
       const h = TICK * mmPerSecond
       for (let i = 0; i < count; i += 1) {
         const base = i * length * 3
@@ -57,10 +62,13 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
           let y = trail[base + 1]
           let z = trail[base + 2]
           const speed = field(v, x, y, z)
-          x += v[0] * h
-          y += v[1] * h
-          z += v[2] * h
-          if (y < floorY) y = floorY
+          let dx = v[0] * h
+          let dy = v[1] * h
+          const dz = v[2] * h
+          x += dx
+          y += dy
+          z += dz
+          if (y < floorY) { dy += floorY - y; y = floorY }
           ages[i] += TICK
           if (ages[i] > life || !keep(x, y, z)) { place(i); ages[i] = 0; break }
           trail.copyWithin(base + 3, base, base + (length - 1) * 3)
@@ -69,6 +77,9 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
           trail[base + 1] = y
           trail[base + 2] = z
           speeds[i * length] = speed
+          step[i * 3] = dx
+          step[i * 3 + 1] = dy
+          step[i * 3 + 2] = dz
         }
       }
       let a = 0
@@ -76,14 +87,25 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
       const inverse = 1 / speedMax
       for (let i = 0; i < count; i += 1) {
         const base = i * length * 3
+        // where each point of the trail is drawn: the head runs on ahead by the part of a step that has passed, and every other point
+        // slides towards the place of the point in front of it
+        drawn[0] = trail[base] + step[i * 3] * phase
+        drawn[1] = trail[base + 1] + step[i * 3 + 1] * phase
+        drawn[2] = trail[base + 2] + step[i * 3 + 2] * phase
+        for (let k = 1; k < length; k += 1) {
+          const o = base + k * 3
+          drawn[k * 3] = trail[o] + (trail[o - 3] - trail[o]) * phase
+          drawn[k * 3 + 1] = trail[o + 1] + (trail[o - 2] - trail[o + 1]) * phase
+          drawn[k * 3 + 2] = trail[o + 2] + (trail[o - 1] - trail[o + 2]) * phase
+        }
         // a new particle starts as a dot and grows into a trail, and an old one fades out
         const life01 = Math.min(1, ages[i] / 0.4) * Math.max(0, Math.min(1, (life - ages[i]) / 0.5)) * 0.95
         for (let j = 0; j < length - 1; j += 1) {
           for (let end = 0; end < 2; end += 1) {
             const k = j + end
-            position.array[a++] = trail[base + k * 3]
-            position.array[a++] = trail[base + k * 3 + 1]
-            position.array[a++] = trail[base + k * 3 + 2]
+            position.array[a++] = drawn[k * 3]
+            position.array[a++] = drawn[k * 3 + 1]
+            position.array[a++] = drawn[k * 3 + 2]
             speedColor(speeds[i * length + k] * inverse, rgb)
             const fade = fades[k]
             color.array[c++] = rgb[0] + (1 - rgb[0]) * 0.28 // a little lighter than the cloud, so the lines stand out
