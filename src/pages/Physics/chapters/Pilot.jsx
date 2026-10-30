@@ -132,21 +132,24 @@ export default function Pilot() {
         <Idea title="Meteorology in numbers: the standard atmosphere">
           <p>Pilots start from a standard day and measure how today differs. Density, which sets thrust and lift, falls quickly with height:</p>
           <div className={styles.tableWrap}>
-            <table className={styles.table}>
-              <thead><tr><th>Height</th><th>Temperature</th><th>Pressure</th><th>Density</th></tr></thead>
+            <table className={`${styles.table} ${styles.tight}`}>
+              <thead><tr><th>Height</th><th>Temperature</th><th>Pressure</th><th>Density</th><th>Of sea level</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.h}>
                     <td>{r.h.toLocaleString('en-IN')} m</td>
                     <td>{(r.temperatureK - 273.15).toFixed(1)} °C</td>
                     <td>{(r.pressurePa / 100).toFixed(0)} hPa</td>
-                    <td>{r.density.toFixed(3)} kg/m³ ({Math.round(r.ratio * 100)} %)</td>
+                    <td>{r.density.toFixed(3)} kg/m³</td>
+                    <td>{Math.round(r.ratio * 100)} %</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </Idea>
+      </div>
+      <div className={styles.ideas}>
         <Idea title="Before every flight: the weather check">
           <ul>
             <li>Wind speed and gusts, compared with what your drone can hold.</li>

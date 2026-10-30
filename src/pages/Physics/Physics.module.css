@@ -146,6 +146,7 @@
 }
 
 .idea {
+  min-width: 0;
   padding: var(--space-5);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -272,12 +273,18 @@
   font-weight: var(--font-semibold);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--color-text-muted);
   background: var(--color-bg-secondary);
 }
 
 .table td {
   color: var(--color-text-secondary);
+}
+
+/* a table of short numbers: one line to a row, and a narrow screen scrolls it sideways */
+.tight td {
+  white-space: nowrap;
 }
 
 .table td:first-child {
