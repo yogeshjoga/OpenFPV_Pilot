@@ -27,6 +27,7 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
   const rgb = [0, 0, 0]
   const TICK = 1 / 45
   let clock = 0
+  const fades = Float32Array.from({ length }, (_, k) => (1 - k / (length - 1)) ** 1.3)
 
   const place = (i) => {
     spawn(i, p)
@@ -72,24 +73,23 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
       }
       let a = 0
       let c = 0
+      const inverse = 1 / speedMax
       for (let i = 0; i < count; i += 1) {
         const base = i * length * 3
         // a new particle starts as a dot and grows into a trail, and an old one fades out
-        const born = Math.min(1, ages[i] / 0.4)
-        const dying = Math.min(1, (life - ages[i]) / 0.5)
+        const life01 = Math.min(1, ages[i] / 0.4) * Math.max(0, Math.min(1, (life - ages[i]) / 0.5)) * 0.95
         for (let j = 0; j < length - 1; j += 1) {
           for (let end = 0; end < 2; end += 1) {
             const k = j + end
             position.array[a++] = trail[base + k * 3]
             position.array[a++] = trail[base + k * 3 + 1]
             position.array[a++] = trail[base + k * 3 + 2]
-            speedColor(speeds[i * length + k] / speedMax, rgb)
-            for (let q = 0; q < 3; q += 1) rgb[q] += (1 - rgb[q]) * 0.28 // a little lighter than the slice, so the lines stand out
-            const fade = (1 - k / (length - 1)) ** 1.3
-            color.array[c++] = rgb[0]
-            color.array[c++] = rgb[1]
-            color.array[c++] = rgb[2]
-            color.array[c++] = 0.95 * fade * born * Math.max(0, dying)
+            speedColor(speeds[i * length + k] * inverse, rgb)
+            const fade = fades[k]
+            color.array[c++] = rgb[0] + (1 - rgb[0]) * 0.28 // a little lighter than the cloud, so the lines stand out
+            color.array[c++] = rgb[1] + (1 - rgb[1]) * 0.28
+            color.array[c++] = rgb[2] + (1 - rgb[2]) * 0.28
+            color.array[c++] = life01 * fade
           }
         }
       }
@@ -151,4 +151,74 @@ export function speedPixel(speed, speedMax, out = [0, 0, 0, 0]) {
 // colour for a slice by pressure: blue is suction, red is push, nothing where the air is at room pressure
 export function pressurePixel(pressure, pressureMax, out = [0, 0, 0, 0]) {
   return pressureColor(pressure / pressureMax, out)
+}
+
+/**
+ * A 3D cloud of soft points that fills a box of air. Where the quantity is strong there are more points, and they are coloured by it,
+ * so the whole volume of the flow can be seen from any side, not just a flat slice of it.
+ * fill(min, max, sample): sample(x, y, z, rgba) puts a colour in rgba and returns how likely a point is to be placed there (0 to 1).
+ */
+export function makeCloud(THREE, { count = 7000, size = 11 }) {
+  const position = new THREE.BufferAttribute(new Float32Array(count * 3), 3)
+  const color = new THREE.BufferAttribute(new Float32Array(count * 4), 4)
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute('position', position)
+  geo.setAttribute('color', color)
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = 64
+  const g = canvas.getContext('2d')
+  const glow = g.createRadialGradient(32, 32, 0, 32, 32, 32)
+  glow.addColorStop(0, 'rgba(255,255,255,1)')
+  glow.addColorStop(0.5, 'rgba(255,255,255,0.45)')
+  glow.addColorStop(1, 'rgba(255,255,255,0)')
+  g.fillStyle = glow
+  g.fillRect(0, 0, 64, 64)
+  const sprite = new THREE.CanvasTexture(canvas)
+  const material = new THREE.PointsMaterial({ size, sizeAttenuation: true, map: sprite, vertexColors: true, transparent: true, depthWrite: false })
+  const points = new THREE.Points(geo, material)
+  points.frustumCulled = false
+  points.renderOrder = 1
+  const rgba = [0, 0, 0, 0]
+  let seed = 1
+  const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296 }
+  return {
+    object: points,
+    fill(min, max, sample) {
+      seed = 12345 // the same points every time, so the picture does not flicker as a slider moves
+      let placed = 0
+      for (let tries = 0; placed < count && tries < count * 60; tries += 1) {
+        const x = min[0] + random() * (max[0] - min[0])
+        const y = min[1] + random() * (max[1] - min[1])
+        const z = min[2] + random() * (max[2] - min[2])
+        const chance = sample(x, y, z, rgba)
+        if (random() < chance) {
+          position.setXYZ(placed, x, y, z)
+          color.setXYZW(placed, rgba[0], rgba[1], rgba[2], rgba[3])
+          placed += 1
+        }
+      }
+      for (; placed < count; placed += 1) color.setXYZW(placed, 0, 0, 0, 0)
+      position.needsUpdate = true
+      color.needsUpdate = true
+    },
+    dispose() { geo.dispose(); material.dispose(); sprite.dispose() },
+  }
+}
+
+// no points at all where the air is hardly disturbed, then more and more as the effect grows
+export const thresholded = (t) => Math.min(1, Math.max(0, (t - 0.2) / 0.55) ** 1.1)
+
+// ready-made samples for makeCloud: how likely a point is, and its colour, for a speed or a pressure
+export function speedSample(speed, speedMax, out) {
+  const t = Math.min(1, speed / speedMax)
+  speedColor(t, out)
+  out[3] = 0.55
+  return thresholded(t)
+}
+
+export function pressureSample(pressure, pressureMax, out) {
+  const t = Math.max(-1, Math.min(1, pressure / pressureMax))
+  pressureColor(t, out)
+  out[3] = 0.55
+  return thresholded(Math.abs(t))
 }

@@ -30,10 +30,10 @@ function AerofoilLab() {
     <Lab
       title="Wings and blades: lift, drag and the stall"
       clock={clock}
-      idea={<>A propeller blade is a small wing. A wing makes lift by turning the air that meets it: the air is bent downward, and the wing is pushed up in reply. The angle between the wing and the oncoming air is the <b>angle of attack</b>. More angle makes more lift, up to about 14°. Past that the air can no longer follow the top surface, it breaks away into a messy wake, lift collapses and drag jumps. That is a <b>stall</b>. The picture is a flow simulation of the air round the wing: the coloured lines are streamlines, and the sheet behind them is painted with the air speed or the pressure. Air speeds up over the top, so the pressure there falls; underneath, the pressure rises. The wing is pushed up by that difference.</>}
+      idea={<>A propeller blade is a small wing. A wing makes lift by turning the air that meets it: the air is bent downward, and the wing is pushed up in reply. The angle between the wing and the oncoming air is the <b>angle of attack</b>. More angle makes more lift, up to about 14°. Past that the air can no longer follow the top surface, it breaks away into a messy wake, lift collapses and drag jumps. That is a <b>stall</b>. The picture is a flow simulation of the air round a real, finite wing, in three dimensions: the coloured lines are streamlines, and the sheet behind them is painted with the air speed or the pressure. Air speeds up over the top, so the pressure there falls; underneath, the pressure rises. The wing is pushed up by that difference.</>}
       figure={(
         <div className={dh.stackTight}>
-          <Scene3D create={createAerofoil} stateRef={state} view={[20, 20, 430]} target={[0, 0, 0]} floorY={-180} minDistance={250} maxDistance={700} label="A wing section in moving air, drawn as streamlines coloured by speed with the pressure or speed painted behind" />
+          <Scene3D create={createAerofoil} stateRef={state} view={[300, 170, 440]} target={[60, 0, 0]} floorY={-190} minDistance={250} maxDistance={900} label="A wing section in moving air, drawn as streamlines coloured by speed with the pressure or speed painted behind" />
           <FlowLegend mode={view} speedMax={speed * 1.7} pressureMax={q * 1.4} />
           <Plot width={600} height={170} top={12} bottom={38} x={x} y={y} xTicks={[0, 5, 10, 14, 20]} yTicks={[0, 0.8, 1.6]} xLabel="angle of attack (degrees)" yLabel="C_L" label="Lift coefficient against angle of attack">
             <polyline points={polyline(curve.map(([a, c]) => [x(a), y(c)]))} className={dh.accentLine} />
@@ -62,6 +62,7 @@ function AerofoilLab() {
       )}
       notice={[
         <>Slide the angle slowly past 14°: the air stops following the top, the curve falls and the drag arrow grows.</>,
+        <>Drag the picture to look at the wing from behind and from the side. Near each tip the air spills from the high pressure underneath round to the low pressure on top, and rolls up into a spinning tube of air: a <b>wingtip vortex</b>. Between the two tubes the air is pushed down. This is the downwash that holds the wing up, and the same thing happens at the tip of every propeller blade.</>,
         <>Double the air speed and the lift becomes <b>four times</b> bigger, because lift grows with V². That is why a propeller tip makes far more lift than its root.</>,
         <>The wing here is 0.5 m wide and 0.12 m deep, like a small fixed-wing drone's wing. A 5 inch propeller blade works the same way at a smaller size.</>,
       ]}

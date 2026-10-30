@@ -3,9 +3,9 @@
 
 import { buildDroneModel, carbonTexture, MOTORS } from '../../components/three/droneModel.js'
 import { DEFAULT_BUILD, resolveBuild } from '../DroneConfigurator/catalog.js'
-import { makeSlice, makeStreamlines, pressurePixel, speedPixel } from './cfd.js'
-import { AIR_DENSITY, floorPressure, flowVelocity, rotorPressure, speedColor } from './flow.js'
-import { CHORD_RAW, X_LEADING, aerofoilVelocity, outline } from './airfoil.js'
+import { makeCloud, makeSlice, makeStreamlines, pressurePixel, pressureSample, speedSample, thresholded } from './cfd.js'
+import { AIR_DENSITY, floorPressure, flowVelocity, rotorPressure } from './flow.js'
+import { CHORD_RAW, EPS as EPSILON, X_LEADING, aerofoilVelocity, outline } from './airfoil.js'
 import { HUB_PROFILE, makeBlade } from '../../components/three/propBlade.js'
 
 const RAD = Math.PI / 180
@@ -153,11 +153,9 @@ export function createForces({ THREE, scene }) {
     keep: (x, y, z) => y > -300 && y < 330 && Math.abs(x) < 520 && Math.abs(z) < 330,
   })
   scene.add(lines.object)
-  // a slice through the air along the left-hand side of the drone, behind it, through its front left and rear left propellers
-  const SLICE_Y = -60
-  const slice = makeSlice(THREE, { width: 760, height: 620, res: 120 })
-  slice.mesh.position.set(0, SLICE_Y, rotors[1].z)
-  scene.add(slice.mesh)
+  // the whole volume of moving air round the drone, as a cloud of points coloured by how fast the air has been pushed
+  const cloud = makeCloud(THREE, { count: 12000, size: 9 })
+  scene.add(cloud.object)
   let painted = ''
   const spot = new THREE.Vector3()
 
@@ -182,8 +180,10 @@ export function createForces({ THREE, scene }) {
       if (key !== painted) {
         painted = key
         const out = [0, 0, 0]
-        const px = [0, 0, 0, 0]
-        slice.paint((a, b) => speedPixel(field(out, a, SLICE_Y + b, rotors[1].z), speedMax, px))
+        cloud.fill([-340, -310, -240], [340, 170, 240], (x, y, z, c) => {
+          field(out, x, y, z)
+          return speedSample(Math.hypot(out[0] - stream[0], out[1] - stream[1], out[2]), 2.1 * viMax, c)
+        })
       }
       lines.update(step, speedMax)
       const k = 150 / Math.max(state.thrustN, state.weightN, 1)
@@ -202,7 +202,7 @@ export function createForces({ THREE, scene }) {
       })
       propTags[0].visible = propTags[1].visible = Math.abs(split.rear - split.front) > 0.02
     },
-    dispose() { lines.dispose(); slice.dispose(); Object.values(tags).forEach((t) => { t.material.map.dispose(); t.material.dispose() }); propTags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
+    dispose() { lines.dispose(); cloud.dispose(); Object.values(tags).forEach((t) => { t.material.map.dispose(); t.material.dispose() }); propTags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
   }
 }
 
@@ -243,10 +243,8 @@ export function createAirflow({ THREE, scene }) {
     keep: (x, y, z) => y > -385 && Math.hypot(x, z) < 9 * rotor.R + 120,
   })
   scene.add(lines.object)
-  const SLICE_Y = -80
-  const slice = makeSlice(THREE, { width: 560, height: 620, res: 112 })
-  slice.mesh.position.set(0, SLICE_Y, 0)
-  scene.add(slice.mesh)
+  const cloud = makeCloud(THREE, { count: 14000, size: 8 })
+  scene.add(cloud.object)
   // the same propeller blade as the 3D drone: swept, twisted by the pitch, with a cambered aerofoil section, in smoked plastic
   const bladeMat = new THREE.MeshPhysicalMaterial({ color: 0xff6a1a, roughness: 0.14, metalness: 0, clearcoat: 1, transparent: true, opacity: 0.85 })
   const hubGeo = new THREE.LatheGeometry(HUB_PROFILE.map(([x, y]) => new THREE.Vector2(x, y)), 36)
@@ -291,10 +289,10 @@ export function createAirflow({ THREE, scene }) {
       if (key !== painted) {
         painted = key
         const out = [0, 0, 0]
-        const px = [0, 0, 0, 0]
-        slice.paint((a, b) => (state.mode === 'pressure'
-          ? pressurePixel(rotorPressure(a, SLICE_Y + b, 0, rotor), pressureMax, px)
-          : speedPixel(flowVelocity(out, a, SLICE_Y + b, 0, rotors), speedMax, px)))
+        const reach = Math.max(R * 3, 140)
+        cloud.fill([-reach, -400, -reach], [reach, 14 + R * 3, reach], (x, y, z, c) => (state.mode === 'pressure'
+          ? pressureSample(rotorPressure(x, y, z, rotor), pressureMax, c)
+          : speedSample(flowVelocity(out, x, y, z, rotors), speedMax, c)))
       }
       lines.update(step, speedMax)
       blades.position.set(0, 14, 0)
@@ -305,56 +303,93 @@ export function createAirflow({ THREE, scene }) {
       tags[1].position.set(R * 1.15, -230, 0)
       tags[2].position.set(0, 14 + Math.min(150, 14 * state.thrustN) + 24, 0)
     },
-    dispose() { lines.dispose(); slice.dispose(); bladeGeo?.dispose(); hubGeo.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
+    dispose() { lines.dispose(); cloud.dispose(); bladeGeo?.dispose(); hubGeo.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
   }
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// 3. A wing section in moving air, drawn like a CFD picture: streamlines coloured by speed, and a slice behind the wing painted with
-// speed or pressure. The flow is the classical solution for a wing section, so the air slides round the surface that is drawn.
+// 3. A finite wing in moving air, in full 3D. The air round the middle of the wing follows the classical solution for a wing section; near the
+// tips it spills round from the high pressure underneath to the low pressure on top, and rolls up into two spinning tubes of air, the wingtip
+// vortices, that trail behind. Drawn as streamlines and as a 3D cloud coloured by speed or pressure.
 // state: { alphaDeg, cl, cd, stalled, speed (m/s), mode ('speed' or 'pressure'), paused }   (the air moves left to right)
 // ---------------------------------------------------------------------------------------------------------------
 const CHORD = 150
+const SPAN = 360
 
 export function createAerofoil({ THREE, scene }) {
   const S = CHORD / CHORD_RAW // millimetres for each unit of the formula
   const XQ = X_LEADING + CHORD_RAW / 4 // the quarter-chord point sits at the middle of the scene
   const shape = new THREE.Shape(outline(200).map(([x, y]) => new THREE.Vector2((x - XQ) * S, y * S)))
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: 80, bevelEnabled: false })
-  geo.translate(0, 0, -40)
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: SPAN, bevelEnabled: false })
+  geo.translate(0, 0, -SPAN / 2)
   const wing = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xcfd6e2, metalness: 0.5, roughness: 0.35 }))
   scene.add(wing)
   const lift = arrow(THREE, scene, COLORS.lift)
   const drag = arrow(THREE, scene, COLORS.drag)
-  const tags = [label(THREE, 'Lift', 24), label(THREE, 'Drag', 24), label(THREE, 'air flow', 30), label(THREE, 'low pressure above', 52), label(THREE, 'higher pressure below', 56)]
+  const tags = [label(THREE, 'Lift', 24), label(THREE, 'Drag', 24), label(THREE, 'air flow', 30), label(THREE, 'low pressure above', 52), label(THREE, 'higher pressure below', 56), label(THREE, 'wingtip vortex', 40)]
   tags.forEach((t) => scene.add(t))
+  const FINITE = (SPAN / CHORD) / (SPAN / CHORD + 2) // a short wing makes less lift per metre of span than the ideal section
+  const TIP = SPAN / 2 * 0.94
+  const CORE = 16 // radius of the core of a wingtip vortex, in millimetres
   let alpha = 0
   let circulation = 1
   let speed = 15
   let stalled = false
   let clock = 0
   const v2 = [0, 0]
-  // the world is turned into the wing's own frame, the formula is evaluated there, and the velocity is turned back
-  const field = (out, x, y) => {
+  const smooth = (t) => { const c = Math.min(1, Math.max(0, t)); return c * c * (3 - 2 * c) }
+  const insideWing = (x, y, z) => {
+    if (Math.abs(z) >= SPAN / 2) return false
+    const ca = Math.cos(alpha)
+    const sa = Math.sin(alpha)
+    return aerofoilVelocity(v2, (x * ca - y * sa) / S + XQ, (x * sa + y * ca) / S, alpha) < 0
+  }
+  // the velocity of the air at a point of the scene, in m/s
+  const field = (out, x, y, z) => {
     const ca = Math.cos(alpha)
     const sa = Math.sin(alpha)
     const xb = x * ca - y * sa
     const yb = x * sa + y * ca
-    const ratio = aerofoilVelocity(v2, xb / S + XQ, yb / S, alpha, circulation)
-    if (ratio < 0) { out[0] = 0; out[1] = 0; out[2] = 0; return 0 }
-    let ux = v2[0] * ca + v2[1] * sa
-    let uy = -v2[0] * sa + v2[1] * ca
-    if (stalled && yb > 0 && xb > CHORD * 0.05 && yb < 90) { // the air has broken away from the top and tumbles
-      ux *= 0.35
-      uy = uy * 0.35 + Math.sin(clock * 11 + x * 0.09) * 0.45
+    if (insideWing(x, y, z)) { out[0] = out[1] = out[2] = 0; return 0 }
+    // across the span the wing section's effect fades towards the tips, where the air can slip round instead
+    const along = Math.abs(z) / (SPAN / 2)
+    const weight = along < 1 ? Math.sqrt(1 - along ** 6) : 0
+    let ux = 1
+    let uy = 0
+    let uz = 0
+    if (weight > 0) {
+      aerofoilVelocity(v2, xb / S + XQ, yb / S, alpha, circulation)
+      let sx = v2[0] * ca + v2[1] * sa
+      let sy = -v2[0] * sa + v2[1] * ca
+      if (stalled && yb > 0 && xb > CHORD * 0.05 && yb < 90) { // the air has broken away from the top and tumbles
+        sx *= 0.35
+        sy = sy * 0.35 + Math.sin(clock * 11 + x * 0.09) * 0.45
+      }
+      ux += weight * (sx - 1)
+      uy += weight * sy
+    }
+    // the two wingtip vortices trail from the trailing edge; the air between them is pushed down, and outside them up
+    const xTail = (CHORD * 0.75) * ca
+    const yTail = -(CHORD * 0.75) * sa
+    const grow = smooth((x - xTail) / 90)
+    if (grow > 0) {
+      const strength = 4 * Math.PI * (1 + EPSILON) * Math.sin(alpha) * circulation * S * FINITE
+      for (const side of [1, -1]) {
+        const dy = y - (yTail - (x - xTail) * 0.06)
+        const dz = z - side * TIP
+        const r2 = dy * dy + dz * dz + 1
+        const swirl = (grow * strength * (1 - Math.exp(-r2 / (CORE * CORE)))) / (2 * Math.PI * r2)
+        uz += -side * dy * swirl
+        uy += side * dz * swirl
+      }
     }
     out[0] = ux * speed
     out[1] = uy * speed
-    out[2] = 0
-    return Math.hypot(out[0], out[1])
+    out[2] = uz * speed
+    return Math.hypot(out[0], out[1], out[2])
   }
   const lines = makeStreamlines(THREE, {
-    count: 760,
+    count: 900,
     length: 30,
     mmPerSecond: 8,
     life: 5,
@@ -362,15 +397,14 @@ export function createAerofoil({ THREE, scene }) {
     field,
     spawn: (i, p) => {
       p[0] = -345 + Math.random() * 30
-      p[1] = -130 + Math.random() * 260
-      p[2] = -34 + Math.random() * 68
+      p[1] = -120 + Math.random() * 240
+      p[2] = (Math.random() * 2 - 1) * (SPAN / 2 + 100)
     },
-    keep: (x, y) => x < 360 && Math.abs(y) < 175 && aerofoilVelocity(v2, ((x * Math.cos(alpha) - y * Math.sin(alpha)) / S) + XQ, ((x * Math.sin(alpha) + y * Math.cos(alpha)) / S), alpha) >= 0,
+    keep: (x, y, z) => x < 380 && Math.abs(y) < 180 && Math.abs(z) < SPAN / 2 + 140 && !insideWing(x, y, z),
   })
   scene.add(lines.object)
-  const slice = makeSlice(THREE, { width: 760, height: 360, res: 140 })
-  slice.mesh.position.set(0, 0, -43)
-  scene.add(slice.mesh)
+  const cloud = makeCloud(THREE, { count: 16000, size: 8 })
+  scene.add(cloud.object)
   let painted = ''
 
   return {
@@ -387,20 +421,15 @@ export function createAerofoil({ THREE, scene }) {
       const key = `${state.alphaDeg}|${speed}|${state.mode}|${state.stalled}`
       if (key !== painted) {
         painted = key
-        const px = [0, 0, 0, 0]
-        const vv = [0, 0, 0]
-        slice.paint((a, b) => {
-          const ca = Math.cos(alpha)
-          const sa = Math.sin(alpha)
-          const ratio = aerofoilVelocity(v2, (a * ca - b * sa) / S + XQ, (a * sa + b * ca) / S, alpha, circulation)
-          if (ratio < 0) { px[0] = px[1] = px[2] = px[3] = 0; return px }
-          if (state.mode === 'pressure') return pressurePixel(q * (1 - ratio * ratio), q * 1.4, px)
-          field(vv, a, b)
-          const t = Math.min(1, Math.hypot(vv[0], vv[1]) / (speed * 1.7))
-          speedColor(t, px)
-          // the slice is faint where the air is undisturbed and strong where the wing has changed it
-          px[3] = 0.04 + 0.6 * Math.min(1, Math.abs(ratio - 1) * 2.2)
-          return px
+        const out = [0, 0, 0]
+        cloud.fill([-300, -170, -SPAN / 2 - 120], [400, 170, SPAN / 2 + 120], (x, y, z, c) => {
+          if (insideWing(x, y, z)) return 0
+          const v = field(out, x, y, z)
+          if (state.mode === 'pressure') return pressureSample(q * (1 - (v / speed) ** 2), q * 1.4, c)
+          // the air that the wing has changed: faster or slower than the free stream, or turned aside
+          const change = Math.hypot(out[0] - speed, out[1], out[2]) / (speed * 0.7)
+          speedSample(v, speed * 1.7, c)
+          return thresholded(change)
         })
       }
       lines.update(step, speed * 1.7)
@@ -412,8 +441,10 @@ export function createAerofoil({ THREE, scene }) {
       tags[2].position.set(-250, 150, 0)
       tags[3].position.set(-20, 95, 0)
       tags[4].position.set(20, -95, 0)
+      tags[5].position.set(CHORD * 0.75 + 150, -30, TIP)
+      tags[5].visible = Math.abs(alpha) > 0.05
     },
-    dispose() { geo.dispose(); lines.dispose(); slice.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
+    dispose() { geo.dispose(); lines.dispose(); cloud.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
   }
 }
 
@@ -549,6 +580,9 @@ export function createAtmosphere({ THREE, scene }) {
     keep: (x, y, z) => Math.abs(x) < SIZE / 2 && Math.abs(z) < SIZE / 2 && y < SIZE,
   })
   scene.add(lines.object)
+  const cloud = makeCloud(THREE, { count: 14000, size: 9 })
+  scene.add(cloud.object)
+  let painted = ''
   const gauge = new THREE.Mesh(new THREE.BoxGeometry(14, 1, 14), new THREE.MeshBasicMaterial({ color: 0x3e8ef7 }))
   scene.add(gauge)
   const tag = label(THREE, 'air density', 40)
@@ -577,13 +611,19 @@ export function createAtmosphere({ THREE, scene }) {
       molecules.mat.color.copy(cold).lerp(hot, state.hotter)
       quad.spin(step, 38 * state.spin)
       for (const r of rotors) r.vi = state.vi
-      lines.update(step, 2.1 * state.viSea * 1.3)
+      const speedMax = 2.1 * state.viSea * 1.3
+      if (painted !== state.vi.toFixed(2)) {
+        painted = state.vi.toFixed(2)
+        const out = [0, 0, 0]
+        cloud.fill([-SIZE / 2, 2, -SIZE / 2], [SIZE / 2, HEIGHT + 150, SIZE / 2], (x, y, z, c) => speedSample(flowVelocity(out, x, y, z, rotors), speedMax, c))
+      }
+      lines.update(step, speedMax)
       const h = Math.max(4, SIZE * Math.min(1, state.ratio))
       gauge.scale.y = h
       gauge.position.set(-SIZE / 2 - 34, h / 2, 0)
       tag.position.set(-SIZE / 2 - 34, h + 22, 0)
     },
-    dispose() { molecules.geo.dispose(); molecules.mat.dispose(); lines.dispose(); tag.material.map.dispose(); tag.material.dispose() },
+    dispose() { molecules.geo.dispose(); molecules.mat.dispose(); lines.dispose(); cloud.dispose(); tag.material.map.dispose(); tag.material.dispose() },
   }
 }
 
@@ -618,11 +658,9 @@ export function createGroundEffect({ THREE, scene }) {
   floorMap.mesh.rotation.x = -Math.PI / 2
   floorMap.mesh.position.y = 0.6
   scene.add(floorMap.mesh)
-  // a slice through the air along the right-hand side of the drone, through the two right-hand propellers
-  const SLICE_H = 340
-  const side = makeSlice(THREE, { width: 760, height: SLICE_H, res: 120 })
-  side.mesh.position.set(0, SLICE_H / 2, rotors[0].z)
-  scene.add(side.mesh)
+  // the volume of moving air (or of pressure) under and round the drone
+  const cloud = makeCloud(THREE, { count: 14000, size: 8 })
+  scene.add(cloud.object)
   const gain = label(THREE, 'more thrust', 36)
   scene.add(gain)
   let painted = ''
@@ -642,15 +680,15 @@ export function createGroundEffect({ THREE, scene }) {
         const px = [0, 0, 0, 0]
         const pressureMax = Math.max(1, floorPressure(rotors[0].x, rotors[0].z, rotors)) * 1.05
         floorMap.paint((a, b) => pressurePixel(floorPressure(a, -b, rotors), pressureMax, px))
-        side.paint((a, b) => (state.mode === 'pressure'
-          ? pressurePixel(sidePressure(a, SLICE_H / 2 + b, rotors[0].z, rotors), pressureMax, px)
-          : speedPixel(flowVelocity(out, a, SLICE_H / 2 + b, rotors[0].z, rotors), speedMax, px)))
+        cloud.fill([-300, 2, -300], [300, height + 150, 300], (x, y, z, c) => (state.mode === 'pressure'
+          ? pressureSample(sidePressure(x, y, z, rotors), pressureMax, c)
+          : speedSample(flowVelocity(out, x, y, z, rotors), speedMax, c)))
       }
       lines.update(step, speedMax)
       gain.visible = state.gain > 1.02
       gain.position.set(0, height + 110, 0)
     },
-    dispose() { lines.dispose(); floorMap.dispose(); side.dispose(); gain.material.map.dispose(); gain.material.dispose() },
+    dispose() { lines.dispose(); floorMap.dispose(); cloud.dispose(); gain.material.map.dispose(); gain.material.dispose() },
   }
 }
 

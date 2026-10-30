@@ -146,27 +146,38 @@ const hexToRgb = (hex) => [(hex >> 16) & 255, (hex >> 8) & 255, hex & 255].map((
 export const SPEED_STOPS = [[0, 0x1d2a78], [0.2, 0x2563eb], [0.4, 0x06b6d4], [0.6, 0x22c55e], [0.8, 0xfacc15], [1, 0xef4444]]
 export const PRESSURE_COLORS = { suction: 0x3b82f6, push: 0xef4444, rest: 0x1d2330 }
 
+// the colours are worked out once: a table of 256 speed colours, and the three pressure colours as numbers
+const SPEED_TABLE = new Float32Array(256 * 3)
+for (let i = 0; i < 256; i += 1) {
+  const c = i / 255
+  let j = 1
+  while (j < SPEED_STOPS.length - 1 && c > SPEED_STOPS[j][0]) j += 1
+  const [t0, h0] = SPEED_STOPS[j - 1]
+  const [t1, h1] = SPEED_STOPS[j]
+  const f = (c - t0) / (t1 - t0)
+  const lo = hexToRgb(h0)
+  const hi = hexToRgb(h1)
+  for (let k = 0; k < 3; k += 1) SPEED_TABLE[i * 3 + k] = lo[k] + (hi[k] - lo[k]) * f
+}
+const SUCTION_RGB = hexToRgb(PRESSURE_COLORS.suction)
+const PUSH_RGB = hexToRgb(PRESSURE_COLORS.push)
+const REST_RGB = hexToRgb(PRESSURE_COLORS.rest)
+
 /** Fills `out` with [r, g, b] (0 to 1) for a speed t between 0 and 1. */
 export function speedColor(t, out = [0, 0, 0]) {
-  const c = Math.min(1, Math.max(0, t))
-  let i = 1
-  while (i < SPEED_STOPS.length - 1 && c > SPEED_STOPS[i][0]) i += 1
-  const [t0, h0] = SPEED_STOPS[i - 1]
-  const [t1, h1] = SPEED_STOPS[i]
-  const f = (c - t0) / (t1 - t0)
-  const a = hexToRgb(h0)
-  const b = hexToRgb(h1)
-  for (let k = 0; k < 3; k += 1) out[k] = a[k] + (b[k] - a[k]) * f
+  const i = Math.round(Math.min(1, Math.max(0, t)) * 255) * 3
+  out[0] = SPEED_TABLE[i]
+  out[1] = SPEED_TABLE[i + 1]
+  out[2] = SPEED_TABLE[i + 2]
   return out
 }
 
 /** Fills `out` with [r, g, b, alpha] for a pressure t between -1 (suction) and 1 (push). */
 export function pressureColor(t, out = [0, 0, 0, 0]) {
   const c = Math.min(1, Math.max(-1, t))
-  const end = hexToRgb(c < 0 ? PRESSURE_COLORS.suction : PRESSURE_COLORS.push)
-  const rest = hexToRgb(PRESSURE_COLORS.rest)
-  const f = Math.abs(c) ** 0.5
-  for (let k = 0; k < 3; k += 1) out[k] = rest[k] + (end[k] - rest[k]) * f
+  const end = c < 0 ? SUCTION_RGB : PUSH_RGB
+  const f = Math.sqrt(Math.abs(c))
+  for (let k = 0; k < 3; k += 1) out[k] = REST_RGB[k] + (end[k] - REST_RGB[k]) * f
   out[3] = 0.12 + 0.78 * f
   return out
 }
