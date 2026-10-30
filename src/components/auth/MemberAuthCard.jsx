@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Mail, ShieldCheck } from 'lucide-react'
 import { useAuthStore } from '@store/useAuthStore'
+import { EXPERIENCE, HEARD_FROM, LOOKING_FOR, ROLES } from '@config/onboarding'
 import { sendLoginCode } from '@lib/memberApi'
 import { authConfigured } from '@lib/supabaseClient'
 import Turnstile, { TURNSTILE_SITE_KEY } from './Turnstile.jsx'
@@ -20,42 +21,31 @@ function GoogleMark() {
   )
 }
 
-// the one-time question after the first sign-in: name, college, and (if they were in one) the workshop
+// the one-time questions after the first sign-in: who they are, how they found us, what they want
 function ProfileStep({ onDone }) {
   const profile = useAuthStore((s) => s.profile)
   const completeProfile = useAuthStore((s) => s.completeProfile)
-  const loadWorkshops = useAuthStore((s) => s.loadWorkshops)
   const [fullName, setFullName] = useState(profile?.full_name ?? '')
   const [college, setCollege] = useState(profile?.college_name ?? '')
-  const [inWorkshop, setInWorkshop] = useState(false)
-  const [workshops, setWorkshops] = useState([])
-  const [workshopId, setWorkshopId] = useState('')
-  const [otherName, setOtherName] = useState('')
-  const [otherDate, setOtherDate] = useState('')
+  const [role, setRole] = useState('')
+  const [heardFrom, setHeardFrom] = useState('')
+  const [heardOther, setHeardOther] = useState('')
+  const [lookingFor, setLookingFor] = useState([])
+  const [experience, setExperience] = useState('')
+  const [phone, setPhone] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (!inWorkshop || workshops.length) return
-    loadWorkshops().then(setWorkshops).catch(() => setWorkshops([]))
-  }, [inWorkshop, workshops.length, loadWorkshops])
-
-  const other = workshopId === 'other' || (inWorkshop && workshops.length === 0)
+  const toggle = (value) => setLookingFor((list) => (list.includes(value) ? list.filter((v) => v !== value) : [...list, value]))
   const submit = async (e) => {
     e.preventDefault()
     setError('')
-    if (college.trim().length < 2) return setError('Please enter your college name.')
-    if (inWorkshop && other && !otherName.trim()) return setError('Please enter the workshop name.')
-    if (inWorkshop && !other && !workshopId) return setError('Please choose your workshop.')
+    if (college.trim().length < 2) return setError('Please enter your college or company name.')
+    if (!role) return setError('Please choose what describes you best.')
+    if (!heardFrom) return setError('Please tell us how you found us.')
     setBusy(true)
     try {
-      await completeProfile({
-        fullName: fullName.trim(),
-        college: college.trim(),
-        workshopId: inWorkshop && !other ? workshopId : null,
-        workshopName: inWorkshop && other ? otherName.trim() : '',
-        workshopDate: inWorkshop && other ? otherDate : '',
-      })
+      await completeProfile({ fullName: fullName.trim(), college: college.trim(), heardFrom, heardOther: heardOther.trim(), role, lookingFor, experience, phone: phone.trim() })
       onDone?.()
     } catch (err) {
       setError(err.message)
@@ -67,48 +57,57 @@ function ProfileStep({ onDone }) {
   return (
     <form onSubmit={submit} className={styles.form}>
       <h2 className={styles.title}>One last step</h2>
-      <p className={styles.lead}>Tell us who you are. It is free, and you only do this once.</p>
+      <p className={styles.lead}>A few quick questions so we can help you better. It is free, and you only do this once.</p>
       <label className={styles.field}>
         <span>Your name</span>
         <input value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" required maxLength={120} />
       </label>
       <label className={styles.field}>
-        <span>College name</span>
-        <input value={college} onChange={(e) => setCollege(e.target.value)} placeholder="The college or university you study at" autoComplete="organization" required maxLength={160} />
+        <span>College or company</span>
+        <input value={college} onChange={(e) => setCollege(e.target.value)} placeholder="Where you study or work" autoComplete="organization" required maxLength={160} />
       </label>
-      <label className={styles.check}>
-        <input type="checkbox" checked={inWorkshop} onChange={(e) => setInWorkshop(e.target.checked)} />
-        <span>I took part in an EGIRE workshop</span>
+      <label className={styles.field}>
+        <span>Which describes you best?</span>
+        <select value={role} onChange={(e) => setRole(e.target.value)} required>
+          <option value="">Choose one</option>
+          {ROLES.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
       </label>
-      {inWorkshop && (
-        <div className={styles.workshop}>
-          {workshops.length > 0 && (
-            <label className={styles.field}>
-              <span>Which workshop?</span>
-              <select value={workshopId} onChange={(e) => setWorkshopId(e.target.value)}>
-                <option value="">Choose a workshop</option>
-                {workshops.map((w) => (
-                  <option key={w.id} value={w.id}>{w.name}{w.starts_on ? ` · ${w.starts_on}` : ''}</option>
-                ))}
-                <option value="other">My workshop is not listed</option>
-              </select>
-            </label>
-          )}
-          {other && (
-            <>
-              <label className={styles.field}>
-                <span>Workshop name</span>
-                <input value={otherName} onChange={(e) => setOtherName(e.target.value)} maxLength={160} />
-              </label>
-              <label className={styles.field}>
-                <span>Workshop date</span>
-                <input type="date" value={otherDate} onChange={(e) => setOtherDate(e.target.value)} />
-              </label>
-            </>
-          )}
-          <p className={styles.note}>Our team checks this before it is confirmed.</p>
-        </div>
+      <label className={styles.field}>
+        <span>How did you find us?</span>
+        <select value={heardFrom} onChange={(e) => setHeardFrom(e.target.value)} required>
+          <option value="">Choose one</option>
+          {HEARD_FROM.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+      </label>
+      {heardFrom === 'other' && (
+        <label className={styles.field}>
+          <span>Where?</span>
+          <input value={heardOther} onChange={(e) => setHeardOther(e.target.value)} maxLength={80} />
+        </label>
       )}
+      <fieldset className={styles.group}>
+        <legend>What are you looking for? <small>(pick any)</small></legend>
+        <div className={styles.chips}>
+          {LOOKING_FOR.map((o) => (
+            <label key={o.value} className={styles.chip} data-on={lookingFor.includes(o.value)}>
+              <input type="checkbox" checked={lookingFor.includes(o.value)} onChange={() => toggle(o.value)} />
+              {o.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <label className={styles.field}>
+        <span>Your drone experience <small>(optional)</small></span>
+        <select value={experience} onChange={(e) => setExperience(e.target.value)}>
+          <option value="">Choose one</option>
+          {EXPERIENCE.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+      </label>
+      <label className={styles.field}>
+        <span>Phone or WhatsApp <small>(optional)</small></span>
+        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91" autoComplete="tel" maxLength={20} />
+      </label>
       {error && <p className={styles.error} role="alert">{error}</p>}
       <button type="submit" className={styles.primary} disabled={busy}>
         {busy ? 'Saving…' : 'Continue'} <ArrowRight size={18} aria-hidden="true" />

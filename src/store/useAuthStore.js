@@ -78,26 +78,22 @@ export const useAuthStore = create((set, get) => ({
     return next.startsWith('/') && !next.startsWith('//') ? next : '/'
   },
 
-  /** Saves the name and college, and optionally a workshop. Throws a message safe to show. */
-  completeProfile: async ({ fullName, college, workshopId = null, workshopName = '', workshopDate = '' }) => {
+  /** Saves the name, college or company and the onboarding answers. Throws a message safe to show. */
+  completeProfile: async ({ fullName, college, heardFrom, heardOther = '', role, lookingFor = [], experience = '', phone = '' }) => {
     const supabase = await getSupabase()
     const { error } = await supabase.rpc('member_complete_profile', {
       p_full_name: fullName,
       p_college: college,
-      p_workshop_id: workshopId || null,
-      p_workshop_name: workshopId ? null : workshopName || null,
-      p_workshop_date: workshopId ? null : workshopDate || null,
+      p_heard_from: heardFrom,
+      p_heard_other: heardOther,
+      p_role: role,
+      p_looking_for: lookingFor,
+      p_experience: experience,
+      p_phone: phone,
     })
     if (error) throw new Error(error.message || 'We could not save that. Please try again.')
     await refreshSession()
-    trackEvent('signup', { target: 'profile completed' })
-  },
-
-  /** The workshops a member can pick from. */
-  loadWorkshops: async () => {
-    const supabase = await getSupabase()
-    const { data } = await supabase.rpc('public_workshops')
-    return data ?? []
+    trackEvent('signup', { target: 'profile completed', label: heardFrom })
   },
 
   signOut: async () => {
