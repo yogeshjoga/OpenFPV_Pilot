@@ -179,3 +179,19 @@
   height: 1px;
   opacity: 0;
 }
+
+/* inside the sign-in popup: the popup supplies the card, so this one drops its own frame */
+.bare {
+  max-width: none;
+  padding: var(--space-8);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 520px) {
+  .bare {
+    padding: var(--space-5);
+  }
+}

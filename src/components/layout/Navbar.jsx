@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
 
-import { Sun, Moon, ArrowRight, ChevronDown, LogOut, User } from 'lucide-react'
+import { Sun, Moon, ArrowRight, ChevronDown, LogOut, User, ExternalLink, Clock } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NAV_LINKS } from '@config/constants'
@@ -33,6 +33,18 @@ const groupLinks = (subLinks) => {
 }
 
 // "Sign in" for a visitor; the person's name and a sign-out button once signed in
+const CRM_URL = import.meta.env.VITE_CRM_LOGIN_URL
+
+// Paid members see the CRM here. They can open it once an admin has accepted them; until then it says so.
+function CrmAccess({ base }) {
+  const profile = useAuthStore((s) => s.profile)
+  if (!CRM_URL || !profile?.is_paid || profile.account_kind !== 'member') return null
+  if (profile.status === 'active') {
+    return <a className={base} href={CRM_URL} target="_blank" rel="noopener noreferrer"><ExternalLink size={14} aria-hidden="true" /> CRM</a>
+  }
+  return <span className={base} title="An admin will accept your account for the CRM soon"><Clock size={14} aria-hidden="true" /> CRM: awaiting approval</span>
+}
+
 function AccountLink({ mobile = false }) {
   const status = useAuthStore((s) => s.status)
   const user = useAuthStore((s) => s.user)
@@ -43,6 +55,7 @@ function AccountLink({ mobile = false }) {
     return (
       <>
         <span className={base} aria-label="Signed in"><User size={14} aria-hidden="true" /> {first}</span>
+        <CrmAccess base={base} />
         <button type="button" className={base} onClick={() => signOut()}><LogOut size={14} aria-hidden="true" /> Sign out</button>
       </>
     )

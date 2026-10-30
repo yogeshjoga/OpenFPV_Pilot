@@ -12,7 +12,7 @@ import { verifyLoginCode } from '@lib/memberApi'
 import { trackEvent } from '@lib/analytics'
 
 const STAFF = ['instructor', 'coordinator', 'admin', 'super_admin']
-const PROFILE_COLUMNS = 'id, full_name, email, phone, role, status, college_name, member_type, account_kind'
+const PROFILE_COLUMNS = 'id, full_name, email, phone, role, status, college_name, member_type, account_kind, is_paid'
 const NEXT_KEY = 'egire-next'
 
 const isComplete = (profile) => Boolean(profile && profile.college_name && profile.full_name)

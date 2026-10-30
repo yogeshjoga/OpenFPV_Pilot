@@ -118,7 +118,8 @@ function ProfileStep({ onDone }) {
 }
 
 // Sign in or register: Google, or a code by email. The same card is used on the sign-in page and on every gated page.
-export default function MemberAuthCard({ next = '/', onSignedIn }) {
+export default function MemberAuthCard({ next = '/', onSignedIn, bare = false }) {
+  const cardClass = bare ? `${styles.card} ${styles.bare}` : styles.card
   const status = useAuthStore((s) => s.status)
   const signInWithGoogle = useAuthStore((s) => s.signInWithGoogle)
   const signInWithCode = useAuthStore((s) => s.signInWithCode)
@@ -140,8 +141,8 @@ export default function MemberAuthCard({ next = '/', onSignedIn }) {
   useEffect(() => { if (status === 'ready') onSignedIn?.() }, [status, onSignedIn])
 
   if (!authConfigured) return <p className={styles.error}>Sign-in is not available right now. Please call us.</p>
-  if (status === 'incomplete') return <div className={styles.card}><ProfileStep onDone={onSignedIn} /></div>
-  if (status === 'ready') return <div className={styles.card}><p className={styles.lead}>You are signed in.</p></div>
+  if (status === 'incomplete') return <div className={cardClass}><ProfileStep onDone={onSignedIn} /></div>
+  if (status === 'ready') return <div className={cardClass}><p className={styles.lead}>You are signed in.</p></div>
 
   const askForCode = async (e) => {
     e?.preventDefault()
@@ -183,7 +184,7 @@ export default function MemberAuthCard({ next = '/', onSignedIn }) {
   }
 
   return (
-    <div className={styles.card}>
+    <div className={cardClass}>
       {step === 'start' ? (
         <form onSubmit={askForCode} className={styles.form}>
           <h2 className={styles.title}>Sign in or register</h2>
