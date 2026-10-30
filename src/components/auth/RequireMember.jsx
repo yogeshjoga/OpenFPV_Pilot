@@ -38,8 +38,7 @@ function GatePage({ info }) {
 // The gate is switched on with VITE_MEMBER_GATE=on (set in vercel.json when sign-in has been checked end to end). Until then every page stays open.
 const GATE_ON = import.meta.env.VITE_MEMBER_GATE === 'on'
 
-export default function RequireMember({ gate, children }) {
-  if (!GATE_ON) return children
+function Gate({ gate, children }) {
   const status = useAuthStore((s) => s.status)
   const init = useAuthStore((s) => s.init)
   const info = GATES[gate] ?? { title: 'Academy', blurb: 'Sign in to open this page.', bullets: [] }
@@ -47,4 +46,8 @@ export default function RequireMember({ gate, children }) {
   if (status === 'ready') return children
   if (status === 'loading') return <div className={styles.loading} role="status">Loading…</div>
   return <GatePage info={info} />
+}
+
+export default function RequireMember({ gate, children }) {
+  return GATE_ON ? <Gate gate={gate}>{children}</Gate> : children
 }
