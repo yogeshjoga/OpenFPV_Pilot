@@ -5,7 +5,9 @@ import dh from '../../DroneHardware/DroneHardware.module.css'
 import Formula, { Idea } from '../Formula.jsx'
 import { createAtmosphere, createGroundEffect } from '../scenes.js'
 import styles from '../Physics.module.css'
-import { atmosphere, batteryEnergyWh, discArea, flightTimeMin, groundEffect, hoverElectricalPower } from '../physics.js'
+import FlowLegend from '../FlowLegend.jsx'
+import { AIR_DENSITY, floorPressure, floorWindSpeed } from '../flow.js'
+import { atmosphere, batteryEnergyWh, discArea, flightTimeMin, groundEffect, hoverElectricalPower, inducedVelocity, weight } from '../physics.js'
 
 const PLACES = [
   { id: 'vizag', label: 'Visakhapatnam (sea level)', alt: 5 },
@@ -66,9 +68,17 @@ function AtmosphereLab() {
 function GroundEffectLab() {
   const clock = useClock()
   const [h, setH] = useState(60)
+  const [grams, setGrams] = useState(700)
+  const [view, setView] = useState('speed')
   const R = 0.0635
   const gain = groundEffect(R, h / 1000)
-  const state = useLive({ heightMm: h, gain, paused: !clock.playing })
+  // in a hover each of the four propellers carries a quarter of the weight; the air through each disc moves at the induced speed
+  const thrustEach = weight(grams / 1000) / 4
+  const vi = inducedVelocity(thrustEach, AIR_DENSITY, discArea(2 * R))
+  const rotor = { x: 0, y: h, z: 0, R: R * 1000, vi, floor: true }
+  const underPressure = floorPressure(0, 0, [rotor])
+  const floorWind = floorWindSpeed(rotor)
+  const state = useLive({ heightMm: h, gain, vi, mode: view, paused: !clock.playing })
   const x = scale(30, 300, 52, 584)
   const y = scale(1, 1.4, 150, 12)
   const curve = Array.from({ length: 28 }, (_, i) => { const z = 30 + i * 10; return [z, groundEffect(R, z / 1000)] })
@@ -76,28 +86,37 @@ function GroundEffectLab() {
     <Lab
       title="Ground effect: why landing feels soft"
       clock={clock}
-      idea={<>Within about one propeller diameter of the floor, the stream of air coming off the propellers hits the ground and cannot escape quickly. It piles up under the drone and raises the pressure there, so each propeller makes <b>more thrust for the same power</b>. Pilots feel it as a cushion when they land and a float when they take off. It also makes a drone harder to hold steady when it hovers a few centimetres above the ground.</>}
+      idea={<>Within about one propeller diameter of the floor, the stream of air coming off the propellers hits the ground and cannot escape quickly. It piles up under the drone and raises the pressure there, so each propeller makes <b>more thrust for the same power</b>. The picture shows the air the way an engineer's flow simulation (CFD) does: coloured streamlines for the speed of the air, and a pressure map painted on the floor. Pilots feel it as a cushion when they land and a float when they take off. It also makes a drone harder to hold steady when it hovers a few centimetres above the ground.</>}
       figure={(
         <div className={dh.stackTight}>
-          <Scene3D create={createGroundEffect} stateRef={state} view={[260, 130, 300]} target={[0, 60, 0]} floorY={0} minDistance={200} maxDistance={600} label="A drone hovering above the ground with air spreading out under it" />
+          <Scene3D create={createGroundEffect} stateRef={state} view={[330, 190, 380]} target={[0, 60, 0]} floorY={0} minDistance={220} maxDistance={700} label="A drone hovering above the ground, with streamlines coloured by air speed and a map of the pressure on the floor" />
+          <FlowLegend mode={view} speedMax={2.1 * vi} pressureMax={underPressure * 1.05} />
           <Plot width={600} height={170} top={12} bottom={38} x={x} y={y} xTicks={[50, 100, 200, 300]} yTicks={[1, 1.2, 1.4]} xLabel="rotor height above the floor (mm)" yLabel="thrust ×" label="Extra thrust against height above the ground">
             <polyline points={polyline(curve.map(([z, g]) => [x(z), y(g)]))} className={dh.accentLine} />
             <circle cx={x(h)} cy={y(gain)} r="7" className={dh.goodFill} />
           </Plot>
         </div>
       )}
-      caption="Blue air falls from the propellers, then turns orange as it spreads out along the floor. The orange glow on the ground grows as the cushion builds."
+      caption="The lines are air, blue when slow and red when fast: it speeds up through each propeller, hits the floor and rushes out sideways. The patches on the floor are the pressure of the air pushing down on it, brightest red right under each propeller. Lower the drone and the patches get stronger and merge into one cushion."
       controls={(
         <>
-          <Slider label="Height of the propellers" value={h} min={30} max={300} step={5} onChange={setH} format={(v) => `${v} mm`} />
+          <Choices label="Colour the slice of air by" options={[{ id: 'speed', label: 'Air speed' }, { id: 'pressure', label: 'Pressure' }]} value={view} onChange={setView} />
+          <Slider label="Weight of the drone" value={grams} min={300} max={1500} step={50} onChange={setGrams} format={(v) => `${v} g`} />
+          <Slider label="Height of the propellers" value={h} min={35} max={300} step={5} onChange={setH} format={(v) => `${v} mm`} />
           <Readout items={[
             { label: 'Extra thrust', value: `+${((gain - 1) * 100).toFixed(1)} %`, tone: gain > 1.05 ? 'good' : undefined },
             { label: 'Hover throttle change', value: `-${((1 - 1 / Math.sqrt(gain)) * 100).toFixed(1)} %` },
+            { label: 'Air speed leaving each propeller', value: `${(2 * vi).toFixed(1)} m/s (${Math.round(2 * vi * 3.6)} km/h)` },
+            { label: 'Pressure on the floor under it', value: `${underPressure.toFixed(0)} Pa`, tone: 'good' },
+            { label: 'Wind blown along the floor', value: `${Math.round(floorWind * 3.6)} km/h` },
+            { label: 'Push on the floor (all of the weight)', value: `${weight(grams / 1000).toFixed(1)} N` },
           ]} />
         </>
       )}
       notice={[
         <>Lower the drone to 30 mm: the extra thrust climbs to more than a tenth. At 300 mm it has almost gone.</>,
+        <>Make the drone heavier: each propeller must throw more air down, faster, so the pressure on the floor and the wind along it both grow. That is why a heavy drone blows grass flat and kicks up dust.</>,
+        <>The pressure is small next to the 101,325 Pa of the air around us, but a drone only needs a few hundred pascals under its propellers to hold itself up.</>,
         <>Ground effect is why a drone can jump off a table, then settle and sink as it leaves the cushion behind.</>,
         <>The formula is for a single rotor and is a good rule of thumb; real quads vary with frame and propeller layout.</>,
       ]}

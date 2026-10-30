@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Chapter, Lab, Plot, Readout, Slider, polyline, scale, useClock, useLive } from '../../DroneHardware/parts.jsx'
+import { Chapter, Choices, Lab, Plot, Readout, Slider, polyline, scale, useClock, useLive } from '../../DroneHardware/parts.jsx'
 import Scene3D from '../../DroneHardware/widgets/Scene3D.jsx'
 import dh from '../../DroneHardware/DroneHardware.module.css'
 import Formula, { Idea } from '../Formula.jsx'
+import FlowLegend from '../FlowLegend.jsx'
 import { createAirflow, createForces } from '../scenes.js'
 import styles from '../Physics.module.css'
 import {
@@ -55,6 +56,7 @@ const PROP_INCH = 25.4
 
 function PropellerLab() {
   const clock = useClock()
+  const [view, setView] = useState('speed')
   const [inches, setInches] = useState(5)
   const [rpm, setRpm] = useState(28000)
   const rho = 1.225
@@ -64,7 +66,9 @@ function PropellerLab() {
   const area = discArea(D)
   const vi = inducedVelocity(thrust, rho, area)
   const shaft = propellerPower({ rho, rps, diameterM: D })
-  const state = useLive({ diameterMm: D * 1000, vi, thrustN: thrust, spin: rps * 0.12, paused: !clock.playing })
+  const state = useLive({ diameterMm: D * 1000, vi, thrustN: thrust, spin: rps * 0.12, mode: view, paused: !clock.playing })
+  const jump = thrust / area // the pressure step across the disc, in pascals
+  const pushDown = rho * area * vi // kilograms of air thrown down every second
   // the least power to hover a 1 kg drone on four propellers of each size
   const x = scale(3, 10, 52, 584)
   const y = scale(0, 220, 150, 12)
@@ -74,10 +78,11 @@ function PropellerLab() {
     <Lab
       title="How a propeller makes thrust"
       clock={clock}
-      idea={<>A propeller is a spinning wing. Each blade bites into the air and throws it downward. By Newton's third law, throwing air down pushes the drone up. Look at the air in the picture: it is drawn in slowly from above, speeds up through the disc, and leaves as a <b>narrower, faster stream</b>. The thrust is the rate at which the propeller adds downward momentum to the air.</>}
+      idea={<>A propeller is a spinning wing. Each blade bites into the air and throws it downward. By Newton's third law, throwing air down pushes the drone up. This picture shows the air the way an engineer's flow simulation (CFD) does. The coloured lines are <b>streamlines</b>: the path a bit of air follows, coloured by its speed. The coloured sheet behind them is a slice through the air. The air is drawn in slowly from above, where the pressure is <b>lower</b> than in the room. It speeds up through the disc, and leaves as a <b>narrower, faster stream</b> where the pressure just below the propeller is <b>higher</b>. That pressure difference across the disc, spread over its area, is the thrust.</>}
       figure={(
         <div className={dh.stackTight}>
-          <Scene3D create={createAirflow} stateRef={state} view={[330, 40, 330]} target={[0, -60, 0]} floorY={-345} minDistance={200} maxDistance={700} label="A propeller pulling air down through its disc" />
+          <Scene3D create={createAirflow} stateRef={state} view={[330, 40, 330]} target={[0, -60, 0]} floorY={-395} minDistance={200} maxDistance={700} label="A propeller pulling air down through its disc, drawn as streamlines coloured by air speed" />
+          <FlowLegend mode={view} speedMax={2.1 * vi} pressureMax={1.5 * rho * vi * vi} />
           <Plot width={600} height={170} top={12} bottom={38} x={x} y={y} xTicks={[3, 5, 7, 10]} yTicks={[0, 100, 200]} xLabel="propeller size (inches)" yLabel="W" label="The least power to hover a 1 kilogram drone, for each propeller size">
             <polyline points={polyline(curve.map(([d, p]) => [x(d), y(p)]))} className={dh.accentLine} />
             <circle cx={x(inches)} cy={y(here)} r="7" className={dh.goodFill} />
@@ -85,21 +90,26 @@ function PropellerLab() {
           </Plot>
         </div>
       )}
-      caption="Blue air is slow, orange air is fast. The chart shows why long-range builds use big, slow propellers: a bigger disc moves more air more gently, which wastes less power."
+      caption="Blue is slow air, red is the fastest. Switch to pressure to see suction (blue) above the propeller and a push (red) just below it. The chart shows why long-range builds use big, slow propellers: a bigger disc moves more air more gently, which wastes less power."
       controls={(
         <>
+          <Choices label="Colour the air by" options={[{ id: 'speed', label: 'Air speed' }, { id: 'pressure', label: 'Pressure' }]} value={view} onChange={setView} />
           <Slider label="Propeller diameter" value={inches} min={3} max={10} step={0.5} onChange={setInches} format={(v) => `${v.toFixed(1)} inch`} />
           <Slider label="Motor speed" value={rpm} min={8000} max={40000} step={500} onChange={setRpm} format={(v) => `${v.toLocaleString('en-IN')} rpm`} />
           <Readout items={[
             { label: 'Thrust (one propeller)', value: `${thrust.toFixed(1)} N`, tone: 'good' },
             { label: 'Same as lifting', value: `${Math.round((thrust / G) * 1000)} g` },
             { label: 'Air speed through disc', value: `${vi.toFixed(1)} m/s` },
+            { label: 'Fast stream below', value: `${(2 * vi).toFixed(1)} m/s (${Math.round(2 * vi * 3.6)} km/h)` },
+            { label: 'Pressure step across the disc', value: `${jump.toFixed(0)} Pa`, tone: 'good' },
+            { label: 'Air thrown down each second', value: `${pushDown.toFixed(2)} kg` },
             { label: 'Shaft power', value: `${shaft.toFixed(0)} W` },
             { label: 'Tip speed', value: `${tipSpeed(rps, D).toFixed(0)} m/s`, tone: tipMach(rps, D) > 0.7 ? 'bad' : 'good' },
           ]} />
         </>
       )}
       notice={[
+        <>Switch to <b>Pressure</b>: the pressure step across the disc is the thrust divided by the disc area. A bigger disc needs a smaller step for the same thrust.</>,
         <>Double the motor speed and thrust becomes <b>four times</b> bigger, but the power needed becomes <b>eight times</b> bigger. Speed is expensive.</>,
         <>Double the diameter and thrust grows sixteen times (D⁴), which is why a bigger propeller can turn slower and still lift more.</>,
         <>The tip speed turns red above about 0.7 of the speed of sound (about 240 m/s): blade tips get noisy and lose efficiency.</>,

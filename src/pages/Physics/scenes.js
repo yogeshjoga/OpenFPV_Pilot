@@ -3,6 +3,8 @@
 
 import { buildDroneModel, carbonTexture, MOTORS } from '../../components/three/droneModel.js'
 import { DEFAULT_BUILD, resolveBuild } from '../DroneConfigurator/catalog.js'
+import { makeSlice, makeStreamlines, pressurePixel, speedPixel } from './cfd.js'
+import { AIR_DENSITY, floorPressure, flowVelocity, rotorPressure } from './flow.js'
 
 const RAD = Math.PI / 180
 const TAU = Math.PI * 2
@@ -142,14 +144,46 @@ export function createForces({ THREE, scene }) {
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// 2. A rotor pulling air down: the air speeds up through the disc and leaves as a narrower, faster stream.
-// state: { diameterMm, vi (m/s through the disc), thrustN, spin, paused }
+// 2. A rotor pulling air down, drawn like a CFD picture: streamlines coloured by speed, and a slice through the air painted with
+// speed or pressure. The air is drawn in slowly from above, speeds up through the disc and leaves as a narrower, faster stream.
+// state: { diameterMm, vi (m/s through the disc), thrustN, spin, mode ('speed' or 'pressure'), paused }
 // ---------------------------------------------------------------------------------------------------------------
 export function createAirflow({ THREE, scene }) {
-  const N = 700
-  const field = points(THREE, N, { size: 3.4 })
-  scene.add(field.mesh)
-  const seeds = Array.from({ length: N }, () => ({ f: Math.sqrt(Math.random()), a: Math.random() * TAU, y: -330 + Math.random() * 550 }))
+  const rotor = { x: 0, y: 14, z: 0, R: 63.5, vi: 10, floor: false }
+  const rotors = [rotor]
+  const lines = makeStreamlines(THREE, {
+    count: 900,
+    length: 30,
+    mmPerSecond: 12,
+    life: 4.2,
+    floorY: -Infinity, // there is no floor in this picture
+    field: (out, x, y, z) => flowVelocity(out, x, y, z, rotors),
+    spawn: (i, p) => {
+      const a = Math.random() * TAU
+      if (i % 6 === 0) { // some start beside and below the disc, to show the stream dragging the still air along
+        const r = rotor.R * (1.4 + 1.8 * Math.random())
+        p[0] = Math.cos(a) * r
+        p[1] = -20 - Math.random() * 230
+        p[2] = Math.sin(a) * r
+      } else if (i % 6 < 4) { // and many start in the stream just below the disc, so the fast stream is full of lines
+        const r = rotor.R * 0.85 * Math.sqrt(Math.random())
+        p[0] = Math.cos(a) * r
+        p[1] = rotor.y - 4 - Math.random() * 60
+        p[2] = Math.sin(a) * r
+      } else {
+        const r = rotor.R * (0.08 + 2.1 * Math.sqrt(Math.random()))
+        p[0] = Math.cos(a) * r
+        p[1] = rotor.y + 30 + Math.random() * 190
+        p[2] = Math.sin(a) * r
+      }
+    },
+    keep: (x, y, z) => y > -385 && Math.hypot(x, z) < 9 * rotor.R + 120,
+  })
+  scene.add(lines.object)
+  const SLICE_Y = -80
+  const slice = makeSlice(THREE, { width: 560, height: 620, res: 112 })
+  slice.mesh.position.set(0, SLICE_Y, 0)
+  scene.add(slice.mesh)
   const hub = new THREE.Mesh(new THREE.CylinderGeometry(7, 7, 8, 20), new THREE.MeshStandardMaterial({ color: 0xaab1bb, metalness: 0.9, roughness: 0.3 }))
   scene.add(hub)
   const bladeMat = new THREE.MeshStandardMaterial({ color: 0xff6a1a, roughness: 0.4 })
@@ -159,17 +193,17 @@ export function createAirflow({ THREE, scene }) {
   ring.rotation.x = Math.PI / 2
   scene.add(ring)
   const thrust = arrow(THREE, scene, COLORS.thrust)
-  const tags = [label(THREE, 'slow air is drawn in', 62), label(THREE, 'fast air thrown down', 62), label(THREE, 'Thrust', 30)]
+  const tags = [label(THREE, 'air drawn in: slow, low pressure', 78), label(THREE, 'air thrown down: fast', 62), label(THREE, 'Thrust', 30)]
   tags.forEach((t) => scene.add(t))
-  const slow = new THREE.Color(0x3e8ef7)
-  const fast = new THREE.Color(0xff8a3d)
-  const c = new THREE.Color()
   let built = 0
+  let painted = ''
 
   return {
     update(state, seconds, dt) {
       const step = state.paused ? 0 : dt
       const R = state.diameterMm / 2
+      rotor.R = R
+      rotor.vi = state.vi
       if (built !== state.diameterMm) {
         built = state.diameterMm
         blades.clear()
@@ -182,32 +216,27 @@ export function createAirflow({ THREE, scene }) {
         ring.scale.set(R, R, R)
       }
       blades.rotation.y += step * state.spin
-      const D = state.diameterMm
-      const speedScale = 16
-      const pos = field.geo.attributes.position
-      const col = field.geo.attributes.color
-      for (let i = 0; i < N; i += 1) {
-        const s = seeds[i]
-        // the stream speeds up on the way through the disc and keeps accelerating below it
-        const rel = s.y > 0 ? 0.3 + 0.7 * Math.exp(-s.y / 80) : 1 + Math.min(1, -s.y / (1.1 * D))
-        s.y -= rel * state.vi * speedScale * step
-        if (s.y < -340) { s.y = 230 + Math.random() * 40; s.f = Math.sqrt(Math.random()); s.a = Math.random() * TAU }
-        const radius = s.y > 0 ? R * (1 + 0.7 * (1 - Math.exp(-s.y / 110))) : R * (1 - 0.29 * Math.min(1, -s.y / D))
-        pos.setXYZ(i, Math.cos(s.a) * s.f * radius, s.y + 14, Math.sin(s.a) * s.f * radius)
-        c.copy(slow).lerp(fast, Math.min(1, (rel - 0.3) / 1.7))
-        col.setXYZ(i, c.r, c.g, c.b)
+      const speedMax = 2.1 * state.vi
+      const pressureMax = 1.5 * AIR_DENSITY * state.vi * state.vi
+      const key = `${R}|${state.vi.toFixed(2)}|${state.mode}`
+      if (key !== painted) {
+        painted = key
+        const out = [0, 0, 0]
+        const px = [0, 0, 0, 0]
+        slice.paint((a, b) => (state.mode === 'pressure'
+          ? pressurePixel(rotorPressure(a, SLICE_Y + b, 0, rotor), pressureMax, px)
+          : speedPixel(flowVelocity(out, a, SLICE_Y + b, 0, rotors), speedMax, px)))
       }
-      pos.needsUpdate = true
-      col.needsUpdate = true
+      lines.update(step, speedMax)
       hub.position.set(0, 14, 0)
       blades.position.set(0, 14, 0)
       ring.position.set(0, 14, 0)
       aim(thrust, new THREE.Vector3(0, 14, 0), new THREE.Vector3(0, 1, 0), Math.min(150, 14 * state.thrustN))
-      tags[0].position.set(R * 1.45, 150, 0)
-      tags[1].position.set(R * 1.1, -200, 0)
+      tags[0].position.set(R * 1.7, 160, 0)
+      tags[1].position.set(R * 1.15, -230, 0)
       tags[2].position.set(0, 14 + Math.min(150, 14 * state.thrustN) + 24, 0)
     },
-    dispose() { field.geo.dispose(); field.mat.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
+    dispose() { lines.dispose(); slice.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
   }
 }
 
@@ -448,24 +477,44 @@ export function createAtmosphere({ THREE, scene }) {
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// 7. Ground effect: near the floor the downwash is squeezed, and the rotors make more thrust.
-// state: { heightMm, gain, spin, paused }
+// 7. Ground effect: near the floor the downwash is squeezed and the propellers make more thrust. Drawn like a CFD picture: streamlines
+// coloured by speed, a pressure map on the floor, and a slice through the air.
+// state: { heightMm (of the propellers), gain, vi (m/s through each disc), mode ('speed' or 'pressure'), paused }
 // ---------------------------------------------------------------------------------------------------------------
 export function createGroundEffect({ THREE, scene }) {
-  const quad = makeQuad(THREE, { arm: 90, propRadius: 50 })
+  const quad = makeQuad(THREE, { arm: 113 })
   scene.add(quad.group)
-  const N = 520
-  const air = points(THREE, N, { size: 3.2 })
-  scene.add(air.mesh)
-  const centres = quad.motorPositions
-  const seeds = Array.from({ length: N }, () => ({ p: Math.floor(Math.random() * 4), f: Math.sqrt(Math.random()), a: Math.random() * TAU, t: Math.random(), r: 0, mode: 0 }))
-  const pad = new THREE.Mesh(new THREE.CircleGeometry(190, 48), new THREE.MeshBasicMaterial({ color: 0xff8a3d, transparent: true, opacity: 0, depthWrite: false }))
-  pad.rotation.x = -Math.PI / 2
-  pad.position.y = 0.6
-  scene.add(pad)
+  const rotors = quad.motorPositions.map((m) => ({ x: m.x, y: 60, z: m.z, R: 63.5, vi: 7, floor: true }))
+  const lines = makeStreamlines(THREE, {
+    count: 520,
+    length: 26,
+    mmPerSecond: 18,
+    life: 3.4,
+    field: (out, x, y, z) => flowVelocity(out, x, y, z, rotors),
+    spawn: (i, p) => {
+      const r0 = rotors[i % 4]
+      const a = Math.random() * TAU
+      const r = r0.R * (0.1 + 1.6 * Math.sqrt(Math.random()))
+      p[0] = r0.x + Math.cos(a) * r
+      p[1] = r0.y + 8 + Math.random() * 170
+      p[2] = r0.z + Math.sin(a) * r
+    },
+    keep: (x, y, z) => Math.hypot(x, z) < 400 && y < rotors[0].y + 260,
+  })
+  scene.add(lines.object)
+  // pressure of the air pushing on the floor
+  const floorMap = makeSlice(THREE, { width: 760, height: 760, res: 120 })
+  floorMap.mesh.rotation.x = -Math.PI / 2
+  floorMap.mesh.position.y = 0.6
+  scene.add(floorMap.mesh)
+  // a slice through the air along the right-hand side of the drone, through the two right-hand propellers
+  const SLICE_H = 340
+  const side = makeSlice(THREE, { width: 760, height: SLICE_H, res: 120 })
+  side.mesh.position.set(0, SLICE_H / 2, rotors[0].z)
+  scene.add(side.mesh)
   const gain = label(THREE, 'more thrust', 36)
   scene.add(gain)
-  const c = new THREE.Color()
+  let painted = ''
 
   return {
     update(state, seconds, dt) {
@@ -473,35 +522,38 @@ export function createGroundEffect({ THREE, scene }) {
       const height = state.heightMm
       quad.group.position.y = height - quad.rotorY
       quad.spin(step, 52)
-      const pos = air.geo.attributes.position
-      const col = air.geo.attributes.color
-      const fall = 150
-      seeds.forEach((s, i) => {
-        const cx = centres[s.p].x
-        const cz = centres[s.p].z
-        if (s.mode === 0) {
-          s.t += (step * fall) / Math.max(30, height)
-          const y = height - s.t * height
-          if (s.t >= 1) { s.mode = 1; s.r = s.f * 50 }
-          pos.setXYZ(i, cx + Math.cos(s.a) * s.f * 50 * (1 - 0.2 * s.t), Math.max(1, y), cz + Math.sin(s.a) * s.f * 50 * (1 - 0.2 * s.t))
-          c.setRGB(0.45 + 0.5 * s.t, 0.65, 1 - 0.5 * s.t)
-        } else {
-          s.r += step * 130
-          const lift = Math.max(0, (s.r - 50) * 0.04) * (height < 140 ? 0.4 : 1)
-          pos.setXYZ(i, cx + Math.cos(s.a) * s.r, 2 + lift, cz + Math.sin(s.a) * s.r)
-          c.setRGB(1, 0.55, 0.3)
-          if (s.r > 230) { s.mode = 0; s.t = 0; s.f = Math.sqrt(Math.random()); s.a = Math.random() * TAU }
-        }
-        col.setXYZ(i, c.r, c.g, c.b)
-      })
-      pos.needsUpdate = true
-      col.needsUpdate = true
-      pad.material.opacity = Math.min(0.35, (state.gain - 1) * 2.2)
+      for (const r of rotors) { r.y = height; r.vi = state.vi }
+      const speedMax = 2.1 * state.vi
+      const key = `${height}|${state.vi.toFixed(2)}|${state.mode}`
+      if (key !== painted) {
+        painted = key
+        const out = [0, 0, 0]
+        const px = [0, 0, 0, 0]
+        const pressureMax = Math.max(1, floorPressure(rotors[0].x, rotors[0].z, rotors)) * 1.05
+        floorMap.paint((a, b) => pressurePixel(floorPressure(a, -b, rotors), pressureMax, px))
+        side.paint((a, b) => (state.mode === 'pressure'
+          ? pressurePixel(sidePressure(a, SLICE_H / 2 + b, rotors[0].z, rotors), pressureMax, px)
+          : speedPixel(flowVelocity(out, a, SLICE_H / 2 + b, rotors[0].z, rotors), speedMax, px)))
+      }
+      lines.update(step, speedMax)
       gain.visible = state.gain > 1.02
-      gain.position.set(0, height + 90, 0)
+      gain.position.set(0, height + 110, 0)
     },
-    dispose() { air.geo.dispose(); air.mat.dispose(); gain.material.map.dispose(); gain.material.dispose() },
+    dispose() { lines.dispose(); floorMap.dispose(); side.dispose(); gain.material.map.dispose(); gain.material.dispose() },
   }
+}
+
+// The pressure in the slice: the usual pressure of the free stream (suction above the propellers, push just below them), and close to the
+// floor the stagnation pressure of the stream that has hit it.
+function sidePressure(x, y, z, rotors) {
+  let p = 0
+  for (const rotor of rotors) {
+    const free = rotorPressure(x, y, z, { ...rotor, floor: false })
+    const away = Math.min(1, Math.max(0, y / (0.9 * rotor.R)))
+    const stagnation = floorPressure(x, z, [rotor]) * Math.exp(-((y / (0.6 * rotor.R)) ** 2))
+    p += free * away + stagnation * (1 - away)
+  }
+  return p
 }
 
 // ---------------------------------------------------------------------------------------------------------------
