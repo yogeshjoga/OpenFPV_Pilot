@@ -177,3 +177,12 @@ export function windTriangle({ airspeed, trackDeg, windFromDeg, windSpeed }) {
     crosswind: windSpeed * Math.sin(beta),
   }
 }
+
+/**
+ * Pitching the nose down makes the rear propellers spin faster than the front ones. This returns how much of the average thrust each
+ * pair makes. It is drawn larger than in a real steady flight, where the gap is small, so that the difference can be seen.
+ */
+export function pitchThrustSplit(tiltDeg) {
+  const k = Math.min(0.4, 0.5 * Math.sin(Math.abs(tiltDeg) * RAD))
+  return { front: 1 - k, rear: 1 + k }
+}

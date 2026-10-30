@@ -24,7 +24,12 @@ function AtmosphereLab() {
   const air = atmosphere(alt, hotter)
   const thrustSame = air.ratio // thrust at the same motor speed, compared with sea level
   const rpmNeeded = 1 / Math.sqrt(air.ratio) // motor speed needed for the same thrust
-  const state = useLive({ ratio: air.ratio, spin: Math.min(2.4, rpmNeeded), hotter: Math.min(1, hotter / 25), paused: !clock.playing })
+  // to hold up the same weight in thinner air each propeller must throw the air down faster
+  const discA = discArea(0.127)
+  const thrustEach = weight(0.7) / 4
+  const viSea = inducedVelocity(thrustEach, AIR_DENSITY, discA)
+  const vi = inducedVelocity(thrustEach, air.density, discA)
+  const state = useLive({ ratio: air.ratio, spin: Math.min(2.4, rpmNeeded), hotter: Math.min(1, hotter / 25), vi, viSea, paused: !clock.playing })
   const x = scale(0, 5500, 52, 584)
   const y = scale(0, 1.3, 150, 12)
   const curve = Array.from({ length: 56 }, (_, i) => { const h = i * 100; return [h, atmosphere(h).density] })
@@ -32,17 +37,18 @@ function AtmosphereLab() {
     <Lab
       title="Thin air: altitude and heat"
       clock={clock}
-      idea={<>Thrust, lift and drag all depend on <b>air density</b>, how many air molecules fill each cubic metre. A propeller can only push on the air that is there. Climb a mountain, or fly on a hot day, and the same box of air holds fewer molecules, so the same motor speed makes less thrust. The flight controller answers by spinning the motors faster, which uses more power and leaves less in reserve. This is why a drone that is lively in Visakhapatnam can feel weak in Leh.</>}
+      idea={<>Thrust, lift and drag all depend on <b>air density</b>, how many air molecules fill each cubic metre. A propeller can only push on the air that is there. Climb a mountain, or fly on a hot day, and the same box of air holds fewer molecules, so the same motor speed makes less thrust. The flight controller answers by spinning the motors faster, so that each propeller throws the thinner air down <b>faster</b> and the same weight is still held up. Watch the streams from the propellers: in thin air they turn redder. That uses more power and leaves less in reserve. This is why a drone that is lively in Visakhapatnam can feel weak in Leh.</>}
       figure={(
         <div className={dh.stackTight}>
-          <Scene3D create={createAtmosphere} stateRef={state} view={[300, 230, 300]} target={[-20, 100, 0]} floorY={0} minDistance={250} maxDistance={700} label="A box of air with fewer molecules at altitude and a drone spinning its propellers faster" />
+          <Scene3D create={createAtmosphere} stateRef={state} view={[720, 430, 720]} target={[0, 150, 0]} floorY={0} minDistance={300} maxDistance={1200} label="A box of air with fewer molecules at altitude, and the air streams from a hovering drone's propellers drawn as coloured streamlines" />
+          <FlowLegend mode="speed" speedMax={2.1 * viSea * 1.3} />
           <Plot width={600} height={170} top={12} bottom={38} x={x} y={y} xTicks={[0, 1000, 2000, 3000, 4000, 5000]} yTicks={[0, 0.5, 1]} xLabel="altitude (m)" yLabel="kg/m³" label="Air density against altitude">
             <polyline points={polyline(curve.map(([h, r]) => [x(h), y(r)]))} className={dh.accentLine} />
             <circle cx={x(alt)} cy={y(air.density)} r="7" className={dh.goodFill} />
           </Plot>
         </div>
       )}
-      caption="Each blue dot is a bunch of air molecules in a one-cubic-metre sample. Fewer dots means thinner air."
+      caption="Each blue dot is a bunch of air molecules in a sample of air. Fewer dots means thinner air. The coloured lines are the air each propeller throws down to hold the drone up: blue is slow, red is fast. The same drone has to throw the thin air faster."
       controls={(
         <>
           <Choices label="Place" value={PLACES.find((p) => Math.abs(p.alt - alt) < 1)?.id ?? ''} onChange={(id) => setAlt(PLACES.find((p) => p.id === id).alt)} options={PLACES} />
@@ -53,6 +59,8 @@ function AtmosphereLab() {
             { label: 'Compared with sea level', value: `${(air.ratio * 100).toFixed(0)} %`, tone: air.ratio < 0.8 ? 'warn' : 'good' },
             { label: 'Thrust at the same rpm', value: `${(thrustSame * 100).toFixed(0)} %`, tone: thrustSame < 0.8 ? 'bad' : 'good' },
             { label: 'Motor speed needed to hover', value: `${(rpmNeeded * 100).toFixed(0)} %`, tone: rpmNeeded > 1.15 ? 'warn' : 'good' },
+            { label: 'Air thrown down by each propeller', value: `${(2 * vi).toFixed(1)} m/s`, tone: vi > viSea * 1.1 ? 'warn' : 'good' },
+            { label: 'Thrown-air speed vs sea level', value: `${((vi / viSea) * 100).toFixed(0)} %` },
           ]} />
         </>
       )}

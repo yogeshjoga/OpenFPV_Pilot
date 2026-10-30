@@ -4,7 +4,9 @@
 import { buildDroneModel, carbonTexture, MOTORS } from '../../components/three/droneModel.js'
 import { DEFAULT_BUILD, resolveBuild } from '../DroneConfigurator/catalog.js'
 import { makeSlice, makeStreamlines, pressurePixel, speedPixel } from './cfd.js'
-import { AIR_DENSITY, floorPressure, flowVelocity, rotorPressure } from './flow.js'
+import { AIR_DENSITY, floorPressure, flowVelocity, rotorPressure, speedColor } from './flow.js'
+import { CHORD_RAW, X_LEADING, aerofoilVelocity, outline } from './airfoil.js'
+import { HUB_PROFILE, makeBlade } from '../../components/three/propBlade.js'
 
 const RAD = Math.PI / 180
 const TAU = Math.PI * 2
@@ -90,56 +92,117 @@ function makeQuad(THREE, { arm = 110 } = {}) {
   const battery = model.exploders.find((e) => e.g.userData.category === 'battery').g
   return {
     group, props, discs: model.discs, motorPositions, arm, rotorY,
+    rotorR: 63.5 * k, // the radius of each propeller, in the group's millimetres
     // slides the battery along the nose (+x), in the group's own millimetres
     shiftBattery(x) { battery.position.z = -x / k },
     spin(dt, rate) { props.forEach((q) => { q.node.rotation.y += q.dir * rate * dt }) },
+    // each propeller at its own rate, in the order front right, front left, rear right, rear left
+    spinEach(dt, rates) { props.forEach((q, i) => { q.node.rotation.y += q.dir * rates[i] * dt }) },
   }
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// 1. Forces on a drone that is hovering or flying forward.
-// state: { tiltDeg (nose down), thrustN, weightN, dragN, wind (relative air speed, m/s), spin, paused }
+// 1. Forces on a drone that is hovering or flying forward, with the air each propeller throws down drawn as streamlines.
+// The drone tilts, and so do its four rotors. Pitching the nose down makes the rear propellers spin faster than the front ones.
+// state: { tiltDeg (nose down), thrustN (total), weightN, dragN, airspeed (m/s), thrustSplit: { front, rear }, rate, paused }
 // ---------------------------------------------------------------------------------------------------------------
 export function createForces({ THREE, scene }) {
-  const quad = makeQuad(THREE)
+  const quad = makeQuad(THREE, { arm: FULL_ARM })
   scene.add(quad.group)
   const thrust = arrow(THREE, scene, COLORS.thrust)
   const weight = arrow(THREE, scene, COLORS.weight)
   const drag = arrow(THREE, scene, COLORS.drag)
   const tags = { thrust: label(THREE, 'Thrust'), weight: label(THREE, 'Weight'), drag: label(THREE, 'Drag') }
+  const propTags = [label(THREE, 'front propellers', 40), label(THREE, 'rear propellers', 40)]
   Object.values(tags).forEach((t) => scene.add(t))
-  const air = points(THREE, 160, { colors: false, size: 2.6 })
-  air.mat.color.set(0x9fd0ff)
-  scene.add(air.mesh)
-  const seeds = Array.from({ length: 160 }, () => [Math.random(), Math.random(), Math.random()])
-  const origin = new THREE.Vector3(0, 12, 0)
+  propTags.forEach((t) => scene.add(t))
+  const origin = new THREE.Vector3(0, 40, 0)
+  const rotors = quad.motorPositions.map((m) => ({ x: m.x, y: m.y, z: m.z, R: quad.rotorR, vi: 7, floor: false }))
+  const stream = [0, 0, 0] // the air moving past the drone, in the world
+  const induced = [0, 0, 0]
+  let tilt = 0 // radians, nose down
+  // the field is worked out in the drone's own frame, where the rotors point straight up, and turned back into the world
+  const field = (out, x, y, z) => {
+    const c = Math.cos(tilt)
+    const s = Math.sin(tilt)
+    const dx = x - origin.x
+    const dy = y - origin.y
+    flowVelocity(induced, dx * c - dy * s, dx * s + dy * c, z, rotors)
+    out[0] = induced[0] * c + induced[1] * s + stream[0]
+    out[1] = -induced[0] * s + induced[1] * c + stream[1]
+    out[2] = induced[2]
+    return Math.hypot(out[0], out[1], out[2])
+  }
+  const lines = makeStreamlines(THREE, {
+    count: 560,
+    length: 28,
+    mmPerSecond: 11,
+    life: 4,
+    floorY: -Infinity,
+    field,
+    spawn: (i, p) => {
+      const r0 = rotors[i % 4]
+      const a = Math.random() * TAU
+      const r = r0.R * (0.1 + 1.0 * Math.sqrt(Math.random()))
+      const lx = r0.x + Math.cos(a) * r
+      const ly = r0.y + 8 + Math.random() * 90
+      p[0] = origin.x + lx * Math.cos(tilt) + ly * Math.sin(tilt)
+      p[1] = origin.y - lx * Math.sin(tilt) + ly * Math.cos(tilt)
+      p[2] = r0.z + Math.sin(a) * r
+    },
+    keep: (x, y, z) => y > -300 && y < 330 && Math.abs(x) < 520 && Math.abs(z) < 330,
+  })
+  scene.add(lines.object)
+  // a slice through the air along the left-hand side of the drone, behind it, through its front left and rear left propellers
+  const SLICE_Y = -60
+  const slice = makeSlice(THREE, { width: 760, height: 620, res: 120 })
+  slice.mesh.position.set(0, SLICE_Y, rotors[1].z)
+  scene.add(slice.mesh)
+  let painted = ''
+  const spot = new THREE.Vector3()
 
   return {
     update(state, seconds, dt) {
       const step = state.paused ? 0 : dt
+      tilt = state.tiltDeg * RAD
       quad.group.position.copy(origin)
-      quad.group.rotation.z = -state.tiltDeg * RAD
-      quad.spin(step, state.rate ?? 55)
+      quad.group.rotation.z = -tilt
+      // thrust of each propeller: nose down means the rear ones push harder
+      const split = state.thrustSplit ?? { front: 1, rear: 1 }
+      const each = state.thrustN / 4
+      const weights = [split.front, split.front, split.rear, split.rear]
+      const area = Math.PI * (quad.rotorR / 1000) ** 2
+      rotors.forEach((r, i) => { r.vi = Math.sqrt((each * weights[i]) / (2 * AIR_DENSITY * area)) })
+      stream[0] = -(state.airspeed ?? 0)
+      const base = state.rate ?? 55
+      quad.spinEach(step, weights.map((w) => base * Math.sqrt(w)))
+      const viMax = Math.max(...rotors.map((r) => r.vi))
+      const speedMax = Math.max(4, 2.1 * viMax + (state.airspeed ?? 0))
+      const key = `${state.tiltDeg}|${state.thrustN.toFixed(2)}|${(state.airspeed ?? 0).toFixed(1)}|${split.rear.toFixed(2)}`
+      if (key !== painted) {
+        painted = key
+        const out = [0, 0, 0]
+        const px = [0, 0, 0, 0]
+        slice.paint((a, b) => speedPixel(field(out, a, SLICE_Y + b, rotors[1].z), speedMax, px))
+      }
+      lines.update(step, speedMax)
       const k = 150 / Math.max(state.thrustN, state.weightN, 1)
-      const up = new THREE.Vector3(Math.sin(-state.tiltDeg * RAD) * -1, Math.cos(state.tiltDeg * RAD), 0)
+      const up = new THREE.Vector3(Math.sin(-tilt) * -1, Math.cos(tilt), 0)
       aim(thrust, origin, up, state.thrustN * k)
       aim(weight, origin, new THREE.Vector3(0, -1, 0), state.weightN * k)
       aim(drag, origin, new THREE.Vector3(-1, 0, 0), state.dragN * k)
       tags.thrust.position.copy(origin).addScaledVector(up, state.thrustN * k + 14)
-      tags.weight.position.set(0, 12 - state.weightN * k - 12, 0)
-      tags.drag.position.set(-state.dragN * k - 30, 12, 0)
+      tags.weight.position.set(0, origin.y - state.weightN * k - 12, 0)
+      tags.drag.position.set(-state.dragN * k - 30, origin.y, 0)
       tags.drag.visible = state.dragN * k > 2
-      // air rushing past the drone, backwards, as fast as the drone flies forward
-      const pos = air.geo.attributes.position
-      const speed = state.wind * 22
-      seeds.forEach((s, i) => {
-        const travel = (s[0] * 520 + (state.paused ? 0 : seconds) * speed * (0.6 + s[2] * 0.8)) % 520
-        pos.setXYZ(i, 260 - travel, -40 + s[1] * 170, -90 + s[2] * 180)
+      quad.group.updateMatrixWorld(true)
+      ;[0, 2].forEach((i, n) => {
+        spot.copy(quad.motorPositions[i]).applyMatrix4(quad.group.matrixWorld)
+        propTags[n].position.set(spot.x, spot.y + 60, rotors[i].z + 40)
       })
-      pos.needsUpdate = true
-      air.mat.opacity = Math.min(0.9, state.wind / 6)
+      propTags[0].visible = propTags[1].visible = Math.abs(split.rear - split.front) > 0.02
     },
-    dispose() { air.geo.dispose(); air.mat.dispose(); Object.values(tags).forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
+    dispose() { lines.dispose(); slice.dispose(); Object.values(tags).forEach((t) => { t.material.map.dispose(); t.material.dispose() }); propTags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
   }
 }
 
@@ -184,11 +247,15 @@ export function createAirflow({ THREE, scene }) {
   const slice = makeSlice(THREE, { width: 560, height: 620, res: 112 })
   slice.mesh.position.set(0, SLICE_Y, 0)
   scene.add(slice.mesh)
-  const hub = new THREE.Mesh(new THREE.CylinderGeometry(7, 7, 8, 20), new THREE.MeshStandardMaterial({ color: 0xaab1bb, metalness: 0.9, roughness: 0.3 }))
-  scene.add(hub)
-  const bladeMat = new THREE.MeshStandardMaterial({ color: 0xff6a1a, roughness: 0.4 })
+  // the same propeller blade as the 3D drone: swept, twisted by the pitch, with a cambered aerofoil section, in smoked plastic
+  const bladeMat = new THREE.MeshPhysicalMaterial({ color: 0xff6a1a, roughness: 0.14, metalness: 0, clearcoat: 1, transparent: true, opacity: 0.85 })
+  const hubGeo = new THREE.LatheGeometry(HUB_PROFILE.map(([x, y]) => new THREE.Vector2(x, y)), 36)
+  const hubMat = new THREE.MeshStandardMaterial({ color: 0x1a1c20, roughness: 0.35, metalness: 0.3 })
   const blades = new THREE.Group()
   scene.add(blades)
+  const bell = new THREE.Mesh(new THREE.CylinderGeometry(13, 13, 9, 40), new THREE.MeshStandardMaterial({ color: 0xb3122a, roughness: 0.24, metalness: 0.95 }))
+  scene.add(bell)
+  let bladeGeo = null
   const ring = new THREE.Mesh(new THREE.TorusGeometry(1, 0.012, 8, 72), new THREE.MeshBasicMaterial({ color: 0xcfd6e2, transparent: true, opacity: 0.55 }))
   ring.rotation.x = Math.PI / 2
   scene.add(ring)
@@ -207,15 +274,17 @@ export function createAirflow({ THREE, scene }) {
       if (built !== state.diameterMm) {
         built = state.diameterMm
         blades.clear()
-        for (let b = 0; b < 2; b += 1) {
-          const blade = new THREE.Mesh(new THREE.BoxGeometry(R - 6, 1.4, 11), bladeMat)
-          blade.position.x = b === 0 ? R / 2 : -R / 2
-          blade.rotation.x = b === 0 ? 0.3 : -0.3
+        bladeGeo?.dispose()
+        bladeGeo = makeBlade({ radiusMm: R, pitchIn: (state.diameterMm / 25.4) * 0.9, dir: 1, blades: 3 })
+        for (let b = 0; b < 3; b += 1) {
+          const blade = new THREE.Mesh(bladeGeo, bladeMat)
+          blade.rotation.y = (b / 3) * TAU
           blades.add(blade)
         }
+        blades.add(new THREE.Mesh(hubGeo, hubMat))
         ring.scale.set(R, R, R)
       }
-      blades.rotation.y += step * state.spin
+      blades.rotation.y -= step * state.spin
       const speedMax = 2.1 * state.vi
       const pressureMax = 1.5 * AIR_DENSITY * state.vi * state.vi
       const key = `${R}|${state.vi.toFixed(2)}|${state.mode}`
@@ -228,103 +297,123 @@ export function createAirflow({ THREE, scene }) {
           : speedPixel(flowVelocity(out, a, SLICE_Y + b, 0, rotors), speedMax, px)))
       }
       lines.update(step, speedMax)
-      hub.position.set(0, 14, 0)
       blades.position.set(0, 14, 0)
+      bell.position.set(0, 14 - 1.2 - 4.5, 0)
       ring.position.set(0, 14, 0)
       aim(thrust, new THREE.Vector3(0, 14, 0), new THREE.Vector3(0, 1, 0), Math.min(150, 14 * state.thrustN))
       tags[0].position.set(R * 1.7, 160, 0)
       tags[1].position.set(R * 1.15, -230, 0)
       tags[2].position.set(0, 14 + Math.min(150, 14 * state.thrustN) + 24, 0)
     },
-    dispose() { lines.dispose(); slice.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
+    dispose() { lines.dispose(); slice.dispose(); bladeGeo?.dispose(); hubGeo.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
   }
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// 3. A wing section in moving air: streamlines, lift, drag and the stall.
-// state: { alphaDeg, cl, cd, stalled, paused }   (the air moves left to right)
+// 3. A wing section in moving air, drawn like a CFD picture: streamlines coloured by speed, and a slice behind the wing painted with
+// speed or pressure. The flow is the classical solution for a wing section, so the air slides round the surface that is drawn.
+// state: { alphaDeg, cl, cd, stalled, speed (m/s), mode ('speed' or 'pressure'), paused }   (the air moves left to right)
 // ---------------------------------------------------------------------------------------------------------------
 const CHORD = 150
-const thickness = (u) => 5 * 0.12 * (0.2969 * Math.sqrt(u) - 0.126 * u - 0.3516 * u * u + 0.2843 * u ** 3 - 0.1015 * u ** 4) * CHORD
 
 export function createAerofoil({ THREE, scene }) {
-  const shape = new THREE.Shape()
-  const upper = []
-  for (let i = 0; i <= 40; i += 1) { const u = (i / 40) ** 2; upper.push([u * CHORD - CHORD * 0.25, thickness(u)]) }
-  shape.moveTo(upper[0][0], 0)
-  upper.forEach(([x, y]) => shape.lineTo(x, y))
-  for (let i = upper.length - 1; i >= 0; i -= 1) shape.lineTo(upper[i][0], -upper[i][1])
+  const S = CHORD / CHORD_RAW // millimetres for each unit of the formula
+  const XQ = X_LEADING + CHORD_RAW / 4 // the quarter-chord point sits at the middle of the scene
+  const shape = new THREE.Shape(outline(200).map(([x, y]) => new THREE.Vector2((x - XQ) * S, y * S)))
   const geo = new THREE.ExtrudeGeometry(shape, { depth: 80, bevelEnabled: false })
   geo.translate(0, 0, -40)
   const wing = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xcfd6e2, metalness: 0.5, roughness: 0.35 }))
   scene.add(wing)
-  const N = 900
-  const flow = points(THREE, N, { size: 2.8 })
-  scene.add(flow.mesh)
-  const seeds = Array.from({ length: N }, () => ({ x: -300 + Math.random() * 600, y: -110 + Math.random() * 220, z: -34 + Math.random() * 68, j: Math.random() }))
   const lift = arrow(THREE, scene, COLORS.lift)
   const drag = arrow(THREE, scene, COLORS.drag)
   const tags = [label(THREE, 'Lift', 24), label(THREE, 'Drag', 24), label(THREE, 'air flow', 30), label(THREE, 'low pressure above', 52), label(THREE, 'higher pressure below', 56)]
   tags.forEach((t) => scene.add(t))
-  const slow = new THREE.Color(0x3e8ef7)
-  const fast = new THREE.Color(0xe8f6ff)
-  const c = new THREE.Color()
-  const U = 150
+  let alpha = 0
+  let circulation = 1
+  let speed = 15
+  let stalled = false
+  let clock = 0
+  const v2 = [0, 0]
+  // the world is turned into the wing's own frame, the formula is evaluated there, and the velocity is turned back
+  const field = (out, x, y) => {
+    const ca = Math.cos(alpha)
+    const sa = Math.sin(alpha)
+    const xb = x * ca - y * sa
+    const yb = x * sa + y * ca
+    const ratio = aerofoilVelocity(v2, xb / S + XQ, yb / S, alpha, circulation)
+    if (ratio < 0) { out[0] = 0; out[1] = 0; out[2] = 0; return 0 }
+    let ux = v2[0] * ca + v2[1] * sa
+    let uy = -v2[0] * sa + v2[1] * ca
+    if (stalled && yb > 0 && xb > CHORD * 0.05 && yb < 90) { // the air has broken away from the top and tumbles
+      ux *= 0.35
+      uy = uy * 0.35 + Math.sin(clock * 11 + x * 0.09) * 0.45
+    }
+    out[0] = ux * speed
+    out[1] = uy * speed
+    out[2] = 0
+    return Math.hypot(out[0], out[1])
+  }
+  const lines = makeStreamlines(THREE, {
+    count: 760,
+    length: 30,
+    mmPerSecond: 8,
+    life: 5,
+    floorY: -Infinity,
+    field,
+    spawn: (i, p) => {
+      p[0] = -345 + Math.random() * 30
+      p[1] = -130 + Math.random() * 260
+      p[2] = -34 + Math.random() * 68
+    },
+    keep: (x, y) => x < 360 && Math.abs(y) < 175 && aerofoilVelocity(v2, ((x * Math.cos(alpha) - y * Math.sin(alpha)) / S) + XQ, ((x * Math.sin(alpha) + y * Math.cos(alpha)) / S), alpha) >= 0,
+  })
+  scene.add(lines.object)
+  const slice = makeSlice(THREE, { width: 760, height: 360, res: 140 })
+  slice.mesh.position.set(0, 0, -43)
+  scene.add(slice.mesh)
+  let painted = ''
 
   return {
     update(state, seconds, dt) {
       const step = state.paused ? 0 : dt
-      const a = state.alphaDeg * RAD
-      wing.rotation.z = -a
-      const gamma = 0.5 * U * CHORD * state.cl * 1.05
-      const pos = flow.geo.attributes.position
-      const col = flow.geo.attributes.color
-      for (let i = 0; i < N; i += 1) {
-        const s = seeds[i]
-        // the free stream plus the swirl of the wing's circulation (upwash in front, downwash behind, faster over the top)
-        const r2 = Math.max(s.x * s.x + s.y * s.y, 34 * 34)
-        let vx = U + (gamma * s.y) / (TAU * r2)
-        let vy = (-gamma * s.x) / (TAU * r2)
-        // the wing is solid: the air slides round it
-        const ca = Math.cos(a)
-        const sa = Math.sin(a)
-        const lx = s.x * ca - s.y * sa
-        const ly = s.x * sa + s.y * ca
-        const u = (lx + CHORD * 0.25) / CHORD
-        let separated = false
-        if (u > 0 && u < 1) {
-          const t = thickness(u)
-          if (Math.abs(ly) < t * 1.15) {
-            const target = (ly >= 0 ? 1 : -1) * t * 1.18
-            const dy = target - ly
-            s.y += dy * ca
-            s.x -= dy * sa
-          }
-          if (state.stalled && ly > 0 && u > 0.3) separated = true
-        }
-        if (separated) {
-          vx *= 0.35
-          vy += Math.sin(seconds * 17 + s.j * 40) * 55
-        }
-        s.x += vx * step
-        s.y += vy * step
-        if (s.x > 320 || Math.abs(s.y) > 150) { s.x = -310 + Math.random() * 20; s.y = -110 + Math.random() * 220; s.z = -34 + Math.random() * 68 }
-        pos.setXYZ(i, s.x, s.y, s.z)
-        c.copy(slow).lerp(fast, Math.min(1, Math.max(0, (vx - 90) / 120)))
-        col.setXYZ(i, c.r, c.g, c.b)
+      clock += step
+      alpha = state.alphaDeg * RAD
+      speed = state.speed ?? 15
+      stalled = state.stalled
+      const potential = TAU * Math.sin(alpha) // the lift coefficient of the ideal flow
+      circulation = Math.abs(potential) < 0.03 ? 1 : Math.min(1.15, Math.max(0, state.cl / potential))
+      wing.rotation.z = -alpha
+      const q = 0.5 * AIR_DENSITY * speed * speed
+      const key = `${state.alphaDeg}|${speed}|${state.mode}|${state.stalled}`
+      if (key !== painted) {
+        painted = key
+        const px = [0, 0, 0, 0]
+        const vv = [0, 0, 0]
+        slice.paint((a, b) => {
+          const ca = Math.cos(alpha)
+          const sa = Math.sin(alpha)
+          const ratio = aerofoilVelocity(v2, (a * ca - b * sa) / S + XQ, (a * sa + b * ca) / S, alpha, circulation)
+          if (ratio < 0) { px[0] = px[1] = px[2] = px[3] = 0; return px }
+          if (state.mode === 'pressure') return pressurePixel(q * (1 - ratio * ratio), q * 1.4, px)
+          field(vv, a, b)
+          const t = Math.min(1, Math.hypot(vv[0], vv[1]) / (speed * 1.7))
+          speedColor(t, px)
+          // the slice is faint where the air is undisturbed and strong where the wing has changed it
+          px[3] = 0.04 + 0.6 * Math.min(1, Math.abs(ratio - 1) * 2.2)
+          return px
+        })
       }
-      pos.needsUpdate = true
-      col.needsUpdate = true
+      lines.update(step, speed * 1.7)
       const o = new THREE.Vector3(0, 0, 0)
       aim(lift, o, new THREE.Vector3(0, 1, 0), Math.abs(state.cl) * 75)
       aim(drag, new THREE.Vector3(CHORD * 0.6, 0, 0), new THREE.Vector3(1, 0, 0), Math.max(6, state.cd * 650))
       tags[0].position.set(0, Math.abs(state.cl) * 75 + 22, 0)
       tags[1].position.set(CHORD * 0.6 + Math.max(6, state.cd * 650) + 28, 0, 0)
-      tags[2].position.set(-250, 135, 0)
-      tags[3].position.set(-20, 80, 0)
-      tags[4].position.set(20, -80, 0)
+      tags[2].position.set(-250, 150, 0)
+      tags[3].position.set(-20, 95, 0)
+      tags[4].position.set(20, -95, 0)
     },
-    dispose() { geo.dispose(); flow.geo.dispose(); flow.mat.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
+    dispose() { geo.dispose(); lines.dispose(); slice.dispose(); tags.forEach((t) => { t.material.map.dispose(); t.material.dispose() }) },
   }
 }
 
@@ -423,23 +512,43 @@ export function createBalance({ THREE, scene }) {
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// 6. Thin air: a box of air with fewer molecules at altitude, and a drone that must spin its propellers faster.
-// state: { ratio (air density compared with sea level), spin, hotter (0 to 1), paused }
+// 6. Thin air: a box of air with fewer molecules at altitude. To carry the same weight in thinner air each propeller has to throw the air
+// down faster, so the streams from the propellers get faster and redder.
+// state: { ratio (air density compared with sea level), spin, hotter (0 to 1), vi (m/s through each disc), viSea (the same at sea level), paused }
 // ---------------------------------------------------------------------------------------------------------------
 export function createAtmosphere({ THREE, scene }) {
-  const SIZE = 210
+  const SIZE = 380
   const box = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(SIZE, SIZE, SIZE)), new THREE.LineBasicMaterial({ color: 0x8fa2ba }))
   box.position.y = SIZE / 2
   scene.add(box)
-  const N = 420
-  const molecules = points(THREE, N, { size: 4.4, colors: false })
+  const N = 520
+  const molecules = points(THREE, N, { size: 3.4, colors: false })
   molecules.mat.color.set(0x7fb8ff)
+  molecules.mat.opacity = 0.55
   scene.add(molecules.mesh)
   const state0 = Array.from({ length: N }, () => ({ p: [Math.random() * SIZE - SIZE / 2, Math.random() * SIZE, Math.random() * SIZE - SIZE / 2], v: [(Math.random() - 0.5) * 70, (Math.random() - 0.5) * 70, (Math.random() - 0.5) * 70] }))
-  const quad = makeQuad(THREE, { arm: 70, propRadius: 40 })
-  quad.group.position.y = SIZE * 0.5
-  quad.group.scale.setScalar(0.8)
+  const quad = makeQuad(THREE, { arm: FULL_ARM })
+  const HEIGHT = SIZE * 0.55
+  quad.group.position.y = HEIGHT
   scene.add(quad.group)
+  const rotors = quad.motorPositions.map((m) => ({ x: m.x, y: HEIGHT + m.y, z: m.z, R: quad.rotorR, vi: 7, floor: true }))
+  const lines = makeStreamlines(THREE, {
+    count: 560,
+    length: 26,
+    mmPerSecond: 11,
+    life: 3.6,
+    field: (out, x, y, z) => flowVelocity(out, x, y, z, rotors),
+    spawn: (i, p) => {
+      const r0 = rotors[i % 4]
+      const a = Math.random() * TAU
+      const r = r0.R * (0.1 + 1.6 * Math.sqrt(Math.random()))
+      p[0] = r0.x + Math.cos(a) * r
+      p[1] = r0.y + 8 + Math.random() * 120
+      p[2] = r0.z + Math.sin(a) * r
+    },
+    keep: (x, y, z) => Math.abs(x) < SIZE / 2 && Math.abs(z) < SIZE / 2 && y < SIZE,
+  })
+  scene.add(lines.object)
   const gauge = new THREE.Mesh(new THREE.BoxGeometry(14, 1, 14), new THREE.MeshBasicMaterial({ color: 0x3e8ef7 }))
   scene.add(gauge)
   const tag = label(THREE, 'air density', 40)
@@ -467,12 +576,14 @@ export function createAtmosphere({ THREE, scene }) {
       pos.needsUpdate = true
       molecules.mat.color.copy(cold).lerp(hot, state.hotter)
       quad.spin(step, 38 * state.spin)
+      for (const r of rotors) r.vi = state.vi
+      lines.update(step, 2.1 * state.viSea * 1.3)
       const h = Math.max(4, SIZE * Math.min(1, state.ratio))
       gauge.scale.y = h
       gauge.position.set(-SIZE / 2 - 34, h / 2, 0)
       tag.position.set(-SIZE / 2 - 34, h + 22, 0)
     },
-    dispose() { molecules.geo.dispose(); molecules.mat.dispose(); tag.material.map.dispose(); tag.material.dispose() },
+    dispose() { molecules.geo.dispose(); molecules.mat.dispose(); lines.dispose(); tag.material.map.dispose(); tag.material.dispose() },
   }
 }
 

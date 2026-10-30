@@ -84,7 +84,7 @@ export function makeStreamlines(THREE, { count, length = 26, field, spawn, keep,
             position.array[a++] = trail[base + k * 3 + 1]
             position.array[a++] = trail[base + k * 3 + 2]
             speedColor(speeds[i * length + k] / speedMax, rgb)
-            for (let q = 0; q < 3; q += 1) rgb[q] += (1 - rgb[q]) * 0.12 // a little lighter than the slice, so the lines stand out
+            for (let q = 0; q < 3; q += 1) rgb[q] += (1 - rgb[q]) * 0.28 // a little lighter than the slice, so the lines stand out
             const fade = (1 - k / (length - 1)) ** 1.3
             color.array[c++] = rgb[0]
             color.array[c++] = rgb[1]

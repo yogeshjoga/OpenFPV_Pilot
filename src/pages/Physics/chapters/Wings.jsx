@@ -3,12 +3,14 @@ import { Chapter, Choices, Lab, Plot, Readout, Slider, polyline, scale, useClock
 import Scene3D from '../../DroneHardware/widgets/Scene3D.jsx'
 import dh from '../../DroneHardware/DroneHardware.module.css'
 import Formula, { Idea } from '../Formula.jsx'
+import FlowLegend from '../FlowLegend.jsx'
 import { createAerofoil, createForces } from '../scenes.js'
 import styles from '../Physics.module.css'
-import { dragCoefficient, dragForce, isStalled, levelTurn, liftCoefficient, liftForce, reynolds, speedForTilt, thrustForTilt, weight } from '../physics.js'
+import { dragCoefficient, dragForce, discArea, inducedVelocity, isStalled, levelTurn, liftCoefficient, liftForce, pitchThrustSplit, reynolds, speedForTilt, thrustForTilt, weight } from '../physics.js'
 
 function AerofoilLab() {
   const clock = useClock()
+  const [view, setView] = useState('speed')
   const [alpha, setAlpha] = useState(6)
   const [speed, setSpeed] = useState(15)
   const rho = 1.225
@@ -19,7 +21,8 @@ function AerofoilLab() {
   const stalled = isStalled(alpha)
   const L = liftForce({ rho, speed, area, cl })
   const D = dragForce({ rho, speed, cdA: cd * area })
-  const state = useLive({ alphaDeg: alpha, cl, cd, stalled, paused: !clock.playing })
+  const state = useLive({ alphaDeg: alpha, cl, cd, stalled, speed, mode: view, paused: !clock.playing })
+  const q = 0.5 * rho * speed * speed // the dynamic pressure of the air, in pascals
   const x = scale(-5, 24, 52, 584)
   const y = scale(-0.8, 1.8, 150, 12)
   const curve = useMemo(() => Array.from({ length: 59 }, (_, i) => { const a = -5 + i * 0.5; return [a, liftCoefficient(a)] }), [])
@@ -27,10 +30,11 @@ function AerofoilLab() {
     <Lab
       title="Wings and blades: lift, drag and the stall"
       clock={clock}
-      idea={<>A propeller blade is a small wing. A wing makes lift by turning the air that meets it: the air is bent downward, and the wing is pushed up in reply. The angle between the wing and the oncoming air is the <b>angle of attack</b>. More angle makes more lift, up to about 14°. Past that the air can no longer follow the top surface, it breaks away into a messy wake, lift collapses and drag jumps. That is a <b>stall</b>.</>}
+      idea={<>A propeller blade is a small wing. A wing makes lift by turning the air that meets it: the air is bent downward, and the wing is pushed up in reply. The angle between the wing and the oncoming air is the <b>angle of attack</b>. More angle makes more lift, up to about 14°. Past that the air can no longer follow the top surface, it breaks away into a messy wake, lift collapses and drag jumps. That is a <b>stall</b>. The picture is a flow simulation of the air round the wing: the coloured lines are streamlines, and the sheet behind them is painted with the air speed or the pressure. Air speeds up over the top, so the pressure there falls; underneath, the pressure rises. The wing is pushed up by that difference.</>}
       figure={(
         <div className={dh.stackTight}>
-          <Scene3D create={createAerofoil} stateRef={state} view={[20, 20, 430]} target={[0, 0, 0]} floorY={-175} minDistance={250} maxDistance={700} label="A wing section in moving air with streamlines, lift and drag" />
+          <Scene3D create={createAerofoil} stateRef={state} view={[20, 20, 430]} target={[0, 0, 0]} floorY={-180} minDistance={250} maxDistance={700} label="A wing section in moving air, drawn as streamlines coloured by speed with the pressure or speed painted behind" />
+          <FlowLegend mode={view} speedMax={speed * 1.7} pressureMax={q * 1.4} />
           <Plot width={600} height={170} top={12} bottom={38} x={x} y={y} xTicks={[0, 5, 10, 14, 20]} yTicks={[0, 0.8, 1.6]} xLabel="angle of attack (degrees)" yLabel="C_L" label="Lift coefficient against angle of attack">
             <polyline points={polyline(curve.map(([a, c]) => [x(a), y(c)]))} className={dh.accentLine} />
             <line x1={x(14)} x2={x(14)} y1="12" y2="132" className={dh.mutedLine} strokeDasharray="4 4" />
@@ -39,15 +43,18 @@ function AerofoilLab() {
           </Plot>
         </div>
       )}
-      caption="Blue streams are slow air, white are fast. Above 14° the air tumbles off the top: that is the stall."
+      caption="Streamlines show where the air goes, blue when slow and red when fast. Switch to pressure to see suction (blue) over the top and a push (red) at the front and underneath. Above 14° the air tumbles off the top: that is the stall."
       controls={(
         <>
+          <Choices label="Colour the air by" options={[{ id: 'speed', label: 'Air speed' }, { id: 'pressure', label: 'Pressure' }]} value={view} onChange={setView} />
           <Slider label="Angle of attack" value={alpha} min={-5} max={22} step={0.5} onChange={setAlpha} format={(v) => `${v.toFixed(1)}°`} />
           <Slider label="Air speed over the wing" value={speed} min={5} max={40} step={1} onChange={setSpeed} format={(v) => `${v} m/s`} />
           <Readout items={[
             { label: 'Lift coefficient', value: cl.toFixed(2), tone: stalled ? 'bad' : 'good' },
             { label: 'Lift', value: `${L.toFixed(1)} N` },
             { label: 'Drag', value: `${D.toFixed(2)} N`, tone: stalled ? 'bad' : undefined },
+            { label: 'Average pressure difference', value: `${(L / area).toFixed(0)} Pa` },
+            { label: 'Dynamic pressure ½ρV²', value: `${q.toFixed(0)} Pa` },
             { label: 'Lift ÷ drag', value: (L / Math.max(D, 0.001)).toFixed(0), tone: stalled ? 'bad' : 'good' },
             { label: 'Reynolds number', value: Math.round(reynolds(rho, speed, chord)).toLocaleString('en-IN') },
           ]} />
@@ -79,14 +86,25 @@ function ForwardLab() {
   const speed = speedForTilt({ massKg: m, tiltDeg: tilt, rho, cdA })
   const thrust = thrustForTilt(m, tilt)
   const drag = dragForce({ rho, speed, cdA })
-  const state = useLive({ tiltDeg: tilt, thrustN: thrust, weightN: weight(m), dragN: drag, wind: speed * 0.35, rate: 50 + 30 * (thrust / weight(m) - 1), paused: !clock.playing })
+  const split = pitchThrustSplit(tilt)
+  const area = discArea(0.127)
+  const each = thrust / 4
+  const viFront = inducedVelocity(each * split.front, rho, area)
+  const viRear = inducedVelocity(each * split.rear, rho, area)
+  const rpm = (t) => 60 * Math.sqrt(t / (0.1 * rho * 0.127 ** 4)) // from thrust = 0.1 ρ n² D⁴
+  const state = useLive({ tiltDeg: tilt, thrustN: thrust, weightN: weight(m), dragN: drag, airspeed: speed, thrustSplit: split, rate: 50 + 30 * (thrust / weight(m) - 1), paused: !clock.playing })
   return (
     <Lab
       title="Flying forward: tilt, drag and top speed"
       clock={clock}
-      idea={<>A quadcopter cannot push sideways, so to move forward it <b>tilts its nose down</b>. The thrust now points a little forward. One part of it still holds the drone up; the other part pushes it forward. The drone speeds up until the air pushes back as hard as the forward part of the thrust. That balance, <b>drag equals the sideways thrust</b>, is its top speed for that tilt.</>}
-      figure={<Scene3D create={createForces} stateRef={state} view={[250, 150, 420]} target={[0, 40, 0]} floorY={-70} minDistance={200} maxDistance={700} label="A drone tilted forward, with thrust, weight and drag arrows and air streaming past" />}
-      caption="Watch the thrust arrow lean forward and grow as you tilt. The orange drag arrow pushes back, and the dots show the air streaming past."
+      idea={<>A quadcopter cannot push sideways, so to move forward it <b>tilts its nose down</b>. The thrust now points a little forward. One part of it still holds the drone up; the other part pushes it forward. The drone speeds up until the air pushes back as hard as the forward part of the thrust. That balance, <b>drag equals the sideways thrust</b>, is its top speed for that tilt. To pitch the nose down, the flight controller spins the <b>rear propellers faster</b> than the front ones, so the rear streams of air are faster and stronger. All four streams lean back as the drone moves, because the air is rushing past.</>}
+      figure={(
+        <div className={dh.stackTight}>
+          <Scene3D create={createForces} stateRef={state} view={[160, 90, 700]} target={[0, -70, 0]} floorY={-300} minDistance={250} maxDistance={1000} label="A drone tilted forward, with thrust, weight and drag arrows and the air from each of the four propellers drawn as streamlines" />
+          <FlowLegend mode="speed" speedMax={2.1 * viRear + speed} />
+        </div>
+      )}
+      caption="Watch the thrust arrow lean forward and grow as you tilt. The orange drag arrow pushes back. The streamlines are the air from the four propellers: the rear two, spinning faster, throw faster air. The difference is drawn larger than in a real flight so you can see it."
       controls={(
         <>
           <Choices label="Drone shape" value={shape} onChange={setShape} options={SHAPES.map((s) => ({ id: s.id, label: s.label }))} />
@@ -96,10 +114,14 @@ function ForwardLab() {
             { label: 'Forward speed', value: `${(speed * 3.6).toFixed(0)} km/h`, tone: 'good' },
             { label: 'Thrust needed', value: `${(thrust / weight(m)).toFixed(2)} × weight`, tone: thrust / weight(m) > 3 ? 'warn' : undefined },
             { label: 'Drag', value: `${drag.toFixed(1)} N` },
+            { label: 'Each front propeller', value: `${(each * split.front).toFixed(2)} N at ${Math.round(rpm(each * split.front)).toLocaleString('en-IN')} rpm` },
+            { label: 'Each rear propeller', value: `${(each * split.rear).toFixed(2)} N at ${Math.round(rpm(each * split.rear)).toLocaleString('en-IN')} rpm`, tone: tilt > 5 ? 'good' : undefined },
+            { label: 'Air speed: front and rear streams', value: `${(2 * viFront).toFixed(1)} and ${(2 * viRear).toFixed(1)} m/s` },
           ]} />
         </>
       )}
       notice={[
+        <>Tilt the drone and watch the rear propeller streams turn red and the rear propellers speed up: that extra push at the back is what pitches the nose down.</>,
         <>At 60° the drone needs <b>twice its weight</b> in thrust just to stay level. That is why heavy drones run out of speed first.</>,
         <>A shape with less drag (the race quad) reaches a higher speed at the same tilt. A cinewhoop's ducts add drag.</>,
         <>Speeds here are calm-air numbers from the formula, not a measurement of any drone.</>,

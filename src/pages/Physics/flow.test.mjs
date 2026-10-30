@@ -73,3 +73,13 @@ test('colours stay in range', () => {
   for (const t of [-0.2, 0, 0.4, 1, 1.5]) for (const c of speedColor(t)) assert.ok(c >= 0 && c <= 1)
   for (const t of [-2, -0.5, 0, 0.5, 2]) for (const c of pressureColor(t)) assert.ok(c >= 0 && c <= 1)
 })
+
+test('nose down: the rear propellers push harder than the front ones, and level they are equal', async () => {
+  const { pitchThrustSplit } = await import('./physics.js')
+  const level = pitchThrustSplit(0)
+  near(level.front, 1, 1e-9)
+  near(level.rear, 1, 1e-9)
+  const tilted = pitchThrustSplit(30)
+  assert.ok(tilted.rear > tilted.front)
+  near(tilted.front + tilted.rear, 2, 1e-9)
+})

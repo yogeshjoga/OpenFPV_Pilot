@@ -21,15 +21,21 @@ function ForcesLab() {
   const net = thrust - W
   const accel = net / (massG / 1000)
   const hover = hoverThrottle(twr) * 100
-  const state = useLive({ tiltDeg: 0, thrustN: thrust, weightN: W, dragN: 0, wind: 0, rate: 20 + 70 * (throttle / 100), paused: !clock.playing })
+  const viEach = inducedVelocity(thrust / 4, 1.225, discArea(0.127)) // the air speed through each propeller
+  const state = useLive({ tiltDeg: 0, thrustN: thrust, weightN: W, dragN: 0, airspeed: 0, rate: 20 + 70 * (throttle / 100), paused: !clock.playing })
   const verdict = Math.abs(net) < 0.03 * W ? 'Hovering' : net > 0 ? 'Climbing' : 'Falling'
   return (
     <Lab
       title="Four forces, one drone"
       clock={clock}
-      idea={<>A hovering drone is in a tug of war. <b>Weight</b> pulls it down with the force W = m × g. The four propellers push it up with <b>thrust</b>. When thrust equals weight the drone hovers. A little more thrust and it climbs; a little less and it falls. The size of the push needed is set by the drone's weight, which is why a heavier battery asks for more throttle just to stay in the air.</>}
-      figure={<Scene3D create={createForces} stateRef={state} view={[250, 150, 400]} target={[0, 40, 0]} floorY={-70} minDistance={200} maxDistance={700} label="A drone with arrows showing thrust going up and weight going down" />}
-      caption="Green is thrust, red is weight. The arrows are drawn to scale, so you can see the tug of war."
+      idea={<>A hovering drone is in a tug of war. <b>Weight</b> pulls it down with the force W = m × g. The four propellers push it up with <b>thrust</b>. When thrust equals weight the drone hovers. A little more thrust and it climbs; a little less and it falls. The size of the push needed is set by the drone's weight, which is why a heavier battery asks for more throttle just to stay in the air. Look at where the thrust comes from: each propeller throws a stream of air downward. The coloured lines are that air, blue when slow and red when fast, and the slice behind them shows the fast streams below the propellers.</>}
+      figure={(
+        <div className={dh.stackTight}>
+          <Scene3D create={createForces} stateRef={state} view={[160, 90, 700]} target={[0, -70, 0]} floorY={-300} minDistance={250} maxDistance={1000} label="A drone with arrows showing thrust going up and weight going down, and the air each propeller throws down drawn as coloured streamlines" />
+          <FlowLegend mode="speed" speedMax={2.1 * viEach} />
+        </div>
+      )}
+      caption="Green is thrust, red is weight. The arrows are drawn to scale, so you can see the tug of war. The streamlines are the air thrown down by the four propellers: more throttle, faster and redder air, and more thrust."
       controls={(
         <>
           <Slider label="Drone mass" value={massG} min={300} max={1500} step={50} onChange={setMassG} format={(v) => `${v} g`} />
@@ -40,6 +46,8 @@ function ForcesLab() {
             { label: 'Thrust', value: `${thrust.toFixed(1)} N` },
             { label: verdict, value: `${accel >= 0 ? '+' : ''}${accel.toFixed(1)} m/s²`, tone: verdict === 'Hovering' ? 'good' : 'warn' },
             { label: 'Throttle to hover', value: `${hover.toFixed(0)} %`, tone: 'good' },
+            { label: 'Air speed through each propeller', value: `${viEach.toFixed(1)} m/s` },
+            { label: 'Speed of the stream below', value: `${(2 * viEach).toFixed(1)} m/s` },
           ]} />
         </>
       )}
@@ -81,7 +89,7 @@ function PropellerLab() {
       idea={<>A propeller is a spinning wing. Each blade bites into the air and throws it downward. By Newton's third law, throwing air down pushes the drone up. This picture shows the air the way an engineer's flow simulation (CFD) does. The coloured lines are <b>streamlines</b>: the path a bit of air follows, coloured by its speed. The coloured sheet behind them is a slice through the air. The air is drawn in slowly from above, where the pressure is <b>lower</b> than in the room. It speeds up through the disc, and leaves as a <b>narrower, faster stream</b> where the pressure just below the propeller is <b>higher</b>. That pressure difference across the disc, spread over its area, is the thrust.</>}
       figure={(
         <div className={dh.stackTight}>
-          <Scene3D create={createAirflow} stateRef={state} view={[330, 40, 330]} target={[0, -60, 0]} floorY={-395} minDistance={200} maxDistance={700} label="A propeller pulling air down through its disc, drawn as streamlines coloured by air speed" />
+          <Scene3D create={createAirflow} stateRef={state} view={[300, 190, 300]} target={[0, -50, 0]} floorY={-395} minDistance={120} maxDistance={700} label="A propeller pulling air down through its disc, drawn as streamlines coloured by air speed" />
           <FlowLegend mode={view} speedMax={2.1 * vi} pressureMax={1.5 * rho * vi * vi} />
           <Plot width={600} height={170} top={12} bottom={38} x={x} y={y} xTicks={[3, 5, 7, 10]} yTicks={[0, 100, 200]} xLabel="propeller size (inches)" yLabel="W" label="The least power to hover a 1 kilogram drone, for each propeller size">
             <polyline points={polyline(curve.map(([d, p]) => [x(d), y(p)]))} className={dh.accentLine} />
