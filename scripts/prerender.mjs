@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { ROUTES, SITE } from '../src/seo/site.js'
-import { GUIDES } from '../src/data/guides.js'
+import { POSTS } from '../src/data/posts.js'
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
 const template = readFileSync(join(dist, 'index.html'), 'utf8')
@@ -39,23 +39,38 @@ function structuredData(route) {
   if (route.path === '/') blocks.push(organisation, website)
   const crumbs = [{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` }]
   if (route.path !== '/') crumbs.push({ '@type': 'ListItem', position: 2, name: route.h1, item: abs(route.path) })
-  if (route.path !== '/') blocks.push({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: route.guide ? [crumbs[0], { '@type': 'ListItem', position: 2, name: 'Guides', item: `${SITE.url}/guides` }, { '@type': 'ListItem', position: 3, name: route.h1, item: abs(route.path) }] : crumbs })
-  if (route.guide) {
+  if (route.path !== '/') blocks.push({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: route.post ? [crumbs[0], { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE.url}/blog` }, { '@type': 'ListItem', position: 3, name: route.h1, item: abs(route.path) }] : crumbs })
+  if (route.path === '/blog') {
     blocks.push({
       '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: route.guide.title,
-      description: route.guide.description,
-      datePublished: route.guide.updated,
-      dateModified: route.guide.updated,
+      '@type': 'Blog',
+      '@id': `${SITE.url}/blog#blog`,
+      name: 'EGIRE Robotics blog',
+      url: abs('/blog'),
+      inLanguage: SITE.language,
+      publisher: { '@id': `${SITE.url}/#organization` },
+      blogPost: POSTS.map((p) => ({ '@type': 'BlogPosting', headline: p.title, url: abs(`/blog/${p.slug}`), datePublished: p.published })),
+    })
+  }
+  if (route.post) {
+    blocks.push({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: route.post.title,
+      description: route.post.description,
+      keywords: route.post.keywords.join(', '),
+      articleSection: route.post.category,
+      wordCount: [route.post.intro, ...route.post.sections.flatMap((s) => s.p)].join(' ').split(/\s+/).length,
+      datePublished: route.post.published,
+      dateModified: route.post.updated,
       inLanguage: SITE.language,
       mainEntityOfPage: abs(route.path),
       image: abs(SITE.ogImage),
-      author: { '@id': `${SITE.url}/#organization` },
+      author: route.post.author === 'EGIRE Robotics' ? { '@id': `${SITE.url}/#organization` } : { '@type': 'Person', name: route.post.author, worksFor: { '@id': `${SITE.url}/#organization` } },
       publisher: { '@type': 'Organization', name: SITE.name, logo: { '@type': 'ImageObject', url: abs(SITE.logo) } },
     })
-    if (route.guide.faq?.length) {
-      blocks.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: route.guide.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) })
+    if (route.post.faq?.length) {
+      blocks.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: route.post.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) })
     }
   }
   if (route.path === '/workshops') {
@@ -75,11 +90,13 @@ function structuredData(route) {
 function head(route) {
   const url = abs(route.path)
   const image = abs(SITE.ogImage)
-  const type = route.guide ? 'article' : 'website'
+  const type = route.post ? 'article' : 'website'
+  const keywords = (route.post?.keywords ?? route.keywords ?? []).join(', ')
   return `<!--seo:start-->
     <title>${esc(route.title)}</title>
     <meta name="description" content="${esc(route.description)}" />
     <link rel="canonical" href="${url}" />
+    ${keywords ? `<meta name="keywords" content="${esc(keywords)}" />` : ''}
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="author" content="${esc(SITE.name)}" />
     <meta property="og:site_name" content="${esc(SITE.name)}" />
@@ -88,6 +105,10 @@ function head(route) {
     <meta property="og:url" content="${url}" />
     <meta property="og:title" content="${esc(route.title)}" />
     <meta property="og:description" content="${esc(route.description)}" />
+    ${route.post ? `<meta property="article:published_time" content="${route.post.published}" />
+    <meta property="article:modified_time" content="${route.post.updated}" />
+    <meta property="article:section" content="${esc(route.post.category)}" />
+    ${route.post.keywords.map((k) => `<meta property="article:tag" content="${esc(k)}" />`).join(' ')}` : ''}
     <meta property="og:image" content="${image}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -105,10 +126,11 @@ function head(route) {
 function body(route) {
   const link = (path) => `<a href="${path}">${esc(ROUTES.find((r) => r.path === path)?.h1 ?? path)}</a>`
   const parts = [`<h1>${esc(route.h1)}</h1>`]
-  if (route.guide) {
-    parts.push(`<p>${esc(route.guide.intro)}</p>`)
-    for (const s of route.guide.sections) parts.push(`<h2>${esc(s.h)}</h2>`, ...s.p.map((p) => `<p>${esc(p)}</p>`))
-    if (route.guide.faq?.length) parts.push('<h2>Frequently asked questions</h2>', ...route.guide.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`))
+  if (route.post) {
+    parts.push(`<p>${esc(route.post.intro)}</p>`)
+    for (const s of route.post.sections) parts.push(`<h2>${esc(s.h)}</h2>`, ...s.p.map((p) => `<p>${esc(p)}</p>`))
+    if (route.post.faq?.length) parts.push('<h2>Frequently asked questions</h2>', ...route.post.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`))
+    parts.push(`<p>Topics: ${esc(route.post.keywords.join(', '))}</p>`)
   } else {
     parts.push(...(route.body ?? []).map((p) => `<p>${esc(p)}</p>`))
   }
@@ -138,8 +160,8 @@ for (const route of ROUTES) {
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${ROUTES.map((r) => `  <url><loc>${abs(r.path)}</loc><lastmod>${r.guide?.updated ?? today}</lastmod><changefreq>${r.path === '/' || r.path === '/guides' ? 'weekly' : 'monthly'}</changefreq><priority>${r.priority.toFixed(1)}</priority></url>`).join('\n')}
+${ROUTES.map((r) => `  <url><loc>${abs(r.path)}</loc><lastmod>${r.post?.updated ?? today}</lastmod><changefreq>${r.path === '/' || r.path === '/blog' ? 'weekly' : 'monthly'}</changefreq><priority>${r.priority.toFixed(1)}</priority></url>`).join('\n')}
 </urlset>
 `
 writeFileSync(join(dist, 'sitemap.xml'), sitemap)
-console.log(`prerender: ${ROUTES.length} pages and a sitemap with ${ROUTES.length} addresses (${GUIDES.length} guides)`)
+console.log(`prerender: ${ROUTES.length} pages and a sitemap with ${ROUTES.length} addresses (${POSTS.length} blog posts)`)

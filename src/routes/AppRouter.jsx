@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom'
 import { Suspense, lazy, useEffect } from 'react'
 
 const Home = lazy(() => import('@pages/Home'))
@@ -21,9 +21,14 @@ const Blog = lazy(() => import('@pages/Blog'))
 const PidTuning = lazy(() => import('@pages/PidTuning'))
 const FpvPiloting = lazy(() => import('@pages/FpvPiloting'))
 const DroneHardware = lazy(() => import('@pages/DroneHardware'))
-const Guides = lazy(() => import('@pages/Guides'))
 const Presentation = lazy(() => import('@pages/Presentation'))
 const DroneLab = lazy(() => import('@pages/DroneLab'))
+
+/** The guides are now blog posts; old links keep working. */
+function GuideRedirect() {
+  const { slug } = useParams()
+  return <Navigate to={`/blog/${slug}`} replace />
+}
 
 const Login = lazy(() => import('@pages/Auth/Login'))
 const AuthCallback = lazy(() => import('@pages/Auth/AuthCallback'))
@@ -117,6 +122,7 @@ export default function AppRouter() {
           <Route path="/intro" element={<RequireMember gate="intro"><IntroToDrones /></RequireMember>} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Blog />} />
           <Route path="/pid-tuning" element={<RequireMember gate="pid"><PidTuning /></RequireMember>} />
           <Route path="/fpv-piloting" element={<RequireMember gate="piloting"><FpvPiloting /></RequireMember>} />
           <Route path="/drone-hardware" element={<RequireMember gate="hardware"><DroneHardware /></RequireMember>} />
@@ -137,8 +143,8 @@ export default function AppRouter() {
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/guides" element={<Guides />} />
-          <Route path="/guides/:slug" element={<Guides />} />
+          <Route path="/guides" element={<Navigate to="/blog" replace />} />
+          <Route path="/guides/:slug" element={<GuideRedirect />} />
           <Route path="/enquire" element={<Enquire />} />
           <Route path="/workshops" element={<Workshops />} />
           <Route

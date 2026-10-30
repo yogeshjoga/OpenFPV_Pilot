@@ -11,11 +11,20 @@ Phone: +91 8500126104 (WhatsApp +91 9110566354)
 - [Enquire or book a demo](https://www.egirerobotics.com/enquire)
 - [About EGIRE Robotics](https://www.egirerobotics.com/about)
 
-## Guides about drones in India
-- [FPV drones in India: what they are and how to start](https://www.egirerobotics.com/guides/fpv-drones-india)
-- [DJI drones vs FPV drones](https://www.egirerobotics.com/guides/dji-vs-fpv-drones)
-- [Drone rules in India](https://www.egirerobotics.com/guides/drone-rules-india)
-- [How to build an FPV drone in India](https://www.egirerobotics.com/guides/build-fpv-drone-india)
+## Blog: guides and articles about drones in India
+- [FPV drones in India: what they are and how to start](https://www.egirerobotics.com/blog/fpv-drones-india)
+- [DJI drones vs FPV drones](https://www.egirerobotics.com/blog/dji-vs-fpv-drones)
+- [Drone rules in India](https://www.egirerobotics.com/blog/drone-rules-india)
+- [How to build an FPV drone in India](https://www.egirerobotics.com/blog/build-fpv-drone-india)
+- [Best FPV drone for beginners in India](https://www.egirerobotics.com/blog/best-fpv-drone-for-beginners-india)
+- [FPV simulator practice: how to learn faster](https://www.egirerobotics.com/blog/fpv-simulator-practice)
+- [Drone pilot training in India](https://www.egirerobotics.com/blog/drone-pilot-training-india)
+- [Indian drones: building, learning and flying](https://www.egirerobotics.com/blog/indian-drones-egire-robotics)
+- [FPV drone doubts for beginners](https://www.egirerobotics.com/blog/fresher-doubt-resolution)
+- [FPV drones for engineers](https://www.egirerobotics.com/blog/experienced-professionals)
+- [FPV drone training for defence personnel](https://www.egirerobotics.com/blog/tactical-fpv-army)
+- [Drone classes for kids](https://www.egirerobotics.com/blog/kids-can-fly)
+- [All posts](https://www.egirerobotics.com/blog)
 
 ## Academy (free with sign-in)
 FPV piloting, PID tuning, drone hardware, drone physics, wiring lab and a drone configurator, taught with interactive 3D lessons.

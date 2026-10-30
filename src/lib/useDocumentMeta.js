@@ -7,10 +7,12 @@ const tag = (selector, make) => document.head.querySelector(selector) ?? documen
 const meta = (attr, name) => tag(`meta[${attr}="${name}"]`, () => { const m = document.createElement('meta'); m.setAttribute(attr, name); return m })
 
 /** Sets the browser tab title, the search description, the canonical address and the share-card text for a page, and restores them when leaving it. */
-export default function useDocumentMeta(title, description) {
+export default function useDocumentMeta(title, description, keywords) {
   useEffect(() => {
     const previousTitle = document.title
     const desc = meta('name', 'description')
+    const words = meta('name', 'keywords')
+    const wordsBefore = words.content
     const ogTitle = meta('property', 'og:title')
     const ogDesc = meta('property', 'og:description')
     const ogUrl = meta('property', 'og:url')
@@ -27,10 +29,12 @@ export default function useDocumentMeta(title, description) {
     ogUrl.content = url
     canonical.href = url
     if (description) { desc.content = description; ogDesc.content = description; twDesc.content = description }
+    if (keywords) words.content = keywords
     return () => {
+      words.content = wordsBefore
       document.title = previousTitle
       ;[desc, ogTitle, ogDesc, ogUrl, twTitle, twDesc].forEach((m, i) => { m.content = before[i] })
       canonical.href = beforeCanonical
     }
-  }, [title, description])
+  }, [title, description, keywords])
 }

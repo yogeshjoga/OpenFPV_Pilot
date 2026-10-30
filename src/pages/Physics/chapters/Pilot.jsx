@@ -157,7 +157,7 @@ export default function Pilot() {
           </ul>
         </Idea>
         <Idea title="Rules and where to read them">
-          <p>Air regulations decide where you may fly at all. Read our guide to the <Link to="/guides/drone-rules-india">drone rules in India</Link> and check the airspace map on the Digital Sky platform before you fly.</p>
+          <p>Air regulations decide where you may fly at all. Read our guide to the <Link to="/blog/drone-rules-india">drone rules in India</Link> and check the airspace map on the Digital Sky platform before you fly.</p>
         </Idea>
       </div>
     </Chapter>

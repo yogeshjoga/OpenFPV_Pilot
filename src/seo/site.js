@@ -1,5 +1,5 @@
 // What search engines are told about the site and each public page. Plain data, so the build step (Node) and the site share it.
-import { GUIDES } from '../data/guides.js'
+import { POSTS } from '../data/posts.js'
 
 export const SITE = {
   url: 'https://www.egirerobotics.com',
@@ -14,14 +14,14 @@ export const SITE = {
   language: 'en-IN',
 }
 
-const guideRoutes = GUIDES.map((g) => ({
-  path: `/guides/${g.slug}`,
-  title: `${g.title} | EGIRE Robotics`,
-  description: g.description,
-  h1: g.title,
+const postRoutes = POSTS.map((p) => ({
+  path: `/blog/${p.slug}`,
+  title: `${p.title} | EGIRE Robotics`,
+  description: p.description,
+  h1: p.title,
   priority: 0.8,
   type: 'article',
-  guide: g,
+  post: p,
 }))
 
 // Every public page. `body` is the text a crawler reads before the page's own scripts run.
@@ -37,7 +37,7 @@ export const ROUTES = [
       'Our programs start in a simulator and move to real FPV flying, then cover building and tuning drones, racing practice, cinematography, agriculture drones, 3D mapping, LiDAR and GIS, and AI and computer vision.',
       'We also supply drone spares and teach drone, AI and robotics skills with ROS 2, Python and embedded systems.',
     ],
-    links: ['/workshops', '/guides', '/enquire', '/about'],
+    links: ['/workshops', '/blog', '/enquire', '/about'],
   },
   {
     path: '/workshops',
@@ -50,7 +50,7 @@ export const ROUTES = [
       'Workshops cover FPV piloting, building a drone from scratch, drone racing practice, cinematography, agriculture drones, 3D mapping and AI.',
       'Fees start from Rs 7,999 per person. Send an enquiry to arrange a workshop at your college.',
     ],
-    links: ['/enquire', '/guides/fpv-drones-india', '/gallery'],
+    links: ['/enquire', '/blog/fpv-drones-india', '/gallery'],
   },
   {
     path: '/about',
@@ -81,12 +81,14 @@ export const ROUTES = [
   },
   {
     path: '/blog',
-    title: 'FPV Drone, AI and Robotics Blog | EGIRE Robotics',
-    description: 'Articles on FPV drones, drone building, AI and robotics training from the EGIRE Robotics team.',
-    h1: 'The EGIRE Robotics blog',
-    priority: 0.7,
-    body: ['Articles on FPV drones, drone building, AI and robotics from the EGIRE Robotics team.'],
-    links: ['/guides'],
+    title: 'FPV Drone, DJI and Robotics Blog India | EGIRE Robotics',
+    description: 'Guides and articles on FPV drones, DJI vs FPV, drone rules in India, building a drone, simulators, drone pilot training and robotics from EGIRE Robotics.',
+    keywords: ['FPV drone blog India', 'drone guides India', 'drone rules India', 'build FPV drone', 'DJI vs FPV', 'drone pilot training', 'EGIRE Robotics'],
+    h1: 'FPV drone guides and articles for India',
+    priority: 0.9,
+    body: ['Guides and articles on FPV drones, the difference between DJI-style camera drones and FPV drones, the drone rules in India, building an FPV drone, simulators and drone pilot training, from the EGIRE Robotics team.'],
+    links: POSTS.map((p) => `/blog/${p.slug}`),
+    type: 'collection',
   },
   {
     path: '/enquire',
@@ -97,28 +99,18 @@ export const ROUTES = [
     body: ['Send an enquiry to register for a workshop, book a demo session or arrange a workshop at your college. You can also call, WhatsApp or email us.'],
     links: ['/workshops'],
   },
-  {
-    path: '/guides',
-    title: 'Drone Guides for India: FPV, DJI, Rules and Building | EGIRE Robotics',
-    description: 'Plain-language drone guides for India: FPV drones, DJI vs FPV, drone rules and how to build an FPV drone.',
-    h1: 'Drone guides for India',
-    priority: 0.9,
-    body: ['Guides on FPV drones, the difference between DJI-style camera drones and FPV drones, the drone rules in India and how to build an FPV drone.'],
-    links: GUIDES.map((g) => `/guides/${g.slug}`),
-    type: 'collection',
-  },
-  ...guideRoutes,
+  ...postRoutes,
   // Academy pages: a signed-in member sees the full lesson; a search engine reads this summary.
-  { path: '/intro', title: 'Intro to Drones: How a Drone Flies | EGIRE Robotics Academy', description: 'Start from zero: what a drone is, how it flies and what every part does. Free with sign-in.', h1: 'Intro to Drones', priority: 0.6, body: ['Start from zero: how a quadcopter flies and what every part does.'], links: ['/guides/fpv-drones-india'] },
+  { path: '/intro', title: 'Intro to Drones: How a Drone Flies | EGIRE Robotics Academy', description: 'Start from zero: what a drone is, how it flies and what every part does. Free with sign-in.', h1: 'Intro to Drones', priority: 0.6, body: ['Start from zero: how a quadcopter flies and what every part does.'], links: ['/blog/fpv-drones-india'] },
   { path: '/physics', title: 'Drone Physics and Aerodynamics: 3D Lessons, Formulas and Maths | EGIRE Robotics', description: 'Learn how a drone flies with 3D animations: thrust, lift, drag, torque, frame balance, altitude, ground effect, battery time, a CPL-style ground class and the maths you need. Free with sign-in.', h1: 'How a drone really flies: the physics, the air and the maths', priority: 0.7, body: ['Six chapters with live 3D labs: forces and thrust, lift and drag, rotation and frame design, air, ground effect and battery, the ground class a commercial pilot studies (CPL), and the school maths you need with worked examples.'], links: [] },
-  { path: '/fpv-piloting', title: 'FPV Piloting Course Online: Angle, Acro and 3D Modes | EGIRE Robotics', description: 'Learn FPV piloting with 3D lessons: flight modes, stick moves, loops, flips and race turns. Free with sign-in.', h1: 'FPV Piloting', priority: 0.8, body: ['Learn Angle, Acro and 3D modes, stick combinations, loops, flips and race moves on a 3D drone.'], links: ['/guides/fpv-drones-india'] },
+  { path: '/fpv-piloting', title: 'FPV Piloting Course Online: Angle, Acro and 3D Modes | EGIRE Robotics', description: 'Learn FPV piloting with 3D lessons: flight modes, stick moves, loops, flips and race turns. Free with sign-in.', h1: 'FPV Piloting', priority: 0.8, body: ['Learn Angle, Acro and 3D modes, stick combinations, loops, flips and race moves on a 3D drone.'], links: ['/blog/fpv-drones-india'] },
   { path: '/pid-tuning', title: 'PID Tuning for FPV Drones: Learn Betaflight Tuning | EGIRE Robotics', description: 'Understand P, I and D and tune a drone in a safe simulation, with a Betaflight guide. Free with sign-in.', h1: 'PID Tuning', priority: 0.7, body: ['What each PID gain does, a tuning lab with live charts and a Betaflight guide.'], links: [] },
-  { path: '/drone-hardware', title: 'Drone Hardware Explained: Frames, Motors, ESC and Radio | EGIRE Robotics', description: 'Why drone frames are carbon, why drones shake, why 6S cooks 4S motors and how a radio works, with 3D animations. Free with sign-in.', h1: 'Drone Hardware', priority: 0.7, body: ['Frames, vibration, power and radio explained with 3D animations.'], links: ['/guides/build-fpv-drone-india'] },
+  { path: '/drone-hardware', title: 'Drone Hardware Explained: Frames, Motors, ESC and Radio | EGIRE Robotics', description: 'Why drone frames are carbon, why drones shake, why 6S cooks 4S motors and how a radio works, with 3D animations. Free with sign-in.', h1: 'Drone Hardware', priority: 0.7, body: ['Frames, vibration, power and radio explained with 3D animations.'], links: ['/blog/build-fpv-drone-india'] },
   { path: '/drone-lab/how-it-works', title: 'How a Drone Works: Interactive 3D Drone Lab | EGIRE Robotics', description: 'See how a drone works inside, in 2D and 3D. Free with sign-in.', h1: 'How a drone works', priority: 0.6, body: ['An interactive look inside a drone.'], links: [] },
-  { path: '/drone-lab/configurator', title: 'FPV Drone Configurator: Build and Compare Drone Setups | EGIRE Robotics', description: 'Configure a drone and see live performance charts. Free with sign-in.', h1: 'Drone configurator', priority: 0.6, body: ['Choose parts and see thrust, weight and flight time.'], links: ['/guides/build-fpv-drone-india'] },
-  { path: '/wiring-lab/lessons', title: 'FPV Drone Wiring Lessons and Practice Builder | EGIRE Robotics', description: 'Learn how every wire connects on an FPV drone and practise on a builder that checks your work. Free with sign-in.', h1: 'Wiring Lab', priority: 0.6, body: ['Wiring lessons for each board and a practice builder.'], links: ['/guides/build-fpv-drone-india'] },
+  { path: '/drone-lab/configurator', title: 'FPV Drone Configurator: Build and Compare Drone Setups | EGIRE Robotics', description: 'Configure a drone and see live performance charts. Free with sign-in.', h1: 'Drone configurator', priority: 0.6, body: ['Choose parts and see thrust, weight and flight time.'], links: ['/blog/build-fpv-drone-india'] },
+  { path: '/wiring-lab/lessons', title: 'FPV Drone Wiring Lessons and Practice Builder | EGIRE Robotics', description: 'Learn how every wire connects on an FPV drone and practise on a builder that checks your work. Free with sign-in.', h1: 'Wiring Lab', priority: 0.6, body: ['Wiring lessons for each board and a practice builder.'], links: ['/blog/build-fpv-drone-india'] },
   { path: '/catalog', title: 'FPV Drone Parts Catalog: Motors, Frames, Cameras | EGIRE Robotics', description: 'Compare FPV drone motors, frames, cameras and more with real specifications. Free with sign-in.', h1: 'Parts catalog', priority: 0.6, body: ['Real specifications for FPV drone parts.'], links: [] },
   { path: '/training', title: 'Drone Courses and Programs in India | EGIRE Robotics', description: 'EGIRE Robotics courses and programs: FPV piloting, drone building, AI and robotics.', h1: 'Programs', priority: 0.7, body: ['Courses for students and colleges: what each covers and who it is for.'], links: ['/workshops'] },
 ]
 
-export const faqs = (route) => route.guide?.faq ?? []
+export const faqs = (route) => route.post?.faq ?? []

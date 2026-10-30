@@ -5,6 +5,7 @@
 export const GUIDES = [
   {
     slug: 'fpv-drones-india',
+    keywords: ['FPV drones India', 'what is an FPV drone', 'FPV drone training India', 'learn FPV drone flying', 'FPV freestyle drone', 'FPV racing drone', 'cinewhoop', 'FPV simulator', 'ExpressLRS', 'FPV goggles', 'EGIRE Robotics'],
     title: 'FPV drones in India: what they are and how to start',
     description: 'What an FPV drone is, the main types (freestyle, racing, cinewhoop), what you need to start flying in India, how to learn safely and what a good first course covers.',
     updated: '2026-10-30',
@@ -45,6 +46,7 @@ export const GUIDES = [
   },
   {
     slug: 'dji-vs-fpv-drones',
+    keywords: ['DJI vs FPV drone', 'DJI drones India', 'FPV vs camera drone', 'DJI Avata vs FPV drone', 'DJI Mini India', 'best drone for videography India', 'camera drone vs FPV', 'buy drone in India', 'EGIRE Robotics'],
     title: 'DJI drones vs FPV drones: which should you choose?',
     description: 'A plain comparison of DJI-style camera drones and FPV drones: ease of use, video quality, cost, repair, speed and what suits students, photographers and hobbyists in India.',
     updated: '2026-10-30',
@@ -84,6 +86,7 @@ export const GUIDES = [
   },
   {
     slug: 'drone-rules-india',
+    keywords: ['drone rules India', 'Drone Rules 2021', 'DGCA drone rules', 'Digital Sky platform', 'drone licence India', 'remote pilot certificate', 'drone registration India', 'green yellow red zone drone', 'is flying a drone legal in India', 'EGIRE Robotics'],
     title: 'Drone rules in India: what every beginner should know',
     description: 'A beginner guide to flying a drone legally in India: the Drone Rules 2021, weight classes, the Digital Sky platform, green, yellow and red zones, and where to check current rules.',
     updated: '2026-10-30',
@@ -128,6 +131,7 @@ export const GUIDES = [
   },
   {
     slug: 'build-fpv-drone-india',
+    keywords: ['build FPV drone India', 'DIY FPV drone', 'FPV drone parts list', 'FPV drone kit India', '5 inch FPV drone build', 'Betaflight setup', 'drone building workshop', 'drone spares India', 'flight controller and ESC', 'EGIRE Robotics'],
     title: 'How to build an FPV drone in India: parts, steps and cost',
     description: 'A step-by-step guide to building a 5 inch FPV drone in India: the parts you need, how they connect, a simple build order, common mistakes and where to learn.',
     updated: '2026-10-30',
