@@ -89,7 +89,7 @@ function GroundEffectLab() {
       caption="Blue air falls from the propellers, then turns orange as it spreads out along the floor. The orange glow on the ground grows as the cushion builds."
       controls={(
         <>
-          <Slider label="Height of the propellers" value={h} min={20} max={300} step={5} onChange={setH} format={(v) => `${v} mm`} />
+          <Slider label="Height of the propellers" value={h} min={30} max={300} step={5} onChange={setH} format={(v) => `${v} mm`} />
           <Readout items={[
             { label: 'Extra thrust', value: `+${((gain - 1) * 100).toFixed(1)} %`, tone: gain > 1.05 ? 'good' : undefined },
             { label: 'Hover throttle change', value: `-${((1 - 1 / Math.sqrt(gain)) * 100).toFixed(1)} %` },

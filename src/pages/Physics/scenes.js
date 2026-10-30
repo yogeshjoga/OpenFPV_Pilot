@@ -1,8 +1,13 @@
 // The 3D scenes for the Physics page. Each `create...` takes { THREE, scene } and returns { update(state, seconds, dt), dispose() }.
 // Units are millimetres. x points forward (the nose), y up, z to the right of the drone. Angles in the state are in degrees.
 
+import { buildDroneModel, carbonTexture, MOTORS } from '../../components/three/droneModel.js'
+import { DEFAULT_BUILD, resolveBuild } from '../DroneConfigurator/catalog.js'
+
 const RAD = Math.PI / 180
 const TAU = Math.PI * 2
+
+const MOTOR_SPOTS = MOTORS.map((m) => m.at) // [forward, right] of each motor in the model, in mm
 
 const COLORS = { thrust: 0x30a46c, weight: 0xe5484d, drag: 0xf5a524, lift: 0x3e8ef7, wind: 0x14b8a6, track: 0xf5c518, air: 0x3e8ef7 }
 
@@ -56,55 +61,36 @@ function points(THREE, count, { size = 3.2, colors = true } = {}) {
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// A simple quad: a plate, four arms, four motors with spinning propellers and a battery. Front is +x, right is +z.
-// Motors are in the order front right, front left, rear right, rear left, matching quadMoments in physics.js.
+// The quad: the same detailed 5-inch freestyle model the drone configurator uses (droneModel.js), turned to face +x (the nose) with
+// +z on its right. The group's origin is the middle of the flight controller stack, close to the centre of gravity, so the drone
+// tilts about the right point. Motors are in the order front right, front left, rear right, rear left, matching quadMoments in physics.js.
+// `arm` is the distance from the centre to a motor in mm; the model is scaled to fit it (113 mm is full size).
 // ---------------------------------------------------------------------------------------------------------------
-function makeQuad(THREE, { arm = 110, propRadius = 62 } = {}) {
-  const group = new THREE.Group()
-  const carbon = new THREE.MeshStandardMaterial({ color: 0x2a2f36, roughness: 0.5, metalness: 0.3 })
-  const motorMat = new THREE.MeshStandardMaterial({ color: 0xb04a4a, roughness: 0.3, metalness: 0.9 })
-  const bladeMat = new THREE.MeshStandardMaterial({ color: 0xff6a1a, roughness: 0.4 })
-  const batteryMat = new THREE.MeshStandardMaterial({ color: 0x3e8ef7, roughness: 0.5 })
+const FULL_ARM = 80 * Math.SQRT2
+const STACK_U = 29 // height of the flight controller above the feet, in the model's own units
 
-  const plate = new THREE.Mesh(new THREE.BoxGeometry(70, 6, 46), carbon)
-  group.add(plate)
-  const battery = new THREE.Mesh(new THREE.BoxGeometry(62, 22, 30), batteryMat)
-  battery.position.y = 15
-  group.add(battery)
-  const d = arm / Math.SQRT2
-  const spots = [[d, d], [d, -d], [-d, d], [-d, -d]]
-  const props = []
-  const discs = []
-  const motorPositions = []
-  spots.forEach(([x, z], i) => {
-    const length = Math.hypot(x, z)
-    const armMesh = new THREE.Mesh(new THREE.BoxGeometry(length, 4, 11), carbon)
-    armMesh.position.set(x / 2, 0, z / 2)
-    armMesh.rotation.y = -Math.atan2(z, x)
-    group.add(armMesh)
-    const motor = new THREE.Mesh(new THREE.CylinderGeometry(9, 9, 10, 20), motorMat)
-    motor.position.set(x, 7, z)
-    group.add(motor)
-    const prop = new THREE.Group()
-    prop.position.set(x, 14, z)
-    for (let b = 0; b < 2; b += 1) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(propRadius - 4, 1, 9), bladeMat)
-      blade.position.x = b === 0 ? propRadius / 2 : -propRadius / 2
-      blade.rotation.x = b === 0 ? 0.25 : -0.25
-      prop.add(blade)
-    }
-    group.add(prop)
-    props.push({ node: prop, dir: i === 0 || i === 3 ? 1 : -1 }) // front right and rear left turn counter-clockwise from above
-    const disc = new THREE.Mesh(new THREE.CircleGeometry(propRadius, 36), new THREE.MeshBasicMaterial({ color: 0xcfd6e2, transparent: true, opacity: 0.1, side: THREE.DoubleSide, depthWrite: false }))
-    disc.rotation.x = -Math.PI / 2
-    disc.position.set(x, 14, z)
-    group.add(disc)
-    discs.push(disc)
-    motorPositions.push(new THREE.Vector3(x, 14, z))
-  })
+function makeQuad(THREE, { arm = 110 } = {}) {
+  const model = buildDroneModel(resolveBuild(DEFAULT_BUILD), carbonTexture(), { reverse: true })
+  const k = arm / FULL_ARM
+  const group = new THREE.Group()
+  const body = new THREE.Group() // the model faces -z; the drones on this page face +x
+  body.rotation.y = -Math.PI / 2
+  body.scale.setScalar(k)
+  model.drone.position.y = -STACK_U
+  body.add(model.drone)
+  group.add(body)
+  model.discs.forEach((d) => { d.material.opacity = 0.1 })
+  const rotorU = model.blades[0].position.y - STACK_U
+  const rotorY = rotorU * k // the plane of the propellers, above the group's origin
+  // front right, front left, rear right, rear left; the first and last turn counter-clockwise seen from above
+  const props = model.blades.map((node, i) => ({ node, dir: i === 0 || i === 3 ? 1 : -1 }))
+  const motorPositions = MOTOR_SPOTS.map(([f, r]) => new THREE.Vector3(f * k, rotorY, r * k))
+  const battery = model.exploders.find((e) => e.g.userData.category === 'battery').g
   return {
-    group, battery, props, discs, motorPositions, arm, propRadius,
-    spin(dt, rate) { props.forEach((p) => { p.node.rotation.y += p.dir * rate * dt }) },
+    group, props, discs: model.discs, motorPositions, arm, rotorY,
+    // slides the battery along the nose (+x), in the group's own millimetres
+    shiftBattery(x) { battery.position.z = -x / k },
+    spin(dt, rate) { props.forEach((q) => { q.node.rotation.y += q.dir * rate * dt }) },
   }
 }
 
@@ -376,9 +362,10 @@ export function createBalance({ THREE, scene }) {
   scene.add(quad.group)
   const arrows = [0, 1, 2, 3].map(() => arrow(THREE, scene, COLORS.thrust))
   const weight = arrow(THREE, scene, COLORS.weight)
-  const cg = new THREE.Mesh(new THREE.SphereGeometry(8, 20, 14), new THREE.MeshBasicMaterial({ color: 0xe5484d }))
-  const centre = new THREE.Mesh(new THREE.TorusGeometry(11, 1.6, 8, 28), new THREE.MeshBasicMaterial({ color: 0x30a46c }))
+  const cg = new THREE.Mesh(new THREE.SphereGeometry(8, 20, 14), new THREE.MeshBasicMaterial({ color: 0xe5484d, depthTest: false }))
+  const centre = new THREE.Mesh(new THREE.TorusGeometry(11, 1.6, 8, 28), new THREE.MeshBasicMaterial({ color: 0x30a46c, depthTest: false }))
   centre.rotation.x = Math.PI / 2
+  cg.renderOrder = centre.renderOrder = 6 // drawn over the drone, so they can be seen
   scene.add(cg, centre)
   const tags = [label(THREE, 'centre of gravity', 44), label(THREE, 'centre of the motors', 48), label(THREE, 'front motors', 36), label(THREE, 'rear motors', 36)]
   tags.forEach((t) => scene.add(t))
@@ -387,14 +374,14 @@ export function createBalance({ THREE, scene }) {
     update(state, seconds, dt) {
       const step = state.paused ? 0 : dt
       quad.group.position.y = 20
-      quad.battery.position.x = state.batteryX
+      quad.shiftBattery(state.batteryX)
       quad.spin(step, 48)
       cg.position.set(state.cgX, 20, 0)
       centre.position.set(0, 20, 0)
       const k = 120 / Math.max(state.weightN / 2, state.frontThrustN, state.rearThrustN, 1)
       quad.motorPositions.forEach((p, i) => {
         const front = i < 2
-        aim(arrows[i], new THREE.Vector3(p.x, 20 + 14, p.z), new THREE.Vector3(0, 1, 0), (front ? state.frontThrustN : state.rearThrustN) * k * 0.5)
+        aim(arrows[i], new THREE.Vector3(p.x, 20 + p.y, p.z), new THREE.Vector3(0, 1, 0), (front ? state.frontThrustN : state.rearThrustN) * k * 0.5)
       })
       aim(weight, new THREE.Vector3(state.cgX, 20, 0), new THREE.Vector3(0, -1, 0), state.weightN * k * 0.5)
       tags[0].position.set(state.cgX, -60, 0)
@@ -484,7 +471,7 @@ export function createGroundEffect({ THREE, scene }) {
     update(state, seconds, dt) {
       const step = state.paused ? 0 : dt
       const height = state.heightMm
-      quad.group.position.y = height
+      quad.group.position.y = height - quad.rotorY
       quad.spin(step, 52)
       const pos = air.geo.attributes.position
       const col = air.geo.attributes.color
@@ -494,7 +481,7 @@ export function createGroundEffect({ THREE, scene }) {
         const cz = centres[s.p].z
         if (s.mode === 0) {
           s.t += (step * fall) / Math.max(30, height)
-          const y = height + 12 - s.t * (height + 12)
+          const y = height - s.t * height
           if (s.t >= 1) { s.mode = 1; s.r = s.f * 50 }
           pos.setXYZ(i, cx + Math.cos(s.a) * s.f * 50 * (1 - 0.2 * s.t), Math.max(1, y), cz + Math.sin(s.a) * s.f * 50 * (1 - 0.2 * s.t))
           c.setRGB(0.45 + 0.5 * s.t, 0.65, 1 - 0.5 * s.t)
@@ -511,7 +498,7 @@ export function createGroundEffect({ THREE, scene }) {
       col.needsUpdate = true
       pad.material.opacity = Math.min(0.35, (state.gain - 1) * 2.2)
       gain.visible = state.gain > 1.02
-      gain.position.set(0, height + 74, 0)
+      gain.position.set(0, height + 90, 0)
     },
     dispose() { air.geo.dispose(); air.mat.dispose(); gain.material.map.dispose(); gain.material.dispose() },
   }
