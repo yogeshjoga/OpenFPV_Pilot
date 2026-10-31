@@ -23,8 +23,9 @@
     <!--seo:end-->
     <style>
       body{margin:0;background:#faf7f2}
-      .boot{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#faf7f2}
+      .boot{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#faf7f2}
       .boot img{border-radius:14px}
+      .boot b{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:20px;font-weight:800;letter-spacing:.16em;color:#1e3a5f}
       .boot i{width:28px;height:28px;border:3px solid #e2dccf;border-top-color:#1e3a5f;border-radius:50%;animation:boot-spin .8s linear infinite}
       @keyframes boot-spin{to{transform:rotate(360deg)}}
       @media (prefers-reduced-motion:reduce){.boot i{animation-duration:2.4s}}
@@ -38,7 +39,7 @@
     <link rel="dns-prefetch" href="https://media.sketchfab.com" />
   </head>
   <body>
-    <div id="root"><div class="boot" role="status" aria-label="Loading"><img src="/icon-192.png" width="64" height="64" alt="" /><i></i></div></div>
+    <div id="root"><div class="boot" role="status" aria-label="Loading"><img src="/icon-192.png" width="64" height="64" alt="" /><b>EGIRE ROBOTICS</b><i></i></div></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
