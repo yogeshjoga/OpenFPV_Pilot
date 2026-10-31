@@ -5,6 +5,7 @@ import { CheckCircle2, Lock } from 'lucide-react'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import { GATES } from '@config/gates'
 import { useAuthStore } from '@store/useAuthStore'
+import Loader from '@components/ui/Loader'
 import MemberAuthCard from './MemberAuthCard.jsx'
 import styles from './RequireMember.module.css'
 
@@ -76,7 +77,7 @@ function Gate({ gate, children }) {
   const info = GATES[gate] ?? { title: 'the Academy', blurb: 'Sign in to open this page.', bullets: [] }
   useEffect(() => { void init() }, [init])
   if (status === 'ready') return children
-  if (status === 'loading') return <div className={styles.loading} role="status">Loading…</div>
+  if (status === 'loading') return <Loader />
   return (
     <>
       <div className={styles.preview} aria-hidden="true">{children}</div>

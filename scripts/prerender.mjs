@@ -143,7 +143,7 @@ function body(route) {
 function render(route) {
   let html = template
   html = /<!--seo:start-->[\s\S]*?<!--seo:end-->/.test(html) ? html.replace(/<!--seo:start-->[\s\S]*?<!--seo:end-->/, head(route)) : html.replace('</head>', `${head(route)}\n  </head>`)
-  html = html.replace('<div id="root"></div>', `<div id="root">${body(route)}</div>`)
+  html = html.replace('<div id="root">', `<div id="root">${body(route)}`)
   return html
 }
 

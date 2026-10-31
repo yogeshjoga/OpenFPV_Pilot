@@ -38,6 +38,7 @@ const Workshops = lazy(() => import('@pages/Workshops'))
 
 import ProtectedRoute from '@components/auth/ProtectedRoute'
 import RequireMember from '@components/auth/RequireMember'
+import Loader from '@components/ui/Loader'
 import { useAuthStore } from '@store/useAuthStore'
 import { startAnalytics, trackPage } from '@lib/analytics'
 import { ArrowLeft } from 'lucide-react'
@@ -68,23 +69,7 @@ function Forward({ to }) {
 }
 
 function PageLoader() {
-  return (
-    <div
-      style={{
-        minHeight: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'var(--color-bg-primary)',
-        fontFamily: 'var(--font-mono)',
-        color: 'var(--color-accent-primary)',
-        letterSpacing: '0.1em',
-        fontSize: 'var(--text-sm)',
-      }}
-    >
-      Loading...
-    </div>
-  )
+  return <Loader />
 }
 
 export default function AppRouter() {
