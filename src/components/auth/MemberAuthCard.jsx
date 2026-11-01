@@ -8,7 +8,6 @@ import { authConfigured } from '@lib/supabaseClient'
 import Turnstile, { TURNSTILE_SITE_KEY } from './Turnstile.jsx'
 import styles from './MemberAuthCard.module.css'
 
-const CRM_URL = import.meta.env.VITE_CRM_LOGIN_URL
 
 function GoogleMark() {
   return (
@@ -237,7 +236,6 @@ export default function MemberAuthCard({ next = ACADEMY_HOME, onSignedIn, bare =
       )}
       <p className={styles.fine}>
         <ShieldCheck size={14} aria-hidden="true" /> By continuing you agree to our <Link to="/privacy">privacy notice</Link>.
-        {CRM_URL && <> Staff and CRM students: <a href={CRM_URL}>sign in to the CRM</a>.</>}
       </p>
     </div>
   )

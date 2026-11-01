@@ -43,7 +43,8 @@ export const useAuthStore = create((set, get) => ({
         // when the member last asked for the CRM; read on its own so the sign-in still works if that column is not there yet
         if (profile) {
           const { data: ask, error: askError } = await supabase.from('profiles').select('crm_requested_at').eq('id', session.user.id).maybeSingle()
-          profile.crm_requested_at = askError ? null : ask?.crm_requested_at ?? null
+          // undefined means the database cannot take CRM requests yet, so the website does not offer the button
+          profile.crm_requested_at = askError ? undefined : ask?.crm_requested_at ?? null
         }
         set({
           status: isComplete(profile) ? 'ready' : 'incomplete',

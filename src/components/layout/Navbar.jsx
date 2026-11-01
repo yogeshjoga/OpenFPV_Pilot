@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { NAV_LINKS } from '@config/constants'
 import useUIStore from '@store/useUIStore'
 import { useAuthStore } from '@store/useAuthStore'
+import CrmButton from './CrmButton.jsx'
 import styles from './Navbar.module.css'
 
 // What the announcement strip under the navigation says, repeated as it scrolls
@@ -36,17 +37,17 @@ const groupLinks = (subLinks) => {
 const CRM_URL = import.meta.env.VITE_CRM_LOGIN_URL
 
 // Everyone who signs in lands in the Academy. The CRM is a separate place: a member presses this button to ask for it, the request goes
-// to the admins, and the button turns into a link only after an admin has accepted them. Nothing opens on its own.
+// to the admins, and the button becomes the CRM button only after an admin has accepted them. Nothing opens on its own.
 function CrmAccess({ base }) {
   const status = useAuthStore((s) => s.status)
   const profile = useAuthStore((s) => s.profile)
   const requestCrmAccess = useAuthStore((s) => s.requestCrmAccess)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
-  if (!CRM_URL || status !== 'ready' || profile?.account_kind !== 'member') return null
-  if (profile.status === 'active') {
-    return <a className={base} href={CRM_URL} target="_blank" rel="noopener noreferrer"><ExternalLink size={14} aria-hidden="true" /> CRM</a>
-  }
+  if (!CRM_URL || status !== 'ready') return null
+  // an admin has accepted this account: the CRM button, which asks before it goes anywhere
+  if (profile?.status === 'active') return <CrmButton className={base} href={CRM_URL} />
+  if (profile?.account_kind !== 'member' || profile.crm_requested_at === undefined) return null
   if (profile.crm_requested_at) {
     return <span className={base} title="An admin will look at your request and accept your account for the CRM"><Clock size={14} aria-hidden="true" /> CRM: request sent</span>
   }
