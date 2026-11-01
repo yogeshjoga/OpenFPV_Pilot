@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Mail, ShieldCheck } from 'lucide-react'
-import { useAuthStore } from '@store/useAuthStore'
+import { ACADEMY_HOME, useAuthStore } from '@store/useAuthStore'
 import { EXPERIENCE, HEARD_FROM, LOOKING_FOR, ROLES } from '@config/onboarding'
 import { sendLoginCode } from '@lib/memberApi'
 import { authConfigured } from '@lib/supabaseClient'
@@ -117,7 +117,7 @@ function ProfileStep({ onDone }) {
 }
 
 // Sign in or register: Google, or a code by email. The same card is used on the sign-in page and on every gated page.
-export default function MemberAuthCard({ next = '/', onSignedIn, bare = false }) {
+export default function MemberAuthCard({ next = ACADEMY_HOME, onSignedIn, bare = false }) {
   const cardClass = bare ? `${styles.card} ${styles.bare}` : styles.card
   const status = useAuthStore((s) => s.status)
   const signInWithGoogle = useAuthStore((s) => s.signInWithGoogle)

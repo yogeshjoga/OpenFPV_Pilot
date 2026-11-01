@@ -5,11 +5,11 @@ import { Box, Gamepad2, ClipboardCheck } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
 import MemberAuthCard from '@components/auth/MemberAuthCard'
 import useDocumentMeta from '@lib/useDocumentMeta'
-import { useAuthStore } from '@store/useAuthStore'
+import { ACADEMY_HOME, useAuthStore } from '@store/useAuthStore'
 import styles from './Login.module.css'
 
 // Only addresses inside this site are accepted as the place to go next
-const safeNext = (value) => (typeof value === 'string' && value.startsWith('/') && !value.startsWith('//') ? value : '/')
+const safeNext = (value) => (typeof value === 'string' && value.startsWith('/') && !value.startsWith('//') ? value : ACADEMY_HOME)
 
 export default function Login() {
   useDocumentMeta('Sign in | EGIRE Robotics', 'Sign in or register for free to open the EGIRE Robotics Academy: lessons, labs and simulations for FPV drones.')

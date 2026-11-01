@@ -14,6 +14,8 @@ import { trackEvent } from '@lib/analytics'
 const STAFF = ['instructor', 'coordinator', 'admin', 'super_admin']
 const PROFILE_COLUMNS = 'id, full_name, email, phone, role, status, college_name, member_type, account_kind, is_paid'
 const NEXT_KEY = 'egire-next'
+// Everyone who signs in lands in the Academy. The CRM is a separate place that a member has to ask for.
+export const ACADEMY_HOME = '/intro'
 
 const isComplete = (profile) => Boolean(profile && profile.college_name && profile.full_name)
 
@@ -38,6 +40,11 @@ export const useAuthStore = create((set, get) => ({
         if (!session?.user) { set({ status: 'out', loading: false, user: null, profile: null }); return }
         const { data } = await supabase.from('profiles').select(PROFILE_COLUMNS).eq('id', session.user.id).maybeSingle()
         const profile = data ?? null
+        // when the member last asked for the CRM; read on its own so the sign-in still works if that column is not there yet
+        if (profile) {
+          const { data: ask, error: askError } = await supabase.from('profiles').select('crm_requested_at').eq('id', session.user.id).maybeSingle()
+          profile.crm_requested_at = askError ? null : ask?.crm_requested_at ?? null
+        }
         set({
           status: isComplete(profile) ? 'ready' : 'incomplete',
           loading: false,
@@ -64,7 +71,7 @@ export const useAuthStore = create((set, get) => ({
     trackEvent('signin', { target: 'email code' })
   },
 
-  signInWithGoogle: async (next = '/') => {
+  signInWithGoogle: async (next = ACADEMY_HOME) => {
     try { sessionStorage.setItem(NEXT_KEY, next) } catch { /* the person simply lands on the home page */ }
     const supabase = await getSupabase()
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${window.location.origin}/auth/callback` } })
@@ -73,9 +80,9 @@ export const useAuthStore = create((set, get) => ({
 
   /** Where to send a person after signing in. */
   takeNext: () => {
-    let next = '/'
-    try { next = sessionStorage.getItem(NEXT_KEY) || '/'; sessionStorage.removeItem(NEXT_KEY) } catch { /* ignore */ }
-    return next.startsWith('/') && !next.startsWith('//') ? next : '/'
+    let next = ACADEMY_HOME
+    try { next = sessionStorage.getItem(NEXT_KEY) || ACADEMY_HOME; sessionStorage.removeItem(NEXT_KEY) } catch { /* ignore */ }
+    return next.startsWith('/') && !next.startsWith('//') ? next : ACADEMY_HOME
   },
 
   /** Saves the name, college or company and the onboarding answers. Throws a message safe to show. */
@@ -94,6 +101,19 @@ export const useAuthStore = create((set, get) => ({
     if (error) throw new Error(error.message || 'We could not save that. Please try again.')
     await refreshSession()
     trackEvent('signup', { target: 'profile completed', label: heardFrom })
+  },
+
+  /**
+   * A member asks for the CRM, on purpose. The request goes to the admins; nothing opens until one of them accepts it.
+   * Returns 'requested' or 'approved'. Throws a message safe to show.
+   */
+  requestCrmAccess: async () => {
+    const supabase = await getSupabase()
+    const { data, error } = await supabase.rpc('member_request_crm_access')
+    if (error) throw new Error(error.message || 'We could not send your request. Please try again.')
+    await refreshSession()
+    trackEvent('crm_request', { target: 'crm access' })
+    return data?.state ?? 'requested'
   },
 
   signOut: async () => {
