@@ -35,14 +35,32 @@ const groupLinks = (subLinks) => {
 // "Sign in" for a visitor; the person's name and a sign-out button once signed in
 const CRM_URL = import.meta.env.VITE_CRM_LOGIN_URL
 
-// Paid members see the CRM here. They can open it once an admin has accepted them; until then it says so.
+// Everyone who signs in lands in the Academy. The CRM is a separate place: a member presses this button to ask for it, the request goes
+// to the admins, and the button turns into a link only after an admin has accepted them. Nothing opens on its own.
 function CrmAccess({ base }) {
+  const status = useAuthStore((s) => s.status)
   const profile = useAuthStore((s) => s.profile)
-  if (!CRM_URL || !profile?.is_paid || profile.account_kind !== 'member') return null
+  const requestCrmAccess = useAuthStore((s) => s.requestCrmAccess)
+  const [busy, setBusy] = useState(false)
+  const [message, setMessage] = useState('')
+  if (!CRM_URL || status !== 'ready' || profile?.account_kind !== 'member') return null
   if (profile.status === 'active') {
     return <a className={base} href={CRM_URL} target="_blank" rel="noopener noreferrer"><ExternalLink size={14} aria-hidden="true" /> CRM</a>
   }
-  return <span className={base} title="An admin will accept your account for the CRM soon"><Clock size={14} aria-hidden="true" /> CRM: awaiting approval</span>
+  if (profile.crm_requested_at) {
+    return <span className={base} title="An admin will look at your request and accept your account for the CRM"><Clock size={14} aria-hidden="true" /> CRM: request sent</span>
+  }
+  const ask = async () => {
+    setBusy(true)
+    setMessage('')
+    try { await requestCrmAccess() } catch (err) { setMessage(err.message) } finally { setBusy(false) }
+  }
+  return (
+    <>
+      <button type="button" className={base} onClick={ask} disabled={busy} title="Ask the admins for access to the CRM"><ExternalLink size={14} aria-hidden="true" /> {busy ? 'Sending…' : 'Request CRM access'}</button>
+      {message && <span className={base} role="alert">{message}</span>}
+    </>
+  )
 }
 
 function AccountLink({ mobile = false }) {
