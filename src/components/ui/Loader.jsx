@@ -11,3 +11,13 @@ export default function Loader({ label = 'Loading' }) {
     </div>
   )
 }
+
+// A small spinner for a part of a page that is still loading. The words are there for screen readers only.
+export function Spinner({ label = 'Loading' }) {
+  return (
+    <span className={styles.inline} role="status">
+      <span className={styles.ring} aria-hidden="true" />
+      <span className={styles.sr}>{label}</span>
+    </span>
+  )
+}

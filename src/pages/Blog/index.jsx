@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import Markdown from 'react-markdown'
 import PageWrapper from '@components/layout/PageWrapper'
+import { Spinner } from '@components/ui/Loader'
 import useDocumentMeta from '@lib/useDocumentMeta'
 import { fetchBlogPosts } from '@lib/siteApi'
 import { POSTS, CATEGORIES, keywordList, postBySlug, relatedPosts } from '@data/posts'
@@ -154,7 +155,7 @@ function CrmPost({ slug }) {
   const post = crm.find((p) => p.slug === slug)
   if (post) return <Post post={post} />
   if (waited) return <Navigate to="/blog" replace />
-  return <PageWrapper><p className={`container ${styles.note}`}>Loading the article…</p></PageWrapper>
+  return <PageWrapper><div className="container"><Spinner label="Loading the article" /></div></PageWrapper>
 }
 
 export default function Blog() {

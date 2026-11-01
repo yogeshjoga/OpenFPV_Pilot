@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Spinner } from '@components/ui/Loader'
 import styles from './Scene3D.module.css'
 
 // A small three.js stage for the hardware lessons. `create({ THREE, scene, camera, controls })` builds the objects and returns
@@ -128,7 +129,7 @@ export default function Scene3D({ create, stateRef, view, target, label, floorY 
   return (
     <div ref={stageRef} className={styles.stage}>
       {near && <canvas key={epoch} ref={canvasRef} className={styles.canvas} aria-label={label} role="img" />}
-      {near && !ready && !error && <span className={styles.loading}>Loading the 3D view…</span>}
+      {near && !ready && !error && <span className={styles.loading}><Spinner label="Loading the 3D view" /></span>}
       <span className={styles.hint}>Drag to turn · scroll to zoom</span>
       {error && <p className={styles.error} role="status">{error}</p>}
     </div>

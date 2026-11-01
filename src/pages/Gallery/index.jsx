@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { Spinner } from '@components/ui/Loader'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Folder, Images } from 'lucide-react'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -318,7 +319,7 @@ export default function Gallery() {
                   </Link>
                 </>
               ) : (
-                <p className={styles.albumDesc}>Loading…</p>
+                <Spinner label="Loading the album" />
               )}
             </div>
           )}
