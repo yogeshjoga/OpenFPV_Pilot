@@ -123,9 +123,9 @@
   --z-modal: 200;
 
   /* === LAYOUT === */
-  --max-width: 1280px;
-  --nav-core-height: 72px;
-  --ticker-height: 36px;
+  --max-width: min(88rem, 100%); /* wider than before, and it grows with the screen's text size */
+  --nav-core-height: 4.5rem;
+  --ticker-height: 2.25rem;
   --nav-height: calc(var(--nav-core-height) + var(--ticker-height)); /* navigation bar plus the announcement strip below it */
   --header-height: var(--nav-height);
   --container-padding: var(--space-6);

@@ -109,7 +109,7 @@
 
 .logoImg {
   display: block;
-  height: 56px;
+  height: 3.5rem;
   width: auto;
 }
 
@@ -138,4 +138,22 @@
   font-style: normal;
   font-size: var(--text-xs);
   opacity: 0.8;
+}
+
+/* phones and tablets: every link in the footer is a finger-sized target */
+@media (max-width: 1024px) {
+  .contact a,
+  .link,
+  .socialLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .legalLink {
+    display: inline-block;
+    padding-block: var(--space-3);
+  }
 }

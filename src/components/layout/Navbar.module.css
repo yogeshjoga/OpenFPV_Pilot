@@ -163,12 +163,14 @@
   background: none;
   border: none;
   padding: var(--space-2);
+  min-width: 2.75rem; /* a finger-sized target */
+  min-height: 2.75rem;
   cursor: pointer;
 }
 
 .bar {
   display: block;
-  width: 22px;
+  width: 1.375rem;
   height: 2px;
   background: var(--color-text-primary);
   border-radius: var(--radius-full);
@@ -225,7 +227,7 @@
 @media (max-width: 1200px) {
   .navLinks, .ctaBtn { display: none; }
   .hamburger { display: flex; }
-  .themeToggle { display: flex; }
+  .themeToggle { display: flex; width: 2.75rem; height: 2.75rem; }
 }
 
 /* === THEME TOGGLE === */
@@ -233,8 +235,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 2.375rem;
+  height: 2.375rem;
   border-radius: 50%;
   border: 1px solid var(--color-border);
   background: var(--color-bg-glass);
@@ -317,7 +319,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  min-width: 150px;
+  min-width: 9.375rem;
 }
 
 .navDropdownHeading {
@@ -423,13 +425,13 @@
 /* The logo file carries its own tagline; the header shows the mark and name only */
 .logoCrop {
   display: block;
-  height: 40px;
+  height: 2.5rem;
   overflow: hidden;
 }
 
 .logoImg {
   display: block;
-  height: 48px;
+  height: 3rem;
   width: auto;
 }
 
@@ -512,5 +514,13 @@
   }
   .tickerTrack {
     animation: none;
+  }
+}
+
+/* a finger-sized theme button on phones and tablets (after the rule above, so it wins) */
+@media (max-width: 1200px) {
+  .themeToggle {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }

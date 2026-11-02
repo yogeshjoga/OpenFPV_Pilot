@@ -41,14 +41,14 @@
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 21.25rem) minmax(0, 1fr);
   gap: var(--space-8);
   align-items: start;
 }
 
 .side {
   position: sticky;
-  top: calc(var(--nav-height) + 72px);
+  top: calc(var(--nav-height) + 4.5rem);
   display: grid;
   gap: var(--space-3);
   padding: var(--space-5);
@@ -127,7 +127,7 @@
 
 .task {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-columns: 2.75rem minmax(0, 1fr);
   gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
   background: var(--color-bg-card);
@@ -144,8 +144,8 @@
 .check {
   position: relative;
   display: block;
-  width: 44px;
-  height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   cursor: pointer;
 }
 
@@ -163,8 +163,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   font-family: var(--font-mono);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);

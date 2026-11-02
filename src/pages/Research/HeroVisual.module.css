@@ -1,7 +1,7 @@
 .visual {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 30rem;
   margin: 0 auto;
   aspect-ratio: 1;
   overflow: hidden;

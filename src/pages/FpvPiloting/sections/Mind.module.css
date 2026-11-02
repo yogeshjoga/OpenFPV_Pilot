@@ -9,19 +9,19 @@
 }
 
 .principles {
-  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(14.375rem, 100%), 1fr));
 }
 
 .exercises {
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(18.75rem, 100%), 1fr));
 }
 
 .routine {
-  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(17.5rem, 100%), 1fr));
 }
 
 .habits {
-  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(14.375rem, 100%), 1fr));
   margin-top: var(--space-4);
 }
 
@@ -98,7 +98,7 @@
 
 .plan {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(13.75rem, 100%), 1fr));
   gap: var(--space-3);
   margin: 0;
   padding: 0;

@@ -24,7 +24,7 @@
 .subtitle {
   font-size: var(--text-lg);
   color: var(--color-text-secondary);
-  max-width: 680px;
+  max-width: 42.5rem;
   margin: 0 auto;
   line-height: 1.6;
 }
@@ -35,7 +35,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 23.75rem);
   gap: var(--space-8);
   align-items: start;
 }
@@ -54,7 +54,7 @@
   background: var(--color-bg-tertiary);
   width: 100%;
   aspect-ratio: 4 / 3;
-  min-height: 320px;
+  min-height: 20rem;
 }
 
 .canvas {
@@ -134,7 +134,7 @@
 }
 
 .explode input {
-  width: 96px;
+  width: 6rem;
   accent-color: var(--color-accent-primary);
 }
 
@@ -156,7 +156,7 @@
 
 .motorKey {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(13.75rem, 1fr));
   gap: var(--space-2);
   list-style: none;
   margin: 0;
@@ -216,7 +216,7 @@
 
 .options {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
   gap: var(--space-3);
 }
 
@@ -286,8 +286,8 @@
 }
 
 .chip {
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border-hover);
 }
@@ -494,7 +494,7 @@
 
 @media (max-width: 560px) {
   .stage {
-    min-height: 440px;
+    min-height: 27.5rem;
   }
 }
 
@@ -513,7 +513,7 @@
 }
 
 .chartsSub {
-  max-width: 760px;
+  max-width: 47.5rem;
   margin-bottom: var(--space-6);
   font-size: var(--text-base);
   color: var(--color-text-secondary);
@@ -521,7 +521,7 @@
 
 .sliders {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(17.5rem, 100%), 1fr));
   gap: var(--space-6);
   margin-bottom: var(--space-4);
 }
@@ -545,14 +545,14 @@
 
 .readGroups {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(18.75rem, 100%), 1fr));
   gap: var(--space-4);
   margin-bottom: var(--space-6);
 }
 
 .read {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
   gap: var(--space-2);
   margin: 0;
 }
@@ -583,7 +583,7 @@
 
 .chartGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(21.25rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -614,5 +614,5 @@
 .chartCanvas {
   display: block;
   width: 100%;
-  height: 230px;
+  height: 14.375rem;
 }

@@ -15,7 +15,7 @@
 }
 
 .title {
-  max-width: 860px;
+  max-width: 53.75rem;
   margin: 0 auto var(--space-5);
   font-family: var(--font-display);
   font-size: var(--text-h1);
@@ -24,7 +24,7 @@
 }
 
 .subtitle {
-  max-width: 720px;
+  max-width: 45rem;
   margin: 0 auto var(--space-10);
   font-size: var(--text-lg);
   line-height: 1.6;
@@ -33,9 +33,9 @@
 
 .paths {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
   gap: var(--space-4);
-  max-width: 1000px;
+  max-width: 62.5rem;
   margin: 0 auto;
   text-align: left;
 }
@@ -63,8 +63,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
@@ -141,7 +141,7 @@
 
 .section {
   padding: var(--space-4) 0 var(--space-6);
-  scroll-margin-top: calc(var(--nav-height) + 56px);
+  scroll-margin-top: calc(var(--nav-height) + 3.5rem);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -150,7 +150,7 @@
 }
 
 .sectionHead {
-  max-width: 900px;
+  max-width: 56.25rem;
   margin-bottom: var(--space-3);
 }
 
@@ -194,7 +194,7 @@
 }
 
 .blockIntro {
-  max-width: 760px;
+  max-width: 47.5rem;
   margin-bottom: var(--space-3);
   font-size: var(--text-base);
   line-height: 1.6;
@@ -363,7 +363,7 @@
   display: grid;
   gap: var(--space-3);
   justify-items: center;
-  width: min(480px, 100%);
+  width: min(30rem, 100%);
   padding: var(--space-8) var(--space-8) var(--space-6);
   text-align: center;
   background: var(--color-bg-card);
@@ -377,8 +377,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   color: var(--color-on-accent);
   background: var(--color-accent-primary);
   border-radius: var(--radius-full);

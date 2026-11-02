@@ -6,7 +6,7 @@
 
 .header {
   text-align: center;
-  max-width: 800px;
+  max-width: 50rem;
   margin: 0 auto var(--space-12);
 }
 
@@ -27,7 +27,7 @@
 
 .albumGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
   gap: var(--space-6);
 }
 
@@ -107,7 +107,7 @@
 
 .albumDesc {
   margin-top: var(--space-3);
-  max-width: 640px;
+  max-width: 40rem;
   color: var(--color-text-secondary);
 }
 
@@ -199,8 +199,8 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   border: none;
   background: rgba(255, 255, 255, 0.15);
@@ -328,7 +328,7 @@
 /* ---- Folders ---- */
 .folderGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: var(--space-6);
 }
 

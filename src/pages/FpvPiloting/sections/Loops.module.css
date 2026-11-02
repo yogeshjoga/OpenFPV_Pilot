@@ -10,7 +10,7 @@
 .guideStage,
 .loopStage {
   align-self: start;
-  height: var(--lab-h, 520px);
+  height: var(--lab-h, 32.5rem);
   min-height: 0;
 }
 
@@ -44,7 +44,7 @@
   display: grid;
   gap: var(--space-3);
   align-content: start;
-  max-height: var(--lab-h, 520px);
+  max-height: var(--lab-h, 32.5rem);
   overflow: auto;
 }
 
@@ -160,8 +160,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 2.125rem;
+  height: 2.125rem;
   font-family: var(--font-display);
   font-size: var(--text-xl);
   font-weight: var(--font-extrabold);
@@ -182,7 +182,7 @@
 
 .views {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 300px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 18.75rem);
   gap: var(--space-4);
   align-items: stretch;
 }
@@ -207,7 +207,7 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: 420px;
+  max-height: 26.25rem;
 }
 
 .grid {
@@ -260,7 +260,7 @@
 
 .scrub {
   flex: 1;
-  min-width: 140px;
+  min-width: 8.75rem;
   accent-color: var(--color-accent-primary);
 }
 
@@ -284,7 +284,7 @@
 
 .phases {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(15.625rem, 100%), 1fr));
   gap: var(--space-3);
   margin: 0;
   padding: 0;
@@ -302,7 +302,7 @@
 
 .phases button {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 1.75rem 1fr;
   gap: var(--space-3);
   width: 100%;
   padding: var(--space-3) var(--space-4);
@@ -318,8 +318,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
@@ -348,7 +348,7 @@
 
 .cols {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(18.75rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -392,7 +392,7 @@
 
   .guideStage,
   .loopStage {
-    min-height: 340px;
+    min-height: 21.25rem;
   }
 }
 
@@ -403,7 +403,7 @@
 }
 
 .pathCard svg {
-  max-height: 210px;
+  max-height: 13.125rem;
 }
 
 .pathCard figcaption {
@@ -455,7 +455,7 @@
   bottom: var(--space-3);
   display: grid;
   gap: 2px;
-  min-width: 210px;
+  min-width: 13.125rem;
   padding: var(--space-3) var(--space-4);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);

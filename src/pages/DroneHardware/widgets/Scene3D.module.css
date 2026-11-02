@@ -1,6 +1,6 @@
 .stage {
   position: relative;
-  height: clamp(300px, 36vw, 400px);
+  height: clamp(18.75rem, 34vw, 34rem); /* taller on a big screen, so the lab is easy to see from the back of a room */
   overflow: hidden;
   background: var(--color-bg-tertiary);
   border: 1px solid var(--color-border);

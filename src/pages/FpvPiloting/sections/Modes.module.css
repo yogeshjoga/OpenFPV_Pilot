@@ -2,7 +2,7 @@
 
 .meaning {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -44,7 +44,7 @@
 
 .labStage {
   align-self: start;
-  height: var(--lab-h, 520px);
+  height: var(--lab-h, 32.5rem);
   min-height: 0;
 }
 
@@ -54,7 +54,7 @@
   left: var(--space-3);
   display: grid;
   gap: var(--space-1);
-  min-width: 190px;
+  min-width: 11.875rem;
   padding: var(--space-3) var(--space-4);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -106,7 +106,7 @@
   grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
   gap: var(--space-3);
   align-content: start;
-  max-height: var(--lab-h, 520px);
+  max-height: var(--lab-h, 32.5rem);
   overflow: auto;
 }
 
@@ -229,7 +229,7 @@
 
 .how {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16.25rem, 100%), 1fr));
   gap: var(--space-4);
   margin-top: var(--space-6);
 }
@@ -268,7 +268,7 @@
 
 .compare {
   width: 100%;
-  min-width: 720px;
+  min-width: 45rem;
   border-collapse: collapse;
   font-size: var(--text-sm);
 }
@@ -316,7 +316,7 @@
 
 .proscons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16.25rem, 100%), 1fr));
   gap: var(--space-4);
   margin-top: var(--space-6);
 }
@@ -352,7 +352,7 @@
 .pros li,
 .cons li {
   display: grid;
-  grid-template-columns: 16px 1fr;
+  grid-template-columns: 1rem 1fr;
   gap: var(--space-2);
 }
 
@@ -436,7 +436,7 @@
   }
 
   .labStage {
-    min-height: 380px;
+    min-height: 23.75rem;
   }
 }
 

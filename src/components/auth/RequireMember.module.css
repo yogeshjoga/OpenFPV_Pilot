@@ -27,7 +27,7 @@
 /* the popup's backdrop: covers everything under the header and tints the blurred page behind it */
 .overlay {
   position: fixed;
-  top: var(--gate-top, 140px);
+  top: var(--gate-top, 8.75rem);
   right: 0;
   bottom: 0;
   left: 0;
@@ -41,8 +41,8 @@
 
 .dialog {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
-  width: min(980px, 100%);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 27.5rem);
+  width: min(61.25rem, 100%);
   margin: auto;
   overflow: hidden;
   background: var(--color-bg-card);
@@ -62,7 +62,7 @@
 
 .logo {
   width: auto;
-  height: 40px;
+  height: 2.5rem;
 }
 
 .kicker {

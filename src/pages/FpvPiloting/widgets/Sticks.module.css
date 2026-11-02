@@ -25,7 +25,7 @@
 .gimbal {
   display: block;
   width: 100%;
-  max-width: 190px;
+  max-width: 11.875rem;
   height: auto;
   user-select: none;
   touch-action: none;
@@ -103,7 +103,7 @@
 
 .words li {
   display: grid;
-  grid-template-columns: 10px 76px 1fr;
+  grid-template-columns: 10px 4.75rem 1fr;
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-1) var(--space-2);
@@ -138,13 +138,13 @@
 }
 
 .compact .gimbal {
-  max-width: 116px;
+  max-width: 7.25rem;
 }
 
 /* for the mode lab, where the sticks are the thing you play with: as large as the screen allows */
 .big .gimbal {
   /* as large as the height of the lab leaves room for: the rest of the panel needs about 415 px */
-  max-width: clamp(160px, calc(var(--lab-h, 400px) - 415px), 260px);
+  max-width: clamp(10rem, calc(var(--lab-h, 25rem) - 25.9375rem), 16.25rem);
 }
 
 .compact .unit figcaption {
@@ -170,13 +170,13 @@
 
 /* the two sticks on the left and the names and values in a list on the right: bigger sticks in less height */
 .side {
-  grid-template-columns: minmax(0, max-content) minmax(210px, 1fr);
+  grid-template-columns: minmax(0, max-content) minmax(13.125rem, 1fr);
   align-items: center;
   gap: var(--space-4);
 }
 
 .side .gimbal {
-  max-width: clamp(122px, calc(var(--lab-h, 400px) - 290px), 250px);
+  max-width: clamp(7.625rem, calc(var(--lab-h, 25rem) - 18.125rem), 15.625rem);
 }
 
 .side .words {
@@ -185,7 +185,7 @@
 }
 
 .side .words li {
-  grid-template-columns: 10px 58px minmax(0, 1fr);
+  grid-template-columns: 10px 3.625rem minmax(0, 1fr);
   grid-template-rows: auto;
   align-items: baseline;
   column-gap: var(--space-2);
@@ -208,7 +208,7 @@
   }
 
   .side .gimbal {
-    max-width: clamp(122px, calc(var(--lab-h, 400px) - 330px), 320px);
+    max-width: clamp(7.625rem, calc(var(--lab-h, 25rem) - 20.625rem), 20rem);
   }
 
   .side .words {

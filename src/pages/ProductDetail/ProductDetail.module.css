@@ -36,7 +36,7 @@
 
 .topSection {
   display: grid;
-  grid-template-columns: 40% 1fr 280px;
+  grid-template-columns: 40% 1fr 17.5rem;
   gap: var(--space-8);
 }
 
@@ -69,8 +69,8 @@
 }
 
 .thumbBtn {
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   border: 1px solid var(--color-border-hover);
   border-radius: var(--radius-sm);
   background: var(--color-bg-card);
@@ -327,8 +327,8 @@
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   background: var(--color-border);
   border-radius: 50%;
   display: flex;

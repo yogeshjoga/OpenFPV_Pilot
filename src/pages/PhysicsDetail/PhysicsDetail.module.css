@@ -89,7 +89,7 @@
 
 .contentGrid {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 21.25rem;
   gap: var(--space-24);
   align-items: flex-start;
 }
@@ -161,7 +161,7 @@
 /* Sidebar */
 .sidebar {
   position: sticky;
-  top: 100px;
+  top: 6.25rem;
 }
 
 .sidebarSection {
@@ -190,8 +190,8 @@
 }
 
 .relatedThumb {
-  width: 100px;
-  height: 60px;
+  width: 6.25rem;
+  height: 3.75rem;
   background: #000;
   border-radius: var(--radius-md);
   overflow: hidden;

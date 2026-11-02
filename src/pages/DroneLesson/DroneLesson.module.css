@@ -24,7 +24,7 @@
 .subtitle {
   font-size: var(--text-lg);
   color: var(--color-text-secondary);
-  max-width: 640px;
+  max-width: 40rem;
   margin: 0 auto;
   line-height: 1.6;
 }
@@ -36,7 +36,7 @@
 .frame {
   display: block;
   width: 100%;
-  min-height: 560px;
+  min-height: 35rem;
   border: 0;
   background: transparent;
 }

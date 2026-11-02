@@ -10,7 +10,7 @@
 
 .chooserText {
   flex: 1;
-  min-width: 240px;
+  min-width: 15rem;
   font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--color-text-secondary);
@@ -182,7 +182,7 @@
 .chart {
   display: block;
   width: 100%;
-  height: 260px;
+  height: 16.25rem;
 }
 
 .tip {
@@ -206,7 +206,7 @@
 
 /* a side view is wide and flat, so it gets a row of its own, with the 3D drone and the sticks under it */
 .sideLayout {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 18.75rem);
 }
 
 .sideLayout > figure {
@@ -227,7 +227,7 @@
 }
 
 .pathBox svg {
-  max-height: 210px;
+  max-height: 13.125rem;
 }
 
 .pathBox figcaption {

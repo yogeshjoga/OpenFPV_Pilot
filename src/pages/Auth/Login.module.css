@@ -19,7 +19,7 @@
   gap: var(--space-12);
   align-items: start; /* both columns start at the same line, however tall the form is */
   z-index: 1;
-  max-width: 1100px;
+  max-width: 68.75rem;
   width: 100%;
 }
 
@@ -78,7 +78,7 @@
   color: var(--color-text-secondary);
   line-height: 1.6;
   margin: 0 0 var(--space-10) 0;
-  max-width: 580px;
+  max-width: 36.25rem;
 }
 
 .featureList {
@@ -95,8 +95,8 @@
 }
 
 .featureIconWrapper {
-  width: 38px;
-  height: 38px;
+  width: 2.375rem;
+  height: 2.375rem;
   border-radius: var(--radius-lg);
   background: rgba(var(--color-accent-primary-rgb), 0.05);
   border: 1px solid rgba(var(--color-accent-primary-rgb), 0.15);
@@ -145,7 +145,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 480px;
+  max-width: 30rem;
   background: var(--color-bg-glass);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
@@ -183,7 +183,7 @@
   justify-content: center;
   gap: var(--space-2);
   width: 100%;
-  height: 50px;
+  height: 3.125rem;
   border: none;
   border-radius: var(--radius-full);
   background: var(--color-accent-primary);
@@ -255,7 +255,7 @@
 }
 
 .loginLogo {
-  height: 67px;
+  height: 4.1875rem;
   width: auto;
   margin-bottom: var(--space-4);
 }

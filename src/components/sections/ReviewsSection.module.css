@@ -3,7 +3,7 @@
 }
 
 .header {
-  max-width: 640px;
+  max-width: 40rem;
   margin: 0 auto var(--space-12);
   text-align: center;
 }

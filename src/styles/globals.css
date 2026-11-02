@@ -21,6 +21,17 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/*
+ * Big screens, TVs and projectors. Text, spacing and the page's widths are all in rem, so growing the root size grows the whole page
+ * together: on a 1920 px screen everything is about 30 % larger, on a 2560 px screen about 80 %, and it stops at twice the size.
+ * Laptops and phones are untouched (16 px). The media query itself is measured in the browser's own 16 px, so it does not shift.
+ */
+@media (min-width: 1536px) {
+  html {
+    font-size: clamp(16px, calc(16px + (100vw - 1536px) * 0.0125), 32px);
+  }
+}
+
 body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
@@ -91,6 +102,12 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 
 .section {
   padding: var(--space-24) 0;
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: var(--space-12) 0;
+  }
 }
 
 /* Emphasised word inside a headline: one solid accent colour, no gradient */

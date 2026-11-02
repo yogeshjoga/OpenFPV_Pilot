@@ -22,8 +22,8 @@
 }
 
 .ring {
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
   border: 3px solid var(--color-border);
   border-top-color: var(--color-accent-primary);
   border-radius: 50%;

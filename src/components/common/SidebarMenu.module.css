@@ -111,6 +111,11 @@
 
   .sidebarItem {
     width: auto;
-    flex: 0 0 auto;
+    max-width: 100%; /* a long name wraps inside its button instead of pushing the page wider */
+    flex: 0 1 auto;
+  }
+
+  .sidebarName {
+    min-width: 0;
   }
 }

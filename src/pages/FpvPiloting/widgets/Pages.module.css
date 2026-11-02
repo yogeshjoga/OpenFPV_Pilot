@@ -4,7 +4,7 @@
 }
 
 .tabsAnchor {
-  scroll-margin-top: calc(var(--nav-height) + 64px);
+  scroll-margin-top: calc(var(--nav-height) + 4rem);
 }
 
 .tabs {
@@ -32,8 +32,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 1.5rem;
+  height: 1.5rem;
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);

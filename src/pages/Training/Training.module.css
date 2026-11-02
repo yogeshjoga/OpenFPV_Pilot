@@ -31,7 +31,7 @@
 .sub {
   font-size: var(--text-lg);
   color: var(--color-text-secondary);
-  max-width: 640px;
+  max-width: 40rem;
   line-height: 1.7;
 }
 
@@ -126,8 +126,8 @@
 }
 
 .dayDot {
-  width: 36px;
-  height: 36px;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 50%;
   border: 1px solid var(--color-border);
   background: var(--color-bg-card);
@@ -374,7 +374,7 @@
 
 .detailRow {
   display: grid;
-  grid-template-columns: 60px 1fr;
+  grid-template-columns: 3.75rem 1fr;
   gap: var(--space-3);
   font-size: var(--text-sm);
   align-items: start;
@@ -404,7 +404,7 @@
   background: var(--color-bg-glass);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
-  max-width: 700px;
+  max-width: 43.75rem;
   margin: 0 auto;
 }
 

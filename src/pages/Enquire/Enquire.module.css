@@ -205,7 +205,7 @@
 
 .trap {
   position: absolute;
-  left: -9999px;
+  left: -624.938rem;
   width: 1px;
   height: 1px;
   overflow: hidden;
@@ -268,7 +268,7 @@
 
 /* ── thank-you ── */
 .doneWrap {
-  max-width: 560px;
+  max-width: 35rem;
   padding: var(--space-16) 0;
   text-align: center;
 }

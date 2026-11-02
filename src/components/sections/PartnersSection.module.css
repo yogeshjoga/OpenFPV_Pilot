@@ -3,7 +3,7 @@
 }
 
 .header {
-  max-width: 640px;
+  max-width: 40rem;
   margin: 0 auto var(--space-12);
   text-align: center;
 }
@@ -40,8 +40,8 @@
   align-items: center;
   justify-content: center;
   width: calc((100% - 3 * var(--space-6)) / 4);
-  min-width: 200px;
-  height: 160px;
+  min-width: 12.5rem;
+  height: 10rem;
   padding: var(--space-6);
   background: var(--color-logo-surface);
   border: 1px solid var(--color-border);
@@ -73,7 +73,7 @@
   .tile {
     width: calc((100% - var(--space-6)) / 2);
     min-width: 0;
-    height: 120px;
+    height: 7.5rem;
     padding: var(--space-4);
   }
 }
