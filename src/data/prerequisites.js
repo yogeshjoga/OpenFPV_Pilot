@@ -4,6 +4,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Soldering Iron (Temperature Controlled)',
+        art: 'soldering-iron',
         description: 'A precision heating tool utilized to melt solder, effectively joining electrical components.',
         whenToUse: 'Required during electrical assembly, motor wiring, and component replacement or repair.',
         whereToUse: 'Applied to flight controllers, ESC pads, battery leads, and receiver wiring interfaces.',
@@ -12,6 +13,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Solder Wire (Lead / Lead-Free)',
+        art: 'solder-wire',
         description: 'A metal alloy wire featuring a flux core that melts to form reliable electrical connections.',
         whenToUse: 'Utilized whenever joining two wires or bonding a wire to a PCB pad.',
         whereToUse: 'Applicable anywhere electrical contact must be permanently established.',
@@ -20,6 +22,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Flux',
+        art: 'flux',
         description: 'A chemical cleaning agent that facilitates the soldering process by eliminating oxidation.',
         whenToUse: 'Applied prior to soldering oxidized joints, heavy ground pads, or when solder fails to flow smoothly.',
         whereToUse: 'Utilized on PCB pads and bare wire ends prior to the tinning process.',
@@ -28,6 +31,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Solder Wick (Desoldering Braid)',
+        art: 'solder-wick',
         description: 'A braided copper wire designed to extract molten solder via capillary action.',
         whenToUse: 'Required for correcting errors, removing components, or cleaning excess solder from PCB pads.',
         whereToUse: 'Primarily used on flight controller pads or ESCs during maintenance and repair procedures.',
@@ -36,6 +40,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Solder Sucker',
+        art: 'solder-sucker',
         description: 'A spring-loaded vacuum device engineered to extract large quantities of molten solder.',
         whenToUse: 'Employed when removing substantial connections, such as XT60 battery wires from power distribution boards.',
         whereToUse: 'Utilized on heavy-gauge wire pads and large terminals.',
@@ -44,6 +49,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Helping Hands / PCB Holder',
+        art: 'helping-hands',
         description: 'An adjustable clamping system equipped with alligator clips to secure components firmly.',
         whenToUse: 'Utilized to stabilize the flight controller or wires during intricate soldering procedures.',
         whereToUse: 'Deployed on the workbench during complex assembly and soldering stages.',
@@ -52,6 +58,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Heat Gun / Lighter',
+        art: 'heat-gun',
         description: 'A thermal tool utilized to apply high heat for shrinking heat-shrink tubing.',
         whenToUse: 'Applied after soldering wire joints (e.g., motor wires) to provide electrical insulation.',
         whereToUse: 'Utilized over exposed wire splices or around vulnerable antenna bases.',
@@ -60,6 +67,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Wire Stripper',
+        art: 'wire-stripper',
         description: 'A specialized tool designed to remove silicone insulation from wire ends without damaging the internal copper core.',
         whenToUse: 'Required prior to tinning and soldering any electrical wire.',
         whereToUse: 'Utilized on silicone motor wires, receiver cables, and battery leads.',
@@ -68,6 +76,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Wire Cutter (Flush Cutter)',
+        art: 'wire-cutter',
         description: 'A precision cutting tool engineered to cut cleanly and flush against a flat surface.',
         whenToUse: 'Employed for trimming excess wire length and cutting zip ties flush.',
         whereToUse: 'Applied to through-hole component leads and zip tie tails.',
@@ -76,6 +85,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Needle Nose Pliers',
+        art: 'needle-nose-pliers',
         description: 'Pliers featuring elongated, narrow jaws optimized for gripping objects in confined spaces.',
         whenToUse: 'Utilized for retrieving dropped hardware, securing miniature nuts, or tightening zip ties.',
         whereToUse: 'Employed deep within the electronics stack or around delicate peripheral components.',
@@ -84,6 +94,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Hex Driver Set (1.5mm / 2mm / 2.5mm)',
+        art: 'hex-drivers',
         description: 'Precision screwdrivers designed specifically for hexagonal socket screws standard in FPV drone assembly.',
         whenToUse: 'Required for frame construction, motor mounting, and securing structural plates.',
         whereToUse: 'Utilized on all M2 and M3 structural fasteners throughout the drone.',
@@ -92,6 +103,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Screwdriver Set',
+        art: 'screwdriver-set',
         description: 'A comprehensive set of standard Phillips and flathead screwdrivers.',
         whenToUse: 'Required for specific peripheral maintenance, such as action camera mounts or radio controllers.',
         whereToUse: 'Applied to goggles, radio transmitters, and peripheral equipment enclosures.',
@@ -100,6 +112,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Tweezers (ESD Safe)',
+        art: 'tweezers',
         description: 'Anti-static precision tweezers designed for manipulating miniature electronic components.',
         whenToUse: 'Employed when positioning tiny receiver wires on pads or routing wires through restricted clearances.',
         whereToUse: 'Utilized directly on flight controller components or within tight carbon fiber frame cutouts.',
@@ -108,6 +121,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Multimeter',
+        art: 'multimeter',
         description: 'An essential electronic diagnostic instrument used to measure voltage, current, and electrical resistance.',
         whenToUse: 'Mandatory prior to connecting the battery to the drone for the initial power-up.',
         whereToUse: 'Utilized for continuity testing across the primary XT60 power terminals.',
@@ -116,6 +130,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Smoke Stopper',
+        art: 'smoke-stopper',
         description: 'A resettable fuse or current-limiting circuit installed between the battery and the drone.',
         whenToUse: 'Employed during the initial battery connection on a new build or following significant repairs.',
         whereToUse: 'Installed in series with the primary XT60 power connector.',
@@ -124,6 +139,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Digital Caliper',
+        art: 'digital-caliper',
         description: 'A highly accurate precision measurement instrument.',
         whenToUse: 'Utilized for measuring frame standoffs, fastener lengths, and 3D printed component dimensions.',
         whereToUse: 'Applied exclusively to mechanical parts and structural hardware.',
@@ -132,6 +148,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Hot Glue Gun / Conformal Coating',
+        art: 'hot-glue-gun',
         description: 'Adhesive and protective materials utilized for sealing and insulating electronics.',
         whenToUse: 'Applied for protecting soldered connections from mechanical stress and weatherproofing the flight controller.',
         whereToUse: 'Utilized on antenna U.FL connectors and vulnerable wire bases.',
@@ -140,6 +157,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Double-Sided Tape (3M)',
+        art: 'double-sided-tape',
         description: 'An industrial-strength, high-adhesion mounting tape.',
         whenToUse: 'Required for mounting receivers, video transmitters, or components lacking dedicated mounting hardware.',
         whereToUse: 'Applied between the carbon fiber frame and flat-bottomed electronic modules.',
@@ -148,6 +166,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Zip Ties',
+        art: 'zip-ties',
         description: 'High-tensile nylon cable fastening ties.',
         whenToUse: 'Employed for securing motor wiring to frame arms and mounting antenna systems.',
         whereToUse: 'Applied along the carbon fiber arms and rear aluminum standoffs.',
@@ -156,6 +175,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Electrical Tape',
+        art: 'electrical-tape',
         description: 'Insulating adhesive tape (premium fabric tape, such as Tesa, is highly recommended).',
         whenToUse: 'Utilized for wrapping arms to secure ESC wiring or insulating sharp carbon fiber edges.',
         whereToUse: 'Applied primarily to the drone frame arms and wiring bundles.',
@@ -169,6 +189,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Silicone Wires (14 AWG – Battery Lead)',
+        art: 'silicone-14awg',
         description: 'Thick, highly flexible wire engineered to conduct substantial burst currents (exceeding 100A).',
         whenToUse: 'Required when wiring the XT60 power connector to the ESC or Power Distribution Board (PDB).',
         whereToUse: 'Utilized exclusively for the main power delivery circuit.',
@@ -177,6 +198,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Silicone Wires (16-18 AWG)',
+        art: 'silicone-16awg',
         description: 'Medium-gauge wire designed for sustained, moderate current delivery.',
         whenToUse: 'Employed when extending motor wires or providing power to high-draw peripheral devices.',
         whereToUse: 'Utilized on motor connections and heavy-duty video transmitter units.',
@@ -185,6 +207,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Silicone Wires (20–30 AWG – Signal Wires)',
+        art: 'silicone-20awg',
         description: 'Fine-gauge wire optimized for low-current data transmission.',
         whenToUse: 'Required for wiring radio receivers, GPS modules, and camera video signal lines.',
         whereToUse: 'Utilized for connections between the flight controller and peripheral sensors.',
@@ -193,6 +216,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Coaxial Cable (VTX Antenna Extension)',
+        art: 'coax-cable',
         description: 'A heavily shielded cable designed for high-frequency RF video transmission.',
         whenToUse: 'Required when extending a video transmitter output to a remote antenna mounting point.',
         whereToUse: 'Installed between the VTX module and the rear TPU antenna mount.',
@@ -206,6 +230,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'XT60 Connectors (Male & Female)',
+        art: 'xt60',
         description: 'The industry-standard, high-current, polarized connector for 5" FPV drones.',
         whenToUse: 'Employed to connect the high-capacity LiPo battery to the drone\'s power system.',
         whereToUse: 'Integrated into the primary main power lead.',
@@ -214,6 +239,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'XT30 Connectors',
+        art: 'xt30',
         description: 'A scaled-down, lighter variant of the standard XT60 connector.',
         whenToUse: 'Utilized on smaller 2" to 3" micro drones with lower current requirements.',
         whereToUse: 'Integrated into micro drone battery leads and ESC power inputs.',
@@ -222,6 +248,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Balance Connector (JST-XH)',
+        art: 'balance-jst-xh',
         description: 'The standard multi-wire diagnostic and charging plug integrated into LiPo batteries.',
         whenToUse: 'Required when connecting the battery to a balanced smart charger.',
         whereToUse: 'Plugged directly into the charger\'s balance board or integrated port.',
@@ -235,6 +262,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'JST Connectors (PH 2.0 / SH 1.0 / GH)',
+        art: 'jst-connectors',
         description: 'Miniature precision connectors utilized for plug-and-play electronic integration.',
         whenToUse: 'Required when connecting digital VTX modules (e.g., DJI O3) or GPS units without direct soldering.',
         whereToUse: 'Utilized on dedicated flight controller integration ports.',
@@ -243,6 +271,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Dupont / Servo Connectors',
+        art: 'dupont-servo',
         description: 'Standardized 3-pin rectangular connectors historically common in RC aviation.',
         whenToUse: 'Infrequently used in modern FPV; primarily reserved for fixed-wing aircraft or legacy PWM receivers.',
         whereToUse: 'Employed for legacy peripheral connections and older servo integrations.',
@@ -256,6 +285,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Capacitors (Low ESR, 25V / 35V / 50V)',
+        art: 'capacitor',
         description: 'High-capacity energy storage components functioning as electrical shock absorbers.',
         whenToUse: 'Strictly mandatory on all 4S-6S drone builds; must be soldered across the main battery input pads.',
         whereToUse: 'Installed directly at the main ESC battery input terminals.',
@@ -264,6 +294,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'BEC (5V / 9V Voltage Regulators)',
+        art: 'bec',
         description: 'Battery Eliminator Circuit — a hardware module that steps down raw battery voltage to a stable lower voltage.',
         whenToUse: 'Required when powering a GoPro, 5V receiver, or digital air unit from a high-voltage primary battery.',
         whereToUse: 'Integrated onto the flight controller or installed as a standalone auxiliary board.',
@@ -277,6 +308,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'SMA / RP-SMA Connectors',
+        art: 'sma-connectors',
         description: 'Robust, threaded metal coaxial antenna connectors.',
         whenToUse: 'Required for mounting heavy, durable video antennas securely to the drone chassis.',
         whereToUse: 'Integrated at the video transmitter output stage.',
@@ -285,6 +317,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'U.FL (IPEX) / MMCX Connectors',
+        art: 'ufl-mmcx',
         description: 'Ultra-miniature, snap-on coaxial RF connectors.',
         whenToUse: 'Utilized for connecting the antenna directly to the VTX circuit board to save space.',
         whereToUse: 'Located internally within the drone electronics stack.',
@@ -298,6 +331,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Frame Screws (M2 / M3) & Nylock Nuts',
+        art: 'frame-screws-nuts',
         description: 'High-tensile titanium or steel metric structural fasteners.',
         whenToUse: 'Required for assembling the carbon fiber frame and mounting the brushless motors.',
         whereToUse: 'Applied to motors, structural arms, and the top chassis plate.',
@@ -306,6 +340,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Nylon / Aluminum Standoffs',
+        art: 'standoffs',
         description: 'Structural columns utilized to separate the top and bottom carbon plates, housing the electronics.',
         whenToUse: 'Required for constructing the central protective cage for the electronics stack.',
         whereToUse: 'Installed vertically between the main carbon fiber chassis plates.',
@@ -314,6 +349,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Rubber Grommets (FC Soft Mount)',
+        art: 'rubber-grommets',
         description: 'Silicone damping rings installed within the mounting holes of sensitive electronics.',
         whenToUse: 'Mandatory when mounting the flight controller to the central stack screws.',
         whereToUse: 'Installed within the flight controller and ESC mounting apertures.',
@@ -327,6 +363,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Carbon Fiber Arms',
+        art: 'carbon-arms',
         description: 'The primary structural appendages of the drone chassis, milled from rigid carbon fiber.',
         whenToUse: 'Essential for providing leverage and establishing a mounting point for motors away from the center of mass.',
         whereToUse: 'Forms the foundational X or H geometry of the drone frame.',
@@ -335,6 +372,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Battery Strap & Anti-Slip Pad',
+        art: 'battery-strap',
         description: 'A high-tensile Kevlar strap paired with a high-friction silicone mounting pad.',
         whenToUse: 'Required for securing the heavy LiPo battery firmly to the chassis.',
         whereToUse: 'Applied to the top or bottom structural plate, depending on frame design.',
@@ -348,6 +386,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Flight Controller (FC)',
+        art: 'flight-controller',
         description: 'The central processing unit of the drone, containing the gyroscope, main processor (F4/F7/H7), and operating system (e.g., Betaflight).',
         whenToUse: 'Serves as the central integration hub for wiring all peripherals (receiver, GPS, VTX).',
         whereToUse: 'Typically mounted at the top of the central electronics stack.',
@@ -356,6 +395,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'ESC (4-in-1)',
+        art: 'esc-4in1',
         description: 'The Electronic Speed Controller — a high-power module that manages raw battery distribution to the motors.',
         whenToUse: 'Required for interfacing the primary battery power with the individual brushless motors.',
         whereToUse: 'Typically mounted at the base of the central electronics stack for optimal cooling and power routing.',
@@ -364,6 +404,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Receiver (RX)',
+        art: 'receiver',
         description: 'The dedicated radio telemetry module (e.g., ExpressLRS or Crossfire).',
         whenToUse: 'Wired to the flight controller via a standard 4-wire UART interface (5V, GND, TX, RX).',
         whereToUse: 'Generally mounted at the rear of the frame to maximize antenna clearance.',
@@ -372,6 +413,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'VTX & FPV Camera',
+        art: 'vtx-camera',
         description: 'The Video Transmitter and optical sensor module, functioning as the visual system of the drone.',
         whenToUse: 'Wired directly to the flight controller to transmit real-time video telemetry back to the pilot\'s goggles.',
         whereToUse: 'The camera is mounted at the front, while the VTX is secured at the rear of the chassis.',
@@ -385,6 +427,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Heat Shrink Tubing',
+        art: 'heat-shrink',
         description: 'Thermoplastic tubes that contract uniformly when heated to create a tight protective seal.',
         whenToUse: 'Required whenever a receiver board or raw soldered wire splice is exposed to the environment.',
         whereToUse: 'Applied over UART cable splices, bare receiver boards, and motor wire extensions.',
@@ -398,6 +441,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'LiPo Battery Checker',
+        art: 'lipo-checker',
         description: 'A portable diagnostic screen that interfaces with the battery\'s balance lead.',
         whenToUse: 'Mandatory before takeoff and immediately following every flight.',
         whereToUse: 'Plugged directly into the battery\'s JST-XH balance connector.',
@@ -406,6 +450,7 @@ export const PREREQUISITES_DATA = [
       },
       {
         name: 'Fireproof LiPo Bag',
+        art: 'lipo-bag',
         description: 'A specialized containment bag lined with woven fiberglass.',
         whenToUse: 'Strictly required during the charging, transportation, and long-term storage of all LiPo batteries.',
         whereToUse: 'Utilized within the charging station setup or transport backpack.',
@@ -419,6 +464,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'USB Type-C Cable',
+        art: 'usb-c-cable',
         description: 'A high-speed data transmission cable.',
         whenToUse: 'Required for connecting the drone\'s flight controller to a PC running Betaflight Configurator.',
         whereToUse: 'Interfaced with the primary USB port on the flight controller.',
@@ -432,6 +478,7 @@ export const PREREQUISITES_DATA = [
     items: [
       {
         name: 'Raspberry Pi / Companion Computer',
+        art: 'raspberry-pi',
         description: 'An onboard microcomputer utilized for high-level autonomous processing and computer vision.',
         whenToUse: 'Required when engineering a drone capable of object tracking or autonomous code-driven flight.',
         whereToUse: 'Mounted securely on an extended top frame or custom secondary deck.',

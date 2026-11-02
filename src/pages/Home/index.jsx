@@ -9,7 +9,6 @@ import FaqSection from '@components/sections/FaqSection'
 import VideoCarousel from '@components/sections/VideoCarousel'
 import { fetchReviews } from '@lib/siteApi'
 import { whatsappHref } from '@config/constants'
-import { optimized } from '@lib/img'
 import ReviewsSection from '@components/sections/ReviewsSection'
 import PartnersSection from '@components/sections/PartnersSection'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
@@ -499,54 +498,16 @@ function PrerequisitesSlider() {
 
   const currentItem = ALL_PREREQS[currentIndex];
 
-  // Dynamic image matching based on item name
-  const getPrereqImage = (name) => {
-    const assetMap = {
-      'Soldering iron (temperature controlled)': '/images/soldering_iron.png',
-      'Solder wire (lead / lead-free)': '/images/solder_wire.png',
-      'Flux': '/images/flux.png',
-      'Multimeter': '/images/multimeter.png',
-      'Battery': '/images/Battery_4S_1.png',
-      'Motor': '/images/Motor.png',
-      'Frame': '/images/Frame_x5_1.png',
-      'ESC': '/images/ESC_STACK_1.png',
-      'Props': '/images/propellers.png',
-      'Goggles': '/images/goggles.png',
-      'Radio': '/images/controller.png',
-      'VTX': '/images/vtx.png',
-      'FC': '/images/FC.png',
-      'Helping hands / PCB holder': '/images/Helping_hands.png',
-      'Heat gun / lighter': '/images/Heat_gun.png',
-      'Wire stripper': '/images/Wire_stripper.png',
-      'Wire cutter (flush cutter)': '/images/Wire_cutter.png',
-      'Needle nose pliers': '/images/Neddle_nose_plier.png',
-      'Hex driver set (1.5mm / 2mm / 2.5mm)': '/images/Hex_drivers.png',
-      'Screwdriver set': '/images/Screw_driver_kit.png',
-      'Solder wick (desoldering braid)': '/images/Solder_sucker.png',
-      'Solder sucker': '/images/Solder_sucker.png',
-      'Smoke Stopper': '/images/Smoke_stopper.png',
-      'Tweezers': '/images/Tweezers.png',
-      'Zip ties': '/images/Zip_ties.png',
-      'Digital Caliper': '/images/Digital_caliper.png',
-      'Hot glue gun / Conformal Coating': '/images/Hot_glue_gun.png',
-      'Double-sided tape': '/images/Double_sided_tape.png',
-      'Electrical tape': '/images/Electrical_tape.png',
-    };
+  // Each card has its own labelled drawing (public/images/parts, made by scripts/prereq-art): a few kilobytes, so it appears at once.
+  const imageFor = (item) => `/images/parts/${item.art}.svg`
+  const currentImage = imageFor(currentItem)
 
-    // Try to find a match in the keys
-    const match = Object.keys(assetMap).find(key => name.toLowerCase().includes(key.toLowerCase()));
-    return assetMap[match] || '/images/Motor.png'; // Fallback to Motor
-  };
-
-  const currentImage = optimized(getPrereqImage(currentItem.name))
-
-  // Fetch the next few cards' photos ahead of time so flipping through them is instant.
+  // Fetch the next few cards' drawings ahead of time so flipping through them is instant.
   useEffect(() => {
     const ahead = [1, 2, -1].map((step) => ALL_PREREQS[(currentIndex + step + ALL_PREREQS.length) % ALL_PREREQS.length])
     ahead.forEach((item) => {
-      new Image().src = optimized(getPrereqImage(item.name)).src
+      new Image().src = imageFor(item)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- getPrereqImage is a pure lookup defined above
   }, [currentIndex])
 
   return (
@@ -601,18 +562,13 @@ function PrerequisitesSlider() {
             <div className={styles.prereqCardRight}>
               <div className={styles.prereqImageWrapper}>
                 <img
-                  src={currentImage.src}
-                  srcSet={currentImage.srcSet}
-                  sizes="(max-width: 900px) 90vw, 600px"
-                  alt={currentItem.name}
+                  src={currentImage}
+                  width="800"
+                  height="520"
+                  alt={`${currentItem.name}: a labelled drawing`}
                   className={styles.prereqImage}
                   decoding="async"
-                  onError={(e) => {
-                    // a card without a photo shows the generic one instead of a broken image
-                    e.currentTarget.onerror = null
-                    e.currentTarget.removeAttribute('srcset')
-                    e.currentTarget.src = '/images/opt/Motor-960.webp'
-                  }}
+                  onError={(e) => { e.currentTarget.style.visibility = 'hidden' }}
                 />
               </div>
               <div className={styles.prereqControlsRight}>
