@@ -499,7 +499,7 @@ function PrerequisitesSlider() {
   const currentItem = ALL_PREREQS[currentIndex];
 
   // Each card has its own labelled drawing (public/images/parts, made by scripts/prereq-art): a few kilobytes, so it appears at once.
-  const imageFor = (item) => `/images/parts/${item.art}.svg`
+  const imageFor = (item) => `/images/parts/${item.art}.svg?v=1` // raise the number when a drawing is redrawn, so visitors get the new one at once
   const currentImage = imageFor(currentItem)
 
   // Fetch the next few cards' drawings ahead of time so flipping through them is instant.
