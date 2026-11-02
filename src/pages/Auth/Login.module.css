@@ -6,9 +6,9 @@
   position: relative;
   min-height: calc(100dvh - var(--nav-height));
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: var(--space-6) var(--space-6);
+  padding: var(--space-12) var(--space-6);
   overflow: hidden;
   background: var(--color-bg-primary);
 }
@@ -17,16 +17,28 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-12);
-  align-items: center;
+  align-items: start; /* both columns start at the same line, however tall the form is */
   z-index: 1;
   max-width: 1100px;
   width: 100%;
+}
+
+@media (max-width: 520px) {
+  .authContainer {
+    padding: var(--space-8) var(--space-2);
+  }
 }
 
 @media (min-width: 992px) {
   .authGrid {
     grid-template-columns: 1.15fr 0.85fr;
     gap: var(--space-20);
+  }
+
+  /* the text stays in view beside a long form */
+  .descriptionColumn {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-6));
   }
 }
 

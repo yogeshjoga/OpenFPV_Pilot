@@ -19,12 +19,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-6);
   height: var(--nav-core-height);
 }
 
 /* === LOGO === */
 .logo {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: var(--space-2);
   text-decoration: none;
@@ -36,11 +38,18 @@
 /* === DESKTOP NAV === */
 .navLinks {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: var(--space-8);
+  gap: clamp(var(--space-3), 1.2vw, var(--space-6)); /* tighter on a narrower screen, so nothing has to wrap */
+  min-width: 0;
 }
 
 .navLink {
+  display: inline-flex; /* an icon sits beside its words, never above them */
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-1);
+  white-space: nowrap;
   font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
@@ -80,6 +89,7 @@
 /* === ACTIONS === */
 .actions {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: var(--space-4);
 }
@@ -181,6 +191,14 @@
 }
 
 .mobileLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  text-align: left;
+  background: none;
+  border-width: 0 0 1px;
+  cursor: pointer;
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
@@ -203,7 +221,8 @@
 }
 
 /* === RESPONSIVE === */
-@media (max-width: 768px) {
+/* the menu has twelve items once someone is signed in, so it folds into the menu button before a phone's width */
+@media (max-width: 1200px) {
   .navLinks, .ctaBtn { display: none; }
   .hamburger { display: flex; }
   .themeToggle { display: flex; }
