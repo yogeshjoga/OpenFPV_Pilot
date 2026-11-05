@@ -2,6 +2,7 @@
 import Navbar from './Navbar'
 import Footer from './Footer'
 import WhatsAppButton from '@components/common/WhatsAppButton'
+import VoiceAgentWidget from '@components/common/VoiceAgentWidget'
 import styles from './PageWrapper.module.css'
 
 /**
@@ -17,6 +18,7 @@ export default function PageWrapper({ children, fullHeight = false, hideFooter =
       </main>
       {!hideFooter && <Footer />}
       <WhatsAppButton />
+      <VoiceAgentWidget />
     </div>
   )
 }

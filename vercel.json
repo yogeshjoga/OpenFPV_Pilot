@@ -8,7 +8,8 @@
       "VITE_CRM_LOGIN_URL": "https://crm.egirerobotics.com/login",
       "VITE_MEMBER_GATE": "on",
       "VITE_SUPABASE_URL": "https://txbrnewcztixcagdnnfx.supabase.co",
-      "VITE_SUPABASE_ANON_KEY": "sb_publishable_3U5FgNr8wNimcWj8j5pQ9Q_VwF3_c-2"
+      "VITE_SUPABASE_ANON_KEY": "sb_publishable_3U5FgNr8wNimcWj8j5pQ9Q_VwF3_c-2",
+      "VITE_VOICE_AGENT_URL": "https://egire-voice-agent.vercel.app"
     }
   },
   "headers": [
