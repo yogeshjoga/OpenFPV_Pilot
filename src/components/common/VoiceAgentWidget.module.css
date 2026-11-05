@@ -227,6 +227,52 @@
   color: var(--color-text-muted);
 }
 
+/* ---- voice picker (only when the founder's voice is switched on) ---- */
+.voices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.voiceOption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.voiceOption:hover {
+  border-color: var(--color-border-hover);
+}
+
+.voiceOption:focus-visible {
+  outline: 3px solid var(--color-accent-secondary);
+  outline-offset: var(--space-1);
+}
+
+.voiceActive {
+  border-color: var(--color-accent-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.voiceName {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+}
+
+.voiceSub {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
 /* ---- language picker ---- */
 .languages {
   display: grid;

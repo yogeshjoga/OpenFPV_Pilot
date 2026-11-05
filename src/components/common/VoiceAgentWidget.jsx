@@ -5,8 +5,15 @@ import styles from './VoiceAgentWidget.module.css'
 
 // The voice agent server (E:\EgireRobotics_voice_agent, deployed on Vercel). Without it the widget stays hidden.
 const AGENT_URL = (import.meta.env.VITE_VOICE_AGENT_URL || '').replace(/\/+$/, '')
-const wsUrl = (language) =>
-  `${AGENT_URL.replace(/^http/, 'ws')}/ws/web?language=${language}&page=${encodeURIComponent(window.location.pathname)}`
+const wsUrl = (language, voice) =>
+  `${AGENT_URL.replace(/^http/, 'ws')}/ws/web?language=${language}&voice=${voice}&page=${encodeURIComponent(window.location.pathname)}`
+
+// Shown until the server says otherwise. The founder's voice appears only while it is switched on in the CRM.
+const DEFAULT_VOICES = [{ id: 'priya', label: 'Priya', sub: 'AI assistant' }]
+const ASSISTANT_TEXT = {
+  priya: { title: 'Talk to Priya', sub: 'EGIRE Robotics AI assistant' },
+  founder: { title: "Talk to Yogesh's assistant", sub: "AI assistant · in the founder's voice" },
+}
 
 const LANGUAGES = [
   { code: 'te', label: 'తెలుగు' },
@@ -26,10 +33,12 @@ const STATUS_TEXT = {
 
 const clock = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 
-/** "Talk to us": a voice conversation with the EGIRE Robotics assistant, with a WhatsApp handoff to enroll. */
+/** "Talk to us": a voice conversation with the EGIRE Robotics AI assistant — Priya, or in Yogesh's own voice — with a WhatsApp handoff to enroll. */
 export default function VoiceAgentWidget() {
   const [open, setOpen] = useState(false)
   const [language, setLanguage] = useState('te')
+  const [voices, setVoices] = useState(DEFAULT_VOICES)
+  const [voice, setVoice] = useState('priya')
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
   const [whatsappUrl, setWhatsappUrl] = useState('')
@@ -42,6 +51,21 @@ export default function VoiceAgentWidget() {
   const live = status === 'connecting' || status === 'listening' || status === 'speaking'
 
   useEffect(() => { statusRef.current = status }, [status])
+
+  // Ask the server which voices are on each time the panel opens.
+  useEffect(() => {
+    if (!open || !AGENT_URL) return undefined
+    let gone = false
+    fetch(`${AGENT_URL}/voice-options`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (gone || !Array.isArray(d?.voices) || !d.voices.length) return
+        setVoices(d.voices)
+        setVoice((v) => (d.voices.some((x) => x.id === v) ? v : d.voices[0].id))
+      })
+      .catch(() => {})
+    return () => { gone = true }
+  }, [open])
 
   // Call timer while connected.
   useEffect(() => {
@@ -71,7 +95,7 @@ export default function VoiceAgentWidget() {
     setMuted(false)
     setSeconds(0)
     setStatus('connecting')
-    trackEvent('voice_agent_start', { language })
+    trackEvent('voice_agent_start', { language, voice })
     try {
       const [{ PipecatClient }, { WebSocketTransport, ProtobufFrameSerializer }] = await Promise.all([
         import('@pipecat-ai/client-js'),
@@ -107,7 +131,7 @@ export default function VoiceAgentWidget() {
         },
       })
       clientRef.current = client
-      await client.connect({ wsUrl: wsUrl(language) })
+      await client.connect({ wsUrl: wsUrl(language, voice) })
     } catch (e) {
       clientRef.current = null
       setStatus('idle')
@@ -136,9 +160,10 @@ export default function VoiceAgentWidget() {
 
   if (!AGENT_URL) return null
 
+  const who = ASSISTANT_TEXT[voice] || ASSISTANT_TEXT.priya
+
   return (
     <>
-
       {!open && (
         <button type="button" className={styles.launcher} onClick={() => setOpen(true)} aria-label="Talk to our voice assistant">
           <span className={styles.launcherMark}>
@@ -152,14 +177,14 @@ export default function VoiceAgentWidget() {
       )}
 
       {open && (
-        <section className={styles.panel} aria-label="EGIRE Robotics voice assistant">
+        <section className={styles.panel} aria-label={who.title}>
           <header className={styles.header}>
             <div className={styles.brand}>
               <img src="/icon-192.png" alt="" width="32" height="32" className={styles.brandMark} />
               <div>
                 <p className={styles.brandName}>EGIRE Robotics</p>
                 <p className={styles.brandSub}>
-                  <span className={styles.online} aria-hidden="true" /> Voice assistant
+                  <span className={styles.online} aria-hidden="true" /> {who.sub}
                 </p>
               </div>
             </div>
@@ -183,6 +208,24 @@ export default function VoiceAgentWidget() {
                 : 'Workshops, fees, demos and enrolment'}
             </p>
           </div>
+
+          {!live && voices.length > 1 && (
+            <div className={styles.voices} role="radiogroup" aria-label="Voice">
+              {voices.map((v) => (
+                <button
+                  key={v.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={voice === v.id}
+                  className={`${styles.voiceOption} ${voice === v.id ? styles.voiceActive : ''}`}
+                  onClick={() => setVoice(v.id)}
+                >
+                  <span className={styles.voiceName}>{v.label}</span>
+                  <span className={styles.voiceSub}>{v.sub}</span>
+                </button>
+              ))}
+            </div>
+          )}
 
           {!live && (
             <div className={styles.languages} role="radiogroup" aria-label="Language">
@@ -237,7 +280,7 @@ export default function VoiceAgentWidget() {
             </div>
           )}
 
-          <p className={styles.fine}>Uses your microphone. Conversations are recorded so our team can follow up.</p>
+          <p className={styles.fine}>{voice === 'founder' ? "An AI assistant in Yogesh's voice. " : ''}Uses your microphone. Conversations are recorded so our team can follow up.</p>
         </section>
       )}
     </>
