@@ -52,6 +52,13 @@ export default function VoiceAgentWidget() {
 
   useEffect(() => { statusRef.current = status }, [status])
 
+  // A sleeping agent takes several seconds to wake on Vercel, so wake it quietly once the page has settled.
+  useEffect(() => {
+    if (!AGENT_URL) return undefined
+    const t = setTimeout(() => { void fetch(`${AGENT_URL}/voice-options`).catch(() => {}) }, 2500)
+    return () => clearTimeout(t)
+  }, [])
+
   // Ask the server which voices are on each time the panel opens.
   useEffect(() => {
     if (!open || !AGENT_URL) return undefined
