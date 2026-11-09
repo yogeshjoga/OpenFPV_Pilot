@@ -1,4 +1,8 @@
-import { exitOf, onFace, padOf } from './catalog.js'
+import { PART_BY_ID, exitOf, onFace, padOf } from './catalog.js'
+import { padTip, wireTip } from './tips.js'
+
+/** Wires are drawn above every part, so they are never hidden behind a board. */
+export const WIRE_LAYER = 2000
 
 // The bench model (what is saved) <-> what React Flow draws
 
@@ -18,7 +22,25 @@ export function lookOf(nodesById, a, b, seed = 0) {
   const ends = [info(a), info(b)]
   const route = ({ node, padId }) => (node ? exitOf(node.type, padId, !!node.flip) : 'bottom')
   const hidden = ends.some(({ node, pad }) => node && pad && !onFace(pad, !!node.flip))
-  const look = { color: '#e5b82a', gauge: 1.3, from: route(ends[0]), to: route(ends[1]), seed, hidden }
+  // which place in the row of pads on its side this pad has: wires from neighbouring pads take their own lane
+  const lane = ({ node, pad }) => {
+    if (!node || !pad) return 0
+    const part = PART_BY_ID[node.type]
+    const flip = !!node.flip
+    const side = exitOf(node.type, pad.id, flip)
+    const along = (p) => (side === 'top' || side === 'bottom' ? p.x : p.y)
+    const same = part.pads.filter((p) => onFace(p, flip) && exitOf(node.type, p.id, flip) === side).sort((p, q) => along(p) - along(q))
+    return Math.max(0, same.findIndex((p) => p.id === pad.id))
+  }
+  const describe = ({ node, pad }) => {
+    if (!node || !pad) return null
+    const part = PART_BY_ID[node.type]
+    const tip = padTip(part, pad)
+    // a battery or capacitor lead is best named by what it is ("Battery + (red lead)"); a pad by its printed name
+    return { padLabel: pad.role ? tip.title : pad.label, partName: part.name, tip }
+  }
+  const [from, to] = ends.map(describe)
+  const look = { color: '#e5b82a', gauge: 1.3, from: route(ends[0]), to: route(ends[1]), seed, lane: lane(ends[0]), hidden, tip: from && to ? wireTip(from, to) : null }
   for (const { pad } of ends) {
     if (pad?.lead) return { ...look, color: pad.lead.color, gauge: pad.lead.gauge }
   }
@@ -33,7 +55,7 @@ export const toFlowEdges = (nodes, wires) => {
   return wires.map((w, i) => {
     const [source, sourceHandle] = w.a.split(':')
     const [target, targetHandle] = w.b.split(':')
-    return { id: w.id, source, sourceHandle, target, targetHandle, type: 'wire', data: lookOf(byId, w.a, w.b, i) }
+    return { id: w.id, source, sourceHandle, target, targetHandle, type: 'wire', zIndex: WIRE_LAYER, data: lookOf(byId, w.a, w.b, i) }
   })
 }
 

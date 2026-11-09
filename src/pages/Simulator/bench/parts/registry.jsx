@@ -1,5 +1,6 @@
 import { BRAND_PARTS } from '../boards/index.js'
-import { BatteryArt, CameraArt, CapacitorArt, EscArt, FcArt, GpsArt, MotorArt, ReceiverArt, VtxArt } from './art.jsx'
+import { ESC, FC } from '../catalog.js'
+import { BatteryArt, CameraArt, CapacitorArt, GpsArt, MotorArt, ReceiverArt, VtxArt } from './art.jsx'
 import BoardArt from './BoardArt.jsx'
 
 /** A brand board is drawn from its own description, front or back. */
@@ -10,8 +11,8 @@ const boardArt = (part) =>
 
 /** The artwork of each part, by part id. */
 export const ART = {
-  esc: EscArt,
-  fc: FcArt,
+  esc: boardArt(ESC),
+  fc: boardArt(FC),
   motor: MotorArt,
   battery: BatteryArt,
   capacitor: CapacitorArt,

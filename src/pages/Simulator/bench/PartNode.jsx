@@ -1,25 +1,38 @@
-import { memo, useContext } from 'react'
+import { memo, useCallback, useContext, useState } from 'react'
 import { Handle, NodeToolbar, Position } from '@xyflow/react'
 import { FlipHorizontal2 } from 'lucide-react'
 import { PART_BY_ID, onFace, padAt } from './catalog.js'
 import { PartActions } from './partActions.js'
 import { ART } from './parts/registry.jsx'
+import BenchTip from './BenchTip.jsx'
+import { featureTip, padTip, partTip } from './tips.js'
 import styles from '../Simulator.module.css'
 
 /**
  * One placed part: its artwork, with a connection point over every pad and every wire tip.
  * Drag from a tip or a pad to another to solder a wire between them. A part can be turned over to reach its back.
+ * Pointing at a pad, at a component on a board, or anywhere else on the part, says what it is (see tips.js).
  */
 function PartNode({ id, data, selected }) {
   const part = PART_BY_ID[data.type]
   const Art = ART[data.type]
   const actions = useContext(PartActions)
+  const [hover, setHover] = useState(null) // { tip, at: { x, y } }
+  const hide = useCallback(() => setHover(null), [])
   if (!part || !Art) return null
   const flip = !!data.flip
   const artProps = data.type === 'motor' ? { running: data.running, dir: data.dir, spinCw: styles.spinCw, spinCcw: styles.spinCcw } : {}
 
+  const show = (tip, e) => setHover({ tip, at: { x: e.clientX, y: e.clientY } })
+  // over the artwork: the component under the pointer, else the part as a whole
+  const overArt = (e) => {
+    const el = e.target.closest?.('[data-tip]')
+    const tip = (el && featureTip(el.dataset.tip, part)) || partTip(part)
+    setHover((h) => (h && h.tip.title === tip.title ? { tip: h.tip, at: { x: e.clientX, y: e.clientY } } : { tip, at: { x: e.clientX, y: e.clientY } }))
+  }
+
   return (
-    <div className={`${styles.part} ${selected ? styles.partSelected : ''} ${data.smoke ? styles.partBurnt : ''}`} style={{ width: part.w, height: part.h }}>
+    <div className={`${styles.part} ${selected ? styles.partSelected : ''} ${data.smoke ? styles.partBurnt : ''}`} style={{ width: part.w, height: part.h }} onMouseDown={hide}>
       {actions && (
         <NodeToolbar isVisible={selected} position={Position.Top} offset={14}>
           <button type="button" className={styles.flipBtn} onClick={() => actions.flip(id)} title="Turn over (F)">
@@ -27,7 +40,7 @@ function PartNode({ id, data, selected }) {
           </button>
         </NodeToolbar>
       )}
-      <div className={`${styles.face} ${flip ? styles.mirror : ''}`}>
+      <div className={`${styles.face} ${flip ? styles.mirror : ''}`} onMouseMove={overArt} onMouseLeave={hide}>
         <Art flip={flip} {...artProps} />
       </div>
       {part.pads.map((pad) => {
@@ -42,7 +55,10 @@ function PartNode({ id, data, selected }) {
             position={Position.Top}
             className={`${styles.pad} ${pad.lead ? styles.padTip : ''} ${near ? '' : styles.padFar} ${data.mates?.includes(pad.id) ? styles.padMate : ''}`}
             style={{ left: at.x, top: at.y, ...(size ? { width: size, height: size } : {}) }}
-            title={near ? `${part.name}: ${pad.label}` : undefined}
+            aria-label={near ? `${part.name}: ${pad.label}` : undefined}
+            onMouseEnter={near ? (e) => show(padTip(part, pad), e) : undefined}
+            onMouseMove={near ? (e) => show(padTip(part, pad), e) : undefined}
+            onMouseLeave={hide}
           />
         )
       })}
@@ -59,6 +75,7 @@ function PartNode({ id, data, selected }) {
           <i />
         </span>
       )}
+      {hover && <BenchTip tip={hover.tip} at={hover.at} />}
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import { PART_BY_ID } from '../Simulator/bench/catalog.js'
 import { runChecks } from '../Simulator/bench/checks.js'
-import { fromFlow, labelNodes, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from '../Simulator/bench/flowModel.js'
+import { WIRE_LAYER, fromFlow, labelNodes, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from '../Simulator/bench/flowModel.js'
 import { matesFor } from '../Simulator/bench/mates.js'
 import { tidyLayout } from '../Simulator/bench/placement.js'
 import { summarize } from '../Simulator/bench/summary.js'
@@ -169,7 +169,7 @@ export function useBuilder() {
       if (es.some((e) => same(e, a, b) || same(e, b, a))) return
       commit()
       const byId = new Map(n.map((x) => [x.id, { id: x.id, type: x.data.type, flip: x.data.flip }]))
-      setEdges((list) => [...list, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', data: lookOf(byId, a, b, list.length) }])
+      setEdges((list) => [...list, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', zIndex: WIRE_LAYER, data: lookOf(byId, a, b, list.length) }])
       clearEffects()
     },
     [clearEffects, commit],

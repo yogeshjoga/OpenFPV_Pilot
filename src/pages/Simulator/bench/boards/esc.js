@@ -23,7 +23,7 @@ export function escBoard(o) {
   const hy = mm(o.holeY ?? 4.2)
   // a taller board has more power stages and its motor pads are spread further down
   const t = bodyH / mm(36.5)
-  const spread = o.batSpread ?? 50
+  const spread = o.batSpread ?? 58
   const link = frontPins({ top: [['ESC', o.link ?? 'NC CUR M4 M3 M2 M1 BAT GND']] }, { w, h, kind: 'esc' })
 
   const motor = []
@@ -76,9 +76,10 @@ export function escBoard(o) {
         ]),
         { t: 'chip', x: cx - 34, y: Math.round(156 * t), w: 68, h: 68, die: true, label: 'MCU' },
         { t: 'coil', x: cx - 24, y: 80, w: 48, h: 40 },
-        { t: 'cap', x: cx - 52, y: Math.round(262 * t), r: 15 },
-        { t: 'cap', x: cx + 52, y: Math.round(262 * t), r: 15 },
-        { t: 'title', x: cx, y: Math.round(140 * t), text: 'GEPRC', sub: false },
+        // the two small capacitors sit below the last row of power stages, either side of the CAP pads
+        { t: 'cap', x: cx - 72, y: bodyH - 24, r: 14 },
+        { t: 'cap', x: cx + 72, y: bodyH - 24, r: 14 },
+        { t: 'title', x: cx, y: Math.round(140 * t), text: o.title ?? o.brand ?? 'GEPRC', sub: false },
       ],
       backFeatures: [
         { t: 'ghost', x: 84, y: 82, w: 64, h: Math.round(200 * t) },

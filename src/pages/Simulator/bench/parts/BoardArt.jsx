@@ -26,7 +26,18 @@ const T = ({ x, y, size = 9, anchor = 'middle', weight = 600, fill = SILK, rotat
   )
 }
 
+// What the tooltip should say about a feature: its kind, and for a chip or a module which one
+const tipKey = (f) => (f.t === 'chip' ? `chip:${f.label === 'IMU' || f.label === 'FLASH' ? f.label : 'MCU'}` : f.t === 'module' ? `module:${f.label}` : f.t)
+
 function Feature({ f, front, model }) {
+  return (
+    <g data-tip={tipKey(f)}>
+      <FeatureArt f={f} front={front} model={model} />
+    </g>
+  )
+}
+
+function FeatureArt({ f, front, model }) {
   switch (f.t) {
     case 'chip':
       return (
@@ -136,7 +147,7 @@ function Housings({ pads, w }) {
     const y1 = Math.max(...ys) + 8
     const side = list[0].side
     return (
-      <g key={name}>
+      <g key={name} data-tip={`group:${name}`}>
         <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} rx="3" fill="#e6e8ec" stroke="#b9bec6" />
         {side !== 'down' && side !== 'up' && (
           <T x={side === 'left' ? 68 : w - 68} y={(y0 + y1) / 2} size={9} weight={700} rotate={-90} opacity={0.75}>
@@ -210,7 +221,7 @@ export default function BoardArt({ part, flip = false }) {
     <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} aria-hidden="true">
       {art.outline ? <path d={art.outline} fill={fill} stroke={EDGE} strokeWidth="1.5" strokeLinejoin="round" /> : <rect x="1" y="1" width={w - 2} height={h - 2} rx={art.radius} fill={fill} stroke={EDGE} strokeWidth="1.5" />}
       {art.holes.map(([x, y]) => (
-        <g key={`${x}-${y}`}>
+        <g key={`${x}-${y}`} data-tip="hole">
           <circle cx={x} cy={y} r="9" fill="#fff" stroke={EDGE} strokeWidth="1.2" />
           <circle cx={x} cy={y} r="5" fill="#eceef1" stroke="#c4c8ce" />
         </g>

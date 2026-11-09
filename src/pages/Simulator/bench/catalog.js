@@ -1,4 +1,5 @@
 import { BRAND_PARTS } from './boards/index.js'
+import { genericEsc, genericFc } from './boards/generic.js'
 
 // The parts of the wiring bench. Plain data, no React, so the checks can be tested with `node --test`.
 //
@@ -13,86 +14,14 @@ import { BRAND_PARTS } from './boards/index.js'
 // Parts also say what they are (kind), whose they are (brand) and where they belong in the list (category). Brand boards
 // come from ./boards, with the real pad names and positions of that board.
 
-const motorNames = ['M1', 'M2', 'M3', 'M4']
-
 const pad = (id, label, x, y, extra = {}) => ({ id, label, x, y, ...extra })
 // Wires are drawn slim so a busy bench stays readable. The artwork scales its leads by the same amount.
 export const LEAD_SCALE = 0.6
 const lead = (id, label, x, y, color, gauge, extra = {}) => pad(id, label, x, y, { lead: { color, gauge: Math.round(gauge * LEAD_SCALE * 10) / 10 }, ...extra })
 
-// ---------- 4-in-1 ESC, 30.5 x 30.5 mm stack board ----------
-const escMotorPads = []
-const motorEdge = { M4: [28, 62], M3: [28, 166], M2: [252, 62], M1: [252, 166] }
-for (const name of motorNames) {
-  const [x, y0] = motorEdge[name]
-  for (let i = 0; i < 3; i++) escMotorPads.push(pad(`${name.toLowerCase()}${'abc'[i]}`, name, x, y0 + i * 26, { motor: { group: name, index: i } }))
-}
-const rowX = (i) => 70 + i * 20
-const escSignalNames = ['BAT', 'G', 'CUR', 'TLM', 'M1', 'M2', 'M3', 'M4']
-
-export const ESC = {
-  id: 'esc',
-  name: '4-in-1 ESC',
-  blurb: 'Drives the four motors from the battery. 30.5 mm stack board.',
-  w: 280,
-  h: 280,
-  pads: [
-    pad('batp', 'BAT+', 112, 246, { rail: 'vbat', big: true }),
-    pad('batn', 'BAT-', 168, 246, { rail: 'gnd', big: true }),
-    pad('capp', 'CAP+', 112, 206, { rail: 'vbat' }),
-    pad('capn', 'CAP-', 168, 206, { rail: 'gnd' }),
-    ...escMotorPads,
-    ...escSignalNames.map((n, i) => {
-      const id = `sig_${n.toLowerCase()}`
-      const rail = n === 'BAT' ? 'vbat' : n === 'G' ? 'gnd' : undefined
-      return pad(id, n, rowX(i), 30, { rail, signal: n.toLowerCase(), small: true })
-    }),
-  ],
-  internal: [
-    ['batp', 'capp', 'sig_bat'],
-    ['batn', 'capn', 'sig_g'],
-  ],
-}
-
-// ---------- F405 flight controller, 30.5 x 30.5 mm stack board ----------
-export const FC = {
-  id: 'fc',
-  name: 'Flight controller',
-  blurb: 'The brain. Reads the receiver and tells the ESC what each motor should do.',
-  w: 280,
-  h: 280,
-  pads: [
-    ...escSignalNames.map((n, i) => {
-      const id = `sig_${n.toLowerCase()}`
-      const rail = n === 'BAT' ? 'vbat' : n === 'G' ? 'gnd' : undefined
-      return pad(id, n, rowX(i), 30, { rail, signal: n.toLowerCase(), small: true })
-    }),
-    // VTX group (left edge)
-    pad('vtx_out', 'VTX', 28, 84, { video: 'vtx-out' }),
-    pad('vtx_g', 'G', 28, 110, { rail: 'gnd' }),
-    pad('v9', '9V', 28, 136, { rail: '9v', source: true }),
-    // Camera group (left edge)
-    pad('cam_in', 'CAM', 28, 176, { video: 'cam-in' }),
-    pad('cam_g', 'G', 28, 202, { rail: 'gnd' }),
-    pad('cam_5v', '5V', 28, 228, { rail: '5v', source: true }),
-    // UART1 group (right edge), for the receiver
-    pad('u1_5v', '5V', 252, 70, { rail: '5v', source: true }),
-    pad('u1_g', 'G', 252, 94, { rail: 'gnd' }),
-    pad('u1_t', 'T1', 252, 118, { uart: { n: 1, dir: 'tx' } }),
-    pad('u1_r', 'R1', 252, 142, { uart: { n: 1, dir: 'rx' } }),
-    // UART3 group (right edge), for the GPS
-    pad('u3_5v', '5V', 252, 176, { rail: '5v', source: true }),
-    pad('u3_g', 'G', 252, 200, { rail: 'gnd' }),
-    pad('u3_t', 'T3', 252, 224, { uart: { n: 3, dir: 'tx' } }),
-    pad('u3_r', 'R3', 252, 248, { uart: { n: 3, dir: 'rx' } }),
-  ],
-  internal: [
-    ['sig_g', 'vtx_g', 'cam_g', 'u1_g', 'u3_g'],
-    ['cam_5v', 'u1_5v', 'u3_5v'],
-  ],
-  // What powers the regulators: the battery voltage on BAT and the ground on G
-  power: { vbat: 'sig_bat', gnd: 'sig_g' },
-}
+// ---------- 4-in-1 ESC and flight controller: the plain 30.5 mm stack boards, built like the brand boards (boards/generic.js) ----------
+export const ESC = genericEsc()
+export const FC = genericFc()
 
 // ---------- Motor, 2306 ----------
 export const MOTOR = {

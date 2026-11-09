@@ -6,6 +6,8 @@
 // solution   the wires that finish the lesson, added to the prewired ones (used by the tests)
 // hints      shown one at a time
 
+import { tidyLayout } from './placement.js'
+
 const w = (a, b) => ({ a, b })
 const motorSolution = (m, group) => ['a', 'b', 'c'].map((c, i) => w(`${m}:w${i + 1}`, `esc:${group}${c}`))
 
@@ -17,13 +19,13 @@ const VIDEO = [w('cam:cpw', 'fc:cam_5v'), w('cam:cg', 'fc:cam_g'), w('cam:cv', '
 
 const part = (id, type, x, y) => ({ id, type, x, y })
 
-export const LESSONS = [
+const RAW_LESSONS = [
   {
     id: 'power',
     title: 'Power loop',
     level: 'Beginner',
     summary: 'Connect the battery and the capacitor to the ESC. This is the first thing every build needs, and the easiest to get wrong.',
-    nodes: [part('esc', 'esc', 330, 40), part('bat', 'battery', 70, 330), part('cap', 'capacitor', 640, 330)],
+    nodes: [part('esc', 'esc', 330, 40), part('bat', 'battery', 230, 600), part('cap', 'capacitor', 540, 620)],
     prewired: [],
     tasks: [
       { goal: 'battery', text: 'Solder the battery: red lead to BAT+, black lead to BAT-.' },
@@ -45,11 +47,11 @@ export const LESSONS = [
     nodes: [
       part('esc', 'esc', 330, 150),
       part('m4', 'motor', 60, 20),
-      part('m2', 'motor', 720, 20),
+      part('m2', 'motor', 790, 20),
       part('m3', 'motor', 60, 400),
-      part('m1', 'motor', 720, 400),
-      part('bat', 'battery', 340, 460),
-      part('cap', 'capacitor', 560, 460),
+      part('m1', 'motor', 790, 400),
+      part('bat', 'battery', 330, 680),
+      part('cap', 'capacitor', 620, 700),
     ],
     prewired: POWER,
     tasks: [
@@ -67,17 +69,17 @@ export const LESSONS = [
     id: 'stack',
     title: 'Flight controller to ESC',
     level: 'Beginner',
-    summary: 'Connect the flight controller to the ESC: power (BAT and G) and the four motor signals M1 to M4.',
-    nodes: [part('esc', 'esc', 80, 80), part('fc', 'fc', 520, 80), part('bat', 'battery', 120, 420), part('cap', 'capacitor', 330, 420)],
+    summary: 'Connect the flight controller to the ESC: power (BAT and GND) and the four motor signals M1 to M4.',
+    nodes: [part('esc', 'esc', 80, 80), part('fc', 'fc', 600, 80), part('bat', 'battery', 120, 600), part('cap', 'capacitor', 360, 620)],
     prewired: POWER,
     tasks: [
-      { goal: 'fc-esc', text: 'Connect BAT, G and M1 to M4 on the flight controller to the pads with the same names on the ESC.' },
+      { goal: 'fc-esc', text: 'Connect BAT, GND and M1 to M4 on the flight controller to the pads with the same names on the ESC.' },
       { goal: 'no-faults', text: 'Nothing shorted or burnt.' },
     ],
     solution: STACK,
     hints: [
-      'On a real stack these eight pads sit in a row and plug together. Here you wire them one by one.',
-      'Join each pad to the pad with the same name: BAT to BAT, G to G, M1 to M1 and so on.',
+      'On a real stack these eight pads sit in a row and plug together. Here you wire them one by one. Point at a pad to see what it carries.',
+      'Join each pad to the pad with the same name: BAT to BAT, GND to GND, M1 to M1 and so on.',
     ],
   },
   {
@@ -85,10 +87,10 @@ export const LESSONS = [
     title: 'Receiver',
     level: 'Intermediate',
     summary: 'Wire the ELRS receiver to a UART on the flight controller. This is where TX and RX must be crossed over.',
-    nodes: [part('esc', 'esc', 40, 60), part('fc', 'fc', 400, 60), part('rx', 'receiver', 760, 120), part('bat', 'battery', 70, 400), part('cap', 'capacitor', 260, 400)],
+    nodes: [part('esc', 'esc', 40, 60), part('fc', 'fc', 540, 60), part('rx', 'receiver', 960, 120), part('bat', 'battery', 70, 600), part('cap', 'capacitor', 300, 620)],
     prewired: [...POWER, ...STACK],
     tasks: [
-      { goal: 'receiver', text: 'Power the receiver from 5V and G of UART1, then cross TX to R1 and RX to T1.' },
+      { goal: 'receiver', text: 'Power the receiver from 5V and GND of UART1, then cross TX to R1 and RX to T1.' },
       { goal: 'no-faults', text: 'Nothing burnt.' },
     ],
     solution: RECEIVER,
@@ -103,18 +105,18 @@ export const LESSONS = [
     title: 'Camera and VTX',
     level: 'Intermediate',
     summary: 'Bring the picture from the camera, through the flight controller, to the video transmitter.',
-    nodes: [part('esc', 'esc', 40, 60), part('fc', 'fc', 380, 60), part('cam', 'camera', 740, 40), part('vtx', 'vtx', 720, 300), part('bat', 'battery', 70, 400), part('cap', 'capacitor', 260, 400)],
+    nodes: [part('esc', 'esc', 40, 60), part('fc', 'fc', 520, 60), part('cam', 'camera', 940, 40), part('vtx', 'vtx', 920, 300), part('bat', 'battery', 70, 600), part('cap', 'capacitor', 300, 620)],
     prewired: [...POWER, ...STACK],
     tasks: [
-      { goal: 'camera', text: 'Power the camera (5V and G from the CAM group).' },
-      { goal: 'vtx', text: 'Power the VTX from 9V and G of the VTX group. It must not touch battery voltage.' },
+      { goal: 'camera', text: 'Power the camera (5V and GND from the CAM group).' },
+      { goal: 'vtx', text: 'Power the VTX from 9V and GND of the VTX group. It must not touch battery voltage.' },
       { goal: 'video', text: 'Camera video to CAM, and the VTX pad to the VTX video wire.' },
       { goal: 'no-faults', text: 'Nothing burnt.' },
     ],
     solution: VIDEO,
     hints: [
       'The camera and the VTX each have three wires: power, ground and video.',
-      'On the flight controller the CAM group has CAM, G and 5V. The VTX group has VTX, G and 9V.',
+      'On the flight controller the CAM group has CAM, GND and 5V. The VTX group has VTX, GND and 9V.',
       'Video flows camera, then the CAM pad, through the flight controller, then the VTX pad, then the VTX.',
     ],
   },
@@ -125,16 +127,16 @@ export const LESSONS = [
     summary: 'Wire a whole quad from scratch: power, four motors, the stack, the receiver, the camera and the VTX.',
     nodes: [
       part('esc', 'esc', 330, 280),
-      part('fc', 'fc', 690, 280),
+      part('fc', 'fc', 840, 280),
       part('bat', 'battery', 40, 560),
-      part('cap', 'capacitor', 240, 600),
+      part('cap', 'capacitor', 210, 700),
       part('m4', 'motor', 40, 40),
       part('m2', 'motor', 220, 40),
       part('m3', 'motor', 400, 40),
       part('m1', 'motor', 580, 40),
-      part('rx', 'receiver', 1060, 330),
-      part('cam', 'camera', 1060, 40),
-      part('vtx', 'vtx', 1050, 600),
+      part('rx', 'receiver', 1260, 330),
+      part('cam', 'camera', 1260, 40),
+      part('vtx', 'vtx', 1250, 600),
     ],
     prewired: [],
     tasks: [
@@ -161,16 +163,16 @@ export const LESSONS = [
     summary: 'This build is finished, but three things are wrong. Power it up, read the report and fix them.',
     nodes: [
       part('esc', 'esc', 330, 280),
-      part('fc', 'fc', 690, 280),
+      part('fc', 'fc', 840, 280),
       part('bat', 'battery', 40, 560),
-      part('cap', 'capacitor', 240, 600),
+      part('cap', 'capacitor', 210, 700),
       part('m4', 'motor', 40, 40),
       part('m2', 'motor', 220, 40),
       part('m3', 'motor', 400, 40),
       part('m1', 'motor', 580, 40),
-      part('rx', 'receiver', 1060, 330),
-      part('cam', 'camera', 1060, 40),
-      part('vtx', 'vtx', 1050, 600),
+      part('rx', 'receiver', 1260, 330),
+      part('cam', 'camera', 1260, 40),
+      part('vtx', 'vtx', 1250, 600),
     ],
     // The finished build with three mistakes: capacitor reversed, receiver TX joined to TX, video wired backwards
     prewired: [
@@ -201,6 +203,15 @@ export const LESSONS = [
     ],
   },
 ]
+
+// Every lesson opens arranged like a wiring diagram (the same arrangement as the builder's Tidy up): the flight controller above
+// the ESC, each motor beside its own output, the battery and the capacitor underneath. The positions written in each lesson
+// above are only a starting point; this is what the student sees.
+const arranged = (lesson) => {
+  const at = tidyLayout(lesson.nodes, [...lesson.prewired, ...lesson.solution])
+  return { ...lesson, nodes: lesson.nodes.map((n) => ({ ...n, x: Math.round(at[n.id].x), y: Math.round(at[n.id].y) })) }
+}
+export const LESSONS = RAW_LESSONS.map(arranged)
 
 export const LESSON_BY_ID = Object.fromEntries(LESSONS.map((l) => [l.id, l]))
 export const lessonGoals = (lesson) => lesson.tasks.map((t) => t.goal)

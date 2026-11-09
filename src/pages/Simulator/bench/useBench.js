@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import { PART_BY_ID } from './catalog.js'
-import { fromFlow, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from './flowModel.js'
+import { WIRE_LAYER, fromFlow, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from './flowModel.js'
 import { runChecks } from './checks.js'
 import { LESSON_BY_ID, LESSONS, lessonGoals } from './lessons.js'
 import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspace, encodeBuild, newId } from './workspaces.js'
@@ -179,7 +179,7 @@ export function useBench() {
       setEdges((es) => {
         if (es.some((e) => (`${e.source}:${e.sourceHandle}` === a && `${e.target}:${e.targetHandle}` === b) || (`${e.source}:${e.sourceHandle}` === b && `${e.target}:${e.targetHandle}` === a))) return es
         const byId = new Map(nodes.map((n) => [n.id, { id: n.id, type: n.data.type, flip: n.data.flip }]))
-        return [...es, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', data: lookOf(byId, a, b, es.length) }]
+        return [...es, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', zIndex: WIRE_LAYER, data: lookOf(byId, a, b, es.length) }]
       })
       clearEffects()
     },

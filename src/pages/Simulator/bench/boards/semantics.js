@@ -41,7 +41,7 @@ export function semantics(label, { kind, group }) {
     else if (L === 'GND') out.signal = 'g'
     else if (L === 'CUR') out.signal = 'cur'
     else if (/^M[1-4]$/.test(L)) out.signal = L.toLowerCase()
-    else if (/^R\d$/.test(L)) out.signal = 'tlm'
+    else if (/^R\d$/.test(L) || L === 'TLM') out.signal = 'tlm'
   }
   return out
 }

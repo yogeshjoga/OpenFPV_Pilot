@@ -24,11 +24,12 @@ export function flightController(o) {
     { t: 'chip', x: cx - 41, y: cy - 62, w: 82, h: 82, die: true, label: o.mcu },
     { t: 'chip', x: cx - 74, y: cy + 36, w: 30, h: 30, label: 'IMU' },
     { t: 'chip', x: cx + 36, y: cy + 40, w: 40, h: 26, label: 'FLASH' },
-    { t: 'coil', x: cx - 62, y: 64, w: 40, h: 40 },
-    o.module ? { t: 'module', x: cx + 10, y: 64, w: 66, h: 36, label: o.module } : { t: 'coil', x: cx + 22, y: 64, w: 40, h: 40 },
-    { t: 'cap', x: cx - 8, y: 84, r: 13 },
+    // the power parts sit in a row above the processor, clear of it, with the capacitor in the middle
+    { t: 'coil', x: cx - 62, y: cy - 108, w: 40, h: 40 },
+    o.module ? { t: 'module', x: cx + 22, y: cy - 106, w: 66, h: 36, label: o.module } : { t: 'coil', x: cx + 22, y: cy - 108, w: 40, h: 40 },
+    { t: 'cap', x: cx, y: cy - 88, r: 13 },
     { t: 'usb', x: usbAt[0], y: usbAt[1], side: usb },
-    { t: 'title', x: cx, y: cy + 80, text: 'GEPRC', sub: false },
+    { t: 'title', x: cx, y: cy + 80, text: o.title ?? o.brand ?? 'GEPRC', sub: false },
   ]
   return part({
     id: o.id,
