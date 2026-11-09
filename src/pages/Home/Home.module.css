@@ -38,17 +38,6 @@
   mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
-/* A still captured from the live viewer, framed the way the viewer frames the model (fit to the
-   viewer's height, centred), so the swap to the live model does not jump */
-.heroPoster {
-  top: 10%;
-  left: 50%;
-  width: auto;
-  max-width: none;
-  height: 65%;
-  transform: translateX(-50%);
-}
-
 .heroContent {
   position: relative;
   z-index: 2;
@@ -598,9 +587,13 @@
      width: 100%; 
      border-radius: var(--radius-xl); 
   }
-  .roadmapStep { flex-direction: column; gap: var(--space-4); }
-  .roadmapConnector { left: 40px; top: 80px; }
-  .roadmapContent { padding-top: 0; }
+  /* roadmap: the round icon sits at the left of its text and the line runs through the middle of the icons, never behind the words */
+  .roadmapGrid { gap: var(--space-8); }
+  .roadmapStep { gap: var(--space-4); }
+  .roadmapIconWrapper { width: 3.5rem; height: 3.5rem; font-size: var(--text-xl); }
+  .roadmapConnector { left: calc(1.75rem - 1px); top: 1.75rem; }
+  .roadmapContent { padding-top: var(--space-1); min-width: 0; }
+  .roadmapStepTitle { font-size: var(--text-xl); }
 }
 
 .prereqImageWrapper {

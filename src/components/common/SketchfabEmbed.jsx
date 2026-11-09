@@ -3,6 +3,7 @@ import styles from './SketchfabEmbed.module.css'
 
 const API_SRC = 'https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js'
 const GIVE_UP_MS = 15000
+const REVEAL_DELAY_MS = 700
 
 // A viewer with no on-screen controls: it spins on its own and ignores the mouse.
 const VIEWER_OPTIONS = {
@@ -18,6 +19,14 @@ const VIEWER_OPTIONS = {
   ui_controls: 0,
   ui_inspector: 0,
   ui_help: 0,
+  ui_general_controls: 0,
+  ui_settings: 0,
+  ui_annotations: 0,
+  ui_animations: 0,
+  ui_fullscreen: 0,
+  ui_vr: 0,
+  ui_ar: 0,
+  ui_sound: 0,
 }
 
 let apiPromise
@@ -95,7 +104,17 @@ export default function SketchfabEmbed({ uid, title, theme = 'light', poster, po
           ...options,
           success: (api) => {
             api.start()
-            api.addEventListener('viewerready', () => live && setReady(true))
+            api.addEventListener('viewerready', () => {
+              if (!live) return
+              // Sketchfab draws its model title and a "touch & drag to rotate" hint over a fresh viewer.
+              // Keep the frame invisible until those have cleared, then switch touching off (nobody can drag
+              // this model) and fade it in: no text, no hint, no flash of loading screen.
+              api.setUserInteraction(true)
+              setTimeout(() => {
+                api.setUserInteraction(false)
+                if (live) setReady(true)
+              }, REVEAL_DELAY_MS)
+            })
           },
           error: plainEmbed,
         })
