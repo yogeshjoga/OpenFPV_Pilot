@@ -47,8 +47,8 @@ export const BATTERY = {
   w: 150,
   h: 250,
   pads: [
-    lead('pos', '+', 50, 8, '#d6455d', 5.5, { rail: 'vbat', source: true, role: 'bat+' }),
-    lead('neg', '-', 100, 8, '#2a2e35', 5.5, { rail: 'gnd', source: true, role: 'bat-' }),
+    lead('pos', '+', 100, 8, '#d6455d', 5.5, { rail: 'vbat', source: true, role: 'bat+' }),
+    lead('neg', '-', 50, 8, '#2a2e35', 5.5, { rail: 'gnd', source: true, role: 'bat-' }),
   ],
   internal: [],
 }

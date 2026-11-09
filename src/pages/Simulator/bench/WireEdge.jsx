@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { BaseEdge, getSmoothStepPath } from '@xyflow/react'
+import { BaseEdge, getSmoothStepPath, useEdges } from '@xyflow/react'
 import { exitOf, padOf } from './catalog.js'
+import { corridorShift, shifted, slotOf, slotShift } from './lanes.js'
 import BenchTip from './BenchTip.jsx'
 
 // How much of each end of a wire cannot be clicked, so a pad that already has a wire on it can still be pointed at
@@ -12,17 +13,36 @@ const END_GAP = 18
  * (a turning point of their own) so they run side by side and do not lie on top of each other.
  * The wire is drawn above every part. Pointing at it says what it carries and which wire to use.
  */
-export default function WireEdge({ id, sourceX, sourceY, targetX, targetY, data, selected }) {
-  const [path] = getSmoothStepPath({
-    sourceX,
-    sourceY,
-    sourcePosition: data?.from ?? 'bottom',
-    targetX,
-    targetY,
-    targetPosition: data?.to ?? 'bottom',
-    borderRadius: 14,
-    offset: 46 + ((data?.lane ?? data?.seed ?? 0) % 6) * 10,
+export default function WireEdge({ id, source, sourceHandleId, target, targetHandleId, sourceX, sourceY, targetX, targetY, data, selected }) {
+  const edges = useEdges()
+  const from = data?.from ?? 'bottom'
+  const to = data?.to ?? 'bottom'
+  const rank = edges.findIndex((e) => e.id === id)
+
+  // wires on the same pad fan out side by side, and each wire has a corridor of its own, so no two wires lie on top of each other
+  const a = slotOf(edges, id, source, sourceHandleId)
+  const z = slotOf(edges, id, target, targetHandleId)
+  const [sx, sy] = shifted(sourceX, sourceY, from, slotShift(a.index, a.count))
+  const [tx, ty] = shifted(targetX, targetY, to, slotShift(z.index, z.count))
+  const aside = corridorShift(rank)
+  const vertical = (side) => side === 'top' || side === 'bottom'
+  const [mid] = getSmoothStepPath({
+    sourceX: sx,
+    sourceY: sy,
+    sourcePosition: from,
+    targetX: tx,
+    targetY: ty,
+    targetPosition: to,
+    borderRadius: 12,
+    offset: 40 + (Math.max(0, rank) % 9) * 7,
+    // the middle stretch runs between the two parts: moved aside by a different amount for each wire
+    ...(vertical(from) && vertical(to) ? { centerY: (sy + ty) / 2 + aside } : {}),
+    ...(!vertical(from) && !vertical(to) ? { centerX: (sx + tx) / 2 + aside } : {}),
   })
+  // the short step sideways at each pad, from the pad itself to the wire's own slot
+  const startMoved = sx !== sourceX || sy !== sourceY
+  const endMoved = tx !== targetX || ty !== targetY
+  const path = `${startMoved ? `M ${sourceX} ${sourceY} ${mid.replace(/^M/, 'L')}` : mid}${endMoved ? ` L ${targetX} ${targetY}` : ''}`
   const width = data?.gauge ?? 1.8
   const color = data?.color ?? '#e5c02a'
   // an end on the side of a part that faces away: the wire goes through the board, so it is faded and dashed

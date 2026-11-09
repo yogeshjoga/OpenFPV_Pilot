@@ -21,6 +21,8 @@ function PartNode({ id, data, selected }) {
   const hide = useCallback(() => setHover(null), [])
   if (!part || !Art) return null
   const flip = !!data.flip
+  // a board's wires leave from below it, so its name goes above
+  const board = (part.kinds ?? [part.kind]).some((k) => k === 'esc' || k === 'fc' || k === 'aio')
   const artProps = data.type === 'motor' ? { running: data.running, dir: data.dir, spinCw: styles.spinCw, spinCcw: styles.spinCcw } : {}
 
   const show = (tip, e) => setHover({ tip, at: { x: e.clientX, y: e.clientY } })
@@ -67,7 +69,7 @@ function PartNode({ id, data, selected }) {
           {flip ? 'Back' : 'Front'}
         </span>
       )}
-      <span className={styles.partLabel}>{data.label}</span>
+      <span className={`${styles.partLabel} ${board ? styles.partLabelAbove : ''}`}>{data.label}</span>
       {data.smoke && (
         <span className={styles.smoke} aria-hidden="true">
           <i />

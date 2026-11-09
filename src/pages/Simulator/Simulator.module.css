@@ -461,6 +461,14 @@
   pointer-events: none;
 }
 
+/* the name of a board sits above it, out of the way of the wires that leave from below */
+.partLabelAbove {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+}
+
 /* A connection point over every pad and wire tip */
 .pad {
   width: 22px;

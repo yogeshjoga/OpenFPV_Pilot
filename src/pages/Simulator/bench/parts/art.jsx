@@ -129,8 +129,8 @@ export function MotorArt({ running = false, dir = 'cw', spinCw, spinCcw }) {
 export function BatteryArt() {
   return (
     <svg viewBox="0 0 150 250" width="150" height="250" aria-hidden="true">
-      <Wire d="M50 8 C50 40 62 50 62 76" color="#d6455d" width={5.5} tip={[50, 8]} />
-      <Wire d="M100 8 C100 40 88 50 88 76" color="#2a2e35" width={5.5} tip={[100, 8]} />
+      <Wire d="M100 8 C100 40 88 50 88 76" color="#d6455d" width={5.5} tip={[100, 8]} />
+      <Wire d="M50 8 C50 40 62 50 62 76" color="#2a2e35" width={5.5} tip={[50, 8]} />
       <rect x="46" y="66" width="58" height="44" rx="6" fill="url(#bn-xt)" stroke="#a98511" strokeWidth="1" />
       <rect x="56" y="76" width="16" height="24" rx="3" fill="#8c6c0c" opacity="0.5" />
       <rect x="78" y="76" width="16" height="24" rx="3" fill="#8c6c0c" opacity="0.5" />
