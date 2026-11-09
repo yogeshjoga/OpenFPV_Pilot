@@ -45,7 +45,7 @@ export default function WireEdge({ id, source, sourceHandleId, target, targetHan
   const startMoved = sx !== sourceX || sy !== sourceY
   const endMoved = tx !== targetX || ty !== targetY
   const path = `${startMoved ? `M ${sourceX} ${sourceY} ${mid.replace(/^M/, 'L')}` : mid}${endMoved ? ` L ${targetX} ${targetY}` : ''}`
-  const width = data?.gauge ?? 2.4
+  const width = data?.gauge ?? 3.6
   const color = data?.color ?? '#e5c02a'
   // an end on the side of a part that faces away: the wire goes through the board, so it is faded and dashed
   const through = data?.hidden
@@ -123,7 +123,7 @@ export function PendingWire({ fromX, fromY, toX, toY, fromNode, fromHandle, toNo
   const [path] = getSmoothStepPath({ sourceX: fromX, sourceY: fromY, sourcePosition: leaves, targetX: toX, targetY: toY, targetPosition: arrives, borderRadius: 14, offset: 34 })
   const lead = type ? padOf(type, fromHandle?.id)?.lead : null
   const color = lead?.color ?? '#e5b82a'
-  const width = Math.max(3, lead?.gauge ?? 0)
+  const width = Math.max(3.6, lead?.gauge ?? 0)
   const ok = !!toHandle && connectionStatus !== 'invalid'
   return (
     <g style={{ pointerEvents: 'none' }}>

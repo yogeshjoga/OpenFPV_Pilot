@@ -6,7 +6,7 @@
 //   a corridor of its own: the middle stretch of the wire is moved aside by a different amount for each wire.
 
 /** The distance between two neighbouring wires, in pixels of the canvas. */
-export const SLOT = 13
+export const SLOT = 14
 
 /** How far to move the wire at index `index` of `count` wires that share a pad, so that the group is centred on the pad. */
 export const slotShift = (index, count) => (index - (count - 1) / 2) * SLOT
