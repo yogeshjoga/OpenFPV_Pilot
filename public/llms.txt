@@ -26,5 +26,9 @@ Phone: +91 8500126104 (WhatsApp +91 9110566354)
 - [Drone classes for kids](https://www.egirerobotics.com/blog/kids-can-fly)
 - [All posts](https://www.egirerobotics.com/blog)
 
+## Brochures (PDF downloads)
+- [FPV Drone Engineering Programme brochure](https://www.egirerobotics.com/downloads/egirerobotics-engineering-brochure.pdf): 50 days, 5 hands-on labs, build analog and digital FPV drones, for engineering students and graduates
+- [Online Internship brochure: Drone Technology and Pilot Training](https://www.egirerobotics.com/downloads/egirerobotics-online-internship-brochure.pdf): 45 days, 100% online, 7 modules, simulator based, completion certificate
+
 ## Academy (free with sign-in)
 FPV piloting, PID tuning, drone hardware, drone physics, wiring lab and a drone configurator, taught with interactive 3D lessons.
