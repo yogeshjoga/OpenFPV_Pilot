@@ -61,6 +61,23 @@
   max-width: 35rem;
 }
 
+/* the hero text rises into place one line at a time */
+.heroText > * {
+  animation: heroRise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.heroText > :nth-child(2) { animation-delay: 0.08s; }
+.heroText > :nth-child(3) { animation-delay: 0.16s; }
+.heroText > :nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroText > * { animation: none; }
+}
+
 .eyebrow {
   margin-bottom: var(--space-4);
   font-family: var(--font-body);
@@ -845,28 +862,71 @@
 }
 
 /* Phones and portrait tablets (a phone in desktop mode or with a large display size reports about 900px):
-   the headline goes first and the 3D drone sits below it instead of behind it */
+   the text comes first, then the drone in a soft rounded stage, all inside the page margins */
 @media (max-width: 768px), (max-width: 1200px) and (orientation: portrait) {
   .hero {
     flex-direction: column;
     align-items: stretch;
     min-height: auto;
+    padding-bottom: var(--space-8);
   }
 
   .heroContent {
-    padding-block: var(--space-16) var(--space-4);
+    padding-block: var(--space-10) var(--space-6);
+  }
+
+  .heroText {
+    max-width: 40rem;
+  }
+
+  /* the eyebrow becomes a small pill */
+  .eyebrow {
+    display: inline-block;
+    margin-bottom: var(--space-4);
+    padding: var(--space-1) var(--space-3);
+    background: color-mix(in srgb, var(--color-accent-secondary) 10%, transparent);
+    border-radius: var(--radius-full);
+  }
+
+  .headline {
+    margin-bottom: var(--space-4);
+  }
+
+  .sub {
+    margin-bottom: var(--space-6);
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+
+  /* two equal buttons side by side, as wide as the text above them */
+  .hero .heroActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    max-width: 28rem;
+  }
+
+  .hero .heroActions > * {
+    width: 100%;
+    padding-inline: var(--space-3);
+    min-height: 3rem;
+    white-space: nowrap;
   }
 
   .canvasArea {
     position: relative;
     order: 2;
     right: 0;
-    width: 100%;
-    height: clamp(22.5rem, 60vw, 34rem);
-  }
-
-  .heroText {
-    max-width: 40rem;
+    width: auto;
+    height: clamp(17rem, 68vw, 30rem);
+    margin-inline: var(--container-padding);
+    background:
+      radial-gradient(ellipse at 50% 62%, color-mix(in srgb, var(--color-accent-primary) 16%, transparent), transparent 68%),
+      var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 

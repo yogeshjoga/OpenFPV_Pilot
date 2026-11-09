@@ -152,12 +152,7 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className={`container ${styles.heroContent}`} style={{ pointerEvents: 'none' }}>
-          <motion.div
-            className={styles.heroText}
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
+          <div className={styles.heroText}>
             <p className={styles.eyebrow}>India&apos;s first hands-on FPV drone workshop</p>
             <h1 className={styles.headline}>
               Fly Beyond<br />
@@ -175,7 +170,7 @@ export default function Home() {
                 Book a demo <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
 
       </section>

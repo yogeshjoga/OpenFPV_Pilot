@@ -524,3 +524,29 @@
     height: 2.75rem;
   }
 }
+
+/* === PHONES AND TABLETS: a clean bar that is always readable, with two matching round buttons === */
+@media (max-width: 1200px) {
+  .navbar {
+    background: var(--color-bg-primary);
+    border-bottom-color: var(--color-border);
+  }
+
+  .actions {
+    gap: var(--space-3);
+  }
+
+  .hamburger {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-bg-glass);
+  }
+
+  .hamburger:hover,
+  .hamburger[aria-expanded='true'] {
+    border-color: var(--color-border-hover);
+  }
+}
