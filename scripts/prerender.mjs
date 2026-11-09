@@ -23,6 +23,7 @@ const organisation = {
   name: SITE.name,
   alternateName: SITE.alternateNames,
   url: SITE.url,
+  sameAs: SITE.sameAs,
   logo: abs(SITE.logo),
   image: abs(SITE.ogImage),
   description: 'EGIRE Robotics trains students, colleges and professionals in India in FPV drone piloting, drone building, AI and robotics.',

@@ -106,10 +106,13 @@ export default function SketchfabEmbed({ uid, title, theme = 'light', poster, po
             api.start()
             api.addEventListener('viewerready', () => {
               if (!live) return
-              // Sketchfab draws its model title and a "touch & drag to rotate" hint over a fresh viewer.
-              // Keep the frame invisible until those have cleared, then switch touching off (nobody can drag
-              // this model) and fade it in: no text, no hint, no flash of loading screen.
+              // Sketchfab draws a "touch & drag to rotate" hint over a fresh viewer until someone touches the model.
+              // Nobody can drag this model, so one tiny touch is sent for them, then touching is switched off
+              // and the model fades in a moment later: no hint, no flash of loading screen.
               api.setUserInteraction(true)
+              api.mouseDown(40, 40)
+              api.mouseMove(41, 40)
+              api.mouseUp(41, 40)
               setTimeout(() => {
                 api.setUserInteraction(false)
                 if (live) setReady(true)

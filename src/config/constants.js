@@ -4,6 +4,7 @@ export const APP_DESCRIPTION =
   'A premium learning platform to build, tune, and fly FPV drones, from zero to first freestyle flight.'
 
 import navConfig from './navConfig.json'
+import { PROFILES } from './social.js'
 
 
 export const NAV_LINKS = [
@@ -45,15 +46,9 @@ export const PRODUCT_CATEGORIES = [
   { id: 'goggles', label: 'Goggles' },
 ]
 
-// Official profile links. An empty one is shown in the footer as "soon" and is not clickable, so visitors are
-// never sent to a generic home page. Paste the real address here to switch it on.
-export const SOCIAL_LINKS = {
-  youtube: '',
-  instagram: '',
-  facebook: '',
-  linkedin: '',
-  discord: '',
-}
+// Official profile links. Edit them in social.js; an empty one is shown in the footer as "soon" and is not clickable,
+// so visitors are never sent to a generic home page.
+export const SOCIAL_LINKS = PROFILES
 
 /** A WhatsApp chat link with the message already typed. It works on computers (WhatsApp Web or the app) and phones. */
 export const whatsappHref = (message) => `https://wa.me/919110566354?text=${encodeURIComponent(message)}`

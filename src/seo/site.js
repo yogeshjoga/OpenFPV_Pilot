@@ -1,5 +1,6 @@
 // What search engines are told about the site and each public page. Plain data, so the build step (Node) and the site share it.
 import { POSTS } from '../data/posts.js'
+import { PROFILES } from '../config/social.js'
 
 export const SITE = {
   url: 'https://www.egirerobotics.com',
@@ -12,6 +13,8 @@ export const SITE = {
   logo: '/images/logo-egire-robotics.png',
   ogImage: '/og-image.png',
   language: 'en-IN',
+  // the official profiles, so search engines connect them to the site
+  sameAs: Object.values(PROFILES).filter(Boolean),
 }
 
 const postRoutes = POSTS.map((p) => ({
