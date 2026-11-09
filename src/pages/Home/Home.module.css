@@ -844,8 +844,9 @@
   }
 }
 
-/* Phones: the headline goes first and the 3D drone sits below it instead of behind it */
-@media (max-width: 768px) {
+/* Phones and portrait tablets (a phone in desktop mode or with a large display size reports about 900px):
+   the headline goes first and the 3D drone sits below it instead of behind it */
+@media (max-width: 768px), (max-width: 1200px) and (orientation: portrait) {
   .hero {
     flex-direction: column;
     align-items: stretch;
@@ -861,7 +862,11 @@
     order: 2;
     right: 0;
     width: 100%;
-    height: 22.5rem;
+    height: clamp(22.5rem, 60vw, 34rem);
+  }
+
+  .heroText {
+    max-width: 40rem;
   }
 }
 

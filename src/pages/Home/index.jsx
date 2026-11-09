@@ -169,7 +169,7 @@ export default function Home() {
             </p>
             <div className={styles.heroActions} style={{ pointerEvents: 'auto' }}>
               <Link to="/workshops" className={styles.primaryBtn}>
-                See workshops
+                See programs
               </Link>
               <Link to="/enquire?type=demo&from=home-hero" className={styles.ghostBtn}>
                 Book a demo <ArrowRight size={16} style={{ marginLeft: 'var(--space-2)' }} />
