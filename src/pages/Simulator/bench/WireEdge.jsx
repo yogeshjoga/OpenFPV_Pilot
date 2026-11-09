@@ -104,7 +104,7 @@ export function PendingWire({ fromX, fromY, toX, toY, fromNode, fromHandle, toNo
   const [path] = getSmoothStepPath({ sourceX: fromX, sourceY: fromY, sourcePosition: leaves, targetX: toX, targetY: toY, targetPosition: arrives, borderRadius: 14, offset: 34 })
   const lead = type ? padOf(type, fromHandle?.id)?.lead : null
   const color = lead?.color ?? '#e5b82a'
-  const width = Math.max(2.2, lead?.gauge ?? 0)
+  const width = Math.max(2.6, lead?.gauge ?? 0)
   const ok = !!toHandle && connectionStatus !== 'invalid'
   return (
     <g style={{ pointerEvents: 'none' }}>

@@ -155,8 +155,8 @@ export function BatteryArt() {
 export function CapacitorArt() {
   return (
     <svg viewBox="0 0 90 150" width="90" height="150" aria-hidden="true">
-      <Wire d="M28 8 L28 70" color="#aab1ba" width={2.4} tip={[28, 8]} />
-      <Wire d="M62 8 L62 70" color="#aab1ba" width={2.4} tip={[62, 8]} />
+      <Wire d="M28 8 L28 70" color="#8f99a6" width={3.2} tip={[28, 8]} />
+      <Wire d="M62 8 L62 70" color="#8f99a6" width={3.2} tip={[62, 8]} />
       <rect x="12" y="62" width="66" height="78" rx="6" fill="#4a4f57" stroke="#2a2e35" strokeWidth="1.2" />
       <ellipse cx="45" cy="62" rx="33" ry="7" fill="#7b8089" stroke="#2a2e35" />
       <rect x="58" y="64" width="16" height="74" rx="3" fill="#e6e9ee" />
