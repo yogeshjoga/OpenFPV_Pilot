@@ -130,6 +130,7 @@ function Bench() {
               onNodesChange={bench.onNodesChange}
               onEdgesChange={bench.onEdgesChange}
               onConnect={bench.connect}
+              onNodeDragStop={bench.settle}
               connectionMode={ConnectionMode.Loose}
               connectionLineComponent={PendingWire}
               connectionRadius={30}

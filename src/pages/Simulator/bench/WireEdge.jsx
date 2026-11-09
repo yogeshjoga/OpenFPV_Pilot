@@ -115,11 +115,11 @@ export default function WireEdge({ id, source, sourceHandleId, target, targetHan
  */
 export function PendingWire({ fromX, fromY, toX, toY, fromNode, fromHandle, toNode, toHandle, connectionStatus }) {
   const type = fromNode?.data?.type
-  const leaves = type ? exitOf(type, fromHandle?.id, !!fromNode.data.flip) : 'bottom'
+  const leaves = type ? exitOf(type, fromHandle?.id, !!fromNode.data.flip, fromNode.data.turn ?? 0) : 'bottom'
   const dx = toX - fromX
   const dy = toY - fromY
   // it arrives the way the finished wire would at the pad it is over; in the open it arrives facing the way it came from
-  const arrives = toHandle && toNode ? exitOf(toNode.data.type, toHandle.id, !!toNode.data.flip) : Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'left' : 'right') : dy > 0 ? 'top' : 'bottom'
+  const arrives = toHandle && toNode ? exitOf(toNode.data.type, toHandle.id, !!toNode.data.flip, toNode.data.turn ?? 0) : Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'left' : 'right') : dy > 0 ? 'top' : 'bottom'
   const [path] = getSmoothStepPath({ sourceX: fromX, sourceY: fromY, sourcePosition: leaves, targetX: toX, targetY: toY, targetPosition: arrives, borderRadius: 14, offset: 34 })
   const lead = type ? padOf(type, fromHandle?.id)?.lead : null
   const color = lead?.color ?? '#e5b82a'

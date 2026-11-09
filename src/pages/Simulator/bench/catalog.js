@@ -172,15 +172,29 @@ export const onFace = (pad, flip) => !pad.face || pad.face === 'both' || pad.fac
  * Where a pad is drawn. Positions are given as seen from the front. Turn the part over, as you would about a vertical
  * axis, and everything swings to the other side, so a pad at x is now at width minus x.
  */
-export const padAt = (part, pad, flip) => ({ x: flip ? part.w - pad.x : pad.x, y: pad.y })
+export function padAt(part, pad, flip, turn = 0) {
+  const x = flip ? part.w - pad.x : pad.x
+  if (!turn) return { x, y: pad.y }
+  // turned clockwise about the middle of the part: a pad below the middle ends up to its left after a quarter turn
+  const dx = x - part.w / 2
+  const dy = pad.y - part.h / 2
+  const [rx, ry] = { 90: [-dy, dx], 180: [-dx, -dy], 270: [dy, -dx] }[turn] ?? [dx, dy]
+  return { x: part.w / 2 + rx, y: part.h / 2 + ry }
+}
 
 /** The side of the part a wire leaves from, so wires route away from the board instead of across it. */
-export function exitOf(partId, padId, flip = false) {
+export function exitOf(partId, padId, flip = false, turn = 0) {
   const part = PART_BY_ID[partId]
   const p = padOf(partId, padId)
   if (!part || !p) return 'bottom'
-  const { x, y } = padAt(part, p, flip)
-  if (p.lead) return y > part.h / 2 ? 'bottom' : 'top'
+  const { x, y } = padAt(part, p, flip, turn)
+  if (p.lead && !turn) return y > part.h / 2 ? 'bottom' : 'top'
+  // a wire of a turned part leaves the way its end now points
+  if (p.lead) {
+    const dx = x - part.w / 2
+    const dy = y - part.h / 2
+    return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'bottom' : 'top'
+  }
   const edge = 60
   if (x < edge) return 'left'
   if (x > part.w - edge) return 'right'

@@ -21,6 +21,7 @@ function PartNode({ id, data, selected }) {
   const hide = useCallback(() => setHover(null), [])
   if (!part || !Art) return null
   const flip = !!data.flip
+  const turn = data.turn ?? 0
   // a board's wires leave from below it, so its name goes above
   const board = (part.kinds ?? [part.kind]).some((k) => k === 'esc' || k === 'fc' || k === 'aio')
   const artProps = data.type === 'motor' ? { running: data.running, dir: data.dir, spinCw: styles.spinCw, spinCcw: styles.spinCcw } : {}
@@ -34,7 +35,7 @@ function PartNode({ id, data, selected }) {
   }
 
   return (
-    <div className={`${styles.part} ${selected ? styles.partSelected : ''} ${data.smoke ? styles.partBurnt : ''}`} style={{ width: part.w, height: part.h }} onMouseDown={hide}>
+    <div className={`${styles.part} ${selected && !turn ? styles.partSelected : ''} ${data.smoke ? styles.partBurnt : ''}`} style={{ width: part.w, height: part.h }} onMouseDown={hide}>
       {actions && (
         <NodeToolbar isVisible={selected} position={Position.Top} offset={14}>
           <button type="button" className={styles.flipBtn} onClick={() => actions.flip(id)} title="Turn over (F)">
@@ -42,11 +43,13 @@ function PartNode({ id, data, selected }) {
           </button>
         </NodeToolbar>
       )}
-      <div className={`${styles.face} ${flip ? styles.mirror : ''}`} onMouseMove={overArt} onMouseLeave={hide}>
-        <Art flip={flip} {...artProps} />
+      <div className={`${styles.turner} ${selected && turn ? styles.partSelected : ''}`} style={turn ? { transform: `rotate(${turn}deg)` } : undefined}>
+        <div className={`${styles.face} ${flip ? styles.mirror : ''}`} onMouseMove={overArt} onMouseLeave={hide}>
+          <Art flip={flip} {...artProps} />
+        </div>
       </div>
       {part.pads.map((pad) => {
-        const at = padAt(part, pad, flip)
+        const at = padAt(part, pad, flip, turn)
         const near = onFace(pad, flip)
         const size = pad.hit
         return (

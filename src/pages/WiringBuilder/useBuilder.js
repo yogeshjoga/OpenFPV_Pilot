@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import { PART_BY_ID } from '../Simulator/bench/catalog.js'
 import { runChecks } from '../Simulator/bench/checks.js'
-import { WIRE_LAYER, fromFlow, labelNodes, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from '../Simulator/bench/flowModel.js'
+import { WIRE_LAYER, flowFromModel, fromFlow, labelNodes, lookOf, redrawEdges } from '../Simulator/bench/flowModel.js'
 import { matesFor } from '../Simulator/bench/mates.js'
-import { tidyLayout } from '../Simulator/bench/placement.js'
+import { tidyLayout, withMotorTurns } from '../Simulator/bench/placement.js'
 import { summarize } from '../Simulator/bench/summary.js'
 import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspace, encodeBuild, newId } from '../Simulator/bench/workspaces.js'
 
@@ -34,8 +34,9 @@ export function useBuilder() {
   const load = useCallback((model) => {
     ready.current = false
     const clean = cleanWorkspace(model)
-    setNodes(toFlowNodes(clean.nodes, true))
-    setEdges(toFlowEdges(clean.nodes, clean.wires))
+    const flow = flowFromModel(clean.nodes, clean.wires, true)
+    setNodes(flow.nodes)
+    setEdges(flow.edges)
     setPast([])
     setFuture([])
     setChecked(null)
@@ -114,8 +115,9 @@ export function useBuilder() {
   }, [])
 
   const restore = (model) => {
-    setNodes(toFlowNodes(model.nodes, true))
-    setEdges(toFlowEdges(model.nodes, model.wires))
+    const flow = flowFromModel(model.nodes, model.wires, true)
+    setNodes(flow.nodes)
+    setEdges(flow.edges)
     setChecked(null)
   }
   const undo = useCallback(() => {
@@ -159,6 +161,15 @@ export function useBuilder() {
   )
   const onNodeDragStart = useCallback(() => commit(), [commit])
 
+  // Every motor faces its ESC (its wires point at it). Done after a part is moved, added or wired.
+  const settle = useCallback(() => {
+    const { nodes: ns, edges: es } = latest.current
+    const next = withMotorTurns(ns)
+    if (next.every((n, i) => n === ns[i])) return
+    setNodes(next)
+    setEdges(redrawEdges(next, es))
+  }, [])
+
   const connect = useCallback(
     (c) => {
       if (!c.source || !c.target || (c.source === c.target && c.sourceHandle === c.targetHandle)) return
@@ -168,11 +179,12 @@ export function useBuilder() {
       const same = (e, x, y) => `${e.source}:${e.sourceHandle}` === x && `${e.target}:${e.targetHandle}` === y
       if (es.some((e) => same(e, a, b) || same(e, b, a))) return
       commit()
-      const byId = new Map(n.map((x) => [x.id, { id: x.id, type: x.data.type, flip: x.data.flip }]))
+      const byId = new Map(n.map((x) => [x.id, { id: x.id, type: x.data.type, flip: x.data.flip, turn: x.data.turn }]))
       setEdges((list) => [...list, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', zIndex: WIRE_LAYER, data: lookOf(byId, a, b, list.length) }])
       clearEffects()
+      setTimeout(settle, 60)
     },
-    [clearEffects, commit],
+    [clearEffects, commit, settle],
   )
 
   const addPart = useCallback(
@@ -181,8 +193,9 @@ export function useBuilder() {
       commit()
       setNodes((ns) => [...ns.map((n) => (n.selected ? { ...n, selected: false } : n)), { id: newId('p'), type: 'part', position, data: { type }, deletable: true, selected: true }])
       clearEffects()
+      setTimeout(settle, 60)
     },
-    [clearEffects, commit],
+    [clearEffects, commit, settle],
   )
 
   const removeSelected = useCallback(() => {
@@ -203,7 +216,8 @@ export function useBuilder() {
     const model = fromFlow(n, es)
     const at = tidyLayout(model.nodes, model.wires)
     setNodes((ns) => ns.map((x) => (at[x.id] ? { ...x, position: at[x.id] } : x)))
-  }, [commit])
+    setTimeout(settle, 60)
+  }, [commit, settle])
 
   // Turn parts over to reach the pads on their back. Without ids it turns the selected parts.
   const flip = useCallback(
@@ -285,7 +299,7 @@ export function useBuilder() {
 
   return {
     builds, current, nodes: named, edges, rows: rowsNamed, report, live, mode, tool, notice, soldering, saving: store.saving, canUndo: past.length > 0, canRedo: future.length > 0,
-    setMode, setTool, setNotice, onNodesChange, onEdgesChange, onNodeDragStart, onConnectStart, onConnectEnd, connect, addPart, removeSelected, flip, select, tidy, undo, redo, check, powerUp,
+    setMode, setTool, setNotice, onNodesChange, onEdgesChange, onNodeDragStart, settle, onConnectStart, onConnectEnd, connect, addPart, removeSelected, flip, select, tidy, undo, redo, check, powerUp,
     open, create, rename, duplicate, remove, shareLink,
   }
 }

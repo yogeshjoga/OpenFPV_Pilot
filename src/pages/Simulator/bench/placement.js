@@ -41,11 +41,15 @@ export function tidyLayout(nodes, wires) {
   const used = {}
   const next = (kind) => (used[kind] = (used[kind] ?? -1) + 1)
 
+  // a motor beside the ESC is turned to face it, so it is as wide as it is tall: leave room for its wires to run to the pads
+  const reach = 170
+  const left = -(motorSize.w / 2 + motorSize.h / 2 + reach)
+  const right = esc.w + reach + motorSize.h / 2 - motorSize.w / 2
   const slot = {
-    M4: { x: -(motorSize.w + gap), y: 20 },
-    M3: { x: -(motorSize.w + gap), y: 20 + motorSize.h + 30 },
-    M2: { x: esc.w + gap, y: 20 },
-    M1: { x: esc.w + gap, y: 20 + motorSize.h + 30 },
+    M4: { x: left, y: 20 },
+    M3: { x: left, y: 20 + motorSize.h + 30 },
+    M2: { x: right, y: 20 },
+    M1: { x: right, y: 20 + motorSize.h + 30 },
   }
   const free = ['M4', 'M2', 'M3', 'M1']
   const groupOf = (motorId) => {
@@ -95,4 +99,35 @@ export function tidyLayout(nodes, wires) {
     else if (kind === 'camera') at[n.id] = { x: -(size.w + gap) - 190, y: top - (size.h + 50) * i }
   }
   return at
+}
+
+/**
+ * Which way each motor faces: its wires point at the nearest ESC, so a motor to the left of the ESC has its wires pointing right,
+ * a motor to the right has them pointing left, one above has them pointing down and one below up.
+ * `nodes`: flow nodes ({ id, position, data: { type } }). Returns { [motorId]: turn }, a turn being 0, 90, 180 or 270 degrees clockwise
+ * (a motor is drawn with its wires pointing down when it is not turned).
+ */
+export function motorTurns(nodes) {
+  const centre = (n) => {
+    const part = PART_BY_ID[n.data.type]
+    return { x: n.position.x + part.w / 2, y: n.position.y + part.h / 2 }
+  }
+  const escs = nodes.filter((n) => isKind(n.data.type, 'esc'))
+  const out = {}
+  if (!escs.length) return out
+  for (const n of nodes) {
+    if (n.data.type !== 'motor') continue
+    const m = centre(n)
+    const near = escs.map((e) => ({ c: centre(e) })).sort((a, b) => Math.hypot(a.c.x - m.x, a.c.y - m.y) - Math.hypot(b.c.x - m.x, b.c.y - m.y))[0].c
+    const dx = near.x - m.x
+    const dy = near.y - m.y
+    out[n.id] = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 270 : 90) : dy > 0 ? 0 : 180
+  }
+  return out
+}
+
+/** The nodes with every motor turned to face its ESC (the same objects for the ones that do not change). */
+export const withMotorTurns = (nodes) => {
+  const turns = motorTurns(nodes)
+  return nodes.map((n) => (turns[n.id] === undefined || (n.data.turn ?? 0) === turns[n.id] ? n : { ...n, data: { ...n.data, turn: turns[n.id] || undefined } }))
 }

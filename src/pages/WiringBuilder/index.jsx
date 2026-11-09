@@ -217,6 +217,7 @@ function Builder({ embedded }) {
             onNodesChange={builder.onNodesChange}
             onEdgesChange={builder.onEdgesChange}
             onNodeDragStart={builder.onNodeDragStart}
+            onNodeDragStop={builder.settle}
             onConnect={builder.connect}
             onConnectStart={builder.onConnectStart}
             onConnectEnd={builder.onConnectEnd}

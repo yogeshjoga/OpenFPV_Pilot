@@ -725,6 +725,13 @@
   height: 100%;
 }
 
+/* a part turned a quarter turn (a motor faces its ESC) */
+.turner {
+  width: 100%;
+  height: 100%;
+  transition: transform var(--transition-base);
+}
+
 .mirror {
   transform: scaleX(-1);
 }

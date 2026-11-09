@@ -1,5 +1,6 @@
-import { PART_BY_ID, exitOf, onFace, padOf } from './catalog.js'
+import { PART_BY_ID, exitOf, onFace, padAt, padOf } from './catalog.js'
 import { padTip, wireTip } from './tips.js'
+import { withMotorTurns } from './placement.js'
 
 /** Wires are drawn above every part, so they are never hidden behind a board. */
 export const WIRE_LAYER = 2000
@@ -20,16 +21,20 @@ export function lookOf(nodesById, a, b, seed = 0) {
     return { node, pad, padId }
   }
   const ends = [info(a), info(b)]
-  const route = ({ node, padId }) => (node ? exitOf(node.type, padId, !!node.flip) : 'bottom')
+  const route = ({ node, padId }) => (node ? exitOf(node.type, padId, !!node.flip, node.turn ?? 0) : 'bottom')
   const hidden = ends.some(({ node, pad }) => node && pad && !onFace(pad, !!node.flip))
   // which place in the row of pads on its side this pad has: wires from neighbouring pads take their own lane
   const lane = ({ node, pad }) => {
     if (!node || !pad) return 0
     const part = PART_BY_ID[node.type]
     const flip = !!node.flip
-    const side = exitOf(node.type, pad.id, flip)
-    const along = (p) => (side === 'top' || side === 'bottom' ? p.x : p.y)
-    const same = part.pads.filter((p) => onFace(p, flip) && exitOf(node.type, p.id, flip) === side).sort((p, q) => along(p) - along(q))
+    const turn = node.turn ?? 0
+    const side = exitOf(node.type, pad.id, flip, turn)
+    const along = (p) => {
+      const at = padAt(part, p, flip, turn)
+      return side === 'top' || side === 'bottom' ? at.x : at.y
+    }
+    const same = part.pads.filter((p) => onFace(p, flip) && exitOf(node.type, p.id, flip, turn) === side).sort((p, q) => along(p) - along(q))
     return Math.max(0, same.findIndex((p) => p.id === pad.id))
   }
   const describe = ({ node, pad }) => {
@@ -48,7 +53,14 @@ export function lookOf(nodesById, a, b, seed = 0) {
 }
 
 export const toFlowNodes = (nodes, deletable) =>
-  nodes.map((n) => ({ id: n.id, type: 'part', position: { x: n.x, y: n.y }, data: { type: n.type, flip: !!n.flip }, deletable }))
+  nodes.map((n) => ({ id: n.id, type: 'part', position: { x: n.x, y: n.y }, data: { type: n.type, flip: !!n.flip, ...(n.turn ? { turn: n.turn } : {}) }, deletable }))
+
+/** A saved model as the flow wants it: the nodes with each motor turned to face its ESC, and the wires drawn for that. */
+export function flowFromModel(nodes, wires, deletable) {
+  const flow = withMotorTurns(toFlowNodes(nodes, deletable))
+  const turned = nodes.map((n) => ({ ...n, turn: flow.find((f) => f.id === n.id)?.data.turn }))
+  return { nodes: flow, edges: toFlowEdges(turned, wires) }
+}
 
 export const toFlowEdges = (nodes, wires) => {
   const byId = new Map(nodes.map((n) => [n.id, n]))
@@ -61,7 +73,7 @@ export const toFlowEdges = (nodes, wires) => {
 
 /** The wires again, drawn for the way each part is now facing. Used after a part is turned over. */
 export const redrawEdges = (flowNodes, edges) => {
-  const byId = new Map(flowNodes.map((n) => [n.id, { id: n.id, type: n.data.type, flip: n.data.flip }]))
+  const byId = new Map(flowNodes.map((n) => [n.id, { id: n.id, type: n.data.type, flip: n.data.flip, turn: n.data.turn }]))
   return edges.map((e, i) => ({ ...e, data: { ...e.data, ...lookOf(byId, `${e.source}:${e.sourceHandle}`, `${e.target}:${e.targetHandle}`, e.data?.seed ?? i) } }))
 }
 

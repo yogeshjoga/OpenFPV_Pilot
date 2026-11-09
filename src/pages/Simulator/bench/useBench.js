@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import { PART_BY_ID } from './catalog.js'
-import { WIRE_LAYER, fromFlow, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from './flowModel.js'
+import { WIRE_LAYER, flowFromModel, fromFlow, lookOf, redrawEdges } from './flowModel.js'
 import { runChecks } from './checks.js'
-import { tidyLayout } from './placement.js'
+import { tidyLayout, withMotorTurns } from './placement.js'
 import { LESSON_BY_ID, LESSONS, lessonGoals } from './lessons.js'
 import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspace, encodeBuild, newId } from './workspaces.js'
 
@@ -36,13 +36,27 @@ export function useBench() {
 
   const lesson = mode.kind === 'lesson' ? LESSON_BY_ID[mode.id] : null
 
+  // Every motor faces its ESC (its wires point at it). Done after a part is moved, added or wired, and when a build opens.
+  const latest = useRef({ nodes: [], edges: [] })
+  useEffect(() => {
+    latest.current = { nodes, edges }
+  })
+  const settle = useCallback(() => {
+    const { nodes: ns, edges: es } = latest.current
+    const next = withMotorTurns(ns)
+    if (next.every((n, i) => n === ns[i])) return
+    setNodes(next)
+    setEdges(redrawEdges(next, es))
+  }, [])
+
   // ---- loading a lesson or a workspace onto the bench ----
   const put = useCallback(
     (model, deletable) => {
       loaded.current = false
       const clean = cleanWorkspace(model)
-      setNodes(toFlowNodes(clean.nodes, deletable))
-      setEdges(toFlowEdges(clean.nodes, clean.wires))
+      const flow = flowFromModel(clean.nodes, clean.wires, deletable)
+      setNodes(flow.nodes)
+      setEdges(flow.edges)
       setReport(null)
       setOutcome(null)
       startedAt.current = null
@@ -179,12 +193,13 @@ export function useBench() {
       touch()
       setEdges((es) => {
         if (es.some((e) => (`${e.source}:${e.sourceHandle}` === a && `${e.target}:${e.targetHandle}` === b) || (`${e.source}:${e.sourceHandle}` === b && `${e.target}:${e.targetHandle}` === a))) return es
-        const byId = new Map(nodes.map((n) => [n.id, { id: n.id, type: n.data.type, flip: n.data.flip }]))
+        const byId = new Map(nodes.map((n) => [n.id, { id: n.id, type: n.data.type, flip: n.data.flip, turn: n.data.turn }]))
         return [...es, { id: newId('w'), source: c.source, sourceHandle: c.sourceHandle, target: c.target, targetHandle: c.targetHandle, type: 'wire', zIndex: WIRE_LAYER, data: lookOf(byId, a, b, es.length) }]
       })
       clearEffects()
+      setTimeout(settle, 60)
     },
-    [clearEffects, nodes],
+    [clearEffects, nodes, settle],
   )
 
   const addPart = useCallback(
@@ -193,8 +208,9 @@ export function useBench() {
       touch()
       setNodes((ns) => [...ns, { id: newId('p'), type: 'part', position, data: { type }, deletable: true }])
       clearEffects()
+      setTimeout(settle, 60)
     },
-    [clearEffects, mode.kind],
+    [clearEffects, mode.kind, settle],
   )
 
   // Turn parts over to reach the pads on their back (the selected parts, or the one given)
@@ -220,7 +236,8 @@ export function useBench() {
     const model = fromFlow(nodes, edges)
     const at = tidyLayout(model.nodes, model.wires)
     setNodes((ns) => ns.map((n) => (at[n.id] ? { ...n, position: at[n.id] } : n)))
-  }, [edges, nodes])
+    setTimeout(settle, 60)
+  }, [edges, nodes, settle])
 
   const removeSelected = useCallback(() => {
     setEdges((es) => es.filter((e) => !e.selected))
@@ -311,7 +328,7 @@ export function useBench() {
 
   return {
     mode, lesson, lastLesson, nodes: shownNodes, edges, report, outcome, live, taskState, progress, freeList, freeName, notice, saving: store.saving,
-    setNotice, onNodesChange, onEdgesChange, connect, addPart, removeSelected, align, flip, powerUp, openLesson, openFree, newFree, renameFree, duplicateFree,
+    setNotice, onNodesChange, onEdgesChange, connect, addPart, removeSelected, align, settle, flip, powerUp, openLesson, openFree, newFree, renameFree, duplicateFree,
     deleteFree, restartLesson, showAnswer, shareLink, setMode,
   }
 }
