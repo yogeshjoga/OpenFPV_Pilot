@@ -16,7 +16,7 @@ import { genericEsc, genericFc } from './boards/generic.js'
 
 const pad = (id, label, x, y, extra = {}) => ({ id, label, x, y, ...extra })
 // Wires are drawn slim so a busy bench stays readable. The artwork scales its leads by the same amount.
-export const LEAD_SCALE = 0.95
+export const LEAD_SCALE = 1.15
 const lead = (id, label, x, y, color, gauge, extra = {}) => pad(id, label, x, y, { lead: { color, gauge: Math.round(gauge * LEAD_SCALE * 10) / 10 }, ...extra })
 
 // ---------- 4-in-1 ESC and flight controller: the plain 30.5 mm stack boards, built like the brand boards (boards/generic.js) ----------

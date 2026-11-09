@@ -40,7 +40,7 @@ export function lookOf(nodesById, a, b, seed = 0) {
     return { padLabel: pad.role ? tip.title : pad.label, partName: part.name, tip }
   }
   const [from, to] = ends.map(describe)
-  const look = { color: '#e5b82a', gauge: 2.4, from: route(ends[0]), to: route(ends[1]), seed, lane: lane(ends[0]), hidden, tip: from && to ? wireTip(from, to) : null }
+  const look = { color: '#e5b82a', gauge: 3, from: route(ends[0]), to: route(ends[1]), seed, lane: lane(ends[0]), hidden, tip: from && to ? wireTip(from, to) : null }
   for (const { pad } of ends) {
     if (pad?.lead) return { ...look, color: pad.lead.color, gauge: pad.lead.gauge }
   }

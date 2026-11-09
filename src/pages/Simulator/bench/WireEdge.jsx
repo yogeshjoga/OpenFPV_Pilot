@@ -1,7 +1,9 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import { BaseEdge, getSmoothStepPath, useEdges } from '@xyflow/react'
 import { exitOf, padOf } from './catalog.js'
 import { corridorShift, shifted, slotOf, slotShift } from './lanes.js'
+import { hopPath, hopsOver, sample } from './hops.js'
+import { otherLines, removeLine, setLine, snapshot, subscribe } from './wireLines.js'
 import BenchTip from './BenchTip.jsx'
 
 // How much of each end of a wire cannot be clicked, so a pad that already has a wire on it can still be pointed at
@@ -43,7 +45,7 @@ export default function WireEdge({ id, source, sourceHandleId, target, targetHan
   const startMoved = sx !== sourceX || sy !== sourceY
   const endMoved = tx !== targetX || ty !== targetY
   const path = `${startMoved ? `M ${sourceX} ${sourceY} ${mid.replace(/^M/, 'L')}` : mid}${endMoved ? ` L ${targetX} ${targetY}` : ''}`
-  const width = data?.gauge ?? 1.8
+  const width = data?.gauge ?? 2.4
   const color = data?.color ?? '#e5c02a'
   // an end on the side of a part that faces away: the wire goes through the board, so it is faded and dashed
   const through = data?.hidden
@@ -51,9 +53,26 @@ export default function WireEdge({ id, source, sourceHandleId, target, targetHan
   // the part of the wire that can be clicked: all of it except the stretch at each pad
   const hit = useRef(null)
   const [length, setLength] = useState(0)
+  const [route, setRoute] = useState([])
   useLayoutEffect(() => {
-    setLength(hit.current?.getTotalLength?.() ?? 0)
-  }, [path])
+    const el = hit.current
+    setLength(el?.getTotalLength?.() ?? 0)
+    // tell the other wires where this one runs, and take the route back off when the wire is removed
+    if (el) {
+      const points = sample(el)
+      setRoute(points)
+      setLine(id, points)
+    }
+    return () => removeLine(id)
+  }, [path, id])
+
+  // where this wire crosses another: it hops over, like a wire on paper. Redone whenever another wire moves.
+  const version = useSyncExternalStore(subscribe, snapshot)
+  const shown = useMemo(() => {
+    const hops = route.length ? hopsOver(route, otherLines(id)) : []
+    return hops.length ? hopPath(route, hops) : path
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `version` says another wire changed
+  }, [route, path, id, version])
   const dash = length > END_GAP * 3 ? `0 ${END_GAP} ${length - END_GAP * 2} ${length}` : undefined
 
   const [hover, setHover] = useState(null)
@@ -61,9 +80,9 @@ export default function WireEdge({ id, source, sourceHandleId, target, targetHan
 
   return (
     <g opacity={through ? 0.55 : 1} strokeDasharray={through ? '6 5' : undefined}>
-      {(selected || hover) && <path d={path} fill="none" stroke="var(--color-accent-primary)" strokeOpacity={selected ? 0.35 : 0.25} strokeWidth={width + 7} strokeLinecap="round" style={{ pointerEvents: 'none' }} />}
-      <path d={path} fill="none" stroke="#fff" strokeOpacity="0.7" strokeWidth={width + 1.4} strokeLinecap="round" strokeLinejoin="round" style={{ pointerEvents: 'none' }} />
-      <BaseEdge id={id} path={path} interactionWidth={0} style={{ stroke: color, strokeWidth: width, strokeLinecap: 'round', strokeLinejoin: 'round', pointerEvents: 'none' }} />
+      {(selected || hover) && <path d={shown} fill="none" stroke="var(--color-accent-primary)" strokeOpacity={selected ? 0.35 : 0.25} strokeWidth={width + 7} strokeLinecap="round" style={{ pointerEvents: 'none' }} />}
+      <path d={shown} fill="none" stroke="#fff" strokeOpacity="0.8" strokeWidth={width + 2} strokeLinecap="round" strokeLinejoin="round" style={{ pointerEvents: 'none' }} />
+      <BaseEdge id={id} path={shown} interactionWidth={0} style={{ stroke: color, strokeWidth: width, strokeLinecap: 'round', strokeLinejoin: 'round', pointerEvents: 'none' }} />
       {[
         [sourceX, sourceY],
         [targetX, targetY],
@@ -104,7 +123,7 @@ export function PendingWire({ fromX, fromY, toX, toY, fromNode, fromHandle, toNo
   const [path] = getSmoothStepPath({ sourceX: fromX, sourceY: fromY, sourcePosition: leaves, targetX: toX, targetY: toY, targetPosition: arrives, borderRadius: 14, offset: 34 })
   const lead = type ? padOf(type, fromHandle?.id)?.lead : null
   const color = lead?.color ?? '#e5b82a'
-  const width = Math.max(2.6, lead?.gauge ?? 0)
+  const width = Math.max(3, lead?.gauge ?? 0)
   const ok = !!toHandle && connectionStatus !== 'invalid'
   return (
     <g style={{ pointerEvents: 'none' }}>
