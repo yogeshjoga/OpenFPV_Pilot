@@ -102,7 +102,6 @@ test('on the ESC the three pads of a motor output are not joined to each other o
   const { netOf } = buildNets([node('esc', ESC)], [])
   assert.notEqual(netOf('esc', 'm1a'), netOf('esc', 'm1b'))
   assert.notEqual(netOf('esc', 'm1a'), netOf('esc', 'ESC.M1'))
-  assert.equal(netOf('esc', 'batp'), netOf('esc', 'capp'))
   assert.equal(netOf('esc', 'batp'), netOf('esc', 'ESC.BAT'))
   assert.equal(netOf('esc', 'batn'), netOf('esc', 'ESC.GND'))
 })
@@ -113,7 +112,7 @@ const stack = (fc, extra = {}) => ({
   nodes: [node('bat', 'battery'), node('esc', ESC), node('cap', 'capacitor'), node('fc', fc), node('rx', 'receiver'), node('cam', 'camera'), node('vtx', 'vtx'), node('gps', 'gps'),
     node('m1', 'motor'), node('m2', 'motor'), node('m3', 'motor'), node('m4', 'motor')],
   wires: [
-    wire('bat.pos', 'esc.batp'), wire('bat.neg', 'esc.batn'), wire('cap.cp', 'esc.capp'), wire('cap.cn', 'esc.capn'),
+    wire('bat.pos', 'esc.batp'), wire('bat.neg', 'esc.batn'), wire('cap.cp', 'esc.batp'), wire('cap.cn', 'esc.batn'),
     ...motorWires('m1', 'm1'), ...motorWires('m2', 'm2'), ...motorWires('m3', 'm3'), ...motorWires('m4', 'm4'),
     // the 8-pin link: connector pins meet the pins of the same name (the ESC has NC where the FC has the telemetry line)
     ...['CUR', 'M4', 'M3', 'M2', 'M1', 'BAT', 'GND'].map((n) => wire(`fc.ESC.${n}`, `esc.ESC.${n}`)),
@@ -308,4 +307,10 @@ test('tidy up places an AIO board in the middle with the motors around it', () =
   const at = tidyLayout(b.nodes, b.wires)
   assert.ok(at.m1.x > at.aio.x && at.m4.x < at.aio.x)
   assert.ok(Object.values(at).every((p) => Number.isFinite(p.x) && Number.isFinite(p.y)))
+})
+
+test('a build saved before the capacitor moved to the battery pads still opens, with the capacitor on them', () => {
+  const old = { nodes: [{ id: 'esc', type: 'esc', x: 0, y: 0 }, { id: 'cap', type: 'capacitor', x: 0, y: 500 }], wires: [{ id: 'a', a: 'cap:cp', b: 'esc:capp' }, { id: 'b', a: 'cap:cn', b: 'esc:capn' }] }
+  const clean = cleanWorkspace(old)
+  assert.deepEqual(clean.wires.map((w) => w.b), ['esc:batp', 'esc:batn'])
 })

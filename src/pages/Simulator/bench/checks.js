@@ -153,9 +153,9 @@ export function runChecks(nodes, wires) {
       burn('Capacitor is the wrong way round', 'The long (positive) leg is on a ground pad. A reversed electrolytic capacitor can pop, so check the stripe: it marks the negative leg.', [cap.id])
     } else if (onPos.has('vbat') && !onPos.has('gnd') && onNeg.has('gnd') && !onNeg.has('vbat')) {
       goals.capacitor = true
-      say('ok', 'Capacitor is soldered correctly', 'Positive leg on CAP+, negative leg on CAP-, across the battery power.', [cap.id])
+      say('ok', 'Capacitor is soldered correctly', 'Positive leg on BAT+, negative leg on BAT-, across the battery power.', [cap.id])
     } else {
-      say('warn', 'Capacitor is not finished', 'Solder the long leg to CAP+ and the short, striped leg to CAP-.', [cap.id], 'todo')
+      say('warn', 'Capacitor is not finished', 'Solder the long leg to the BAT+ pad and the short, striped leg to the BAT- pad, next to the battery leads.', [cap.id], 'todo')
     }
   }
 

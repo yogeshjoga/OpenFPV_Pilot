@@ -39,8 +39,6 @@ export function escBoard(o) {
   const power = [
     { id: 'batn', label: 'BAT-', x: cx - spread, y: h - 40, shape: 'pad', size: [60, 40], big: true, tin: true, hit: 30, rail: 'gnd' },
     { id: 'batp', label: 'BAT+', x: cx + spread, y: h - 40, shape: 'pad', size: [60, 40], big: true, tin: true, hit: 30, rail: 'vbat' },
-    { id: 'capn', label: 'CAP-', x: cx - 24, y: bodyH - 22, shape: 'round', size: [20, 20], hit: 20, rail: 'gnd' },
-    { id: 'capp', label: 'CAP+', x: cx + 24, y: bodyH - 22, shape: 'round', size: [20, 20], hit: 20, rail: 'vbat' },
   ]
   const pads = [...link, ...power, ...motor]
   const rows = Math.max(4, Math.round(4 * t))
@@ -60,8 +58,8 @@ export function escBoard(o) {
     h,
     pads,
     internal: [
-      ['batp', 'capp', 'ESC.BAT'],
-      ['batn', 'capn', 'ESC.GND'],
+      ['batp', 'ESC.BAT'],
+      ['batn', 'ESC.GND'],
     ],
     art: {
       kind: 'esc',
@@ -76,9 +74,9 @@ export function escBoard(o) {
         ]),
         { t: 'chip', x: cx - 34, y: Math.round(156 * t), w: 68, h: 68, die: true, label: 'MCU' },
         { t: 'coil', x: cx - 24, y: 80, w: 48, h: 40 },
-        // the two small capacitors sit below the last row of power stages, either side of the CAP pads
-        { t: 'cap', x: cx - 72, y: bodyH - 24, r: 14 },
-        { t: 'cap', x: cx + 72, y: bodyH - 24, r: 14 },
+        // the two small capacitors sit below the last row of power stages
+        { t: 'cap', x: cx - 40, y: bodyH - 30, r: 14 },
+        { t: 'cap', x: cx + 40, y: bodyH - 30, r: 14 },
         { t: 'title', x: cx, y: Math.round(140 * t), text: o.title ?? o.brand ?? 'GEPRC', sub: false },
       ],
       backFeatures: [

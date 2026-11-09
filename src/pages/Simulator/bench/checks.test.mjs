@@ -13,7 +13,7 @@ const correct = () => ({
   nodes: [node('bat', 'battery'), node('esc'), node('cap', 'capacitor'), node('fc'), node('rx', 'receiver'), node('cam', 'camera'), node('vtx'), node('gps'),
     node('m1', 'motor'), node('m2', 'motor'), node('m3', 'motor'), node('m4', 'motor')],
   wires: [
-    wire('bat.pos', 'esc.batp'), wire('bat.neg', 'esc.batn'), wire('cap.cp', 'esc.capp'), wire('cap.cn', 'esc.capn'),
+    wire('bat.pos', 'esc.batp'), wire('bat.neg', 'esc.batn'), wire('cap.cp', 'esc.batp'), wire('cap.cn', 'esc.batn'),
     ...motorWires('m1', 'm1'), ...motorWires('m2', 'm2'), ...motorWires('m3', 'm3'), ...motorWires('m4', 'm4'),
     wire('fc.sig_bat', 'esc.sig_bat'), wire('fc.sig_g', 'esc.sig_g'),
     ...['m1', 'm2', 'm3', 'm4'].map((m) => wire(`fc.sig_${m}`, `esc.sig_${m}`)),
@@ -53,7 +53,7 @@ test('the catalog is consistent', () => {
 
 test('wires and shared copper make nets', () => {
   const { netOf } = buildNets([node('esc'), node('bat', 'battery')], [wire('bat.pos', 'esc.batp')])
-  assert.equal(netOf('bat', 'pos'), netOf('esc', 'capp'), 'BAT+ and CAP+ are the same copper')
+  assert.equal(netOf('bat', 'pos'), netOf('esc', 'batp'), 'the wire joins the battery lead to the BAT+ pad')
   assert.equal(netOf('bat', 'pos'), netOf('esc', 'sig_bat'))
   assert.notEqual(netOf('bat', 'pos'), netOf('bat', 'neg'))
 })
@@ -97,7 +97,7 @@ test('BAT+ joined to ground is a short', () => {
 })
 
 test('a reversed capacitor is critical, a missing leg is a warning', () => {
-  const r1 = (() => { const b = swap(correct(), 'esc.capp', 'esc.capn'); return runChecks(b.nodes, b.wires) })()
+  const r1 = (() => { const b = correct(); b.wires = b.wires.map((w) => (w.a === 'cap:cp' ? { ...w, b: 'esc:batn' } : w.a === 'cap:cn' ? { ...w, b: 'esc:batp' } : w)); return runChecks(b.nodes, b.wires) })()
   assert.ok(titles(r1, 'critical').includes('Capacitor is the wrong way round'))
   assert.equal(r1.goals.capacitor, false)
   const b = without(correct(), 'cap.cn')

@@ -3,6 +3,7 @@ import { applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import { PART_BY_ID } from './catalog.js'
 import { WIRE_LAYER, fromFlow, lookOf, redrawEdges, toFlowEdges, toFlowNodes } from './flowModel.js'
 import { runChecks } from './checks.js'
+import { tidyLayout } from './placement.js'
 import { LESSON_BY_ID, LESSONS, lessonGoals } from './lessons.js'
 import { browserStorage, cleanWorkspace, createStore, decodeBuild, emptyWorkspace, encodeBuild, newId } from './workspaces.js'
 
@@ -211,6 +212,16 @@ export function useBench() {
     [clearEffects, mode.kind, nodes],
   )
 
+  // Arranges the whole bench like a wiring diagram: the flight controller above the ESC, a motor beside each output, the battery and
+  // the capacitor underneath. Wires follow their pads.
+  const align = useCallback(() => {
+    if (!nodes.length) return
+    touch()
+    const model = fromFlow(nodes, edges)
+    const at = tidyLayout(model.nodes, model.wires)
+    setNodes((ns) => ns.map((n) => (at[n.id] ? { ...n, position: at[n.id] } : n)))
+  }, [edges, nodes])
+
   const removeSelected = useCallback(() => {
     setEdges((es) => es.filter((e) => !e.selected))
     if (mode.kind === 'free') {
@@ -300,7 +311,7 @@ export function useBench() {
 
   return {
     mode, lesson, lastLesson, nodes: shownNodes, edges, report, outcome, live, taskState, progress, freeList, freeName, notice, saving: store.saving,
-    setNotice, onNodesChange, onEdgesChange, connect, addPart, removeSelected, flip, powerUp, openLesson, openFree, newFree, renameFree, duplicateFree,
+    setNotice, onNodesChange, onEdgesChange, connect, addPart, removeSelected, align, flip, powerUp, openLesson, openFree, newFree, renameFree, duplicateFree,
     deleteFree, restartLesson, showAnswer, shareLink, setMode,
   }
 }

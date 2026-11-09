@@ -144,7 +144,7 @@ const LEADS = {
       ['What it is', 'The positive leg, the longer one. The capacitor soaks up the voltage spikes the motors throw back at the battery lines.'],
       ['Carries', 'Battery voltage, with only the brief spikes flowing through it, not the motor current.'],
       ['Wire', 'Its own legs. Keep them short and trim them to length.'],
-      ['Connect to', 'CAP+ on the ESC (or BAT+), as close to the ESC as you can. Reversed, a capacitor can burst.'],
+      ['Connect to', 'The BAT+ pad of the ESC, next to the battery’s red lead, with the legs as short as you can. Reversed, a capacitor can burst.'],
     ],
   },
   'cap-': {
@@ -155,7 +155,7 @@ const LEADS = {
       ['What it is', 'The negative leg, the short one on the side of the stripe.'],
       ['Carries', 'Ground, with only the brief spikes flowing through it.'],
       ['Wire', 'Its own legs. Keep them short and trim them to length.'],
-      ['Connect to', 'CAP- on the ESC (or BAT-).'],
+      ['Connect to', 'The BAT- pad of the ESC, next to the battery’s black lead.'],
     ],
   },
 }
@@ -252,20 +252,19 @@ function boardPad(part, pad) {
     }
   }
 
-  // the battery and capacitor pads of an ESC
-  if (pad.id === 'batp' || pad.id === 'batn' || pad.id === 'capp' || pad.id === 'capn') {
-    const plus = pad.id.endsWith('p')
-    const cap = pad.id.startsWith('cap')
+  // the battery pads of an ESC: the battery leads and the capacitor legs both go here
+  if (pad.id === 'batp' || pad.id === 'batn') {
+    const plus = pad.id === 'batp'
     const rail = RAIL[plus ? 'vbat' : 'gnd']
     return {
       badge: rail.badge,
       tone: rail.tone,
-      title: cap ? `${pad.label} (capacitor pad)` : `${pad.label} (battery pad)`,
+      title: `${pad.label} (battery pad)`,
       rows: [
-        ['What it is', cap ? `A pad for the legs of the capacitor, wired to ${plus ? 'BAT+' : 'BAT-'} inside the board.` : `The big pad for the battery’s ${plus ? 'red (positive)' : 'black (negative)'} lead.`],
+        ['What it is', `The big pad for the battery’s ${plus ? 'red (positive)' : 'black (negative)'} lead. The capacitor goes on this same pad.`],
         ['Carries', rail.carries],
-        ['Wire', cap ? 'The capacitor’s own legs, kept short.' : rail.wire],
-        ['Connect to', cap ? `The ${plus ? 'long' : 'short, striped'} leg of the capacitor.` : `The ${plus ? 'red' : 'black'} lead of the battery (XT60).`],
+        ['Wire', rail.wire],
+        ['Connect to', `The ${plus ? 'red' : 'black'} lead of the battery (XT60), and the ${plus ? 'long' : 'short, striped'} leg of the capacitor.`],
       ],
     }
   }

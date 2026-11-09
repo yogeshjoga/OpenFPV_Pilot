@@ -13,6 +13,10 @@ export const newId = (prefix = 'ws') => `${prefix}_${Math.random().toString(36).
 export const emptyWorkspace = (name = 'My build') => ({ id: newId(), name, nodes: [], wires: [], updatedAt: Date.now() })
 
 /** Drops parts and wires that refer to a part or pad this version of the bench does not know. */
+// The ESC used to have CAP+ and CAP- pads of its own. They were the same copper as the battery pads, so a wire on one of them
+// now goes to the battery pad.
+const RENAMED_PADS = { capp: 'batp', capn: 'batn' }
+
 export function cleanWorkspace(ws) {
   const nodes = (ws?.nodes ?? []).filter((n) => n && PART_BY_ID[n.type] && typeof n.id === 'string' && Number.isFinite(n.x) && Number.isFinite(n.y))
   const ids = new Map(nodes.map((n) => [n.id, n]))
@@ -21,7 +25,13 @@ export function cleanWorkspace(ws) {
     const node = ids.get(nodeId)
     return !!node && PART_BY_ID[node.type].pads.some((p) => p.id === padId)
   }
-  const wires = (ws?.wires ?? []).filter((w) => w && valid(w.a) && valid(w.b) && w.a !== w.b)
+  const moved = (key) => {
+    const [nodeId, padId] = String(key).split(':')
+    const node = ids.get(nodeId)
+    const gone = node && RENAMED_PADS[padId] && !PART_BY_ID[node.type].pads.some((p) => p.id === padId)
+    return gone ? `${nodeId}:${RENAMED_PADS[padId]}` : key
+  }
+  const wires = (ws?.wires ?? []).map((w) => (w ? { ...w, a: moved(w.a), b: moved(w.b) } : w)).filter((w) => w && valid(w.a) && valid(w.b) && w.a !== w.b)
   return { ...ws, nodes, wires }
 }
 

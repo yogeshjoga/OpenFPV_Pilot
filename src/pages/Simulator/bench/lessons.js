@@ -11,7 +11,7 @@ import { tidyLayout } from './placement.js'
 const w = (a, b) => ({ a, b })
 const motorSolution = (m, group) => ['a', 'b', 'c'].map((c, i) => w(`${m}:w${i + 1}`, `esc:${group}${c}`))
 
-const POWER = [w('bat:pos', 'esc:batp'), w('bat:neg', 'esc:batn'), w('cap:cp', 'esc:capp'), w('cap:cn', 'esc:capn')]
+const POWER = [w('bat:pos', 'esc:batp'), w('bat:neg', 'esc:batn'), w('cap:cp', 'esc:batp'), w('cap:cn', 'esc:batn')]
 const MOTORS = [...motorSolution('m1', 'm1'), ...motorSolution('m2', 'm2'), ...motorSolution('m3', 'm3'), ...motorSolution('m4', 'm4')]
 const STACK = [w('fc:sig_bat', 'esc:sig_bat'), w('fc:sig_g', 'esc:sig_g'), ...['m1', 'm2', 'm3', 'm4'].map((m) => w(`fc:sig_${m}`, `esc:sig_${m}`))]
 const RECEIVER = [w('rx:r5', 'fc:u1_5v'), w('rx:rg', 'fc:u1_g'), w('rx:rt', 'fc:u1_r'), w('rx:rr', 'fc:u1_t')]
@@ -29,14 +29,14 @@ const RAW_LESSONS = [
     prewired: [],
     tasks: [
       { goal: 'battery', text: 'Solder the battery: red lead to BAT+, black lead to BAT-.' },
-      { goal: 'capacitor', text: 'Solder the capacitor: long leg to CAP+, short striped leg to CAP-.' },
+      { goal: 'capacitor', text: 'Solder the capacitor on the battery pads: long leg to BAT+, short striped leg to BAT-.' },
       { goal: 'no-faults', text: 'Nothing shorted or burnt.' },
     ],
     solution: POWER,
     hints: [
       'Drag from the tinned tip of a wire to the pad you want. The tip is the small silver end of each lead.',
       'The battery’s red lead is positive. The ESC pad marked BAT+ is where it goes.',
-      'The capacitor’s stripe is on its negative side. The striped leg goes to CAP-.',
+      'The capacitor goes on the same two pads as the battery leads. Its stripe is on the negative side, so the striped leg goes to BAT-.',
     ],
   },
   {
@@ -141,7 +141,7 @@ const RAW_LESSONS = [
     prewired: [],
     tasks: [
       { goal: 'battery', text: 'Battery to the ESC.' },
-      { goal: 'capacitor', text: 'Capacitor on CAP+ and CAP-.' },
+      { goal: 'capacitor', text: 'Capacitor on the BAT+ and BAT- pads.' },
       { goal: 'motors', text: 'Four motors, one per output.' },
       { goal: 'fc-esc', text: 'Flight controller to the ESC.' },
       { goal: 'receiver', text: 'Receiver on a UART.' },
@@ -177,8 +177,8 @@ const RAW_LESSONS = [
     // The finished build with three mistakes: capacitor reversed, receiver TX joined to TX, video wired backwards
     prewired: [
       ...POWER.filter((x) => !x.a.startsWith('cap:')),
-      w('cap:cp', 'esc:capn'),
-      w('cap:cn', 'esc:capp'),
+      w('cap:cp', 'esc:batn'),
+      w('cap:cn', 'esc:batp'),
       ...MOTORS,
       ...STACK,
       w('rx:r5', 'fc:u1_5v'),

@@ -61,8 +61,8 @@ export const CAPACITOR = {
   w: 90,
   h: 150,
   pads: [
-    lead('cp', '+', 28, 8, '#aab1ba', 2.4, { role: 'cap+' }),
-    lead('cn', '-', 62, 8, '#aab1ba', 2.4, { role: 'cap-' }),
+    lead('cp', '+', 28, 8, '#8f99a6', 2.4, { role: 'cap+' }),
+    lead('cn', '-', 62, 8, '#8f99a6', 2.4, { role: 'cap-' }),
   ],
   internal: [],
 }

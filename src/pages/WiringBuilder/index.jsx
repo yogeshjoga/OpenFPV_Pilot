@@ -222,7 +222,7 @@ function Builder({ embedded }) {
             onConnectEnd={builder.onConnectEnd}
             connectionMode={ConnectionMode.Loose}
             connectionLineComponent={PendingWire}
-            connectionRadius={22}
+            connectionRadius={30}
             nodesDraggable={!hand}
             nodesConnectable={!hand}
             elementsSelectable={!hand}
@@ -327,9 +327,9 @@ function Builder({ embedded }) {
                 setTimeout(() => fitView({ padding: 0.15, duration: 350 }), 60)
               }}
               disabled={!builder.nodes.length}
-              title="Arrange the parts like a wiring diagram"
+              title="Align: arrange the parts like a wiring diagram, with the wires running clear of each other"
             >
-              <Wand2 size={16} aria-hidden="true" /> <span className={styles.label}>Tidy up</span>
+              <Wand2 size={16} aria-hidden="true" /> <span className={styles.label}>Align</span>
             </button>
             <span className={styles.sep} />
             <button type="button" className={styles.tool} onClick={builder.undo} disabled={!builder.canUndo} title="Undo (Ctrl+Z)" aria-label="Undo">

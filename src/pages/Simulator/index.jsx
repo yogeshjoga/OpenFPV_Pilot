@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef } from 'react'
-import { Maximize2, Share2, Trash2, Zap } from 'lucide-react'
+import { Maximize2, Share2, Trash2, Wand2, Zap } from 'lucide-react'
 import { Background, BackgroundVariant, Controls, ConnectionMode, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import PageWrapper from '@components/layout/PageWrapper'
@@ -16,10 +16,6 @@ import styles from './Simulator.module.css'
 
 const nodeTypes = { part: PartNode }
 const edgeTypes = { wire: WireEdge }
-
-function PendingLine({ fromX, fromY, toX, toY }) {
-  return <PendingWire fromX={fromX} fromY={fromY} toX={toX} toY={toY} />
-}
 
 function Bench() {
   const bench = useBench()
@@ -60,6 +56,12 @@ function Bench() {
     if (type) place(type, { x: e.clientX, y: e.clientY })
   }
 
+  // Arrange everything like a wiring diagram, then bring it all into view
+  const align = () => {
+    bench.align()
+    setTimeout(() => fitView({ padding: 0.12, duration: 350 }), 60)
+  }
+
   const share = async () => {
     const link = bench.shareLink()
     try {
@@ -93,6 +95,9 @@ function Bench() {
           ))}
         </div>
         <div className={styles.actions}>
+          <button type="button" className={styles.btnGhost} onClick={align} disabled={!bench.nodes.length} title="Arrange the parts like a wiring diagram, with the wires running clear of each other">
+            <Wand2 size={16} aria-hidden="true" /> Align
+          </button>
           <button type="button" className={styles.btnGhost} onClick={share}>
             <Share2 size={16} aria-hidden="true" /> Share
           </button>
@@ -126,8 +131,8 @@ function Bench() {
               onEdgesChange={bench.onEdgesChange}
               onConnect={bench.connect}
               connectionMode={ConnectionMode.Loose}
-              connectionLineComponent={PendingLine}
-              connectionRadius={22}
+              connectionLineComponent={PendingWire}
+              connectionRadius={30}
               deleteKeyCode={['Backspace', 'Delete']}
               minZoom={0.2}
               maxZoom={2}
