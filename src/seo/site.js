@@ -41,12 +41,12 @@ export const ROUTES = [
   },
   {
     path: '/workshops',
-    title: 'College Drone, AI and Robotics Workshops in India | EGIRE Robotics',
-    description: 'Book an FPV drone, AI and robotics workshop for your college in India: 7-day piloting workshop, drone building, simulator training, certificates and a 90-day course. Fees from Rs 7,999.',
-    h1: 'Drone, AI and robotics workshops for colleges in India',
+    title: 'Drone, AI and Robotics Programs, Workshops and Internships in India | EGIRE Robotics',
+    description: 'EGIRE Robotics programs: FPV drone engineering programme, online drone internship, college workshops and a 90-day course. DGCA and robotics programs coming soon. Fees from Rs 7,999.',
+    h1: 'Drone, AI and robotics programs, workshops and internships in India',
     priority: 0.95,
     body: [
-      'EGIRE Robotics runs hands-on workshops for engineering colleges, universities and schools. A 7-day FPV piloting workshop starts in the simulator and moves to real flying, with certificates for each skill grade.',
+      'Two programs are open now, the 50-day FPV Drone Engineering Programme and a 45-day online Drone Technology internship, both with a downloadable brochure. EGIRE Robotics also runs hands-on workshops for engineering colleges, universities and schools. A 7-day FPV piloting workshop starts in the simulator and moves to real flying, with certificates for each skill grade.',
       'Workshops cover FPV piloting, building a drone from scratch, drone racing practice, cinematography, agriculture drones, 3D mapping and AI.',
       'Fees start from Rs 7,999 per person. Send an enquiry to arrange a workshop at your college.',
     ],

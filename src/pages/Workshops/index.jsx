@@ -6,6 +6,7 @@ import { GraduationCap, Plane, Microscope, Gamepad2, Building2, MonitorPlay, Boo
 import PageWrapper from '@components/layout/PageWrapper'
 import SidebarMenu from '@components/common/SidebarMenu'
 import BrochureDownloads from '@components/sections/BrochureDownloads'
+import ProgramsComingSoon from '@components/sections/ProgramsComingSoon'
 import styles from './Workshops.module.css'
 import useDocumentMeta from '@lib/useDocumentMeta'
 
@@ -150,7 +151,7 @@ const DOMAINS = [
 
 // ── Component ──────────────────────────────────────────────────
 export default function Workshops() {
-  useDocumentMeta('College Drone, AI & Robotics Workshops | EGIRE Robotics', 'Hands-on FPV drone, AI and robotics workshops and a 90-day course for universities, engineering colleges and learners aged 5 to 45.')
+  useDocumentMeta('Programs: Drone, AI and Robotics Training | EGIRE Robotics', 'All EGIRE Robotics programs in one place: the FPV drone engineering programme, an online drone internship, college workshops, and DGCA and robotics programs coming soon.')
   const [activeLevel, setActiveLevel] = useState('special')
   const level = LEVELS.find(l => l.id === activeLevel)
 
@@ -167,22 +168,22 @@ export default function Workshops() {
               transition={{ duration: 0.7 }}
               className={styles.heroContent}
             >
-              <p className={styles.eyebrow}>University &amp; College Workshops</p>
+              <p className={styles.eyebrow}>EGIRE Robotics Programs</p>
               <h1 className={styles.heroTitle}>
                 Learn to <span className="gradient-text">Build</span>, Fly &amp; <span className="gradient-text">Innovate</span>
               </h1>
               <p className={styles.heroSub}>
-                Structured, hands-on drone workshops for universities and engineering colleges, with
-                three certification grades that take students from simulation to professional flying.
+                Workshops, internships and training in drones, AI and robotics. Two programs are open now, and
+                colleges can book a hands-on workshop with certification grades from simulation to professional flying.
               </p>
 
               <div className={styles.heroCtas}>
-                <Link to="/enquire?type=college&from=workshops-hero" className={styles.ctaPrimary}>
-                  Book a workshop <ArrowRight size={16} aria-hidden="true" />
-                </Link>
-                <a href="#grades" className={styles.ctaSecondary}>
-                  View certification grades
+                <a href="#brochures" className={styles.ctaPrimary}>
+                  See the open programs <ArrowRight size={16} aria-hidden="true" />
                 </a>
+                <Link to="/enquire?type=college&from=workshops-hero" className={styles.ctaSecondary}>
+                  Book a college workshop
+                </Link>
               </div>
 
               <p className={styles.heroFee}>Fees start from {FEES.workshopFrom} per person</p>
@@ -221,11 +222,21 @@ export default function Workshops() {
           </div>
         </section>
 
+        {/* ── OPEN NOW: the two programs with brochures ── */}
+        <BrochureDownloads
+          eyebrow="Open now"
+          title="Two programs are open for you"
+          sub="Download the brochure to read the full plan on your phone or laptop, print it, or share it with your parents and your college."
+        />
+
+        {/* ── COMING SOON + COLLEGE WORKSHOPS ── */}
+        <ProgramsComingSoon />
+
         {/* ── CERTIFICATION LEVELS ── */}
         <section id="grades" className={`section ${styles.levelsSection}`}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>Programs and certification grades</h2>
-            <p className={styles.sectionSub}>Choose the right program for your institution. The three certification grades are 7-day intensive workshops, and the special course runs for 90 days.</p>
+            <h2 className={styles.sectionTitle}>College workshops and certification grades</h2>
+            <p className={styles.sectionSub}>Choose the right workshop for your institution. The three certification grades are 7-day intensive workshops, and the special course runs for 90 days.</p>
 
             {/* Layout Wrapper */}
             <div className={styles.levelsSplitLayout}>
@@ -328,9 +339,6 @@ export default function Workshops() {
             </div>
           </div>
         </section>
-
-        {/* ── BROCHURES ── */}
-        <BrochureDownloads />
 
         {/* ── CONTACT / CTA ── */}
         <section id="contact" className={styles.contactSection}>

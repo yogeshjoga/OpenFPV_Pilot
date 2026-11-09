@@ -8,7 +8,7 @@ import navConfig from './navConfig.json'
 
 export const NAV_LINKS = [
   { label: 'Home', path: '/' },
-  { label: 'Workshops', path: '/workshops' },
+  { label: 'Programs', path: '/workshops' },
   ...(navConfig.showAcademyNav ? [{ 
     label: 'Academy', 
     // grouped, so the menu opens as a few short columns instead of one tall list
@@ -21,7 +21,7 @@ export const NAV_LINKS = [
       { group: 'Practise', label: 'Drone Lab', path: '/drone-lab', hint: 'How it works, configurator' },
       { group: 'Practise', label: 'Wiring Lab', path: '/wiring-lab', hint: 'Lessons, practice builder' },
       { group: 'Explore', label: 'Catalog', path: '/catalog' },
-      { group: 'Explore', label: 'Programs', path: '/training' },
+      { group: 'Explore', label: 'Courses', path: '/training' },
     ],
     minLevel: 1 
   }] : []),
