@@ -168,7 +168,7 @@ export default function Home() {
               7-day workshop that starts in the simulator and ends in the air, or go deeper with our 90-day course.
             </p>
             <div className={styles.heroActions} style={{ pointerEvents: 'auto' }}>
-              <Link to="/workshops" className={styles.primaryBtn}>
+              <Link to="/workshops" className={styles.primaryBtn} aria-label="See programs: workshops, internships and training">
                 See programs
               </Link>
               <Link to="/enquire?type=demo&from=home-hero" className={styles.ghostBtn}>
