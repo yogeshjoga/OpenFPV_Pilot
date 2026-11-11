@@ -1,14 +1,13 @@
 
 import { useState, useEffect } from 'react'
 
-import { Sun, Moon, ArrowRight, ChevronDown, LogOut, User, ExternalLink, Clock } from 'lucide-react'
+import { Sun, Moon, ArrowRight, ChevronDown, LogOut, User, ExternalLink, Clock, Download } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NAV_LINKS } from '@config/constants'
 import useUIStore from '@store/useUIStore'
 import { useAuthStore } from '@store/useAuthStore'
 import CrmButton from './CrmButton.jsx'
-import AppMark from '@components/common/AppMark'
 import styles from './Navbar.module.css'
 
 // What the announcement strip under the navigation says, repeated as it scrolls
@@ -165,8 +164,9 @@ export default function Navbar() {
           {/* the Android app: not shown inside the app itself, which a person who has it does not need */}
           {!inApp && (
             <Link to="/app" className={styles.appBtn} aria-label="Download the Android app">
-              <AppMark className={styles.appMark} markClassName={styles.appLogo} headClassName={styles.appHead} />
+              <img className={styles.appLogo} src="/icon-192.png" alt="" width="28" height="28" decoding="async" aria-hidden="true" />
               <span className={styles.appLabel}>Get the app</span>
+              <Download className={styles.appArrow} size={16} aria-hidden="true" />
             </Link>
           )}
           <motion.button
@@ -270,7 +270,9 @@ export default function Navbar() {
             })}
             {!inApp && (
               <Link to="/app" className={styles.mobileApp}>
-                <AppMark className={styles.appMark} markClassName={styles.appLogo} headClassName={styles.appHead} /> Download the Android app
+                <img className={styles.appLogo} src="/icon-192.png" alt="" width="28" height="28" decoding="async" aria-hidden="true" />
+                <span>Get the Android app</span>
+                <Download className={styles.appArrow} size={18} aria-hidden="true" />
               </Link>
             )}
             <Link to="/enquire" className={styles.mobileCta}>
