@@ -550,3 +550,94 @@
     border-color: var(--color-border-hover);
   }
 }
+
+/* === ANDROID APP BUTTON: our mark beside an Android head, with a download arrow === */
+.appBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: var(--space-1) var(--space-4) var(--space-1) var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--color-on-accent);
+  background: var(--color-accent-primary);
+  border: 1px solid var(--color-accent-primary);
+  border-radius: var(--radius-full);
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+  --appmark-eye: var(--color-accent-primary);
+}
+
+.appBtn:hover {
+  color: var(--color-on-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.appMark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.appLogo {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.appHead {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #3ddc84; /* the green of the Android robot, so it reads at once on the navy button */
+}
+
+.appLabel {
+  line-height: 1;
+}
+
+/* in the phone menu it is a full-width row */
+.mobileApp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 3rem;
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  text-decoration: none;
+  color: var(--color-on-accent);
+  background: var(--color-accent-primary);
+  border-radius: var(--radius-lg);
+  --appmark-eye: var(--color-accent-primary);
+}
+
+.mobileApp:hover {
+  color: var(--color-on-accent);
+}
+
+/* a phone has room for the logos only: the words are in the menu */
+@media (max-width: 760px) {
+  .appLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .appBtn {
+    padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+  }
+}
+
+@media (max-width: 380px) {
+  .appHead {
+    display: none;
+  }
+}

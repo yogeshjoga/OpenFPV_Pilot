@@ -5,6 +5,7 @@ const Home = lazy(() => import('@pages/Home'))
 const Catalog = lazy(() => import('@pages/Catalog'))
 const ProductDetail = lazy(() => import('@pages/ProductDetail'))
 const About = lazy(() => import('@pages/About'))
+const AndroidApp = lazy(() => import('@pages/AndroidApp'))
 const Research = lazy(() => import('@pages/Research'))
 const Training = lazy(() => import('@pages/Training'))
 const Builder = lazy(() => import('@pages/Builder'))
@@ -44,11 +45,27 @@ import { startAnalytics, trackPage } from '@lib/analytics'
 import { ArrowLeft } from 'lucide-react'
 
 
+// A new page starts at the top. A link to a part of a page (/#android-app) scrolls to that part, once the page has drawn it
+// (the page loads in pieces, so the part may appear a moment after the link is opened).
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    if (!hash) {
+      window.scrollTo(0, 0)
+      return undefined
+    }
+    let tries = 0
+    const timer = setInterval(() => {
+      const target = document.getElementById(decodeURIComponent(hash.slice(1)))
+      if (target) {
+        target.scrollIntoView()
+        clearInterval(timer)
+      } else if (++tries > 50) {
+        clearInterval(timer)
+      }
+    }, 100)
+    return () => clearInterval(timer)
+  }, [pathname, hash])
   return null
 }
 
@@ -126,6 +143,7 @@ export default function AppRouter() {
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/about" element={<About />} />
+          <Route path="/app" element={<AndroidApp />} />
           <Route path="/research" element={<Research />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/guides" element={<Navigate to="/blog" replace />} />

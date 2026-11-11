@@ -56,6 +56,15 @@ export const ROUTES = [
     links: ['/enquire', '/blog/fpv-drones-india', '/gallery'],
   },
   {
+    path: '/app',
+    title: 'EGIRE Robotics Android App | Programs, Lessons and the Electronics Atlas',
+    description: 'Download the EGIRE Robotics Android app (about 10 MB): the programs, the lessons, the offline Electronics Atlas and, for accepted students, the CRM.',
+    h1: 'The EGIRE Robotics Android app',
+    priority: 0.6,
+    body: ['The EGIRE Robotics Android app brings the programs, the Academy lessons and the Electronics Atlas to your phone in one small download. The Atlas and the saved pages work with no internet.'],
+    links: ['/workshops', '/enquire'],
+  },
+  {
     path: '/about',
     title: 'About EGIRE Robotics | Drone and Robotics Training Team in India',
     description: 'Meet the team behind EGIRE Robotics: FPV pilots, drone builders and robotics engineers training students and professionals across India.',

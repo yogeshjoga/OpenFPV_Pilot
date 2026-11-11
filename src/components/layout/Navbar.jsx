@@ -8,6 +8,7 @@ import { NAV_LINKS } from '@config/constants'
 import useUIStore from '@store/useUIStore'
 import { useAuthStore } from '@store/useAuthStore'
 import CrmButton from './CrmButton.jsx'
+import AppMark from '@components/common/AppMark'
 import styles from './Navbar.module.css'
 
 // What the announcement strip under the navigation says, repeated as it scrolls
@@ -81,6 +82,9 @@ function AccountLink({ mobile = false }) {
   }
   return <NavLink to="/login" className={({ isActive }) => `${base} ${isActive ? styles.active : ''}`}>Sign in</NavLink>
 }
+
+// the website running inside the Android app
+const inApp = typeof window !== 'undefined' && !!window.EgireApp
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -158,6 +162,13 @@ export default function Navbar() {
 
         {/* Theme Toggle + Hamburger */}
         <div className={styles.actions}>
+          {/* the Android app: not shown inside the app itself, which a person who has it does not need */}
+          {!inApp && (
+            <Link to="/app" className={styles.appBtn} aria-label="Download the Android app">
+              <AppMark className={styles.appMark} markClassName={styles.appLogo} headClassName={styles.appHead} />
+              <span className={styles.appLabel}>Get the app</span>
+            </Link>
+          )}
           <motion.button
             className={styles.themeToggle}
             onClick={toggleTheme}
@@ -257,6 +268,11 @@ export default function Navbar() {
                 </NavLink>
               )
             })}
+            {!inApp && (
+              <Link to="/app" className={styles.mobileApp}>
+                <AppMark className={styles.appMark} markClassName={styles.appLogo} headClassName={styles.appHead} /> Download the Android app
+              </Link>
+            )}
             <Link to="/enquire" className={styles.mobileCta}>
               Enquire now <ArrowRight size={16} aria-hidden="true" />
             </Link>

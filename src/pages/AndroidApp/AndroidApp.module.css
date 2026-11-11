@@ -1,0 +1,33 @@
+.page {
+  min-height: 70dvh;
+  padding-top: var(--space-16);
+}
+
+.have {
+  text-align: center;
+}
+
+.title {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-h2);
+}
+
+.sub {
+  max-width: 36rem;
+  margin: 0 auto var(--space-6);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-5);
+  font-weight: var(--font-semibold);
+  color: var(--color-on-accent);
+  text-decoration: none;
+  background: var(--color-accent-primary);
+  border-radius: var(--radius-sm);
+}

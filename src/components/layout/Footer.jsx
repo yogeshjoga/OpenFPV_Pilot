@@ -47,6 +47,7 @@ export default function Footer() {
                 {link.label || link.title}
               </Link>
             ) : null)}
+            <Link to="/app" className={styles.link}>Android app</Link>
           </div>
         </nav>
 

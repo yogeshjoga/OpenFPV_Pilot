@@ -3,7 +3,7 @@ import { ANDROID_APP } from '@data/androidApp'
 import styles from './AppDownload.module.css'
 
 // The Android app, for download. Hidden inside the app itself (a person who has it does not need to download it again).
-export default function AppDownload({ id = 'android-app' }) {
+export default function AppDownload({ id = 'android-app', titleTag: Title = 'h2' }) {
   if (typeof window !== 'undefined' && window.EgireApp) return null
   const app = ANDROID_APP
 
@@ -13,7 +13,7 @@ export default function AppDownload({ id = 'android-app' }) {
         <div className={styles.card}>
           <div className={styles.text}>
             <p className={styles.eyebrow}>Android app</p>
-            <h2 id={`${id}-title`} className={styles.title}>Take EGIRE Robotics on your phone</h2>
+            <Title id={`${id}-title`} className={styles.title}>Take EGIRE Robotics on your phone</Title>
             <p className={styles.sub}>
               The programs, the lessons and the Electronics Atlas in one small app. The Atlas and the saved pages open with no internet, and students
               the team has accepted get the CRM in the same app.
