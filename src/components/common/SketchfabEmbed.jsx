@@ -51,7 +51,8 @@ function loadApi() {
 
 /**
  * A Sketchfab model that loads without slowing the page.
- * - `poster` shows a still of the model straight away and fades out the moment the live model is ready.
+ * - `poster` is a still of the model that appears only when the live model cannot start (a phone with no usable graphics, a blocked
+ *   network): better a clear picture than a half-drawn or broken viewer. If the live model is only slow, it takes over when ready.
  * - Unless `eager`, nothing is downloaded until the model is close to the screen.
  * - Sketchfab's viewer API tells us when the model is ready, so the swap never shows a loading spinner.
  */
@@ -60,6 +61,7 @@ export default function SketchfabEmbed({ uid, title, theme = 'light', poster, po
   const frame = useRef(null)
   const [near, setNear] = useState(eager)
   const [ready, setReady] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   useEffect(() => {
     if (near) return undefined
@@ -86,13 +88,18 @@ export default function SketchfabEmbed({ uid, title, theme = 'light', poster, po
     let live = true
     const iframe = frame.current
     const options = { ...VIEWER_OPTIONS, ui_theme: theme }
-    const giveUp = setTimeout(() => live && setReady(true), GIVE_UP_MS)
+    // the viewer has not started in time: show the picture (or, with no picture, whatever the viewer has)
+    const giveUp = setTimeout(() => {
+      if (!live) return
+      if (poster) setFailed(true)
+      else setReady(true)
+    }, GIVE_UP_MS)
 
-    // If the API cannot load, fall back to a plain embed URL so the model still appears.
+    // If the API cannot load, try a plain embed URL. A page that failed to load looks the same as one that loaded, so it is never
+    // shown on trust: with no picture to fall back on it appears after the wait, with one the picture does.
     const plainEmbed = () => {
       if (!live || !iframe) return
       const query = new URLSearchParams(Object.entries(options).map(([k, v]) => [k, String(v)]))
-      iframe.addEventListener('load', () => live && setReady(true), { once: true })
       iframe.src = `https://sketchfab.com/models/${uid}/embed?${query}`
     }
 
@@ -128,16 +135,16 @@ export default function SketchfabEmbed({ uid, title, theme = 'light', poster, po
       live = false
       clearTimeout(giveUp)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `poster` only says whether a picture exists
   }, [near, uid, theme])
 
   return (
     <div ref={wrap} className={styles.wrap}>
-      {poster && (
+      {poster && failed && (
         <img
           src={poster}
           alt=""
           className={`${styles.poster} ${posterClassName} ${ready ? styles.posterGone : ''}`}
-          fetchPriority="high"
           decoding="async"
         />
       )}

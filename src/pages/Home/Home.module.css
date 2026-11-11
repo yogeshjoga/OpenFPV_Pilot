@@ -38,6 +38,16 @@
   mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
+/* the picture shown only when the live 3D model cannot start: framed the way the model is, centred, fitted to the stage */
+.heroPoster {
+  top: 10%;
+  left: 50%;
+  width: auto;
+  max-width: none;
+  height: 80%;
+  transform: translateX(-50%);
+}
+
 .heroContent {
   position: relative;
   z-index: 2;
