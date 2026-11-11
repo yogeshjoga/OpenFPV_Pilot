@@ -31,7 +31,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 5000;
+  z-index: calc(var(--z-nav) - 10); /* under the header, so the menu it opens is never hidden by the popup */
   display: grid;
   place-items: center;
   padding: var(--space-6);
@@ -128,6 +128,23 @@
   color: var(--color-accent-primary);
 }
 
+/* on a phone it is a button, so there is always an obvious way out of the popup */
+@media (max-width: 860px) {
+  .back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-4);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+}
+
 @media (max-width: 860px) {
   .overlay {
     place-items: start center;
@@ -146,7 +163,6 @@
 
   .bullets,
   .blurb,
-  .back,
   .logo {
     display: none;
   }
