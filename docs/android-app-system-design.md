@@ -1,5 +1,10 @@
 # EGIRE Robotics Android app: system design (draft 1)
 
+> **Superseded (2026-11-11).** The app was built with a thinner design than the Capacitor plan below: a small native Kotlin shell that serves the
+> three web apps under their real addresses from files inside the app, with no Capacitor. The result is about 10.4 MB. See `README.md` in the
+> `egire-app` project for what was built and what is still to do. The sections below are kept for the thinking behind it (sizes, roles, risks).
+
+
 Date: 2026-11-10. Status: for review. Nothing is built yet. Do's and don'ts will be added after you read this.
 
 ## 1. What we want
