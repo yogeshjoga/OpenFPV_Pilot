@@ -7,6 +7,7 @@ Email: contact@egirerobotics.com
 Phone: +91 8500126104 (WhatsApp +91 9110566354)
 
 ## Training and workshops
+- [Android app (direct download, APK)](https://www.egirerobotics.com/#android-app): the EGIRE Robotics app with the programs, the lessons, the offline Electronics Atlas and, for accepted students, the CRM
 - [Programs: workshops, internships and training](https://www.egirerobotics.com/workshops): open now are the FPV Drone Engineering Programme and an online drone internship; college workshops with certificates from Rs 7,999; DGCA and robotics programs coming soon
 - [Enquire or book a demo](https://www.egirerobotics.com/enquire)
 - [About EGIRE Robotics](https://www.egirerobotics.com/about)

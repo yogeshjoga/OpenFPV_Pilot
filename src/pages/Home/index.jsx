@@ -10,6 +10,7 @@ import VideoCarousel from '@components/sections/VideoCarousel'
 import { fetchReviews } from '@lib/siteApi'
 import { whatsappHref } from '@config/constants'
 import BrochureDownloads from '@components/sections/BrochureDownloads'
+import AppDownload from '@components/sections/AppDownload'
 import ReviewsSection from '@components/sections/ReviewsSection'
 import PartnersSection from '@components/sections/PartnersSection'
 import { PREREQUISITES_DATA } from '@data/prerequisites'
@@ -426,6 +427,9 @@ export default function Home() {
 
       {/* ======= BROCHURES ======= */}
       <BrochureDownloads />
+
+      {/* ======= ANDROID APP ======= */}
+      <AppDownload />
 
       {/* ======= REVIEWS ======= */}
       <ReviewsSection />
