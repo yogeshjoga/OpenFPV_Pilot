@@ -75,8 +75,20 @@ export const useAuthStore = create((set, get) => ({
   signInWithGoogle: async (next = ACADEMY_HOME) => {
     try { sessionStorage.setItem(NEXT_KEY, next) } catch { /* the person simply lands on the home page */ }
     const supabase = await getSupabase()
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${window.location.origin}/auth/callback` } })
-    if (error) throw new Error('Google sign-in is not available right now.')
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/auth/callback`, skipBrowserRedirect: true },
+    })
+    if (error || !data?.url) throw new Error('Google sign-in is not available right now.')
+    // Ask the server first. When the sign-in service is switched off (it answers 402 or 5xx), say so here instead of leaving the
+    // person on a page of plain text. A network problem or the normal redirect (which the browser hides) goes on to Google as usual.
+    try {
+      const probe = await fetch(data.url, { redirect: 'manual', cache: 'no-store' })
+      if (probe.status === 402 || probe.status >= 500) throw new Error('unavailable')
+    } catch (e) {
+      if (e?.message === 'unavailable') throw new Error('Sign-in is temporarily unavailable. Please try again in a little while, or contact us on WhatsApp.')
+    }
+    window.location.assign(data.url)
   },
 
   /** Where to send a person after signing in. */
